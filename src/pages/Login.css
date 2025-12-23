@@ -8,7 +8,8 @@
   padding: 0;
   background: radial-gradient(circle at top, #020617 0, #020617 40%, #000 100%);
   position: relative;
-  overflow: hidden;
+  overflow: hidden;            /* extra content cut */
+  touch-action: pan-y;         /* left-right pan ignore */
   color: #f9fafb;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
     sans-serif;

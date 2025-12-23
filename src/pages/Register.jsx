@@ -15,7 +15,7 @@ const Register = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((p) => ({ ...p, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = (e) => {
@@ -40,7 +40,7 @@ const Register = () => {
   };
 
   return (
-    <div className="auth-screen">
+    <div className="auth-screen register-screen">
       <div className="auth-bg-gradient" />
 
       <div className="auth-card">
@@ -56,7 +56,7 @@ const Register = () => {
 
         <form className="auth-form" onSubmit={handleSubmit}>
           <label className="auth-field">
-            <span className="auth-label">In‑game name</span>
+            <span className="auth-label">In-game name</span>
             <input
               type="text"
               name="gamerTag"
@@ -118,7 +118,7 @@ const Register = () => {
           </div>
 
           <button type="submit" className="auth-btn-primary">
-            Create account
+            CREATE ACCOUNT
           </button>
         </form>
 

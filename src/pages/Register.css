@@ -24,4 +24,9 @@
   .register-screen .auth-subtitle {
     font-size: 11px;
   }
+
+  /* ensure same compact spacing as login */
+  .register-screen .auth-footer-row {
+    margin-top: 6px;
+  }
 }

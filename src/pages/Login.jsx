@@ -8,7 +8,7 @@ const Login = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((p) => ({ ...p, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = (e) => {
@@ -24,7 +24,7 @@ const Login = () => {
       createdAt: new Date().toISOString(),
     };
 
-    // IMPORTANT: same key jo Navbar me use ho rahi hai
+    // Navbar / ProtectedRoute ke liye same key
     localStorage.setItem("bgmi_user", JSON.stringify(fakeUser));
 
     navigate("/", { replace: true });
@@ -32,8 +32,10 @@ const Login = () => {
 
   return (
     <div className="auth-screen">
+      {/* background glow */}
       <div className="auth-bg-gradient" />
 
+      {/* main card */}
       <div className="auth-card">
         <div className="auth-logo-row">
           <div className="auth-logo-circle">BG</div>
@@ -71,7 +73,7 @@ const Login = () => {
           </label>
 
           <button type="submit" className="auth-btn-primary">
-            Enter lobby
+            ENTER LOBBY
           </button>
         </form>
 
