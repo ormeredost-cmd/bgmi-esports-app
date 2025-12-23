@@ -1,0 +1,66 @@
+.back-btn {
+  position: fixed;
+  top: 80px;
+  left: 32px;
+  padding: 8px 20px;
+  border-radius: 999px;
+  border: 1px solid rgba(56, 189, 248, 0.7);   /* cyan border */
+  background: radial-gradient(circle at 0 0, #0f172a 0%, #020617 60%);
+  color: #e5f7ff;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow:
+    0 0 0 1px rgba(15, 23, 42, 0.9),
+    0 0 18px rgba(56, 189, 248, 0.35);         /* glow */
+  transition:
+    background 0.2s ease,
+    transform 0.15s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+  z-index: 50;
+}
+
+/* arrow ke liye thoda movement */
+.back-btn::before {
+  content: "←";
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+
+.back-btn:hover {
+  background: radial-gradient(circle at 0 0, #0369a1 0%, #020617 70%);
+  border-color: rgba(125, 211, 252, 1);
+  color: #f9fafb;
+  transform: translateY(-1px) translateX(2px);
+  box-shadow:
+    0 0 0 1px rgba(15, 23, 42, 1),
+    0 0 26px rgba(56, 189, 248, 0.6);
+}
+
+.back-btn:hover::before {
+  transform: translateX(-2px);
+}
+
+/* click animation */
+.back-btn:active {
+  transform: translateY(1px) translateX(0);
+  box-shadow:
+    0 0 0 1px rgba(15, 23, 42, 1),
+    0 0 10px rgba(56, 189, 248, 0.4);
+  filter: brightness(0.95);
+}
+
+/* thoda chhota mobile ke liye */
+@media (max-width: 768px) {
+  .back-btn {
+    top: 72px;
+    left: 16px;
+    padding: 6px 16px;
+    font-size: 13px;
+  }
+}
