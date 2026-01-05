@@ -1,4 +1,4 @@
-/* TournamentDetails.css - NEW MODERN DESIGN v2 - FRESH LOOK */
+/* TournamentDetails.css - FIXED BUTTON SIZE + POSITION - SAME DESIGN */
 * {
   box-sizing: border-box;
 }
@@ -17,6 +17,7 @@
   background: linear-gradient(135deg, #0a0f1e 0%, #1a1f3a 50%, #2a2f4a 100%);
   position: relative;
   overflow-x: hidden;
+  padding-top: 80px; /* FIXED: Space for nav + back button */
 }
 
 .tdm-page::before {
@@ -40,7 +41,7 @@
 
 .tdm-container {
   max-width: 380px;
-  margin: 20px auto;
+  margin: 0 auto;
   background: var(--card-bg);
   backdrop-filter: blur(20px);
   border-radius: 28px;
@@ -198,14 +199,14 @@
 
 .form-input {
   width: 100%;
-  height: 52px;
-  padding: 0 20px;
+  height: 48px; /* FIXED: Smaller height */
+  padding: 0 18px;
   border: 2px solid rgba(139, 92, 246, 0.2);
-  border-radius: 16px;
+  border-radius: 14px; /* Slightly smaller */
   background: rgba(255, 255, 255, 0.03);
   backdrop-filter: blur(15px);
   color: #f8fafc;
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 500;
   transition: all 0.3s ease;
 }
@@ -225,67 +226,75 @@
 
 .register-btn {
   width: 100%;
-  height: 56px;
+  height: 44px; /* FIXED: Normal size - not too big */
   background: linear-gradient(135deg, var(--primary), var(--secondary));
   border: none;
-  border-radius: 20px;
+  border-radius: 14px; /* Matching inputs */
   color: white;
-  font-size: 1.05rem;
+  font-size: 0.95rem; /* FIXED: Smaller font */
   font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 0.8px;
   cursor: pointer;
   margin-top: 12px;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 12px 30px rgba(139, 92, 246, 0.4);
+  box-shadow: 0 8px 20px rgba(139, 92, 246, 0.3); /* Smaller shadow */
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .register-btn::before {
   content: '🚀';
-  margin-right: 8px;
+  margin-right: 6px;
+  font-size: 0.9rem;
 }
 
 .register-btn:hover {
-  transform: translateY(-3px) scale(1.02);
-  box-shadow: 0 20px 40px rgba(139, 92, 246, 0.5);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(139, 92, 246, 0.4);
 }
 
 .register-btn:active {
-  transform: translateY(-1px) scale(1);
+  transform: translateY(0);
 }
 
-/* Back Button */
+/* Back Button - FIXED POSITION */
 .back-btn {
   position: fixed;
   top: 20px;
-  left: 20px;
-  right: 20px;
-  background: rgba(20, 25, 40, 0.9);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1001;
+  background: rgba(20, 25, 40, 0.95);
   backdrop-filter: blur(20px);
   border: 1px solid var(--glass-border);
-  border-radius: 16px;
-  padding: 12px 24px;
+  border-radius: 14px;
+  padding: 10px 20px;
   color: #94a3b8;
   font-weight: 700;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   text-decoration: none;
   text-align: center;
   transition: all 0.3s ease;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  margin-bottom: 20px;
 }
 
 .back-btn:hover {
-  background: rgba(139, 92, 246, 0.15);
+  background: rgba(139, 92, 246, 0.2);
   color: white;
-  transform: translateY(-2px);
+  border-color: var(--primary);
+  transform: translateX(-50%) translateY(-1px);
 }
 
 /* Responsive */
 @media (max-width: 400px) {
   .tdm-container {
-    margin: 16px 8px;
+    margin: 12px 8px;
     border-radius: 24px;
+  }
+  
+  .tdm-page {
+    padding-top: 90px;
   }
 }
