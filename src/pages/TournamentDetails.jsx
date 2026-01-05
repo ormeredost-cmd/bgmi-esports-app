@@ -1,7 +1,7 @@
-// src/pages/TournamentDetails.jsx
 import { useParams } from "react-router-dom";
 import { tournamentsSample } from "../data/tournamentsSample";
 import BackButton from "../components/BackButton";
+import './TournamentDetails.css';
 
 const TournamentDetails = () => {
   const { id } = useParams();
@@ -9,59 +9,63 @@ const TournamentDetails = () => {
 
   if (!t) {
     return (
-      <div className="page-esports">
-        <BackButton fallbackPath="/tournaments" />
-
-        <h2>404</h2>
-        <p>Tournament not found.</p>
+      <div className="tdm-page">
+        <BackButton fallbackPath="/tournaments" className="back-btn" />
+        <div className="tdm-container">
+          <div className="tdm-header">
+            <h1 className="tdm-title">Tournament Not Found</h1>
+            <p className="tdm-subtitle">404 - Check tournament ID</p>
+          </div>
+        </div>
       </div>
     );
   }
 
   const handleRegister = (e) => {
     e.preventDefault();
-    alert("Demo: Registration stored locally. Real app me API call hoga.");
+    alert(`✅ Registered for ${t.name}!\nPlayer ID: ${e.target.playerId.value}\nTeam: ${e.target.teamName.value}`);
   };
 
   return (
-    <div className="page-esports">
-      {/* top-left fixed back button */}
-      <BackButton fallbackPath="/tournaments" />
-
-      {/* Title ab tournamentsSample ke name se aayega (e.g. "1v1 TDM Tournament") */}
-      <h2>{t.name}</h2>
-
-      {/* Yahan sirf mode dikhayenge */}
-      <p className="page-tagline">Mode: {t.mode}</p>
-
-      <div className="details-grid">
-        <div className="details-main">
-          <h3>Overview</h3>
-          <p>Date: {t.date}</p>
-          <p>Time: {t.time}</p>
-
-          {/* Entry fee 50 ₹ aur prize 80 ₹ tum data file me already set kar chuke ho */}
-          <p>Entry Fee: {t.entryFee}</p>
-          <p>Prize Pool: {t.prizePool}</p>
-
-          {/* 1v1 ke liye slots 2 hi honge (0/2, 1/2, 2/2) */}
-          <p>
-            Slots: {t.registered}/{t.maxSlots}
-          </p>
-
-          <h3>Rules</h3>
-          <p>{t.rulesShort}</p>
+    <div className="tdm-page">
+      <BackButton fallbackPath="/tournaments" className="back-btn" />
+      
+      <div className="tdm-container">
+        <div className="tdm-header">
+          <h1 className="tdm-title">{t.name}</h1>
+          <p className="tdm-subtitle">Mode: {t.mode} • {t.rulesShort}</p>
         </div>
 
-        <div className="details-side">
-          <h3>Register</h3>
-          <form className="form-stack" onSubmit={handleRegister}>
-            <input type="text" placeholder="Player Name" required />
-            <input type="text" placeholder="BGMI ID" required />
-            <input type="email" placeholder="Email" required />
-            <button type="submit" className="hero-btn-primary">
-              Register Now
-            </button>
+        <div className="tournament-info">
+          <div className="info-card">
+            <div className="info-label">Date & Time</div>
+            <div className="info-value">{t.date} {t.time}</div>
+          </div>
+          <div className="info-card">
+            <div className="info-label">Entry Fee</div>
+            <div className="info-value">₹{t.entryFee}</div>
+          </div>
+          <div className="info-card">
+            <div className="info-label">Prize Pool</div>
+            <div className="info-value">₹{t.prizePool}</div>
+          </div>
+          <div className="info-card">
+            <div className="info-label">Slots</div>
+            <div className="info-value">{t.registered}/{t.maxSlots}</div>
+          </div>
+        </div>
+
+        <div className="register-section">
+          <form className="register-form" onSubmit={handleRegister}>
+            <div className="form-group">
+              <label className="form-label">BGMI Player ID</label>
+              <input name="playerId" type="text" className="form-input" placeholder="BGMI-EB7XR" required />
+            </div>
+            <div className="form-group">
+              <label className="form-label">Team Name</label>
+              <input name="teamName" type="text" className="form-input" placeholder="Enter Team Name" required />
+            </div>
+            <button type="submit" className="register-btn">🚀 Register Now</button>
           </form>
         </div>
       </div>
