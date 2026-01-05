@@ -1,4 +1,4 @@
-/* TournamentDetails.css - FIXED BUTTON SIZE + POSITION - SAME DESIGN */
+/* TournamentDetails.css - BACK BUTTON FIXED - SMALL & TOP */
 * {
   box-sizing: border-box;
 }
@@ -17,7 +17,7 @@
   background: linear-gradient(135deg, #0a0f1e 0%, #1a1f3a 50%, #2a2f4a 100%);
   position: relative;
   overflow-x: hidden;
-  padding-top: 80px; /* FIXED: Space for nav + back button */
+  padding-top: 120px; /* Extra space for nav + back */
 }
 
 .tdm-page::before {
@@ -199,10 +199,10 @@
 
 .form-input {
   width: 100%;
-  height: 48px; /* FIXED: Smaller height */
+  height: 48px;
   padding: 0 18px;
   border: 2px solid rgba(139, 92, 246, 0.2);
-  border-radius: 14px; /* Slightly smaller */
+  border-radius: 14px;
   background: rgba(255, 255, 255, 0.03);
   backdrop-filter: blur(15px);
   color: #f8fafc;
@@ -226,12 +226,12 @@
 
 .register-btn {
   width: 100%;
-  height: 44px; /* FIXED: Normal size - not too big */
+  height: 44px;
   background: linear-gradient(135deg, var(--primary), var(--secondary));
   border: none;
-  border-radius: 14px; /* Matching inputs */
+  border-radius: 14px;
   color: white;
-  font-size: 0.95rem; /* FIXED: Smaller font */
+  font-size: 0.95rem;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.8px;
@@ -239,7 +239,7 @@
   margin-top: 12px;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 8px 20px rgba(139, 92, 246, 0.3); /* Smaller shadow */
+  box-shadow: 0 8px 20px rgba(139, 92, 246, 0.3);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -258,33 +258,34 @@
   transform: translateY(0);
 }
 
-/* Back Button - FIXED POSITION */
+/* BACK BUTTON FIXED - SMALL & ABOVE NAV */
 .back-btn {
   position: fixed;
-  top: 20px;
+  top: 70px; /* FIXED: Above BGMI Esports nav */
   left: 50%;
   transform: translateX(-50%);
-  z-index: 1001;
-  background: rgba(20, 25, 40, 0.95);
-  backdrop-filter: blur(20px);
-  border: 1px solid var(--glass-border);
-  border-radius: 14px;
-  padding: 10px 20px;
-  color: #94a3b8;
+  z-index: 1002;
+  background: rgba(20, 25, 40, 0.98);
+  backdrop-filter: blur(25px);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  border-radius: 12px;
+  padding: 8px 18px; /* FIXED: Smaller padding */
+  color: #cbd5e1;
   font-weight: 700;
-  font-size: 0.88rem;
+  font-size: 0.82rem; /* FIXED: Smaller font */
   text-decoration: none;
   text-align: center;
-  transition: all 0.3s ease;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-  margin-bottom: 20px;
+  min-width: 90px;
+  transition: all 0.25s ease;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
 }
 
 .back-btn:hover {
   background: rgba(139, 92, 246, 0.2);
   color: white;
   border-color: var(--primary);
-  transform: translateX(-50%) translateY(-1px);
+  transform: translateX(-50%) translateY(-2px);
+  box-shadow: 0 10px 25px rgba(139, 92, 246, 0.3);
 }
 
 /* Responsive */
@@ -295,6 +296,12 @@
   }
   
   .tdm-page {
-    padding-top: 90px;
+    padding-top: 110px;
+  }
+  
+  .back-btn {
+    top: 65px;
+    padding: 7px 16px;
+    font-size: 0.8rem;
   }
 }
