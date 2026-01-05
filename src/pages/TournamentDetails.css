@@ -1,4 +1,4 @@
-/* TournamentDetails.css - BACK BUTTON FIXED - SMALL & TOP */
+/* TournamentDetails.css - BACK BUTTON LEFT SIDE - SMALL MOBILE */
 * {
   box-sizing: border-box;
 }
@@ -17,7 +17,7 @@
   background: linear-gradient(135deg, #0a0f1e 0%, #1a1f3a 50%, #2a2f4a 100%);
   position: relative;
   overflow-x: hidden;
-  padding-top: 120px; /* Extra space for nav + back */
+  padding-top: 100px; /* Space for nav + left back btn */
 }
 
 .tdm-page::before {
@@ -258,37 +258,37 @@
   transform: translateY(0);
 }
 
-/* BACK BUTTON FIXED - SMALL & ABOVE NAV */
+/* BACK BUTTON LEFT SIDE - SMALL MOBILE PERFECT */
 .back-btn {
   position: fixed;
-  top: 70px; /* FIXED: Above BGMI Esports nav */
-  left: 50%;
-  transform: translateX(-50%);
+  top: 75px; /* Above nav */
+  left: 18px; /* FIXED: LEFT SIDE */
   z-index: 1002;
   background: rgba(20, 25, 40, 0.98);
   backdrop-filter: blur(25px);
-  border: 1px solid rgba(139, 92, 246, 0.3);
-  border-radius: 12px;
-  padding: 8px 18px; /* FIXED: Smaller padding */
+  border: 1px solid rgba(139, 92, 246, 0.4);
+  border-radius: 10px;
+  padding: 8px 14px; /* Small compact */
   color: #cbd5e1;
   font-weight: 700;
-  font-size: 0.82rem; /* FIXED: Smaller font */
+  font-size: 0.8rem; /* Small font */
   text-decoration: none;
-  text-align: center;
-  min-width: 90px;
+  line-height: 1.2;
   transition: all 0.25s ease;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  min-width: auto;
+  white-space: nowrap;
 }
 
 .back-btn:hover {
-  background: rgba(139, 92, 246, 0.2);
+  background: rgba(139, 92, 246, 0.25);
   color: white;
   border-color: var(--primary);
-  transform: translateX(-50%) translateY(-2px);
-  box-shadow: 0 10px 25px rgba(139, 92, 246, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(139, 92, 246, 0.3);
 }
 
-/* Responsive */
+/* Mobile */
 @media (max-width: 400px) {
   .tdm-container {
     margin: 12px 8px;
@@ -296,12 +296,13 @@
   }
   
   .tdm-page {
-    padding-top: 110px;
+    padding-top: 95px;
   }
   
   .back-btn {
-    top: 65px;
-    padding: 7px 16px;
-    font-size: 0.8rem;
+    top: 72px;
+    left: 15px;
+    padding: 7px 12px;
+    font-size: 0.78rem;
   }
 }
