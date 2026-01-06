@@ -1,7 +1,5 @@
-/* FINAL TournamentDetails.css - PERFECT NO EXTRA SPACE */
-* {
-  box-sizing: border-box;
-}
+/* TournamentDetails.css - CARDS CHOTA NICH SE TIGHT */
+* { box-sizing: border-box; }
 
 :root {
   --primary: #8b5cf6;
@@ -10,45 +8,26 @@
   --card-bg: rgba(15, 20, 35, 0.98);
 }
 
-.tdm-page {
-  height: 100vh; /* FIXED: Exact screen height */
-  background: #0a0f1e; /* Pure black */
-  color: #e5e7eb;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  overflow: hidden; /* FIXED: No scroll */
-  padding-top: 90px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding-left: 16px;
-  padding-right: 16px;
-}
 
 .tdm-container {
   width: 100%;
-  max-width: 360px;
-  height: 85vh; /* FIXED: Perfect fit */
-  background: var(--card-bg);
+  max-width: 340px;
   backdrop-filter: blur(25px);
-  border-radius: 24px;
+  border-radius: 20px;
   border: 1px solid var(--glass-border);
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.9);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.9);
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  animation: slideIn 0.5s ease-out;
-}
-
-@keyframes slideIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  margin-top: 20px;
 }
 
 .tdm-header {
-  padding: 28px 24px 20px;
+  padding: 20px 18px 14px;
   text-align: center;
   background: rgba(139, 92, 246, 0.12);
   flex-shrink: 0;
+  position: relative;
 }
 
 .tdm-header::after {
@@ -62,18 +41,17 @@
 }
 
 .tdm-title {
-  font-size: 1.65rem;
-  font-weight: 900;
+  font-size: 1.35rem;
+  font-weight: 800;
   background: linear-gradient(135deg, #8b5cf6, #06b6d4);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  margin: 0 0 6px;
-  letter-spacing: -0.6px;
+  margin: 0 0 2px;
 }
 
 .tdm-subtitle {
-  font-size: 0.82rem;
+  font-size: 0.7rem;
   background: linear-gradient(135deg, #a78bfa, #22d3ee);
   -webkit-background-clip: text;
   background-clip: text;
@@ -82,60 +60,84 @@
   font-weight: 600;
 }
 
-/* Stats - Fixed height */
+/* CARDS CHOTA NICH SE */
 .tournament-info {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  height: 140px; /* FIXED */
+  height: 105px; /* CHOTA KIA */
   flex-shrink: 0;
+  gap: 0;
+  background: rgba(255, 255, 255, 0.02);
 }
 
 .info-card {
-  padding: 20px 12px;
+  padding: 13px 10px; /* COMPACT PADDING */
   text-align: center;
-  border-right: 1px solid var(--glass-border);
   display: flex;
   flex-direction: column;
   justify-content: center;
-  transition: background 0.2s ease;
+  align-items: center;
+  background: rgba(20, 25, 45, 0.8);
+  border-right: 1px solid rgba(139, 92, 246, 0.15);
+  border-bottom: 1px solid rgba(139, 92, 246, 0.15);
+  position: relative;
+  overflow: hidden;
 }
 
-.info-card:nth-child(2n) {
-  border-right: none;
-  border-left: 1px solid var(--glass-border);
+.info-card:nth-child(2), .info-card:nth-child(4) {
+  border-left: 1px solid rgba(139, 92, 246, 0.15);
 }
 
-.info-card:nth-child(3),
-.info-card:nth-child(4) {
-  border-top: 1px solid var(--glass-border);
-}
-
-.info-card:hover {
-  background: rgba(139, 92, 246, 0.1);
+.info-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
 }
 
 .info-label {
-  font-size: 0.68rem;
-  color: #94a3b8;
+  font-size: 0.65rem; /* SMALLER */
+  color: #a1a1aa;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 4px;
+  letter-spacing: 0.5px;
+  margin-bottom: 1px; /* TIGHTER */
+  position: relative;
+  z-index: 2;
 }
 
 .info-value {
-  font-size: 1.05rem;
+  font-size: 0.98rem; /* PERFECT SIZE */
   font-weight: 800;
   background: linear-gradient(135deg, #8b5cf6, #06b6d4);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
+  margin: 0;
+  letter-spacing: -0.25px;
+  position: relative;
+  z-index: 2;
+  line-height: 1;
 }
 
-/* Form - Fill remaining space */
+.info-value.prize::before {
+  content: '₹';
+  font-size: 0.7rem;
+  margin-right: 1px;
+}
+
+.info-value.slots::after {
+  content: attr(data-total);
+  font-size: 0.65rem;
+  opacity: 0.85;
+}
+
 .register-section {
   flex: 1;
-  padding: 24px;
+  padding: 22px 18px 28px; /* MORE FORM SPACE */
   background: rgba(139, 92, 246, 0.05);
   border-top: 1px solid var(--glass-border);
   display: flex;
@@ -143,32 +145,30 @@
   justify-content: space-between;
 }
 
-.register-form {
-  width: 100%;
-}
-
 .form-group {
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 }
 
 .form-label {
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   color: #94a3b8;
   font-weight: 700;
-  margin-bottom: 6px;
-  letter-spacing: 0.3px;
+  margin-bottom: 4px;
+  letter-spacing: 0.2px;
 }
 
 .form-input {
   width: 100%;
-  height: 44px;
-  padding: 0 16px;
-  border: 1.5px solid rgba(139, 92, 246, 0.3);
+  height: 42px;
+  padding: 0 14px;
+  border: 1.8px solid rgba(139, 92, 246, 0.3);
   border-radius: 12px;
   background: rgba(255, 255, 255, 0.05);
   color: #f8fafc;
-  font-size: 0.92rem;
-  transition: all 0.2s ease;
+  font-size: 0.88rem;
+  font-weight: 500;
+  font-family: 'Arial', sans-serif;
+  transition: all 0.25s ease;
 }
 
 .form-input:focus {
@@ -179,73 +179,64 @@
 
 .form-input::placeholder {
   color: #64748b;
+  font-family: 'Arial', sans-serif;
 }
 
-.register-btn {
+.form-input[readonly] {
+  background: rgba(139, 92, 246, 0.12);
+  color: #a78bfa;
+  font-weight: 700;
+}
+
+.submit-btn {
   width: 100%;
-  height: 46px;
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  height: 44px;
+  background: linear-gradient(135deg, #10b981, #059669);
   border: none;
-  border-radius: 14px;
+  border-radius: 12px;
   color: white;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.6px;
+  letter-spacing: 0.4px;
   cursor: pointer;
-  margin-top: 8px;
-  box-shadow: 0 8px 20px rgba(139, 92, 246, 0.3);
+  margin-top: 4px;
+  box-shadow: 0 8px 20px rgba(16, 185, 129, 0.35);
   transition: all 0.25s ease;
+  font-family: 'Arial', sans-serif;
 }
 
-.register-btn:hover {
+.submit-btn:hover {
   transform: translateY(-1px);
-  box-shadow: 0 12px 25px rgba(139, 92, 246, 0.4);
+  box-shadow: 0 12px 30px rgba(16, 185, 129, 0.45);
 }
 
-/* BACK BUTTON LEFT SMALL */
 .back-btn {
   position: fixed;
-  top: 75px;
-  left: 16px;
+  top: 58px;
+  left: 6px;
   z-index: 1002;
   background: rgba(15, 20, 35, 0.98);
   backdrop-filter: blur(20px);
-  border: 1px solid rgba(139, 92, 246, 0.4);
+  border: 1.5px solid rgba(139, 92, 246, 0.4);
   border-radius: 10px;
-  padding: 7px 13px;
+  padding: 6px 8px;
   color: #cbd5e1;
   font-weight: 700;
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   text-decoration: none;
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  transition: all 0.25s ease;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.6);
+  font-family: 'Arial', sans-serif;
 }
 
 .back-btn:hover {
-  background: rgba(139, 92, 246, 0.2);
+  background: rgba(139, 92, 246, 0.25);
   color: white;
   transform: translateY(-1px);
 }
 
-/* Mobile perfect */
 @media (max-width: 430px) {
-  .tdm-page {
-    padding-top: 85px;
-    padding-left: 12px;
-    padding-right: 12px;
-  }
-  
-  .tdm-container {
-    max-width: none;
-    height: 88vh;
-    border-radius: 20px;
-  }
-  
-  .back-btn {
-    top: 70px;
-    left: 14px;
-    padding: 6px 12px;
-    font-size: 0.76rem;
-  }
+  .tdm-page { padding-top: 68px; padding-left: 10px; padding-right: 10px; }
+  .tdm-container { height: 89vh; border-radius: 18px; }
 }

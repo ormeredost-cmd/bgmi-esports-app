@@ -1,3 +1,4 @@
+// TournamentDetails.jsx - EXACT BHARAT BHARAT SPEC
 import { useParams } from "react-router-dom";
 import { tournamentsSample } from "../data/tournamentsSample";
 import BackButton from "../components/BackButton";
@@ -21,21 +22,19 @@ const TournamentDetails = () => {
     );
   }
 
-  const handleRegister = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    alert(`✅ Registered for ${t.name}!\nPlayer ID: ${e.target.playerId.value}\nTeam: ${e.target.teamName.value}`);
+    alert(`✅ Submitted!\nBGMI ID NAME: ${e.target.bgmiIdName.value}\nBGMI ID NUMBER: ${e.target.bgmiIdNumber.value}\nPayment: ₹50`);
   };
 
   return (
     <div className="tdm-page">
       <BackButton fallbackPath="/tournaments" className="back-btn" />
-      
       <div className="tdm-container">
         <div className="tdm-header">
           <h1 className="tdm-title">{t.name}</h1>
           <p className="tdm-subtitle">Mode: {t.mode} • {t.rulesShort}</p>
         </div>
-
         <div className="tournament-info">
           <div className="info-card">
             <div className="info-label">Date & Time</div>
@@ -47,25 +46,28 @@ const TournamentDetails = () => {
           </div>
           <div className="info-card">
             <div className="info-label">Prize Pool</div>
-            <div className="info-value">₹{t.prizePool}</div>
+            <div className="info-value prize">₹{t.prizePool}</div>
           </div>
           <div className="info-card">
             <div className="info-label">Slots</div>
-            <div className="info-value">{t.registered}/{t.maxSlots}</div>
+            <div className="info-value slots" data-total={`/${t.maxSlots}`}>{t.registered}</div>
           </div>
         </div>
-
         <div className="register-section">
-          <form className="register-form" onSubmit={handleRegister}>
+          <form className="register-form" onSubmit={handleSubmit}>
             <div className="form-group">
-              <label className="form-label">BGMI Player ID</label>
-              <input name="playerId" type="text" className="form-input" placeholder="BGMI-EB7XR" required />
+              <label className="form-label">BGMI ID NAME</label>
+              <input name="bgmiIdName" type="text" className="form-input" placeholder="BGMI-EB7XR" required />
             </div>
             <div className="form-group">
-              <label className="form-label">Team Name</label>
-              <input name="teamName" type="text" className="form-input" placeholder="Enter Team Name" required />
+              <label className="form-label">BGMI ID NUMBER</label>
+              <input name="bgmiIdNumber" type="text" className="form-input" placeholder="BGMI-ABC123" required />
             </div>
-            <button type="submit" className="register-btn">🚀 Register Now</button>
+            <div className="form-group">
+              <label className="form-label">Payment Amount</label>
+              <input name="payment" type="text" className="form-input" value="₹50" readOnly />
+            </div>
+            <button type="submit" className="submit-btn">✅ Submit Entry</button>
           </form>
         </div>
       </div>
