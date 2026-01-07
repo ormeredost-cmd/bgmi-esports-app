@@ -102,9 +102,10 @@
 .auth-label {
  display: block;
   color: #cbd5f5;
-  font-size: 11px;
-  margin-bottom: 3px;
+  font-size: 12px;
+  margin-bottom: 2px;
   letter-spacing: 1px;
+  padding-left: 4px;
 }
 
 .auth-field input {
@@ -137,7 +138,8 @@
   cursor: pointer;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  font-size: 10px;
+  font-size: 12px;
+  font-weight: 750;
   color: #131514;
   background-image: linear-gradient(90deg, #22c55e, #4ade80);
 }
@@ -186,4 +188,12 @@
 }
 .auth-footer-row span { 
   color: #e1e7e3;
+}
+.center-text {
+  text-align: center;
+  align-items: center;
+  flex: content;
+   color: rgba(102, 102, 234, 0.883);
+   font-weight: 800;
+
 }

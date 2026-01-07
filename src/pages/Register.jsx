@@ -125,8 +125,7 @@ const Register = () => {
 
       <div className="auth-card">
         <div className="auth-logo-row">
-          <div className="auth-logo-circle">BG</div>
-          <span className="auth-logo-title">BGMI ESPORTS</span>
+          <h2 className="center-text">Register</h2>
         </div>
 
         {error && <div className="auth-alert auth-alert-error">{error}</div>}
@@ -187,6 +186,7 @@ const Register = () => {
             </div>
 
             <button
+            id="btn"
               type="submit"
               className="auth-btn-primary"
               disabled={loading}
