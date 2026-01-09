@@ -30,33 +30,21 @@
   justify-content: center;
   align-items: center;
   padding-bottom: 8px;
-  height: 10;
-}
-.nav {
-  background-color: #000000;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding-bottom: 8px;
   height: 45px;
 }
-
 nav a {
   position: relative;
-  font-size: 1.1rem; /* Note: tha '1.1m' - rem kar le smooth ke liye */
+  font-size: 1.1rem;
   font-weight: 600;
   text-decoration: none;
-  padding: 60px 20px; /* Note: 60px top/bottom zyada, horizontal adjust */
+  padding: 60px;
   transition: .5s;
   color: white;
-  letter-spacing: 2px;
-  margin: 0 5px; /* Buttons space */
+  letter-spacing: 1px;
 }
-
 nav a:hover {
   color: #0ef;
 }
-
 nav a span {
   position: absolute;
   top: 0;
@@ -69,18 +57,14 @@ nav a span {
   opacity: 0;
   transition: .5s;
 }
-
 nav a:hover span {
   transform: scale(1) translateY(0);
   opacity: 1;
 }
 
-/* YE ADD KIYA - Click hold ke liye */
-nav a.active {
-  color: #0ef;
-}
-
-nav a.active span {
-  transform: scale(1) translateY(0);
-  opacity: 1;
+/* SIRF YE 4 LINES ADD KIYA - BAQI TERA SAME */
+nav a.active { color: #0ef; }
+nav a.active span { 
+  transform: scale(1) translateY(0) !important; 
+  opacity: 1 !important; 
 }
