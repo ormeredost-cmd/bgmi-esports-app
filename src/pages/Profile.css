@@ -6,24 +6,41 @@
   padding: 0;
 }
 
-/* =========================
-   PAGE
-========================= */
-.esports-profile {
-  min-height: 100vh;
-  background: linear-gradient(135deg, #0a0e17 0%, #1a1f2e 100%);
-  color: #e2e8f0;
-  font-family: 'Orbitron', monospace;
+:root {
+  --keyboard-padding: 0px;
 }
 
 /* =========================
-   HEADER
+   MAIN CONTAINER
 ========================= */
+.esports-profile {
+  min-height: 100vh;
+  height: 100vh;
+  background: linear-gradient(135deg, #0a0e17 0%, #1a1f2e 100%);
+  color: #e2e8f0;
+  font-family: 'Orbitron', monospace;
+  overflow-y: auto; /* 🔥 SCROLL ENABLED */
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  padding-bottom: env(safe-area-inset-bottom, 20px);
+  transition: padding-bottom 0.3s ease;
+  position: relative;
+}
+
+/* 🔥 KEYBOARD OPEN - PERFECT SCROLL BEHAVIOR */
+.esports-profile.keyboard-open {
+  padding-bottom: 300px; /* Extra space when keyboard opens */
+  scroll-behavior: smooth;
+}
+
 .profile-header {
   background: rgba(10, 14, 23, 0.98);
   padding: 25px 20px;
   backdrop-filter: blur(20px);
   border-bottom: 1px solid rgba(59, 130, 246, 0.2);
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
 .player-card {
@@ -34,9 +51,6 @@
   gap: 25px;
 }
 
-/* =========================
-   AVATAR
-========================= */
 .player-avatar {
   flex-shrink: 0;
 }
@@ -57,19 +71,13 @@
   object-fit: cover;
 }
 
-/* =========================
-   DETAILS
-========================= */
 .player-details {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 4px;              /* NAME + ID spacing FIX */
+  gap: 4px;
 }
 
-/* =========================
-   NAME ROW
-========================= */
 .name-row {
   display: flex;
   align-items: center;
@@ -90,47 +98,18 @@
   text-overflow: ellipsis;
 }
 
-/* =========================
-   EDIT BUTTON
-========================= */
-.btn-edit {
-  background: rgba(59, 130, 246, 0.2);
-  color: #3b82f6 !important;
-  border: 2px solid #3b82f6;
-  padding: 8px 16px;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.3s;
-  flex-shrink: 0;
-  white-space: nowrap;
-}
-
-.btn-edit:hover {
-  background: #3b82f6;
-  color: white !important;
-  transform: scale(1.05);
-}
-
-/* =========================
-   PROFILE ID (FINAL FIX)
-========================= */
 .id-row {
   display: flex;
   align-items: center;
   gap: 6px;
-
   font-size: 0.9rem;
   font-family: 'Courier New', monospace;
   font-weight: 700;
   letter-spacing: 0.8px;
-
   color: #94a3b8;
-  line-height: 1.4;          /* CUT FIX */
-  min-height: 22px;          /* MOBILE SAFE */
+  line-height: 1.4;
+  min-height: 22px;
   padding-top: 2px;
-
   white-space: nowrap;
   overflow: hidden;
 }
@@ -150,11 +129,8 @@
   text-overflow: ellipsis;
 }
 
-/* =========================
-   STATS
-========================= */
 .stats-section {
-  padding: 30px 20px;
+  padding: 30px 20px 150px; /* Extra space for scroll */
   max-width: 1000px;
   margin: 0 auto;
 }
@@ -204,12 +180,8 @@
   letter-spacing: 0.5px;
 }
 
-/* =========================
-   STATES
-========================= */
-.loading,
-.error {
-  min-height: 50vh;
+.loading {
+  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -217,29 +189,25 @@
   font-weight: 700;
 }
 
-/* =========================
-   RESPONSIVE
-========================= */
+/* RESPONSIVE */
 @media (max-width: 768px) {
   .player-card { gap: 20px; }
   .profile-header { padding: 22px 16px; }
   .gamer-name { font-size: 1.6rem; }
   .avatar-circle { width: 95px; height: 95px; }
   .stats-grid { grid-template-columns: repeat(3, 1fr); }
+  .stats-section { padding-bottom: 200px; }
 }
 
 @media (max-width: 480px) {
   .gamer-name { font-size: 1.4rem; }
   .avatar-circle { width: 85px; height: 85px; }
   .stats-grid { grid-template-columns: repeat(2, 1fr); }
-
-  .id-row {
-    font-size: 0.85rem;
-    min-height: 20px;
-    padding-top: 3px;
-  }
-
-  .id-value {
-    font-size: 0.95rem;
+  .id-row { font-size: 0.85rem; min-height: 20px; padding-top: 3px; }
+  .id-value { font-size: 0.95rem; }
+  .stats-section { padding: 20px 16px 250px; }
+  
+  .esports-profile.keyboard-open {
+    padding-bottom: 400px; /* Mobile keyboard full space */
   }
 }

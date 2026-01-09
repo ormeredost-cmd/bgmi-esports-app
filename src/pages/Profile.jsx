@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import './Profile.css';
 
 const API_URL = 'https://bgmi-api.onrender.com';
@@ -6,6 +6,8 @@ const API_URL = 'https://bgmi-api.onrender.com';
 const Profile = () => {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [keyboardOpen, setKeyboardOpen] = useState(false);
+  const mainRef = useRef(null);
 
   useEffect(() => {
     const loadProfile = async () => {
@@ -34,26 +36,52 @@ const Profile = () => {
     loadProfile();
   }, []);
 
+  // 🔥 PERFECT KEYBOARD HANDLING
+  useEffect(() => {
+    let initialHeight = window.innerHeight;
+    
+    const handleResize = () => {
+      const currentHeight = window.innerHeight;
+      const isKeyboardOpen = currentHeight < initialHeight * 0.9; // 10% shrink = keyboard
+      
+      setKeyboardOpen(isKeyboardOpen);
+      
+      if (isKeyboardOpen && mainRef.current) {
+        // Keyboard open - scroll to top smoothly
+        mainRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      
+      // Update initial height only when keyboard closes
+      if (!isKeyboardOpen) {
+        initialHeight = currentHeight;
+      }
+    };
+
+    window.visualViewport?.addEventListener('resize', handleResize);
+    window.addEventListener('resize', handleResize);
+    
+    return () => {
+      window.visualViewport?.removeEventListener('resize', handleResize);
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   if (loading) return <div className="loading">🔄 Loading...</div>;
 
   return (
-    <div className="esports-profile">
+    <div className={`esports-profile ${keyboardOpen ? 'keyboard-open' : ''}`} ref={mainRef}>
       <header className="profile-header">
         <div className="player-card">
-          {/* LEFT: Perfect Circular DP */}
           <div className="player-avatar">
             <div className="avatar-circle">
               <img src={`https://ui-avatars.com/api/?name=${encodeURIComponent(profile.name)}&background=1e40af&color=fff&size=512`} alt="Gamer Avatar" />
             </div>
           </div>
 
-          {/* RIGHT: Name + Profile ID */}
           <div className="player-details">
             <div className="name-row">
               <h1 className="gamer-name">{profile.name}</h1>
             </div>
-            
-            {/* Profile ID Inline */}
             <div className="id-row">
               <span className="id-label">Profile ID:</span>
               <strong className="id-value">{profile.id}</strong>
