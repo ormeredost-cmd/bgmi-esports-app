@@ -68,23 +68,23 @@
   transform: translateY(-4px);
 }
 
-/* MOBILE RESPONSIVE - FIXED FOR THICK BUTTONS */
+/* MOBILE RESPONSIVE - PERFECT PHONE SIZE */
 @media (max-width: 768px) {
   .nav-bottom {
     gap: 0.5rem;
-    padding: 16px 12px; /* Increased padding */
-    min-height: 80px; /* Button area taller */
+    padding: 12px 10px; /* Reduced padding */
+    min-height: 70px; /* Compact taller area */
   }
   
   .nav-tab {
-    padding: 16px 16px !important; /* Thicker top/bottom padding */
-    font-size: 13px !important;
-    min-height: 60px; /* Minimum tall button */
-    min-width: 75px;
+    padding: 12px 14px !important; /* Balanced thickness */
+    font-size: 12.5px !important;
+    min-height: 50px; /* Perfect phone height */
+    min-width: 72px;
     flex: 1;
-    max-width: 85px;
-    border-radius: 25px; /* Slightly larger radius */
-    border: 3px solid transparent !important; /* Thicker border */
+    max-width: 82px;
+    border-radius: 22px;
+    border: 2.5px solid transparent !important; /* Medium thick */
     display: flex !important;
     flex-direction: column;
     align-items: center;
@@ -92,28 +92,28 @@
   }
   
   .nav-tab-label {
-    font-size: 11px;
-    margin-top: 2px;
+    font-size: 10.5px;
+    margin-top: 1px;
   }
 }
 
 /* Extra small phones */
 @media (max-width: 480px) {
   .nav-tab {
-    padding: 14px 14px !important; /* Still thick */
+    padding: 11px 12px !important;
     font-size: 12px !important;
-    min-height: 55px;
-    min-width: 65px;
+    min-height: 48px;
+    min-width: 62px;
   }
 }
 
-/* Global padding - increased for taller navbar */
+/* Global padding - fine-tuned */
 body, .page-content, main, .profile-container {
-  padding-bottom: 120px; /* More space for thicker navbar */
+  padding-bottom: 110px;
 }
 
 @media (max-width: 768px) {
   body, .page-content, main, .profile-container {
-    padding-bottom: 105px; /* Adjusted for mobile */
+    padding-bottom: 95px; /* Perfect for new size */
   }
 }
