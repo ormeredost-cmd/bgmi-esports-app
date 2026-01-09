@@ -1,4 +1,4 @@
-/* Tera original top + desktop same */
+/* Top bar (unchanged) */
 .nav-top-logout {
   display: flex;
   align-items: center;
@@ -22,6 +22,7 @@
     0 0 0 1px rgba(251, 191, 36, 0.8);
 }
 
+/* Desktop navbar */
 .nav-bottom {
   display: flex;
   gap: 1rem;
@@ -67,54 +68,43 @@
   transform: translateY(-4px);
 }
 
-/* MOBILE COMPACT VERSION - PERFECT PHONE SIZE */
+/* MOBILE RESPONSIVE - YE ADD KIYA */
 @media (max-width: 768px) {
   .nav-bottom {
-    gap: 0.3rem;
-    padding: 8px 8px;
-    height: 70px; /* Fixed height */
+    gap: 0.5rem;
+    padding: 12px 10px;
   }
   
   .nav-tab {
-    padding: 4px 6px !important;     /* Super compact */
-    font-size: 10px !important;      /* Chhota text */
-    height: 50px;                    /* Fixed button height */
-    min-width: 48px;                 /* Perfect mobile width */
-    max-width: 55px;
-    border-radius: 18px;
-    flex: 1;
-    margin: 0 1px;
+    padding: 8px 12px !important; /* Chhote buttons */
+    font-size: 12px !important;
+    min-width: 70px; /* Equal width */
+    flex: 1; /* Screen full fill */
+    max-width: 80px;
+    border-radius: 20px;
   }
   
   .nav-tab-label {
-    font-size: 9px;
-    font-weight: 700;
-    line-height: 1.1;
+    font-size: 11px;
   }
 }
 
-/* Extra small screens (iPhone SE etc.) */
-@media (max-width: 400px) {
+/* Extra small phones */
+@media (max-width: 480px) {
   .nav-tab {
-    padding: 3px 5px !important;
-    font-size: 9px !important;
-    min-width: 45px;
-    height: 45px;
-  }
-  
-  .nav-tab-label {
-    font-size: 8px;
-  }
-  
-  .nav-bottom {
-    padding: 6px 6px;
-    height: 65px;
+    padding: 6px 10px !important;
+    font-size: 11px !important;
+    min-width: 60px;
   }
 }
 
-/* Content padding adjust */
+/* Global padding */
+body, .page-content, main, .profile-container {
+  padding-bottom: 110px;
+}
+
 @media (max-width: 768px) {
   body, .page-content, main, .profile-container {
-    padding-bottom: 80px;
+    padding-bottom: 90px; /* Mobile me kam padding */
   }
 }
