@@ -1,4 +1,4 @@
-/* Top bar (logo already MainLayout me hai, yaha sirf logout button) */
+/* Top bar */
 .nav-top-logout {
   display: flex;
   align-items: center;
@@ -6,7 +6,6 @@
   height: 48px;
 }
 
-/* colorful logout button */
 .nav-auth-btn {
   padding: 6px 18px;
   border-radius: 999px;
@@ -24,47 +23,52 @@
 }
 
 /* Bottom navigation bar */
-.nav {
-  background-color: #000000;
+.nav-bottom {
   display: flex;
+  gap: 1rem;
   justify-content: center;
-  align-items: center;
-  padding-bottom: 8px;
-  height: 45px;
-}
-nav a {
-  position: relative;
-  font-size: 1.1rem;
-  font-weight: 600;
-  text-decoration: none;
-  padding: 60px;
-  transition: .5s;
-  color: white;
-  letter-spacing: 1px;
-}
-nav a:hover {
-  color: #0ef;
-}
-nav a span {
-  position: absolute;
-  top: 0;
+  padding: 20px;
+  background: radial-gradient(circle, #1a0d4a 0%, #000 100%);
+  position: fixed;
+  bottom: 0;
   left: 0;
-  width: 90%;
-  height: 90px;
-  border-bottom: 2px solid #0ef;
-  border-radius: 15px;
-  transform: scale(0) translateY(50px);
-  opacity: 0;
-  transition: .5s;
-}
-nav a:hover span {
-  transform: scale(1) translateY(0);
-  opacity: 1;
+  right: 0;
+  z-index: 1000;
 }
 
-/* SIRF YE 4 LINES ADD KIYA - BAQI TERA SAME */
-nav a.active { color: #0ef; }
-nav a.active span { 
-  transform: scale(1) translateY(0) !important; 
-  opacity: 1 !important; 
+.nav-tab {
+  padding: 12px 20px;
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background: linear-gradient(#1a0d4a, #1a0d4a) padding-box, 
+              linear-gradient(45deg, #ff9ff3, #54a0ff, #5f27cd) border-box;
+  color: #fff;
+  text-decoration: none;
+  font-size: 14px;
+  transition: box-shadow 0.3s ease, transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none; /* Buttons stretch nahi honge */
+}
+
+.nav-tab:hover {
+  box-shadow: 
+    0 0 20px rgba(255,159,243,0.6),
+    0 0 40px rgba(84,160,255,0.4),
+    inset 0 0 20px rgba(255,255,255,0.2);
+  transform: translateY(-3px);
+}
+
+.nav-tab-active {
+  box-shadow: 
+    0 0 25px rgba(255,159,243,0.8),
+    0 0 50px rgba(84,160,255,0.6),
+    inset 0 0 25px rgba(255,255,255,0.3);
+  transform: translateY(-4px);
+}
+
+/* Global padding for all pages */
+body, .page-content, main, .profile-container {
+  padding-bottom: 110px;
 }
