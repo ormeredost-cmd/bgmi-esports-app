@@ -4,8 +4,10 @@ import { Link, useNavigate } from "react-router-dom";
 import "./Register.css";
 import { API_BASE } from "../config";
 
+
 const Register = () => {
   const navigate = useNavigate();
+
 
   const [formData, setFormData] = useState({
     gamerTag: "",
@@ -14,17 +16,21 @@ const Register = () => {
     confirmPassword: "",
   });
 
+
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
+
   const [step, setStep] = useState("form"); // 'form' | 'otp'
   const [otp, setOtp] = useState("");
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
+
 
   // STEP 1: details submit -> OTP generate (server pe)
   const handleRegister = async (e) => {
@@ -32,18 +38,22 @@ const Register = () => {
     setError("");
     setMessage("");
 
+
     if (!formData.gamerTag.trim()) {
       setError("Please enter your in‑game name");
       return;
     }
+
 
     if (formData.password !== formData.confirmPassword) {
       setError("Passwords do not match");
       return;
     }
 
+
     try {
       setLoading(true);
+
 
       const res = await fetch(`${API_BASE}/auth/send-otp`, {
         method: "POST",
@@ -51,11 +61,14 @@ const Register = () => {
         body: JSON.stringify({ email: formData.email }),
       });
 
+
       const data = await res.json().catch(() => ({}));
+
 
       if (!res.ok || !data.success) {
         throw new Error(data.error || "Failed to generate OTP");
       }
+
 
       // Abhi OTP console/log me aa raha hai; later Gmail se bhejenge
       setMessage("OTP generated. Check mail / contact admin for code.");
@@ -68,19 +81,23 @@ const Register = () => {
     }
   };
 
+
   // STEP 2: OTP verify -> account create + localStorage login
   const handleVerifyOtp = async (e) => {
     e.preventDefault();
     setError("");
     setMessage("");
 
+
     if (!otp.trim()) {
       setError("Please enter OTP");
       return;
     }
 
+
     try {
       setLoading(true);
+
 
       const res = await fetch(`${API_BASE}/auth/verify-otp`, {
         method: "POST",
@@ -93,11 +110,14 @@ const Register = () => {
         }),
       });
 
+
       const data = await res.json().catch(() => ({}));
+
 
       if (!res.ok || !data.success) {
         throw new Error(data.error || "Invalid or expired OTP");
       }
+
 
       // token abhi nahi, sirf user save kar raha
       localStorage.setItem(
@@ -106,6 +126,7 @@ const Register = () => {
           user: data.user,
         })
       );
+
 
       setMessage("Account created! Entering lobby...");
       setTimeout(() => {
@@ -119,19 +140,23 @@ const Register = () => {
     }
   };
 
+
   return (
     <div className="auth-screen register-screen">
       <div className="auth-bg-gradient" />
-       
+
+
       <div className="auth-card">
         <div className="auth-logo-row">
           <h2 className="center-text">Register</h2>
         </div>
 
+
         {error && <div className="auth-alert auth-alert-error">{error}</div>}
         {message && (
           <div className="auth-alert auth-alert-success">{message}</div>
         )}
+
 
         {step === "form" ? (
           <form className="auth-form" onSubmit={handleRegister}>
@@ -147,6 +172,7 @@ const Register = () => {
               />
             </label>
 
+
             <label className="auth-field">
               <span className="auth-label">Email</span>
               <input
@@ -158,6 +184,7 @@ const Register = () => {
                 required
               />
             </label>
+
 
             <div className="auth-grid-2">
               <label className="auth-field">
@@ -172,6 +199,7 @@ const Register = () => {
                 />
               </label>
 
+
               <label className="auth-field">
                 <span className="auth-label">Confirm</span>
                 <input
@@ -184,6 +212,7 @@ const Register = () => {
                 />
               </label>
             </div>
+
 
             <button
             id="btn"
@@ -208,6 +237,7 @@ const Register = () => {
               />
             </label>
 
+
             <button
               type="submit"
               className="auth-btn-primary"
@@ -217,6 +247,7 @@ const Register = () => {
             </button>
           </form>
         )}
+
 
         <div className="auth-footer-row">
           <span><h3>Already registered</h3></span>
@@ -228,5 +259,6 @@ const Register = () => {
     </div>
   );
 };
+
 
 export default Register;
