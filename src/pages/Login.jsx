@@ -62,13 +62,6 @@ const Login = () => {
     <div className="auth-screen">
       <div className="auth-bg-gradient" />
 
-       <div className="logo-top-container1">
-        <img 
-          src="/logo.png" 
-          alt="BGMI Logo" 
-          className="register-logo1"
-        />
-      </div>
 
       <div className="auth-card">
         <div className="auth-logo-row">

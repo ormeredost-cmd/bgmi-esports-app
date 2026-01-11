@@ -198,32 +198,3 @@
 
 }
 
-/* Logo styles - Register.css के top में add कर */
-.logo-top-container {
-  position: absolute;
-  top: 199px;
-  left: 36%;
-  transform: translateX(-50%);
-  z-index: 20;
-}
-
-.register-logo {
-  width: 190px;
-  height: 70px;
-  object-fit: contain;
-}
-
-/* Logo styles - login.css के top में add कर */
-.logo-top-container1 {
-  position: absolute;
-   top: 232px;
-  left: 36%;
-  transform: translateX(-50%);
-  z-index: 20;
-}
-
-.register-logo1 {
-   width: 190px;
-  height: 70px;
-  object-fit: contain;
-}
