@@ -122,7 +122,13 @@ const Register = () => {
   return (
     <div className="auth-screen register-screen">
       <div className="auth-bg-gradient" />
-
+       <div className="logo-top-container">
+        <img 
+          src="/logo.png" 
+          alt="BGMI Logo" 
+          className="register-logo"
+        />
+      </div>
       <div className="auth-card">
         <div className="auth-logo-row">
           <h2 className="center-text">Register</h2>
