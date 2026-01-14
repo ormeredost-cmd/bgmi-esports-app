@@ -1,4 +1,4 @@
-// src/pages/MyMatches.jsx - SINGLE DATE ONLY VERSION
+// src/pages/MyMatches.jsx - PRODUCTION READY + SINGLE DATE
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import BackButton from "../components/BackButton";
@@ -11,13 +11,17 @@ const MyMatches = () => {
   const [bgmiId, setBgmiId] = useState('');
   const [inputVisible, setInputVisible] = useState(false);
 
+  // 🔥 PRODUCTION BACKEND URL
+  const API_URL = 'https://bgmi-api.onrender.com';
+
   const fetchMatches = useCallback(async (id) => {
     try {
       setLoading(true);
       if (!id) return;
 
       console.log('🔍 Loading matches for:', id);
-      const response = await fetch(`http://localhost:5001/api/my-matches?bgmiId=${id}`);
+      // ✅ FIXED: localhost:5001 → PRODUCTION URL
+      const response = await fetch(`${API_URL}/api/my-matches?bgmiId=${id}`);
       const data = await response.json();
       
       console.log('📊 Matches:', data.matches);
@@ -27,7 +31,7 @@ const MyMatches = () => {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [API_URL]);
 
   useEffect(() => {
     const storedId = localStorage.getItem('lastBgmiId') || localStorage.getItem('tempBgmiId');
@@ -110,7 +114,7 @@ const MyMatches = () => {
                   </div>
                   <div className="detail-row">
                     <span>Date:</span>
-                    <span>{match.date}</span>  {/* ✅ SIRF DATE - NO TIME */}
+                    <span>{match.date}</span>  {/* ✅ SINGLE DATE ONLY */}
                   </div>
                   <div className="detail-row joined-time">
                     <span>Joined:</span>

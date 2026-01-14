@@ -1,4 +1,4 @@
-// src/pages/TournamentDetails.jsx - 2025-12-23 PERMANENTLY REMOVED
+// src/pages/TournamentDetails.jsx - PRODUCTION READY
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect, useCallback } from "react";
 import { tournamentsSample } from "../data/tournamentsSample";
@@ -13,25 +13,29 @@ const TournamentDetails = () => {
   const [liveSlots, setLiveSlots] = useState(0);
   const [loading, setLoading] = useState(true);
 
+  // 🔥 PRODUCTION BACKEND URL
+  const API_URL = 'https://bgmi-api.onrender.com';
+
   const checkStatus = useCallback(async () => {
     try {
       setLoading(true);
       
-      const joinRes = await fetch(`http://localhost:5001/api/check-join/${id}`);
+      // ✅ FIXED: localhost:5001 → PRODUCTION URL
+      const joinRes = await fetch(`${API_URL}/api/check-join/${id}`);
       const joinData = await joinRes.json();
       setIsJoined(joinData.joined);
 
-      const slotsRes = await fetch(`http://localhost:5001/api/tournament-slots-count/${id}`);
+      const slotsRes = await fetch(`${API_URL}/api/tournament-slots-count/${id}`);
       const slotsData = await slotsRes.json();
       setLiveSlots(slotsData.registered || 0);
       setIsFull(slotsData.registered >= 2);
-     
+      
     } catch (error) {
       console.error('Status check failed:', error);
     } finally {
       setLoading(false);
     }
-  }, [id]);
+  }, [id, API_URL]);
 
   useEffect(() => {
     if (!id) return;
@@ -61,7 +65,7 @@ const TournamentDetails = () => {
     const playerName = e.target.bgmiIdName.value;
     const bgmiId = e.target.bgmiIdNumber.value;
 
-    // 🔥 🔥 2025-12-23 PROBLEM SOLVED - CURRENT DATE/TIME ONLY 🔥 🔥
+    // 🔥 CURRENT DATE/TIME ONLY
     const now = new Date();
     const realDate = now.toLocaleDateString('en-IN');  // "14/01/2026"
     const realTime = now.toLocaleTimeString('en-IN', { 
@@ -74,8 +78,8 @@ const TournamentDetails = () => {
       tournamentName: t.name,
       mode: t.mode,
       rules: t.rulesShort,
-      date: realDate,        // ✅ TODAY 14/01/2026
-      time: realTime,        // ✅ NOW 12:18 PM
+      date: realDate,        
+      time: realTime,        
       map: t.map || "Erangel",
       entryFee: t.entryFee,
       prizePool: t.prizePool,
@@ -87,7 +91,8 @@ const TournamentDetails = () => {
     };
 
     try {
-      const response = await fetch('http://localhost:5001/api/join-tournament', {
+      // ✅ FIXED: localhost:5001 → PRODUCTION URL
+      const response = await fetch(`${API_URL}/api/join-tournament`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(joinedMatch)
@@ -109,6 +114,7 @@ const TournamentDetails = () => {
     }
   };
 
+  // 🔥 REST OF COMPONENT SAME - NO CHANGES
   if (loading && liveSlots === 0) {
     return (
       <div className="tdm-page">
