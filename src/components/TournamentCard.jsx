@@ -1,4 +1,4 @@
-// src/components/TournamentCard.jsx - FINAL MINIMAL FIX
+// src/components/TournamentCard.jsx - PRODUCTION READY
 import { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import "./TournamentCard.css";
@@ -8,6 +8,9 @@ const TournamentCard = ({ t }) => {
   const [isFull, setIsFull] = useState(false);
   const [loading, setLoading] = useState(true);
   const [registeredSlots, setRegisteredSlots] = useState(0);
+
+  // 🔥 PRODUCTION BACKEND URL
+  const API_URL = 'https://bgmi-api.onrender.com';
 
   // 🔥 BUG FIX FUNCTION
   const getCurrentBgmiId = () => {
@@ -21,13 +24,15 @@ const TournamentCard = ({ t }) => {
       const bgmiId = getCurrentBgmiId();
       let joinedStatus = false;
       if (bgmiId) {
-        const joinResponse = await fetch(`http://localhost:5001/api/check-join/${t.id}?bgmiId=${bgmiId}`);
+        // ✅ FIXED: localhost:5001 → PRODUCTION URL
+        const joinResponse = await fetch(`${API_URL}/api/check-join/${t.id}?bgmiId=${bgmiId}`);
         const joinResult = await joinResponse.json();
         joinedStatus = joinResult.joined;
       }
       setIsJoined(joinedStatus);
 
-      const slotsResponse = await fetch(`http://localhost:5001/api/tournament-slots-count/${t.id}`);
+      // ✅ FIXED: localhost:5001 → PRODUCTION URL
+      const slotsResponse = await fetch(`${API_URL}/api/tournament-slots-count/${t.id}`);
       const slotsResult = await slotsResponse.json();
       setRegisteredSlots(slotsResult.registered || 0);
       setIsFull(slotsResult.registered >= 2);
@@ -37,7 +42,7 @@ const TournamentCard = ({ t }) => {
     } finally {
       setLoading(false);
     }
-  }, [t.id]);
+  }, [t.id, API_URL]);
 
   useEffect(() => {
     checkTournamentStatus();
