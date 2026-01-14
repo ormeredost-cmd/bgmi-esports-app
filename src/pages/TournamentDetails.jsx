@@ -1,11 +1,43 @@
-// TournamentDetails.jsx - EXACT BHARAT BHARAT SPEC
-import { useParams } from "react-router-dom";
+// src/pages/TournamentDetails.jsx - 2025-12-23 PERMANENTLY REMOVED
+import { useParams, useNavigate } from "react-router-dom";
+import { useState, useEffect, useCallback } from "react";
 import { tournamentsSample } from "../data/tournamentsSample";
 import BackButton from "../components/BackButton";
-import './TournamentDetails.css';
+import "./TournamentDetails.css";
 
 const TournamentDetails = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const [isJoined, setIsJoined] = useState(false);
+  const [isFull, setIsFull] = useState(false);
+  const [liveSlots, setLiveSlots] = useState(0);
+  const [loading, setLoading] = useState(true);
+
+  const checkStatus = useCallback(async () => {
+    try {
+      setLoading(true);
+      
+      const joinRes = await fetch(`http://localhost:5001/api/check-join/${id}`);
+      const joinData = await joinRes.json();
+      setIsJoined(joinData.joined);
+
+      const slotsRes = await fetch(`http://localhost:5001/api/tournament-slots-count/${id}`);
+      const slotsData = await slotsRes.json();
+      setLiveSlots(slotsData.registered || 0);
+      setIsFull(slotsData.registered >= 2);
+     
+    } catch (error) {
+      console.error('Status check failed:', error);
+    } finally {
+      setLoading(false);
+    }
+  }, [id]);
+
+  useEffect(() => {
+    if (!id) return;
+    checkStatus();
+  }, [id, checkStatus]);
+
   const t = tournamentsSample.find((x) => x.id === id);
 
   if (!t) {
@@ -13,19 +45,80 @@ const TournamentDetails = () => {
       <div className="tdm-page">
         <BackButton fallbackPath="/tournaments" className="back-btn" />
         <div className="tdm-container">
-          <div className="tdm-header">
-            <h1 className="tdm-title">Tournament Not Found</h1>
-            <p className="tdm-subtitle">404 - Check tournament ID</p>
-          </div>
+         <div className="tdm-header">
+           <h1 className="tdm-title">Tournament Not Found</h1>
+           <p className="tdm-subtitle">404 - Check tournament ID</p>
+         </div>
         </div>
       </div>
     );
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert(`✅ Submitted!\nBGMI ID NAME: ${e.target.bgmiIdName.value}\nBGMI ID NUMBER: ${e.target.bgmiIdNumber.value}\nPayment: ₹50`);
+    setLoading(true);
+
+    const playerName = e.target.bgmiIdName.value;
+    const bgmiId = e.target.bgmiIdNumber.value;
+
+    // 🔥 🔥 2025-12-23 PROBLEM SOLVED - CURRENT DATE/TIME ONLY 🔥 🔥
+    const now = new Date();
+    const realDate = now.toLocaleDateString('en-IN');  // "14/01/2026"
+    const realTime = now.toLocaleTimeString('en-IN', { 
+      hour: '2-digit', 
+      minute: '2-digit' 
+    });  // "12:18 PM"
+
+    const joinedMatch = {
+      tournamentId: t.id,
+      tournamentName: t.name,
+      mode: t.mode,
+      rules: t.rulesShort,
+      date: realDate,        // ✅ TODAY 14/01/2026
+      time: realTime,        // ✅ NOW 12:18 PM
+      map: t.map || "Erangel",
+      entryFee: t.entryFee,
+      prizePool: t.prizePool,
+      slots: liveSlots,
+      status: "Registered",
+      playerName,
+      bgmiId,
+      joinedAt: new Date().toISOString()
+    };
+
+    try {
+      const response = await fetch('http://localhost:5001/api/join-tournament', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(joinedMatch)
+      });
+
+      const result = await response.json();
+
+      if (response.ok && result.success) {
+        localStorage.setItem('lastBgmiId', bgmiId);
+        localStorage.setItem('tempBgmiId', bgmiId);
+        navigate("/my-matches", { replace: true });
+      } else {
+        setLoading(false);
+        alert(result.message || 'Registration failed');
+      }
+    } catch (error) {
+      setLoading(false);
+      alert("❌ Server error. Try again.");
+    }
   };
+
+  if (loading && liveSlots === 0) {
+    return (
+      <div className="tdm-page">
+        <BackButton fallbackPath="/tournaments" className="back-btn" />
+        <div className="tdm-container" style={{ textAlign: 'center', padding: '50px' }}>
+         <h2>Loading Tournament...</h2>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="tdm-page">
@@ -35,6 +128,7 @@ const TournamentDetails = () => {
           <h1 className="tdm-title">{t.name}</h1>
           <p className="tdm-subtitle">Mode: {t.mode} • {t.rulesShort}</p>
         </div>
+
         <div className="tournament-info">
           <div className="info-card">
             <div className="info-label">Date & Time</div>
@@ -50,25 +144,42 @@ const TournamentDetails = () => {
           </div>
           <div className="info-card">
             <div className="info-label">Slots</div>
-            <div className="info-value slots" data-total={`/${t.maxSlots}`}>{t.registered}</div>
+            <div className={`info-value slots ${isFull ? 'full-slots' : ''}`}>
+              {liveSlots}/2 {isFull && <span className="full-badge">FULL</span>}
+            </div>
           </div>
         </div>
+
         <div className="register-section">
-          <form className="register-form" onSubmit={handleSubmit}>
-            <div className="form-group">
-              <label className="form-label">BGMI ID NAME</label>
-              <input name="bgmiIdName" type="text" className="form-input" placeholder="BGMI-EB7XR" required />
+          {isFull ? (
+            <div style={{ textAlign: 'center', padding: '40px', opacity: 0.7 }}>
+              <h3>🔴 Tournament Full (2/2)</h3>
+              <p>Maximum 2 players allowed for 1v1 TDM</p>
             </div>
-            <div className="form-group">
-              <label className="form-label">BGMI ID NUMBER</label>
-              <input name="bgmiIdNumber" type="text" className="form-input" placeholder="BGMI-ABC123" required />
+          ) : isJoined ? (
+            <div style={{ textAlign: 'center', padding: '40px', opacity: 0.7 }}>
+              <h3>✅ Already Joined This Tournament</h3>
+              <p>Check your <strong>My Matches</strong> page</p>
             </div>
-            <div className="form-group">
-              <label className="form-label">Payment Amount</label>
-              <input name="payment" type="text" className="form-input" value="₹50" readOnly />
-            </div>
-            <button type="submit" className="submit-btn">✅ Submit Entry</button>
-          </form>
+          ) : (
+            <form className="register-form" onSubmit={handleSubmit}>
+              <div className="form-group">
+                <label className="form-label">BGMI ID NAME</label>
+                <input name="bgmiIdName" type="text" className="form-input" required placeholder="Enter your BGMI name" disabled={loading} />
+              </div>
+              <div className="form-group">
+                <label className="form-label">BGMI ID NUMBER</label>
+                <input name="bgmiIdNumber" type="text" className="form-input" required placeholder="e.g. 51234567890" disabled={loading} />
+              </div>
+              <div className="form-group">
+                <label className="form-label">Payment Amount</label>
+                <input type="text" className="form-input" value={`₹${t.entryFee}`} readOnly />
+              </div>
+              <button type="submit" className="submit-btn" disabled={loading || isFull}>
+                {loading ? "Joining..." : "✅ Submit Entry & Save to Admin"}
+              </button>
+            </form>
+          )}
         </div>
       </div>
     </div>

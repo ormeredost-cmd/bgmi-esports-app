@@ -1,0 +1,195 @@
+/* src/pages/MyMatches.css - COMPACT CARDS */
+.mymatches-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.mymatches-container {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 30px;
+  color: white;
+}
+
+.page-header h1 {
+  font-size: 28px;
+  margin: 0 0 10px 0;
+  background: linear-gradient(45deg, #00d4ff, #ff6b6b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.page-header p {
+  margin: 0;
+  opacity: 0.8;
+  font-size: 14px;
+}
+
+/* 🔥 COMPACT MATCH CARDS */
+.matches-grid {
+  display: grid;
+  gap: 15px;
+  grid-template-columns: 1fr;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.match-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.match-card:hover {
+  transform: translateY(-5px);
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 15px 40px rgba(0, 212, 255, 0.2);
+}
+
+.match-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 15px;
+}
+
+.match-header h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.status {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.status.registered {
+  background: rgba(34, 197, 94, 0.2);
+  color: #22c55e;
+}
+
+.match-details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.detail-row span:first-child {
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.highlight {
+  color: #00d4ff;
+  font-weight: 600;
+}
+
+.price {
+  color: #f59e0b !important;
+  font-weight: 700 !important;
+  font-size: 14px !important;
+}
+
+.prize-pool {
+  color: #10b981 !important;
+  font-weight: 700 !important;
+  font-size: 14px !important;
+}
+
+.joined-time {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 8px;
+  margin-top: 8px;
+  font-size: 12px;
+}
+
+.time {
+  color: #a1a1aa;
+  font-size: 12px;
+}
+
+/* EMPTY STATE */
+.no-matches {
+  text-align: center;
+  padding: 60px 20px;
+  color: white;
+}
+
+.empty-icon {
+  font-size: 64px;
+  margin-bottom: 20px;
+  opacity: 0.6;
+}
+
+.no-matches h2 {
+  font-size: 24px;
+  margin: 0 0 10px 0;
+  color: #ffffff;
+}
+
+.no-matches p {
+  margin: 0 0 25px 0;
+  font-size: 16px;
+}
+
+.join-btn {
+  background: linear-gradient(45deg, #00d4ff, #ff6b6b);
+  color: white;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 25px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.join-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 25px rgba(0, 212, 255, 0.4);
+}
+
+/* LOADING */
+.loading-text {
+  text-align: center;
+  padding: 60px 20px;
+  color: #00d4ff;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+/* RESPONSIVE */
+@media (max-width: 480px) {
+  .mymatches-container {
+    padding: 15px;
+  }
+  
+  .match-card {
+    padding: 15px;
+  }
+}

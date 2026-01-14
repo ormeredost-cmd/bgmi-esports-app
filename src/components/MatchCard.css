@@ -1,0 +1,70 @@
+/* src/components/MatchCard.css */
+
+.match-card {
+  background: #1f1f1f;
+  color: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 20px auto;
+  max-width: 420px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  transition: transform 0.2s;
+}
+
+.match-card:hover {
+  transform: translateY(-3px);
+}
+
+.match-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.match-title {
+  font-size: 1.3rem;
+  font-weight: bold;
+}
+
+.match-status {
+  background: #27ae60;
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.match-subtitle {
+  margin: 10px 0 15px;
+  font-size: 0.9rem;
+  color: #ccc;
+}
+
+.match-info {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+}
+
+.info-label {
+  font-weight: 600;
+  color: #aaa;
+}
+
+.info-value {
+  font-weight: 500;
+}
+
+.divider {
+  border: 0.5px solid #444;
+  margin: 15px 0;
+}
