@@ -1,14 +1,18 @@
-// src/pages/Register.jsx - ✅ LOCAL + PRODUCTION READY
+// src/pages/Register.jsx - ✅ FINAL STABLE (LOCAL + RENDER)
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Register.css";
 
 /* ===============================
-   LOCAL = localhost:5001, PRODUCTION = Render API
+   API BASE
+   Local  : http://localhost:5001
+   Render : https://server-otp-register-api.onrender.com
 ================================ */
-const API_BASE = process.env.NODE_ENV === 'production' 
-  ? (process.env.REACT_APP_OTP_API || "https://server-otp-register-api.onrender.com")
-  : "http://localhost:5001";
+const API_BASE =
+  process.env.NODE_ENV === "production"
+    ? (process.env.REACT_APP_OTP_API ||
+        "https://server-otp-register-api.onrender.com")
+    : "http://localhost:5001";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -21,14 +25,14 @@ const Register = () => {
   });
 
   const [otp, setOtp] = useState("");
-  const [step, setStep] = useState("form");
+  const [step, setStep] = useState("form"); // form | otp
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData((p) => ({ ...p, [name]: value }));
   };
 
   /* ===============================
@@ -39,17 +43,14 @@ const Register = () => {
     setError("");
     setMessage("");
 
-    if (!formData.gamerTag.trim()) {
+    if (!formData.gamerTag.trim())
       return setError("Please enter your in-game name");
-    }
 
-    if (!formData.email.trim()) {
+    if (!formData.email.trim())
       return setError("Please enter email");
-    }
 
-    if (formData.password !== formData.confirmPassword) {
+    if (formData.password !== formData.confirmPassword)
       return setError("Passwords do not match");
-    }
 
     try {
       setLoading(true);
@@ -58,11 +59,18 @@ const Register = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          email: formData.email.toLowerCase(),
+          email: formData.email.toLowerCase().trim(),
         }),
       });
 
-      const data = await res.json();
+      const text = await res.text();
+      let data = {};
+      try {
+        data = JSON.parse(text);
+      } catch {
+        throw new Error("Server error");
+      }
+
       if (!res.ok || !data.success) {
         throw new Error(data.error || "Failed to send OTP");
       }
@@ -85,9 +93,7 @@ const Register = () => {
     setError("");
     setMessage("");
 
-    if (!otp.trim()) {
-      return setError("Please enter OTP");
-    }
+    if (!otp.trim()) return setError("Please enter OTP");
 
     try {
       setLoading(true);
@@ -97,29 +103,31 @@ const Register = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name: formData.gamerTag.trim(),
-          email: formData.email.toLowerCase(),
+          email: formData.email.toLowerCase().trim(),
           password: formData.password,
           code: otp.trim(),
         }),
       });
 
-      const data = await res.json();
+      const text = await res.text();
+      let data = {};
+      try {
+        data = JSON.parse(text);
+      } catch {
+        throw new Error("Server error");
+      }
+
       if (!res.ok || !data.success) {
         throw new Error(data.error || "Invalid OTP");
       }
 
       localStorage.setItem(
         "bgmi_user",
-        JSON.stringify({
-          user: data.user,
-          token: data.token,
-        })
+        JSON.stringify({ user: data.user, token: data.token })
       );
 
       setMessage("Account created successfully!");
-      setTimeout(() => {
-        navigate("/", { replace: true });
-      }, 800);
+      setTimeout(() => navigate("/", { replace: true }), 800);
     } catch (err) {
       console.error("VERIFY OTP ERROR:", err);
       setError(err.message || "OTP verification failed");
@@ -135,7 +143,9 @@ const Register = () => {
         <h1 className="auth-heading">Register</h1>
 
         {error && <div className="auth-alert auth-alert-error">{error}</div>}
-        {message && <div className="auth-alert auth-alert-success">{message}</div>}
+        {message && (
+          <div className="auth-alert auth-alert-success">{message}</div>
+        )}
 
         {step === "form" ? (
           <form className="auth-form" onSubmit={handleRegister}>
@@ -156,7 +166,7 @@ const Register = () => {
               <input
                 type="email"
                 name="email"
-                autoComplete="email"  // ✅ FIXED
+                autoComplete="email"
                 placeholder="player@bgmi.gg"
                 value={formData.email}
                 onChange={handleChange}
@@ -190,11 +200,7 @@ const Register = () => {
               </label>
             </div>
 
-            <button
-              type="submit"
-              className="auth-btn-primary"
-              disabled={loading}
-            >
+            <button className="auth-btn-primary" disabled={loading}>
               {loading ? "SENDING OTP..." : "REGISTER"}
             </button>
           </form>
@@ -212,18 +218,16 @@ const Register = () => {
               />
             </label>
 
-            <button
-              type="submit"
-              className="auth-btn-primary"
-              disabled={loading}
-            >
+            <button className="auth-btn-primary" disabled={loading}>
               {loading ? "VERIFYING..." : "VERIFY & CREATE ACCOUNT"}
             </button>
           </form>
         )}
 
         <div className="auth-footer-row">
-          <span><h3>Already registered?</h3></span>
+          <span>
+            <h3>Already registered?</h3>
+          </span>
           <Link to="/login" className="auth-link">
             <h3>Login</h3>
           </Link>
