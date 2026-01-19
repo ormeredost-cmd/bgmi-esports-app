@@ -14,41 +14,45 @@
    MAIN CONTAINER
 ========================= */
 .esports-profile {
-  min-height: 100vh;
-  height: 100vh;
+  min-height: 100dvh;
   background: linear-gradient(135deg, #0a0e17 0%, #1a1f2e 100%);
   color: #e2e8f0;
   font-family: 'Orbitron', monospace;
-  overflow-y: auto; /* 🔥 SCROLL ENABLED */
+  overflow-y: auto;
   overflow-x: hidden;
   scroll-behavior: smooth;
-  padding-bottom: env(safe-area-inset-bottom, 20px);
-  transition: padding-bottom 0.3s ease;
+  padding-bottom: 120px;
   position: relative;
+  -webkit-overflow-scrolling: touch;
 }
 
-/* 🔥 KEYBOARD OPEN - PERFECT SCROLL BEHAVIOR */
+/* 🔥 KEYBOARD OPEN FIX */
 .esports-profile.keyboard-open {
-  padding-bottom: 300px; /* Extra space when keyboard opens */
-  scroll-behavior: smooth;
+  padding-bottom: 380px;
 }
 
+/* =========================
+   HEADER
+========================= */
 .profile-header {
-  background: rgba(10, 14, 23, 0.98);
-  padding: 25px 20px;
-  backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(59, 130, 246, 0.2);
+  background: rgba(10, 14, 23, 0.97);
+  padding: 22px 18px;
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid rgba(59, 130, 246, 0.25);
   position: sticky;
   top: 0;
   z-index: 100;
 }
 
+/* =========================
+   PLAYER CARD
+========================= */
 .player-card {
   max-width: 1000px;
   margin: 0 auto;
   display: flex;
   align-items: flex-start;
-  gap: 25px;
+  gap: 22px;
 }
 
 .player-avatar {
@@ -56,13 +60,13 @@
 }
 
 .avatar-circle {
-  width: 110px;
-  height: 110px;
+  width: 105px;
+  height: 105px;
   border-radius: 50%;
   overflow: hidden;
   border: 3px solid #3b82f6;
-  box-shadow: 0 12px 30px rgba(59, 130, 246, 0.3);
   background: #1e40af;
+  box-shadow: 0 10px 28px rgba(59, 130, 246, 0.35);
 }
 
 .avatar-circle img {
@@ -71,33 +75,37 @@
   object-fit: cover;
 }
 
+/* =========================
+   PLAYER DETAILS
+========================= */
 .player-details {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
 }
 
 .name-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  flex-wrap: nowrap;
+  gap: 10px;
 }
 
 .gamer-name {
-  font-size: 1.8rem;
+  font-size: 1.75rem;
   font-weight: 900;
   background: linear-gradient(135deg, #3b82f6, #8b5cf6);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  flex: 1;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
+/* =========================
+   ID ROW
+========================= */
 .id-row {
   display: flex;
   align-items: center;
@@ -105,111 +113,106 @@
   font-size: 0.9rem;
   font-family: 'Courier New', monospace;
   font-weight: 700;
-  letter-spacing: 0.8px;
+  letter-spacing: 0.6px;
   color: #94a3b8;
-  line-height: 1.4;
-  min-height: 22px;
-  padding-top: 2px;
   white-space: nowrap;
-  overflow: hidden;
 }
 
 .id-label {
-  color: #94a3b8;
   flex-shrink: 0;
-  line-height: 1.4;
 }
 
 .id-value {
   color: #60a5fa;
-  font-size: 1rem;
-  line-height: 1.4;
-  text-shadow: 0 0 8px rgba(96, 165, 250, 0.5);
+  font-size: 0.95rem;
+  text-shadow: 0 0 6px rgba(96, 165, 250, 0.45);
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
+/* =========================
+   STATS
+========================= */
 .stats-section {
-  padding: 30px 20px 150px; /* Extra space for scroll */
+  padding: 28px 18px 180px;
   max-width: 1000px;
   margin: 0 auto;
 }
 
 .stats-section h2 {
-  font-size: 1.3rem;
+  font-size: 1.25rem;
   font-weight: 800;
   color: #f8fafc;
   text-align: center;
-  margin-bottom: 25px;
+  margin-bottom: 22px;
 }
 
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 14px;
 }
 
 .stat-box {
-  background: rgba(30, 41, 59, 0.8);
-  border: 1px solid rgba(59, 130, 246, 0.2);
-  border-radius: 12px;
-  padding: 20px 12px;
+  background: rgba(30, 41, 59, 0.85);
+  border: 1px solid rgba(59, 130, 246, 0.22);
+  border-radius: 14px;
+  padding: 18px 10px;
   text-align: center;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
+  transition: all 0.25s ease;
+  backdrop-filter: blur(12px);
 }
 
 .stat-box:hover {
   border-color: #3b82f6;
-  transform: translateY(-5px);
-  box-shadow: 0 15px 30px rgba(59, 130, 246, 0.2);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 26px rgba(59, 130, 246, 0.25);
 }
 
 .stat-value {
-  font-size: 1.6rem;
+  font-size: 1.55rem;
   font-weight: 900;
   color: #3b82f6;
   margin-bottom: 4px;
 }
 
 .stat-box div:last-child {
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   color: #94a3b8;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.6px;
 }
 
+/* =========================
+   LOADING
+========================= */
 .loading {
-  min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   font-weight: 700;
 }
 
-/* RESPONSIVE */
+/* =========================
+   RESPONSIVE
+========================= */
 @media (max-width: 768px) {
-  .player-card { gap: 20px; }
-  .profile-header { padding: 22px 16px; }
-  .gamer-name { font-size: 1.6rem; }
+  .player-card { gap: 18px; }
+  .gamer-name { font-size: 1.55rem; }
   .avatar-circle { width: 95px; height: 95px; }
   .stats-grid { grid-template-columns: repeat(3, 1fr); }
-  .stats-section { padding-bottom: 200px; }
 }
 
 @media (max-width: 480px) {
-  .gamer-name { font-size: 1.4rem; }
-  .avatar-circle { width: 85px; height: 85px; }
+  .gamer-name { font-size: 1.35rem; }
+  .avatar-circle { width: 82px; height: 82px; }
   .stats-grid { grid-template-columns: repeat(2, 1fr); }
-  .id-row { font-size: 0.85rem; min-height: 20px; padding-top: 3px; }
-  .id-value { font-size: 0.95rem; }
-  .stats-section { padding: 20px 16px 250px; }
-  
+  .stats-section { padding-bottom: 260px; }
+
   .esports-profile.keyboard-open {
-    padding-bottom: 400px; /* Mobile keyboard full space */
+    padding-bottom: 420px;
   }
 }
-
-

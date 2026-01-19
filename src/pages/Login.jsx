@@ -2,11 +2,20 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Login.css";
-import { API_BASE } from "../config";
+
+/* ===============================
+   AUTH SERVER BASE URL
+================================ */
+const API_BASE = "http://localhost:5001";
 
 const Login = () => {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({ email: "", password: "" });
+
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -15,13 +24,15 @@ const Login = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  /* ===============================
+     LOGIN SUBMIT
+  ================================ */
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
-    if (!formData.email || !formData.password) {
-      setError("Please enter email and password");
-      return;
+    if (!formData.email.trim() || !formData.password) {
+      return setError("Please enter email and password");
     }
 
     try {
@@ -36,23 +47,24 @@ const Login = () => {
         }),
       });
 
-      const data = await res.json().catch(() => ({}));
-
+      const data = await res.json();
       if (!res.ok || !data.success) {
         throw new Error(data.error || "Invalid email or password");
       }
 
+      // ✅ SAVE USER + TOKEN (SAME STRUCTURE AS REGISTER)
       localStorage.setItem(
         "bgmi_user",
         JSON.stringify({
           user: data.user,
+          token: data.token,
         })
       );
 
       navigate("/", { replace: true });
     } catch (err) {
-      console.error("Login error:", err);
-      setError(err.message || "Invalid email or password");
+      console.error("LOGIN ERROR:", err);
+      setError(err.message || "Login failed");
     } finally {
       setLoading(false);
     }
@@ -62,15 +74,12 @@ const Login = () => {
     <div className="auth-screen">
       <div className="auth-bg-gradient" />
 
-
       <div className="auth-card">
-        <div className="auth-logo-row">
-          
-         
-        </div>
-
         <h1 className="auth-heading">Login</h1>
-        {error && <div className="auth-alert auth-alert-error">{error}</div>}
+
+        {error && (
+          <div className="auth-alert auth-alert-error">{error}</div>
+        )}
 
         <form className="auth-form" onSubmit={handleSubmit}>
           <label className="auth-field">
@@ -107,7 +116,9 @@ const Login = () => {
         </form>
 
         <div className="auth-footer-row">
-          <span><h3>Create New Account</h3></span>
+          <span>
+            <h3>Create New Account</h3>
+          </span>
           <Link to="/register" className="auth-link">
             <h3>Create Account</h3>
           </Link>

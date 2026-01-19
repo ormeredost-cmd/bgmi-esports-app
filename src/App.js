@@ -14,18 +14,27 @@ import Tournaments from "./pages/Tournaments";
 import TournamentDetails from "./pages/TournamentDetails";
 import MyMatches from "./pages/MyMatches";
 import Profile from "./pages/Profile";
+import Wallet from "./pages/Wallet"; 
+import DepositHistory from "./pages/DepositHistory"; // ✅ NEW IMPORT
 import Help from "./pages/Help";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 
+import Deposit from "./pages/Deposit";
+import DepositQR from "./pages/DepositQR";
+
 import ProtectedRoute from "./components/ProtectedRoute";
 import "./styles/appTheme.css";
 
+/* =========================
+   MAIN LAYOUT
+========================= */
 const MainLayout = ({ children }) => {
   const location = useLocation();
 
   const hideLayout =
-    location.pathname === "/login" || location.pathname === "/register";
+    location.pathname === "/login" ||
+    location.pathname === "/register";
 
   if (hideLayout) {
     return children;
@@ -33,38 +42,42 @@ const MainLayout = ({ children }) => {
 
   return (
     <div className="app-root-esports">
-      {/* top bar only logout + logo */}
+      {/* TOP BAR */}
       <header className="app-topbar">
         <div className="app-topbar-left">
           <span className="app-topbar-logo-main">BGMI</span>
           <span className="app-topbar-logo-sub">Esports</span>
         </div>
+
         <div className="app-topbar-right">
-          <Navbar variant="top-logout" />
+          <Navbar variant="top-menu" />
         </div>
       </header>
 
-      {/* page content with bottom padding for nav */}
-      <main className="app-main-esports has-bottom-nav">{children}</main>
+      {/* PAGE CONTENT */}
+      <main className="app-main-esports has-bottom-nav">
+        {children}
+      </main>
 
-      {/* bottom navigation tabs */}
+      {/* BOTTOM NAV */}
       <Navbar variant="bottom-tabs" />
-
-      {/* optional footer (desktop ke liye zyda useful) */}
       <Footer />
     </div>
   );
 };
 
+/* =========================
+   APP ROUTES
+========================= */
 function App() {
   return (
     <Router>
       <Routes>
-        {/* Public routes */}
+        {/* PUBLIC */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
-        {/* Protected + layout */}
+        {/* HOME */}
         <Route
           path="/"
           element={
@@ -76,6 +89,7 @@ function App() {
           }
         />
 
+        {/* TOURNAMENTS */}
         <Route
           path="/tournaments"
           element={
@@ -98,6 +112,7 @@ function App() {
           }
         />
 
+        {/* MY MATCHES */}
         <Route
           path="/my-matches"
           element={
@@ -109,6 +124,55 @@ function App() {
           }
         />
 
+        {/* WALLET */}
+        <Route
+          path="/wallet"
+          element={
+            <ProtectedRoute>
+              <MainLayout>
+                <Wallet />
+              </MainLayout>
+            </ProtectedRoute>
+          }
+        />
+
+        {/* ✅ DEPOSIT HISTORY - NEW ROUTE */}
+        <Route
+          path="/deposit-history"
+          element={
+            <ProtectedRoute>
+              <MainLayout>
+                <DepositHistory />
+              </MainLayout>
+            </ProtectedRoute>
+          }
+        />
+
+        {/* DEPOSIT */}
+        <Route
+          path="/deposit"
+          element={
+            <ProtectedRoute>
+              <MainLayout>
+                <Deposit />
+              </MainLayout>
+            </ProtectedRoute>
+          }
+        />
+
+        {/* DEPOSIT QR */}
+        <Route
+          path="/deposit/qr"
+          element={
+            <ProtectedRoute>
+              <MainLayout>
+                <DepositQR />
+              </MainLayout>
+            </ProtectedRoute>
+          }
+        />
+
+        {/* PROFILE */}
         <Route
           path="/profile"
           element={
@@ -120,6 +184,7 @@ function App() {
           }
         />
 
+        {/* HELP */}
         <Route
           path="/help"
           element={

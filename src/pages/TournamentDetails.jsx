@@ -14,7 +14,8 @@ const TournamentDetails = () => {
   const [loading, setLoading] = useState(true);
 
   // 🔥 PRODUCTION BACKEND URL
-  const API_URL = 'https://bgmi-api.onrender.com';
+  const API_URL = "http://localhost:5002";
+
 
   const checkStatus = useCallback(async () => {
     try {

@@ -1,135 +1,193 @@
-// src/pages/MyMatches.jsx - PRODUCTION READY + SINGLE DATE
-import { useState, useEffect, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect, useCallback, useRef } from "react";
 import BackButton from "../components/BackButton";
 import "./MyMatches.css";
 
 const MyMatches = () => {
-  const navigate = useNavigate();
   const [matches, setMatches] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [bgmiId, setBgmiId] = useState('');
+  const [bgmiId, setBgmiId] = useState("");
   const [inputVisible, setInputVisible] = useState(false);
 
-  // 🔥 PRODUCTION BACKEND URL
-  const API_URL = 'https://bgmi-api.onrender.com';
+  const API_URL = "http://localhost:5002";
+  const firstLoad = useRef(true); // 🔥 important (no blink)
 
+  /* ===============================
+     FETCH MATCHES (SAFE)
+  ================================ */
   const fetchMatches = useCallback(async (id) => {
+    if (!id) return;
+
     try {
-      setLoading(true);
-      if (!id) return;
+      const res = await fetch(
+        `${API_URL}/api/my-matches?bgmiId=${id}`
+      );
+      const data = await res.json();
 
-      console.log('🔍 Loading matches for:', id);
-      // ✅ FIXED: localhost:5001 → PRODUCTION URL
-      const response = await fetch(`${API_URL}/api/my-matches?bgmiId=${id}`);
-      const data = await response.json();
-      
-      console.log('📊 Matches:', data.matches);
-      setMatches(data.matches || []);
-    } catch (error) {
-      console.error('❌ Fetch error:', error);
+      if (Array.isArray(data.matches)) {
+        setMatches((prev) =>
+          JSON.stringify(prev) === JSON.stringify(data.matches)
+            ? prev
+            : data.matches
+        );
+      }
+    } catch (err) {
+      console.error("Fetch matches error:", err);
     } finally {
-      setLoading(false);
+      if (firstLoad.current) {
+        setLoading(false);
+        firstLoad.current = false;
+      }
     }
-  }, [API_URL]);
+  }, []);
 
+  /* ===============================
+     INITIAL LOAD
+  ================================ */
   useEffect(() => {
-    const storedId = localStorage.getItem('lastBgmiId') || localStorage.getItem('tempBgmiId');
+    const storedId =
+      localStorage.getItem("lastBgmiId") ||
+      localStorage.getItem("tempBgmiId");
+
     if (storedId) {
       setBgmiId(storedId);
       fetchMatches(storedId);
     } else {
       setInputVisible(true);
+      setLoading(false);
     }
   }, [fetchMatches]);
 
+  /* ===============================
+     BACKGROUND AUTO REFRESH
+  ================================ */
+  useEffect(() => {
+    if (!bgmiId) return;
+
+    const interval = setInterval(() => {
+      fetchMatches(bgmiId);
+    }, 10000); // ⏱️ 10 sec
+
+    return () => clearInterval(interval);
+  }, [bgmiId, fetchMatches]);
+
+  /* ===============================
+     SUBMIT BGMI ID
+  ================================ */
   const handleBgmiIdSubmit = (e) => {
     e.preventDefault();
-    if (bgmiId) {
-      fetchMatches(bgmiId);
-      setInputVisible(false);
-    }
+    if (!bgmiId.trim()) return;
+
+    localStorage.setItem("lastBgmiId", bgmiId);
+    fetchMatches(bgmiId);
+    setInputVisible(false);
   };
 
+  /* ===============================
+     LOADING SCREEN (ONLY ONCE)
+  ================================ */
   if (loading) {
     return (
       <div className="mymatches-page">
-        <BackButton fallbackPath="/tournaments" className="back-btn" />
-        <div className="mymatches-container">
-          <div className="loading-text">Loading matches...</div>
-        </div>
+        <BackButton fallbackPath="/tournaments" />
+        <div className="loading-text">Loading matches…</div>
       </div>
     );
   }
 
   return (
     <div className="mymatches-page">
-      <BackButton fallbackPath="/tournaments" className="back-btn" />
+      <BackButton fallbackPath="/tournaments" />
+
       <div className="mymatches-container">
         <div className="page-header">
           <h1>मेरे मैच</h1>
-          {bgmiId && <p>ID: <strong>{bgmiId}</strong></p>}
+          {bgmiId && (
+            <p>
+              ID: <strong>{bgmiId}</strong>
+            </p>
+          )}
         </div>
 
+        {/* BGMI INPUT */}
         {inputVisible ? (
-          <div className="bgmi-input-section">
-            <form onSubmit={handleBgmiIdSubmit} className="bgmi-form">
-              <input
-                type="text"
-                className="bgmi-input"
-                placeholder="Enter your BGMI ID (51234567890)"
-                value={bgmiId}
-                onChange={(e) => setBgmiId(e.target.value)}
-                autoFocus
-              />
-              <button type="submit" className="load-btn">
-                Load Matches
-              </button>
-            </form>
-          </div>
+          <form onSubmit={handleBgmiIdSubmit} className="bgmi-form">
+            <input
+              type="text"
+              placeholder="Enter BGMI ID"
+              value={bgmiId}
+              onChange={(e) => setBgmiId(e.target.value)}
+              autoFocus
+            />
+            <button type="submit">Load Matches</button>
+          </form>
         ) : matches.length > 0 ? (
           <div className="matches-grid">
             {matches.map((match) => (
               <div key={match.id} className="match-card">
                 <div className="match-header">
                   <h3>{match.tournamentName}</h3>
-                  <span className={`status registered`}>Registered</span>
+                  <span className="status registered">
+                    Registered
+                  </span>
                 </div>
+
                 <div className="match-details">
                   <div className="detail-row">
                     <span>Player:</span>
-                    <span className="highlight">{match.playerName}</span>
+                    <span className="highlight">
+                      {match.playerName}
+                    </span>
                   </div>
+
                   <div className="detail-row">
-                    <span>ID:</span>
-                    <span className="highlight">{match.bgmiId}</span>
+                    <span>BGMI ID:</span>
+                    <span className="highlight">
+                      {match.bgmiId}
+                    </span>
                   </div>
+
                   <div className="detail-row">
                     <span>Entry:</span>
-                    <span className="price">₹{match.entryFee || 50}</span>
+                    <span>₹{match.entryFee}</span>
                   </div>
+
                   <div className="detail-row">
                     <span>Prize:</span>
-                    <span className="prize-pool">₹{match.prizePool || 80}</span>
+                    <span className="prize-pool">
+                      ₹{match.prizePool}
+                    </span>
                   </div>
+
                   <div className="detail-row">
                     <span>Date:</span>
-                    <span>{match.date}</span>  {/* ✅ SINGLE DATE ONLY */}
+                    <span>{match.date}</span>
                   </div>
-                  <div className="detail-row joined-time">
-                    <span>Joined:</span>
-                    <span className="time">Today</span>  {/* ✅ NO DOUBLE DATE */}
-                  </div>
+
+                  {/* 🔥 ROOM DETAILS (SAME FOR BOTH PLAYERS) */}
+                  {match.roomId && match.roomPassword ? (
+                    <div className="room-box">
+                      <div className="detail-row">
+                        <span>Room ID:</span>
+                        <strong>{match.roomId}</strong>
+                      </div>
+                      <div className="detail-row">
+                        <span>Password:</span>
+                        <strong>{match.roomPassword}</strong>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="room-pending">
+                      ⏳ Room details coming soon…
+                    </div>
+                  )}
                 </div>
               </div>
             ))}
           </div>
         ) : (
           <div className="no-matches">
-            <div className="empty-icon">🎮</div>
             <h2>कोई मैच नहीं मिला</h2>
-            <p>BGMI ID डालो अपने matches देखने के लिए</p>
-            <button className="join-btn" onClick={() => setInputVisible(true)}>
+            <button onClick={() => setInputVisible(true)}>
               Enter BGMI ID
             </button>
           </div>
