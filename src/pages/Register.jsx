@@ -26,13 +26,20 @@ const Register = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleOtpChange = (e) => {
+    // Only numbers + auto-focus next
+    const value = e.target.value.replace(/[^0-9]/g, '').slice(0, 6);
+    setOtp(value);
+  };
+
   const handleRegister = async (e) => {
     e.preventDefault();
     setError("");
     setMessage("");
 
     if (!formData.gamerTag.trim()) return setError("Enter gamer tag");
-    if (!formData.email.trim()) return setError("Enter email");
+    if (!formData.email.trim()) return setError("Enter valid email");
+    if (formData.password.length < 6) return setError("Password must be 6+ chars");
     if (formData.password !== formData.confirmPassword) return setError("Passwords don't match");
 
     try {
@@ -48,9 +55,9 @@ const Register = () => {
       const data = await res.json();
       console.log("📨 Response:", data);
       
-      if (!res.ok || !data.success) throw new Error(data.error || "OTP failed");
+      if (!res.ok || !data.success) throw new Error(data.error || "OTP send failed");
 
-      setMessage("✅ OTP sent! Check Gmail inbox/spam");
+      setMessage("✅ OTP sent! Check Gmail inbox/spam folder");
       setStep("otp");
     } catch (err) {
       console.error("❌ Error:", err);
@@ -64,7 +71,7 @@ const Register = () => {
     e.preventDefault();
     setError("");
 
-    if (!otp.trim()) return setError("Enter OTP");
+    if (!otp.trim() || otp.length !== 6) return setError("Enter 6-digit OTP");
 
     try {
       setLoading(true);
@@ -87,7 +94,7 @@ const Register = () => {
       if (!res.ok || !data.success) throw new Error(data.error || "Invalid OTP");
 
       localStorage.setItem("bgmi_user", JSON.stringify(data));
-      setMessage("✅ Account created! Redirecting...");
+      setMessage("🎮 Welcome to BGMI Esports! Redirecting...");
       setTimeout(() => navigate("/", { replace: true }), 1500);
     } catch (err) {
       setError(err.message);
@@ -96,12 +103,12 @@ const Register = () => {
     }
   };
 
-  // Rest of your JSX remains SAME...
   return (
     <div className="auth-screen register-screen">
       <div className="auth-bg-gradient" />
       <div className="auth-card">
-        <h1 className="auth-heading">Register</h1>
+        <h1 className="auth-heading">Join BGMI Esports</h1>
+        <p className="auth-subtitle">Create your tournament account</p>
         
         {error && <div className="auth-alert auth-alert-error">{error}</div>}
         {message && <div className="auth-alert auth-alert-success">{message}</div>}
@@ -110,48 +117,87 @@ const Register = () => {
           <form className="auth-form" onSubmit={handleRegister}>
             <label className="auth-field">
               <span className="auth-label">Gamer Tag</span>
-              <input type="text" name="gamerTag" placeholder="Soul Goblin" 
-                     value={formData.gamerTag} onChange={handleChange} required />
+              <input 
+                type="text" 
+                name="gamerTag" 
+                placeholder="Soul Goblin" 
+                value={formData.gamerTag} 
+                onChange={handleChange} 
+                required 
+              />
             </label>
 
             <label className="auth-field">
               <span className="auth-label">Email</span>
-              <input type="email" name="email" placeholder="player@bgmi.gg" 
-                     value={formData.email} onChange={handleChange} required />
+              <input 
+                type="email" 
+                name="email" 
+                placeholder="player@bgmi.gg" 
+                autoComplete="email"
+                value={formData.email} 
+                onChange={handleChange} 
+                required 
+              />
             </label>
 
             <div className="auth-grid-2">
               <label className="auth-field">
                 <span className="auth-label">Password</span>
-                <input type="password" name="password" placeholder="Password" 
-                       value={formData.password} onChange={handleChange} required />
+                <input 
+                  type="password" 
+                  name="password" 
+                  placeholder="Minimum 6 chars" 
+                  autoComplete="new-password"
+                  value={formData.password} 
+                  onChange={handleChange} 
+                  required 
+                />
               </label>
               <label className="auth-field">
                 <span className="auth-label">Confirm</span>
-                <input type="password" name="confirmPassword" placeholder="Confirm" 
-                       value={formData.confirmPassword} onChange={handleChange} required />
+                <input 
+                  type="password" 
+                  name="confirmPassword" 
+                  placeholder="Confirm password" 
+                  autoComplete="new-password"
+                  value={formData.confirmPassword} 
+                  onChange={handleChange} 
+                  required 
+                />
               </label>
             </div>
 
             <button className="auth-btn-primary" disabled={loading}>
-              {loading ? "SENDING OTP..." : "SEND OTP"}
+              {loading ? "🔄 SENDING OTP..." : "📩 SEND OTP"}
             </button>
           </form>
         ) : (
           <form className="auth-form" onSubmit={handleVerifyOtp}>
-            <label className="auth-field">
-              <span className="auth-label">Enter OTP (Check Gmail)</span>
-              <input type="text" maxLength={6} placeholder="123456" 
-                     value={otp} onChange={(e) => setOtp(e.target.value)} required />
+            <label className="auth-field otp-field">
+              <span className="auth-label">
+                Enter OTP (Check Gmail: {formData.email})
+              </span>
+              <input 
+                type="text" 
+                maxLength={6} 
+                placeholder="123456" 
+                className="otp-input"
+                value={otp}
+                onChange={handleOtpChange}
+                required 
+              />
+              <small>6-digit code from your email</small>
             </label>
-            <button className="auth-btn-primary" disabled={loading}>
-              {loading ? "VERIFYING..." : "VERIFY & REGISTER"}
+            <button className="auth-btn-primary" disabled={loading || otp.length !== 6}>
+              {loading ? "🔍 VERIFYING..." : "✅ VERIFY & REGISTER"}
             </button>
           </form>
         )}
 
         <div className="auth-footer-row">
-          <Link to="/login" className="auth-link">Already have account? Login</Link>
+          <Link to="/login" className="auth-link">
+            Already have account? <span>Login</span>
+          </Link>
         </div>
       </div>
     </div>
