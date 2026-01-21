@@ -15,7 +15,18 @@
   margin-top: 8px;
 }
 
-/* Mobile fine‑tune */
+/* 🔥 NEW OTP STYLES */
+.otp-display {
+  animation: pulse 2s infinite;
+  border: 3px solid rgba(255,255,255,0.3);
+}
+
+.otp-input {
+  letter-spacing: 0.5rem;
+  font-family: 'Courier New', monospace;
+}
+
+/* Mobile fine-tune */
 @media (max-width: 480px) {
   .register-screen .auth-heading {
     font-size: 18px;
@@ -28,4 +39,14 @@
   .register-screen .auth-footer-row {
     margin-top: 6px;
   }
+
+  .otp-display {
+    text-size-adjust: 100%;
+    font-size: 1.5rem;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.9; transform: scale(1.02); }
 }

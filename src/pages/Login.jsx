@@ -1,23 +1,15 @@
-// src/pages/Login.jsx - ✅ LOCAL + PRODUCTION READY
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Login.css";
 
-/* ===============================
-   LOCAL = localhost:5001, PRODUCTION = Render API
-================================ */
-const API_BASE = process.env.NODE_ENV === 'production' 
-  ? (process.env.REACT_APP_OTP_API || "https://server-otp-register-api.onrender.com")
-  : "http://localhost:5001";
+// 🔥 LOCAL + RENDER - Dono Perfect!
+const API_BASE = window.location.hostname === 'localhost' 
+  ? "http://localhost:5003"
+  : "https://npm-start-7vdr.onrender.com";
 
 const Login = () => {
   const navigate = useNavigate();
-
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
-
+  const [formData, setFormData] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -30,39 +22,25 @@ const Login = () => {
     e.preventDefault();
     setError("");
 
-    if (!formData.email.trim() || !formData.password) {
-      return setError("Please enter email and password");
-    }
-
     try {
       setLoading(true);
-
+      console.log("🔐 Login to:", `${API_BASE}/auth/login`);
+      
       const res = await fetch(`${API_BASE}/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: formData.email.toLowerCase(),
-          password: formData.password,
-        }),
+        body: JSON.stringify(formData),
       });
 
       const data = await res.json();
-      if (!res.ok || !data.success) {
-        throw new Error(data.error || "Invalid email or password");
-      }
+      console.log("✅ Login response:", data);
+      
+      if (!res.ok || !data.success) throw new Error(data.error || "Login failed");
 
-      localStorage.setItem(
-        "bgmi_user",
-        JSON.stringify({
-          user: data.user,
-          token: data.token,
-        })
-      );
-
+      localStorage.setItem("bgmi_user", JSON.stringify(data));
       navigate("/", { replace: true });
     } catch (err) {
-      console.error("LOGIN ERROR:", err);
-      setError(err.message || "Login failed");
+      setError(err.message);
     } finally {
       setLoading(false);
     }
@@ -73,50 +51,26 @@ const Login = () => {
       <div className="auth-bg-gradient" />
       <div className="auth-card">
         <h1 className="auth-heading">Login</h1>
-
         {error && <div className="auth-alert auth-alert-error">{error}</div>}
-
+        
         <form className="auth-form" onSubmit={handleSubmit}>
           <label className="auth-field">
             <span className="auth-label">Email</span>
-            <input
-              type="email"
-              name="email"
-              autoComplete="email"  // ✅ FIXED
-              placeholder="player@bgmi.gg"
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
+            <input type="email" name="email" placeholder="player@bgmi.gg" 
+                   value={formData.email} onChange={handleChange} required />
           </label>
-
           <label className="auth-field">
             <span className="auth-label">Password</span>
-            <input
-              type="password"
-              name="password"
-              autoComplete="current-password"  // ✅ FIXED
-              placeholder="Enter password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-            />
+            <input type="password" name="password" placeholder="Password" 
+                   value={formData.password} onChange={handleChange} required />
           </label>
-
-          <button
-            type="submit"
-            className="auth-btn-primary"
-            disabled={loading}
-          >
+          <button className="auth-btn-primary" disabled={loading}>
             {loading ? "LOGIN..." : "LOGIN"}
           </button>
         </form>
-
+        
         <div className="auth-footer-row">
-          <span><h3>Create New Account</h3></span>
-          <Link to="/register" className="auth-link">
-            <h3>Create Account</h3>
-          </Link>
+          <Link to="/register" className="auth-link">Create Account</Link>
         </div>
       </div>
     </div>

@@ -1,103 +1,75 @@
-// src/pages/Register.jsx - ✅ FINAL STABLE (LOCAL + RENDER)
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Register.css";
 
-/* ===============================
-   API BASE
-   Local  : http://localhost:5001
-   Render : https://server-otp-register-api.onrender.com
-================================ */
-const API_BASE =
-  process.env.NODE_ENV === "production"
-    ? (process.env.REACT_APP_OTP_API ||
-        "https://server-otp-register-api.onrender.com")
-    : "http://localhost:5001";
+// 🔥 LOCAL + RENDER - Dono Perfect!
+const API_BASE = window.location.hostname === 'localhost' 
+  ? "http://localhost:5003"
+  : "https://npm-start-7vdr.onrender.com";
 
 const Register = () => {
   const navigate = useNavigate();
-
   const [formData, setFormData] = useState({
     gamerTag: "",
     email: "",
     password: "",
     confirmPassword: "",
   });
-
   const [otp, setOtp] = useState("");
-  const [step, setStep] = useState("form"); // form | otp
+  const [step, setStep] = useState("form");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((p) => ({ ...p, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  /* ===============================
-     STEP 1: SEND OTP
-  ================================ */
   const handleRegister = async (e) => {
     e.preventDefault();
     setError("");
     setMessage("");
 
-    if (!formData.gamerTag.trim())
-      return setError("Please enter your in-game name");
-
-    if (!formData.email.trim())
-      return setError("Please enter email");
-
-    if (formData.password !== formData.confirmPassword)
-      return setError("Passwords do not match");
+    if (!formData.gamerTag.trim()) return setError("Enter gamer tag");
+    if (!formData.email.trim()) return setError("Enter email");
+    if (formData.password !== formData.confirmPassword) return setError("Passwords don't match");
 
     try {
       setLoading(true);
-
+      console.log("📤 Sending OTP to:", `${API_BASE}/auth/send-otp`);
+      
       const res = await fetch(`${API_BASE}/auth/send-otp`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: formData.email.toLowerCase().trim(),
-        }),
+        body: JSON.stringify({ email: formData.email.toLowerCase().trim() }),
       });
 
-      const text = await res.text();
-      let data = {};
-      try {
-        data = JSON.parse(text);
-      } catch {
-        throw new Error("Server error");
-      }
+      const data = await res.json();
+      console.log("📨 Response:", data);
+      
+      if (!res.ok || !data.success) throw new Error(data.error || "OTP failed");
 
-      if (!res.ok || !data.success) {
-        throw new Error(data.error || "Failed to send OTP");
-      }
-
-      setMessage("OTP sent successfully. Check your email.");
+      setMessage("✅ OTP sent! Check Gmail inbox/spam");
       setStep("otp");
     } catch (err) {
-      console.error("SEND OTP ERROR:", err);
-      setError(err.message || "OTP sending failed");
+      console.error("❌ Error:", err);
+      setError(err.message);
     } finally {
       setLoading(false);
     }
   };
 
-  /* ===============================
-     STEP 2: VERIFY OTP & REGISTER
-  ================================ */
   const handleVerifyOtp = async (e) => {
     e.preventDefault();
     setError("");
-    setMessage("");
 
-    if (!otp.trim()) return setError("Please enter OTP");
+    if (!otp.trim()) return setError("Enter OTP");
 
     try {
       setLoading(true);
-
+      console.log("🔍 Verifying OTP:", `${API_BASE}/auth/verify-otp`);
+      
       const res = await fetch(`${API_BASE}/auth/verify-otp`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -109,128 +81,77 @@ const Register = () => {
         }),
       });
 
-      const text = await res.text();
-      let data = {};
-      try {
-        data = JSON.parse(text);
-      } catch {
-        throw new Error("Server error");
-      }
+      const data = await res.json();
+      console.log("✅ Register response:", data);
+      
+      if (!res.ok || !data.success) throw new Error(data.error || "Invalid OTP");
 
-      if (!res.ok || !data.success) {
-        throw new Error(data.error || "Invalid OTP");
-      }
-
-      localStorage.setItem(
-        "bgmi_user",
-        JSON.stringify({ user: data.user, token: data.token })
-      );
-
-      setMessage("Account created successfully!");
-      setTimeout(() => navigate("/", { replace: true }), 800);
+      localStorage.setItem("bgmi_user", JSON.stringify(data));
+      setMessage("✅ Account created! Redirecting...");
+      setTimeout(() => navigate("/", { replace: true }), 1500);
     } catch (err) {
-      console.error("VERIFY OTP ERROR:", err);
-      setError(err.message || "OTP verification failed");
+      setError(err.message);
     } finally {
       setLoading(false);
     }
   };
 
+  // Rest of your JSX remains SAME...
   return (
     <div className="auth-screen register-screen">
       <div className="auth-bg-gradient" />
       <div className="auth-card">
         <h1 className="auth-heading">Register</h1>
-
+        
         {error && <div className="auth-alert auth-alert-error">{error}</div>}
-        {message && (
-          <div className="auth-alert auth-alert-success">{message}</div>
-        )}
+        {message && <div className="auth-alert auth-alert-success">{message}</div>}
 
         {step === "form" ? (
           <form className="auth-form" onSubmit={handleRegister}>
             <label className="auth-field">
-              <span className="auth-label">In-game name</span>
-              <input
-                type="text"
-                name="gamerTag"
-                placeholder="Soul Goblin"
-                value={formData.gamerTag}
-                onChange={handleChange}
-                required
-              />
+              <span className="auth-label">Gamer Tag</span>
+              <input type="text" name="gamerTag" placeholder="Soul Goblin" 
+                     value={formData.gamerTag} onChange={handleChange} required />
             </label>
 
             <label className="auth-field">
               <span className="auth-label">Email</span>
-              <input
-                type="email"
-                name="email"
-                autoComplete="email"
-                placeholder="player@bgmi.gg"
-                value={formData.email}
-                onChange={handleChange}
-                required
-              />
+              <input type="email" name="email" placeholder="player@bgmi.gg" 
+                     value={formData.email} onChange={handleChange} required />
             </label>
 
             <div className="auth-grid-2">
               <label className="auth-field">
                 <span className="auth-label">Password</span>
-                <input
-                  type="password"
-                  name="password"
-                  autoComplete="new-password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  required
-                />
+                <input type="password" name="password" placeholder="Password" 
+                       value={formData.password} onChange={handleChange} required />
               </label>
-
               <label className="auth-field">
                 <span className="auth-label">Confirm</span>
-                <input
-                  type="password"
-                  name="confirmPassword"
-                  autoComplete="new-password"
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
-                  required
-                />
+                <input type="password" name="confirmPassword" placeholder="Confirm" 
+                       value={formData.confirmPassword} onChange={handleChange} required />
               </label>
             </div>
 
             <button className="auth-btn-primary" disabled={loading}>
-              {loading ? "SENDING OTP..." : "REGISTER"}
+              {loading ? "SENDING OTP..." : "SEND OTP"}
             </button>
           </form>
         ) : (
           <form className="auth-form" onSubmit={handleVerifyOtp}>
             <label className="auth-field">
-              <span className="auth-label">Enter OTP</span>
-              <input
-                type="text"
-                maxLength={6}
-                placeholder="6-digit code"
-                value={otp}
-                onChange={(e) => setOtp(e.target.value)}
-                required
-              />
+              <span className="auth-label">Enter OTP (Check Gmail)</span>
+              <input type="text" maxLength={6} placeholder="123456" 
+                     value={otp} onChange={(e) => setOtp(e.target.value)} required />
             </label>
-
             <button className="auth-btn-primary" disabled={loading}>
-              {loading ? "VERIFYING..." : "VERIFY & CREATE ACCOUNT"}
+              {loading ? "VERIFYING..." : "VERIFY & REGISTER"}
             </button>
           </form>
         )}
 
         <div className="auth-footer-row">
-          <span>
-            <h3>Already registered?</h3>
-          </span>
-          <Link to="/login" className="auth-link">
-            <h3>Login</h3>
-          </Link>
+          <Link to="/login" className="auth-link">Already have account? Login</Link>
         </div>
       </div>
     </div>
