@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./DepositHistory.css";
 
-const DEPOSIT_API = "http://localhost:5001";
+// 🔥 AUTO DETECT - Local + 2 Render Servers
+const DEPOSIT_API =
+  window.location.hostname === "localhost"
+    ? "http://localhost:5001"
+    : "https://main-server-firebase.onrender.com";
 
 const DepositHistory = () => {
   const [deposits, setDeposits] = useState([]);
@@ -13,7 +17,7 @@ const DepositHistory = () => {
   const loadDeposits = async () => {
     try {
       setLoading(true);
-      console.log("🌐 Loading MY deposits...");
+      console.log("🌐 Loading MY deposits from:", DEPOSIT_API);
       
       const res = await fetch(`${DEPOSIT_API}/api/admin/deposits`);
       const data = await res.json();

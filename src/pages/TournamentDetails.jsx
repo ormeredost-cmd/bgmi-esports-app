@@ -1,9 +1,8 @@
-// src/pages/TournamentDetails.jsx - PRODUCTION READY
+// src/pages/TournamentDetails.jsx - NO BACKBUTTON VERSION
 
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect, useCallback } from "react";
 import { tournamentsSample } from "../data/tournamentsSample";
-import BackButton from "../components/BackButton";
 import "./TournamentDetails.css";
 
 const TournamentDetails = () => {
@@ -28,15 +27,11 @@ const TournamentDetails = () => {
     try {
       setLoading(true);
 
-      const joinRes = await fetch(
-        `${API_URL}/api/check-join/${id}`
-      );
+      const joinRes = await fetch(`${API_URL}/api/check-join/${id}`);
       const joinData = await joinRes.json();
       setIsJoined(joinData.joined);
 
-      const slotsRes = await fetch(
-        `${API_URL}/api/tournament-slots-count/${id}`
-      );
+      const slotsRes = await fetch(`${API_URL}/api/tournament-slots-count/${id}`);
       const slotsData = await slotsRes.json();
 
       const count = slotsData.registered || 0;
@@ -59,7 +54,7 @@ const TournamentDetails = () => {
   if (!t) {
     return (
       <div className="tdm-page">
-        <BackButton fallbackPath="/tournaments" className="back-btn" />
+        {/* ❌ BACKBUTTON REMOVED */}
         <div className="tdm-container">
           <div className="tdm-header">
             <h1 className="tdm-title">Tournament Not Found</h1>
@@ -105,14 +100,11 @@ const TournamentDetails = () => {
     };
 
     try {
-      const response = await fetch(
-        `${API_URL}/api/join-tournament`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(joinedMatch),
-        }
-      );
+      const response = await fetch(`${API_URL}/api/join-tournament`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(joinedMatch),
+      });
 
       const result = await response.json();
 
@@ -136,7 +128,7 @@ const TournamentDetails = () => {
   if (loading && liveSlots === 0) {
     return (
       <div className="tdm-page">
-        <BackButton fallbackPath="/tournaments" className="back-btn" />
+        {/* ❌ BACKBUTTON REMOVED */}
         <div
           className="tdm-container"
           style={{ textAlign: "center", padding: "50px" }}
@@ -148,11 +140,11 @@ const TournamentDetails = () => {
   }
 
   /* ===============================
-     UI
+     UI - NO BACKBUTTON
   ================================ */
   return (
     <div className="tdm-page">
-      <BackButton fallbackPath="/tournaments" className="back-btn" />
+      {/* ❌ BACKBUTTON REMOVED - 3 places clean kiye */}
 
       <div className="tdm-container">
         <div className="tdm-header">
@@ -183,9 +175,7 @@ const TournamentDetails = () => {
           <div className="info-card">
             <div className="info-label">Slots</div>
             <div
-              className={`info-value slots ${
-                isFull ? "full-slots" : ""
-              }`}
+              className={`info-value slots ${isFull ? "full-slots" : ""}`}
             >
               {liveSlots}/2{" "}
               {isFull && (
@@ -221,10 +211,7 @@ const TournamentDetails = () => {
               </p>
             </div>
           ) : (
-            <form
-              className="register-form"
-              onSubmit={handleSubmit}
-            >
+            <form className="register-form" onSubmit={handleSubmit}>
               <div className="form-group">
                 <label className="form-label">
                   BGMI ID NAME

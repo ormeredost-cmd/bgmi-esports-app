@@ -1,5 +1,4 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import BackButton from "../components/BackButton";
 import "./MyMatches.css";
 
 const MyMatches = () => {
@@ -96,7 +95,7 @@ const MyMatches = () => {
   if (loading) {
     return (
       <div className="mymatches-page">
-        <BackButton fallbackPath="/tournaments" />
+        {/* ❌ BACKBUTTON REMOVED */}
         <div className="loading-text">Loading matches…</div>
       </div>
     );
@@ -104,7 +103,7 @@ const MyMatches = () => {
 
   return (
     <div className="mymatches-page">
-      <BackButton fallbackPath="/tournaments" />
+      {/* ❌ BACKBUTTON REMOVED */}
 
       <div className="mymatches-container">
         <div className="page-header">

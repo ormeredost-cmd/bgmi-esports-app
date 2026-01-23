@@ -2,7 +2,11 @@ import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./DepositQR.css";
 
-const DEPOSIT_API = "http://localhost:5001";
+// 🔥 AUTO DETECT - Local + 2 Render Servers
+const DEPOSIT_API =
+  window.location.hostname === "localhost"
+    ? "http://localhost:5001"
+    : "https://main-server-firebase.onrender.com";
 
 export default function DepositQR() {
   const location = useLocation();
