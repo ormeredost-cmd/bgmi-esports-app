@@ -11,7 +11,11 @@ const TournamentCard = ({ t }) => {
   const [registeredSlots, setRegisteredSlots] = useState(0);
 
   // 🔥 LOCAL SERVER
-  const API_URL = "http://localhost:5002";
+  const API_URL =
+  window.location.hostname === "localhost"
+    ? "http://localhost:5002"
+    : "https://bgmi-server-save-tournament-data.onrender.com";
+
 
   // ✅ CURRENT BGMI ID
   const getCurrentBgmiId = () => {

@@ -8,37 +8,45 @@ const MyMatches = () => {
   const [bgmiId, setBgmiId] = useState("");
   const [inputVisible, setInputVisible] = useState(false);
 
-  const API_URL = "http://localhost:5002";
-  const firstLoad = useRef(true); // 🔥 important (no blink)
+  // 🔥 AUTO API (LOCAL + RENDER)
+  const API_URL =
+    window.location.hostname === "localhost"
+      ? "http://localhost:5002"
+      : "https://bgmi-server-save-tournament-data.onrender.com";
+
+  const firstLoad = useRef(true); // 🔥 no blink
 
   /* ===============================
      FETCH MATCHES (SAFE)
   ================================ */
-  const fetchMatches = useCallback(async (id) => {
-    if (!id) return;
+  const fetchMatches = useCallback(
+    async (id) => {
+      if (!id) return;
 
-    try {
-      const res = await fetch(
-        `${API_URL}/api/my-matches?bgmiId=${id}`
-      );
-      const data = await res.json();
-
-      if (Array.isArray(data.matches)) {
-        setMatches((prev) =>
-          JSON.stringify(prev) === JSON.stringify(data.matches)
-            ? prev
-            : data.matches
+      try {
+        const res = await fetch(
+          `${API_URL}/api/my-matches?bgmiId=${id}`
         );
+        const data = await res.json();
+
+        if (Array.isArray(data.matches)) {
+          setMatches((prev) =>
+            JSON.stringify(prev) === JSON.stringify(data.matches)
+              ? prev
+              : data.matches
+          );
+        }
+      } catch (err) {
+        console.error("Fetch matches error:", err);
+      } finally {
+        if (firstLoad.current) {
+          setLoading(false);
+          firstLoad.current = false;
+        }
       }
-    } catch (err) {
-      console.error("Fetch matches error:", err);
-    } finally {
-      if (firstLoad.current) {
-        setLoading(false);
-        firstLoad.current = false;
-      }
-    }
-  }, []);
+    },
+    [API_URL]
+  );
 
   /* ===============================
      INITIAL LOAD
@@ -163,7 +171,7 @@ const MyMatches = () => {
                     <span>{match.date}</span>
                   </div>
 
-                  {/* 🔥 ROOM DETAILS (SAME FOR BOTH PLAYERS) */}
+                  {/* 🔥 ROOM DETAILS */}
                   {match.roomId && match.roomPassword ? (
                     <div className="room-box">
                       <div className="detail-row">
