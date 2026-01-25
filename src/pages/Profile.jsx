@@ -24,35 +24,72 @@ const Profile = () => {
         }
 
         const parsedUser = JSON.parse(userData);
-        console.log("🔍 FULL USER DATA:", parsedUser);
+        console.log("🔍 OLD LocalStorage ID:", parsedUser.profile_id); // BGMI-73471 ❌
 
-        // 🔥 REGISTER TIME WALA USERNAME ONLY (NO email split!)
-        const username = parsedUser.username;
-        
-        if (!username) {
-          console.error("❌ No username found in storage:", parsedUser);
-          navigate("/login");
-          return;
+        // 🔥 SERVER SE FRESH DATA LO (BGMI-8534)
+        console.log("🔄 Fetching FRESH data from SERVER...");
+        const serverRes = await fetch("https://main-server-firebase.onrender.com/api/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: parsedUser.email })
+        });
+
+        const serverData = await serverRes.json();
+        console.log("🔍 SERVER RESPONSE:", serverData);
+
+        if (serverData.success) {
+          // 🔥 SERVER KA FRESH DATA USE KARO
+          const freshUser = serverData.user;
+          console.log("✅ FRESH Server ID:", freshUser.profile_id); // BGMI-8534 ✅
+          
+          // LocalStorage bhi update kar do
+          localStorage.setItem("bgmi_user", JSON.stringify(freshUser));
+
+          const profileData = {
+            id: freshUser.profile_id,        // BGMI-8534 ✅
+            name: freshUser.username,        // Akash ✅
+            stats: {
+              kdRatio: "5.2", winRate: "42%", totalMatches: "567",
+              chickenDinners: "156", totalKills: "3248", avgDamage: "289",
+            },
+          };
+
+          setProfile(profileData);
+          console.log("✅ Profile set with FRESH ID:", freshUser.profile_id);
+        } else {
+          // Fallback (agar server fail ho)
+          console.log("⚠️ Server fail - using LocalStorage");
+          const profileData = {
+            id: parsedUser.profile_id || 'BGMI-Loading...',
+            name: parsedUser.username,
+            stats: {
+              kdRatio: "5.2", winRate: "42%", totalMatches: "567",
+              chickenDinners: "156", totalKills: "3248", avgDamage: "289",
+            },
+          };
+          setProfile(profileData);
         }
 
-        console.log("✅ REGISTERED USERNAME:", username); // Akash NOT jolaxos917
-        console.log("✅ BGMI PROFILE ID:", parsedUser.profile_id);
-
-        const profileData = {
-          id: parsedUser.profile_id || 'BGMI-Loading...', // BGMI-10001
-          name: username,  // REGISTER FORM SE - Akash
-          stats: {
-            kdRatio: "5.2", winRate: "42%", totalMatches: "567",
-            chickenDinners: "156", totalKills: "3248", avgDamage: "289",
-          },
-        };
-
-        setProfile(profileData);
         setLoading(false);
 
       } catch (error) {
         console.error("🚨 Profile error:", error);
-        navigate("/login");
+        console.log("⚠️ Using LocalStorage fallback");
+        
+        // Fallback to local data
+        const userData = localStorage.getItem("bgmi_user") || sessionStorage.getItem("bgmi_user");
+        if (userData) {
+          const parsedUser = JSON.parse(userData);
+          setProfile({
+            id: parsedUser.profile_id || 'BGMI-Loading...',
+            name: parsedUser.username || 'User',
+            stats: {
+              kdRatio: "5.2", winRate: "42%", totalMatches: "567",
+              chickenDinners: "156", totalKills: "3248", avgDamage: "289",
+            },
+          });
+        }
+        setLoading(false);
       }
     };
 
@@ -93,15 +130,10 @@ const Profile = () => {
             />
           </div>
           <div className="player-details">
-            {/* 🔥 GAMER NAME (REGISTER TIME WALA) */}
-            <h1 className="gamer-name">{profile.name}</h1> {/* Akash */}
-            
-            {/* 🔥 BGMI ID NAME KE NEECHE */}
+            <h1 className="gamer-name">{profile.name}</h1>
             <div className="id-row">
-              <span>ID:</span> <strong>{profile.id}</strong> {/* BGMI-10001 */}
+              <span>ID:</span> <strong>{profile.id}</strong> {/* BGMI-8534 ✅ */}
             </div>
-            
-            {/* 🔥 NO EMAIL, NO LOGOUT - CLEAN! */}
           </div>
         </div>
       </header>
