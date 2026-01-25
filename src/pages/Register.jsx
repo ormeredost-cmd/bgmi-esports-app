@@ -30,7 +30,7 @@ const Register = () => {
       await sendEmailVerification(userCredential.user);
       console.log("✅ Firebase UID:", userCredential.user.uid);
 
-      // 2. PRODUCTION SERVER URL ✅ (localhost → Render)
+      // 2. PRODUCTION SERVER URL ✅
       console.log("📤 Calling:", `${API_URL}/api/register`);
       const serverRes = await fetch(`${API_URL}/api/register`, {
         method: "POST",
@@ -58,18 +58,28 @@ const Register = () => {
         timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', hour12: true 
       });
 
-      // 4. Frontend Supabase backup (silent fail OK)
-      await supabase.from("registeruser").insert([{
-        uid: userCredential.user.uid,
-        profile_id: serverData.user.profile_id,
-        username: username.trim(),
-        email: email.toLowerCase().trim(),
-        "User Password": password.trim(),
-        verified: false,
-        balance: serverData.user.balance || 0,
-        token: serverData.user.token || "",
-        register_time_ist: istTime
-      }]).catch(err => console.log("⚠️ Frontend backup failed:", err.message));
+      // 4. Frontend Supabase backup (CORRECT SYNTAX!)
+      try {
+        const { error: supabaseError } = await supabase
+          .from("registeruser")
+          .insert([{
+            uid: userCredential.user.uid,
+            profile_id: serverData.user.profile_id,
+            username: username.trim(),
+            email: email.toLowerCase().trim(),
+            "User Password": password.trim(),
+            verified: false,
+            balance: serverData.user.balance || 0,
+            token: serverData.user.token || "",
+            register_time_ist: istTime
+          }]);
+        
+        if (supabaseError) {
+          console.log("⚠️ Frontend backup failed (OK):", supabaseError.message);
+        }
+      } catch (supabaseErr) {
+        console.log("⚠️ Frontend Supabase backup failed (non-critical):", supabaseErr.message);
+      }
 
       // 5. LocalStorage + SUCCESS
       localStorage.setItem("bgmi_user", JSON.stringify({
