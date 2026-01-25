@@ -3,6 +3,9 @@ import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/
 import { auth } from "../firebase";
 import { supabase } from "../supabaseClient";
 
+// 🔥 PRODUCTION READY - Correct Render URL
+const API_URL = import.meta.env.VITE_API_URL || "https://main-server-firebase.onrender.com";
+
 const Register = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -27,15 +30,16 @@ const Register = () => {
       await sendEmailVerification(userCredential.user);
       console.log("✅ Firebase UID:", userCredential.user.uid);
 
-      // 2. Server BGMI ID ✅ (ALREADY WORKING!)
-      const serverRes = await fetch("http://localhost:5001/api/register", {
+      // 2. PRODUCTION SERVER URL ✅ (localhost → Render)
+      console.log("📤 Calling:", `${API_URL}/api/register`);
+      const serverRes = await fetch(`${API_URL}/api/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ 
           email: email.toLowerCase().trim(),
           username: username.trim(),
           password: password.trim(),
-          uid: userCredential.user.uid  // UID passed ✅
+          uid: userCredential.user.uid
         }),
       });
 
@@ -54,22 +58,20 @@ const Register = () => {
         timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', hour12: true 
       });
 
-      // 4. Frontend Supabase (FIXED - No .catch chain!)
-      const { error: supabaseError } = await supabase
-        .from("registeruser")
-        .insert([{
-          uid: userCredential.user.uid,
-          profile_id: serverData.user.profile_id,
-          username: username.trim(),
-          email: email.toLowerCase().trim(),
-          "User Password": password.trim(),
-          verified: false,
-          balance: serverData.user.balance || 0,
-          token: serverData.user.token || "",
-          register_time_ist: istTime
-        }]);
+      // 4. Frontend Supabase backup (silent fail OK)
+      await supabase.from("registeruser").insert([{
+        uid: userCredential.user.uid,
+        profile_id: serverData.user.profile_id,
+        username: username.trim(),
+        email: email.toLowerCase().trim(),
+        "User Password": password.trim(),
+        verified: false,
+        balance: serverData.user.balance || 0,
+        token: serverData.user.token || "",
+        register_time_ist: istTime
+      }]).catch(err => console.log("⚠️ Frontend backup failed:", err.message));
 
-      // 5. SUCCESS - Server already saved data!
+      // 5. LocalStorage + SUCCESS
       localStorage.setItem("bgmi_user", JSON.stringify({
         uid: userCredential.user.uid,
         username: username.trim(),
@@ -110,7 +112,8 @@ const Register = () => {
       <form onSubmit={handleRegister}>
         <input 
           type="text" 
-          placeholder="🎮 Username (admin123)" 
+          placeholder="🎮 Username (admin123)"
+          autocomplete="username"
           value={username} 
           onChange={(e) => setUsername(e.target.value)} 
           required 
@@ -118,7 +121,8 @@ const Register = () => {
         />
         <input 
           type="email" 
-          placeholder="📧 Email" 
+          placeholder="📧 Email"
+          autocomplete="email"
           value={email} 
           onChange={(e) => setEmail(e.target.value)} 
           required 
@@ -126,7 +130,8 @@ const Register = () => {
         />
         <input 
           type="password" 
-          placeholder="🔒 Password (6+ chars)" 
+          placeholder="🔒 Password (6+ chars)"
+          autocomplete="new-password"
           value={password} 
           onChange={(e) => setPassword(e.target.value)} 
           required 
