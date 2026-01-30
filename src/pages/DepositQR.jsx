@@ -2,11 +2,10 @@ import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./DepositQR.css";
 
-// 🔥 AUTO DETECT - Local + Render
 const DEPOSIT_API =
   window.location.hostname === "localhost"
-    ? "http://localhost:5001"
-    : "https://main-server-firebase.onrender.com";
+    ? "http://localhost:5002"
+    : "https://bgmi-server-save-tournament-data.onrender.com";
 
 export default function DepositQR() {
   const location = useLocation();
@@ -14,12 +13,14 @@ export default function DepositQR() {
 
   const [amount, setAmount] = useState(0);
   const [email, setEmail] = useState("");
+  const [profileId, setProfileId] = useState("");
+  const [username, setUsername] = useState("");  // 🔥 ADDED USERNAME STATE
   const [utr, setUtr] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
   /* =============================
-     LOAD AMOUNT + USER EMAIL
+     LOAD AMOUNT + REAL USER DATA (BGMI-8547)
   ============================= */
   useEffect(() => {
     if (!location.state?.amount) {
@@ -38,21 +39,29 @@ export default function DepositQR() {
       }
 
       const parsed = JSON.parse(stored);
+      console.log("👤 FULL USER DATA:", parsed);
 
-      const userEmail =
-        parsed?.user?.email ||
-        parsed?.email ||
-        parsed?.userEmail;
+      // 🔥 REAL DATA ONLY - NO FALLBACKS!
+      const userEmail = parsed?.email || parsed?.user?.email;
+      const realProfileId = parsed?.profile_id;        // BGMI-8547 ONLY!
+      const realUsername = parsed?.username;           // kajal ONLY!
 
-      if (!userEmail) {
-        alert("User email missing. Login again.");
+      if (!userEmail || !realProfileId) {
+        alert("User data missing. Login again.");
         localStorage.removeItem("bgmi_user");
         navigate("/login");
         return;
       }
 
       setEmail(userEmail.toLowerCase().trim());
-      console.log("👤 Deposit user:", userEmail);
+      setProfileId(realProfileId);                    // BGMI-8547
+      setUsername(realUsername || "");                // kajal
+
+      console.log("✅ REAL DATA SET:", {
+        email: userEmail,
+        profileId: realProfileId,     // BGMI-8547 ✅
+        username: realUsername        // kajal ✅
+      });
 
     } catch (err) {
       console.error("❌ localStorage error:", err);
@@ -61,7 +70,7 @@ export default function DepositQR() {
   }, [location.state, navigate]);
 
   /* =============================
-     SUBMIT DEPOSIT
+     SUBMIT DEPOSIT WITH REAL DATA
   ============================= */
   const handleSubmit = async () => {
     if (utr.length !== 12) {
@@ -73,7 +82,9 @@ export default function DepositQR() {
 
     try {
       const payload = {
-        email,
+        profileId: profileId,         // BGMI-8547
+        username: username,           // kajal 🔥
+        email: email,
         amount: Number(amount),
         utr: utr.trim()
       };
@@ -85,18 +96,16 @@ export default function DepositQR() {
         headers: {
           "Content-Type": "application/json"
         },
-        credentials: "include", // 🔥 VERY IMPORTANT (CORS FIX)
         body: JSON.stringify(payload)
       });
 
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data?.error || "Deposit failed");
+        throw new Error(data?.message || "Deposit failed");
       }
 
       console.log("✅ Deposit success:", data);
-
       setSuccess(true);
 
       setTimeout(() => {
