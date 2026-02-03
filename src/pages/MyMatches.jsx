@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback } from "react";
 import "./MyMatches.css";
 
 const MyMatches = () => {
@@ -7,53 +7,31 @@ const MyMatches = () => {
   const [bgmiId, setBgmiId] = useState("");
   const [inputVisible, setInputVisible] = useState(false);
 
-  // 🔥 AUTO API (LOCAL + RENDER)
-  const API_URL =
-    window.location.hostname === "localhost"
-      ? "http://localhost:5002"
-      : "https://bgmi-server-save-tournament-data.onrender.com";
+  const API_URL = window.location.hostname === "localhost" 
+    ? "http://localhost:5002"
+    : "https://bgmi-server-save-tournament-data.onrender.com";
 
-  const firstLoad = useRef(true); // 🔥 no blink
+  const fetchMatches = useCallback(async (id) => {
+    if (!id) return;
 
-  /* ===============================
-     FETCH MATCHES (SAFE)
-  ================================ */
-  const fetchMatches = useCallback(
-    async (id) => {
-      if (!id) return;
-
-      try {
-        const res = await fetch(
-          `${API_URL}/api/my-matches?bgmiId=${id}`
-        );
-        const data = await res.json();
-
-        if (Array.isArray(data.matches)) {
-          setMatches((prev) =>
-            JSON.stringify(prev) === JSON.stringify(data.matches)
-              ? prev
-              : data.matches
-          );
-        }
-      } catch (err) {
-        console.error("Fetch matches error:", err);
-      } finally {
-        if (firstLoad.current) {
-          setLoading(false);
-          firstLoad.current = false;
-        }
+    try {
+      const res = await fetch(`${API_URL}/api/my-matches?bgmiId=${id}`);
+      const data = await res.json();
+      
+      if (Array.isArray(data.matches)) {
+        setMatches(data.matches);
+      } else {
+        setMatches([]);
       }
-    },
-    [API_URL]
-  );
+    } catch (err) {
+      setMatches([]);
+    } finally {
+      setLoading(false);
+    }
+  }, [API_URL]);
 
-  /* ===============================
-     INITIAL LOAD
-  ================================ */
   useEffect(() => {
-    const storedId =
-      localStorage.getItem("lastBgmiId") ||
-      localStorage.getItem("tempBgmiId");
+    const storedId = localStorage.getItem("lastBgmiId") || localStorage.getItem("tempBgmiId");
 
     if (storedId) {
       setBgmiId(storedId);
@@ -64,38 +42,27 @@ const MyMatches = () => {
     }
   }, [fetchMatches]);
 
-  /* ===============================
-     BACKGROUND AUTO REFRESH
-  ================================ */
   useEffect(() => {
     if (!bgmiId) return;
-
-    const interval = setInterval(() => {
-      fetchMatches(bgmiId);
-    }, 10000); // ⏱️ 10 sec
-
+    const interval = setInterval(() => fetchMatches(bgmiId), 10000);
     return () => clearInterval(interval);
   }, [bgmiId, fetchMatches]);
 
-  /* ===============================
-     SUBMIT BGMI ID
-  ================================ */
   const handleBgmiIdSubmit = (e) => {
     e.preventDefault();
-    if (!bgmiId.trim()) return;
+    const id = bgmiId.trim();
+    
+    if (!id) return;
 
-    localStorage.setItem("lastBgmiId", bgmiId);
-    fetchMatches(bgmiId);
+    localStorage.setItem("lastBgmiId", id);
+    localStorage.setItem("tempBgmiId", id);
+    fetchMatches(id);
     setInputVisible(false);
   };
 
-  /* ===============================
-     LOADING SCREEN (ONLY ONCE)
-  ================================ */
   if (loading) {
     return (
       <div className="mymatches-page">
-        {/* ❌ BACKBUTTON REMOVED */}
         <div className="loading-text">Loading matches…</div>
       </div>
     );
@@ -103,19 +70,12 @@ const MyMatches = () => {
 
   return (
     <div className="mymatches-page">
-      {/* ❌ BACKBUTTON REMOVED */}
-
       <div className="mymatches-container">
         <div className="page-header">
           <h1>मेरे मैच</h1>
-          {bgmiId && (
-            <p>
-              ID: <strong>{bgmiId}</strong>
-            </p>
-          )}
+          {bgmiId && <p>ID: <strong>{bgmiId}</strong></p>}
         </div>
 
-        {/* BGMI INPUT */}
         {inputVisible ? (
           <form onSubmit={handleBgmiIdSubmit} className="bgmi-form">
             <input
@@ -132,46 +92,36 @@ const MyMatches = () => {
             {matches.map((match) => (
               <div key={match.id} className="match-card">
                 <div className="match-header">
-                  <h3>{match.tournamentName}</h3>
-                  <span className="status registered">
-                    Registered
-                  </span>
+                  <h3>{match.tournament_name}</h3>
+                  <span className="status registered">Registered</span>
                 </div>
 
                 <div className="match-details">
                   <div className="detail-row">
                     <span>Player:</span>
-                    <span className="highlight">
-                      {match.playerName}
-                    </span>
+                    <span className="highlight">{match.player_name}</span>
                   </div>
-
                   <div className="detail-row">
                     <span>BGMI ID:</span>
-                    <span className="highlight">
-                      {match.bgmiId}
-                    </span>
+                    <span className="highlight">{match.bgmi_id}</span>
                   </div>
-
                   <div className="detail-row">
                     <span>Entry:</span>
-                    <span>₹{match.entryFee}</span>
+                    <span>₹{match.entry_fee || 0}</span>
                   </div>
-
                   <div className="detail-row">
                     <span>Prize:</span>
-                    <span className="prize-pool">
-                      ₹{match.prizePool}
-                    </span>
+                    <span className="prize-pool">₹{match.prize_pool || 0}</span>
                   </div>
-
                   <div className="detail-row">
                     <span>Date:</span>
                     <span>{match.date}</span>
                   </div>
-
-                  {/* 🔥 ROOM DETAILS */}
-                  {match.roomId && match.roomPassword ? (
+                  <div className="detail-row">
+                    <span>Time:</span>
+                    <span>{match.time}</span>
+                  </div>
+                  {match.roomId ? (
                     <div className="room-box">
                       <div className="detail-row">
                         <span>Room ID:</span>
@@ -183,9 +133,7 @@ const MyMatches = () => {
                       </div>
                     </div>
                   ) : (
-                    <div className="room-pending">
-                      ⏳ Room details coming soon…
-                    </div>
+                    <div className="room-pending">⏳ Room details coming soon</div>
                   )}
                 </div>
               </div>
@@ -194,9 +142,8 @@ const MyMatches = () => {
         ) : (
           <div className="no-matches">
             <h2>कोई मैच नहीं मिला</h2>
-            <button onClick={() => setInputVisible(true)}>
-              Enter BGMI ID
-            </button>
+            <p>ID: <strong>{bgmiId}</strong></p>
+            <button onClick={() => setInputVisible(true)}>Enter BGMI ID</button>
           </div>
         )}
       </div>

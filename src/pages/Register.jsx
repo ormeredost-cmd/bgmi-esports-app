@@ -90,11 +90,15 @@ const Register = () => {
         },
       ]);
 
-      // 🔥 4️⃣ AUTO LOGIN DATA (TEMP – TAB BAND HOTE HI DELETE)
+      // 🔥 4️⃣ PROFILE DATA → localStorage (TOURNAMENT JOIN KE LIYE!)
+      localStorage.setItem("profileId", serverData.user.profile_id);      // ✅ NEW!
+      localStorage.setItem("profileName", username.trim());               // ✅ NEW!
+
+      // 🔥 5️⃣ AUTO LOGIN DATA (TEMP – TAB BAND HOTE HI DELETE)
       sessionStorage.setItem("auto_login_email", email);
       sessionStorage.setItem("auto_login_password", password);
 
-      // 🔥 5️⃣ INSTANT REDIRECT - No waiting
+      // 🔥 6️⃣ INSTANT REDIRECT - No waiting
       window.location.href = "/login?verify=1";
 
     } catch (err) {
