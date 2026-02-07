@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import "./Wallet.css";
 
-const API_URL = window.location.hostname === "localhost" 
-    ? "http://localhost:5002"
-    : "https://bgmi-server-save-tournament-data.onrender.com";
+// 🔥 DYNAMIC API URL - LOCAL + RENDER dono chalega!
+const DEPOSIT_API = window.location.hostname === "localhost" 
+  ? "http://localhost:5002"
+  : "https://bgmi-server-save-tournament-data.onrender.com";
 
 const Wallet = () => {
   const [deposits, setDeposits] = useState([]);
