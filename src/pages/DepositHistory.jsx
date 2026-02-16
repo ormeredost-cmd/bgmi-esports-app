@@ -36,7 +36,7 @@ const DepositHistory = () => {
   const navigate = useNavigate();
 
   /* =============================
-     LOAD DEPOSITS
+     LOAD DEPOSITS (FIXED - VISIBLE ONLY)
   ============================= */
   const loadDeposits = useCallback(async () => {
     try {
@@ -49,13 +49,14 @@ const DepositHistory = () => {
       const data = await res.json();
       let allDeposits = Array.isArray(data?.deposits) ? data.deposits : [];
 
-      /* EMAIL BASED FILTER */
+      /* 🔥 USER + VISIBLE FILTER (Admin hidden deposits nahi dikhenge) */
       const storedUser = localStorage.getItem("bgmi_user");
       if (storedUser) {
         const user = JSON.parse(storedUser);
         if (user?.email) {
           allDeposits = allDeposits.filter(
             (d) =>
+              d.visible !== false &&  // 🔥 Admin hidden deposits filter out
               d.email &&
               d.email.toLowerCase() === user.email.toLowerCase()
           );
@@ -90,6 +91,13 @@ const DepositHistory = () => {
     deposits.filter((d) => d.status === status).length;
 
   /* =============================
+     REFRESH BUTTON
+  ============================= */
+  const refreshHistory = () => {
+    loadDeposits();
+  };
+
+  /* =============================
      LOADING
   ============================= */
   if (loading) {
@@ -108,7 +116,7 @@ const DepositHistory = () => {
       <div className="history-page">
         <div className="empty-state">
           <h3>⚠️ {error}</h3>
-          <button onClick={loadDeposits} className="add-money-btn">
+          <button onClick={refreshHistory} className="add-money-btn">
             🔁 Retry
           </button>
         </div>
@@ -123,7 +131,12 @@ const DepositHistory = () => {
     <div className="history-page">
       <div className="history-header">
         <h1>🧾 My Deposit History</h1>
-        <p>Total: {deposits.length} deposits</p>
+        <div>
+          <p>Total: {deposits.length} deposits</p>
+          <button onClick={refreshHistory} className="refresh-btn">
+            ↻ Refresh
+          </button>
+        </div>
       </div>
 
       {/* FILTER TABS */}
@@ -162,7 +175,10 @@ const DepositHistory = () => {
         {filteredDeposits.length === 0 ? (
           <div className="empty-state">
             <div className="empty-wallet">💰</div>
-            <h3>No {filter} deposits</h3>
+            <h3>No {filter} deposits found</h3>
+            <p style={{ color: "#666", margin: "10px 0" }}>
+              💡 Admin may have cleaned history. Your balance is safe!
+            </p>
             <button
               onClick={() => navigate("/deposit")}
               className="add-money-btn"
@@ -184,7 +200,9 @@ const DepositHistory = () => {
 
                   <div className="details-row">
                     <span className="utr">UTR: {d.utr}</span>
-                    <span className="date">{formatIndianTime(d.dateIST || d.date)}</span>
+                    <span className="date">
+                      {formatIndianTime(d.dateIST || d.date)}
+                    </span>
                   </div>
 
                   <div className="user-info">👤 {d.name}</div>
