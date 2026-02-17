@@ -1,15 +1,38 @@
-/* DepositHistory.css - FINAL PERFECT CODE */
+/* DepositHistory.css - SCROLL FIXED + CLEAN */
 
-.history-page {
-  max-width: 100%;
-  margin: 0;
-  padding: 15px;
-  min-height: 100vh;
-  background: transparent;
+/* RESET */
+* {
+  box-sizing: border-box;
 }
 
+body {
+  margin: 0;
+  padding: 0;
+}
+
+/* FULL PAGE (SCROLL ENABLE) */
+.history-page {
+  height: 100vh;              /* fixed height */
+  overflow-y: auto;           /* scroll ON */
+  -webkit-overflow-scrolling: touch;
+  padding: 15px;
+  padding-bottom: 120px;      /* bottom navbar space */
+  background: transparent;
+
+  /* scrollbar hide */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.history-page::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+}
+
+/* HEADER */
 .history-header {
   display: flex;
+  justify-content: space-between;
   align-items: center;
   gap: 12px;
   margin-bottom: 20px;
@@ -17,34 +40,11 @@
   backdrop-filter: blur(20px);
   padding: 15px 20px;
   border-radius: 16px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-}
-
-.back-btn {
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  color: white;
-  border: none;
-  padding: 10px 16px;
-  border-radius: 12px;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 700;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
-}
-
-.back-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
-}
-
-.header-title {
-  flex: 1;
-  text-align: center;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
 .header-title h1 {
-  margin: 0 0 2px 0;
+  margin: 0 0 4px 0;
   font-size: 20px;
   color: #2d3748;
   font-weight: 800;
@@ -56,6 +56,25 @@
   font-weight: 600;
 }
 
+.refresh-btn {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 700;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+}
+
+.refresh-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+
+/* FILTER TABS (horizontal scroll already) */
 .filter-tabs {
   display: flex;
   gap: 8px;
@@ -63,7 +82,7 @@
   background: rgba(255, 255, 255, 0.9);
   padding: 8px 15px;
   border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   overflow-x: auto;
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -92,10 +111,7 @@
   box-shadow: 0 4px 15px rgba(0, 212, 170, 0.4);
 }
 
-.history-container {
-  flex: 1;
-}
-
+/* LIST */
 .history-list {
   display: flex;
   flex-direction: column;
@@ -110,14 +126,14 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-  border: 1px solid rgba(255,255,255,0.2);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   transition: all 0.3s ease;
 }
 
 .history-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 12px 35px rgba(0,0,0,0.15);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
 }
 
 .card-left {
@@ -144,14 +160,21 @@
   animation: pulse 2s infinite;
 }
 
-.status-dot.approved { background: #00d4aa; }
-.status-dot.pending { background: #f39c12; }
-.status-dot.rejected { background: #e74c3c; }
+.status-dot.approved {
+  background: #00d4aa;
+}
+.status-dot.pending {
+  background: #f39c12;
+}
+.status-dot.rejected {
+  background: #e74c3c;
+}
 
 .details-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 10px;
 }
 
 .utr {
@@ -166,9 +189,22 @@
   background: rgba(247, 250, 252, 0.8);
   padding: 4px 10px;
   border-radius: 8px;
+  white-space: nowrap;
 }
 
-/* 🔥 CHOTA STATUS CARD - Jaise pehle tha */
+.user-info {
+  margin-top: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #2d3748;
+}
+
+.deposit-id {
+  margin-top: 6px;
+  font-size: 12px;
+  color: #718096;
+}
+
 .status-badge-large {
   display: flex;
   align-items: center;
@@ -177,11 +213,8 @@
   border-radius: 12px;
   font-weight: 700;
   font-size: 12px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-}
-
-.badge-icon {
-  font-size: 16px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  white-space: nowrap;
 }
 
 .status-badge-large.approved {
@@ -199,12 +232,13 @@
   color: #721c24;
 }
 
+/* EMPTY */
 .empty-state {
   text-align: center;
   padding: 50px 20px;
   background: rgba(255, 255, 255, 0.9);
   border-radius: 20px;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
 }
 
 .empty-wallet {
@@ -218,52 +252,58 @@
   color: #2d3748;
 }
 
-.empty-state p {
-  color: #718096;
+.add-money-btn {
+  margin-top: 15px;
+  background: linear-gradient(135deg, #00d4aa, #00b894);
+  border: none;
+  color: white;
+  padding: 12px 18px;
+  border-radius: 14px;
   font-size: 14px;
-  margin: 0;
-}
-
-.summary-bar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(20px);
-  padding: 15px 20px;
-  border-radius: 16px;
-  margin-top: 20px;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-}
-
-.summary-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 3px;
-}
-
-.summary-item span {
-  color: #718096;
-  font-size: 12px;
-}
-
-.summary-item strong {
-  font-size: 16px;
   font-weight: 800;
-  color: #2d3748;
+  cursor: pointer;
+  box-shadow: 0 4px 18px rgba(0, 212, 170, 0.35);
+  transition: all 0.3s ease;
 }
 
+.add-money-btn:hover {
+  transform: translateY(-2px);
+}
+
+/* LOADING */
 .history-loading {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 60vh;
-  font-size: 20px;
+  font-size: 18px;
   color: #718096;
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Mobile */
+@media (max-width: 520px) {
+  .history-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .status-badge-large {
+    align-self: flex-end;
+  }
+
+  .details-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }

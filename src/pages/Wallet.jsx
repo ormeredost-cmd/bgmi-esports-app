@@ -78,12 +78,13 @@ const Wallet = () => {
     loadDeposits();
   };
 
+  // 🔥 FIXED LOADING
   if (loading) {
     return (
       <div className="wallet-container">
-        <div className="loading-spinner">
-          <div className="spinner"></div>
-          <p>Loading Wallet...</p>
+        <div className="loading-fullscreen">
+          <div className="spinner-large"></div>
+          <p>Loading your wallet...</p>
         </div>
       </div>
     );
@@ -105,81 +106,61 @@ const Wallet = () => {
         </button>
       </div>
 
-      {/* BALANCE CARD */}
-      <div className="balance-card">
-        <div className="balance-info">
-          <p className="balance-label">Available Balance</p>
-          <h1 className="balance-amount">₹{balance.toLocaleString()}</h1>
-          <p className="profile-id">ID: {user?.profile_id}</p>
+      {/* MAIN CONTENT */}
+      <div className="main-content">
+        {/* BALANCE CARD */}
+        <div className="balance-card">
+          <div className="balance-info">
+            <p className="balance-label">Available Balance</p>
+            <h1 className="balance-amount">₹{balance.toLocaleString()}</h1>
+            <p className="profile-id">ID: {user?.profile_id}</p>
+          </div>
+          <div className="balance-actions">
+            <button className="quick-action deposit-quick" onClick={() => window.location.href = "/deposit"}>
+              ➕ Add Money
+            </button>
+            <button className="quick-action withdraw-quick" onClick={() => window.location.href = "/withdraw"}>
+              ➖ Withdraw
+            </button>
+          </div>
         </div>
-        <div className="balance-actions">
-          <button className="quick-action deposit-quick">➕ Add Money</button>
-          <button className="quick-action withdraw-quick">➖ Withdraw</button>
-        </div>
-      </div>
 
-      {/* STATS */}
-      <div className="stats-grid">
-        <div className="stat-card">
-          <div className="stat-icon">📈</div>
-          <div>
-            <p>Total Deposits</p>
-            <strong>{deposits.filter(d => d.status === 'approved').reduce((sum, d) => sum + Number(d.amount), 0).toLocaleString()}</strong>
+        {/* STATS */}
+        <div className="stats-grid">
+          <div className="stat-card">
+            <div className="stat-icon">📈</div>
+            <div>
+              <p>Total Deposits</p>
+              <strong>₹{deposits.filter(d => d.status === 'approved').reduce((sum, d) => sum + Number(d.amount), 0).toLocaleString()}</strong>
+            </div>
+          </div>
+          <div className="stat-card">
+            <div className="stat-icon">⏳</div>
+            <div>
+              <p>Pending</p>
+              <strong>{deposits.filter(d => d.status === 'pending').length}</strong>
+            </div>
+          </div>
+          <div className="stat-card">
+            <div className="stat-icon">✅</div>
+            <div>
+              <p>Approved</p>
+              <strong>{deposits.filter(d => d.status === 'approved').length}</strong>
+            </div>
           </div>
         </div>
-        <div className="stat-card">
-          <div className="stat-icon">⏳</div>
-          <div>
-            <p>Pending</p>
-            <strong>{deposits.filter(d => d.status === 'pending').length}</strong>
-          </div>
-        </div>
-        <div className="stat-card">
-          <div className="stat-icon">✅</div>
-          <div>
-            <p>Approved</p>
-            <strong>{deposits.filter(d => d.status === 'approved').length}</strong>
-          </div>
-        </div>
-      </div>
 
-      {/* TRANSACTIONS */}
-      <div className="transactions-section">
-        <div className="section-header">
-          <h2>📋 Recent Transactions</h2>
-          <span className="transaction-count">{deposits.length}</span>
+        {/* QUICK INFO INSTEAD OF TRANSACTIONS */}
+        <div className="quick-info-card">
+          <div className="quick-info-header">
+            
+            
+          </div>
+          <div className="quick-info-content">
+            
+          
+          </div>
         </div>
-        
-        {deposits.length === 0 ? (
-          <div className="empty-state">
-            <div className="empty-icon">💸</div>
-            <h3>No transactions yet</h3>
-            <p>Make your first deposit to see activity here</p>
-            <button className="deposit-btn-large">➕ Deposit Now</button>
-          </div>
-        ) : (
-          <div className="transactions-list">
-            {deposits.slice(0, 5).map((deposit) => (
-              <div key={deposit.id} className={`transaction-item ${deposit.status}`}>
-                <div className="transaction-details">
-                  <div className="transaction-header">
-                    <span className="amount">₹{Number(deposit.amount).toLocaleString()}</span>
-                    <span className={`status-badge ${deposit.status}`}>
-                      {deposit.status === 'approved' ? 'Completed' : 'Pending'}
-                    </span>
-                  </div>
-                  <div className="transaction-meta">
-                    <span>{deposit.date_ist}</span>
-                    <span className="utr">UTR: {deposit.utr?.slice(0, 8)}...</span>
-                  </div>
-                </div>
-                <div className="transaction-icon">
-                  {deposit.status === 'approved' ? '✅' : '⏳'}
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
       </div>
 
       {/* ACTION BUTTONS */}

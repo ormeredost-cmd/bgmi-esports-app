@@ -1,72 +1,48 @@
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
-
+/* Profile.css - SCROLL FIXED + MOBILE PERFECT */
 * {
-  box-sizing: border-box;
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
-:root {
-  --keyboard-padding: 0px;
+body {
+  margin: 0;
+  padding-bottom: 100px; /* Extra space for scroll */
 }
 
-/* =========================
-   MAIN CONTAINER
-========================= */
 .esports-profile {
-  min-height: 100dvh;
-  background: linear-gradient(135deg, #0a0e17 0%, #1a1f2e 100%);
-  color: #e2e8f0;
-  font-family: 'Orbitron', monospace;
-  overflow-y: auto;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: white;
+  padding-bottom: 3rem; /* ✅ SCROLL FIX */
   overflow-x: hidden;
-  scroll-behavior: smooth;
-  padding-bottom: 120px;
-  position: relative;
-  -webkit-overflow-scrolling: touch;
 }
 
-/* 🔥 KEYBOARD OPEN FIX */
-.esports-profile.keyboard-open {
-  padding-bottom: 380px;
-}
-
-/* =========================
-   HEADER
-========================= */
+/* Profile Header */
 .profile-header {
-  background: rgba(10, 14, 23, 0.97);
-  padding: 22px 18px;
-  backdrop-filter: blur(18px);
-  border-bottom: 1px solid rgba(59, 130, 246, 0.25);
-  position: sticky;
-  top: 0;
-  z-index: 100;
+  padding: 1.5rem 1rem;
+  text-align: center;
 }
 
-/* =========================
-   PLAYER CARD
-========================= */
 .player-card {
-  max-width: 1000px;
-  margin: 0 auto;
-  display: flex;
-  align-items: flex-start;
-  gap: 22px;
-}
-
-.player-avatar {
-  flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  border-radius: 24px;
+  padding: 2rem 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  margin-bottom: 1rem;
 }
 
 .avatar-circle {
-  width: 105px;
-  height: 105px;
+  width: 100px;
+  height: 100px;
+  margin: 0 auto 1.5rem;
   border-radius: 50%;
+  border: 4px solid #667eea;
   overflow: hidden;
-  border: 3px solid #3b82f6;
-  background: #1e40af;
-  box-shadow: 0 10px 28px rgba(59, 130, 246, 0.35);
+  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
 }
 
 .avatar-circle img {
@@ -75,221 +51,235 @@
   object-fit: cover;
 }
 
-/* =========================
-   PLAYER DETAILS
-========================= */
-.player-details {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.name-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-}
-
 .gamer-name {
-  font-size: 1.75rem;
-  font-weight: 900;
-  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  font-size: 2rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #fff, #e0e7ff);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  background-clip: text;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
 }
 
-/* =========================
-   ID ROW
-========================= */
 .id-row {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.9rem;
-  font-family: 'Courier New', monospace;
-  font-weight: 700;
-  letter-spacing: 0.6px;
-  color: #94a3b8;
-  white-space: nowrap;
-}
-
-.id-label {
-  flex-shrink: 0;
-}
-
-.id-value {
-  color: #60a5fa;
-  font-size: 0.95rem;
-  text-shadow: 0 0 6px rgba(96, 165, 250, 0.45);
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* =========================
-   STATS
-========================= */
-.stats-section {
-  padding: 28px 18px 180px;
-  max-width: 1000px;
-  margin: 0 auto;
-}
-
-.stats-section h2 {
-  font-size: 1.25rem;
-  font-weight: 800;
-  color: #f8fafc;
-  text-align: center;
-  margin-bottom: 22px;
-}
-
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 14px;
-}
-
-.stat-box {
-  background: rgba(30, 41, 59, 0.85);
-  border: 1px solid rgba(59, 130, 246, 0.22);
-  border-radius: 14px;
-  padding: 18px 10px;
-  text-align: center;
-  transition: all 0.25s ease;
-  backdrop-filter: blur(12px);
-}
-
-.stat-box:hover {
-  border-color: #3b82f6;
-  transform: translateY(-4px);
-  box-shadow: 0 12px 26px rgba(59, 130, 246, 0.25);
-}
-
-.stat-value {
-  font-size: 1.55rem;
-  font-weight: 900;
-  color: #3b82f6;
-  margin-bottom: 4px;
-}
-
-.stat-box div:last-child {
-  font-size: 0.72rem;
-  color: #94a3b8;
-  font-weight: 700;
+  font-size: 1rem;
+  color: #a0a0a0;
   text-transform: uppercase;
-  letter-spacing: 0.6px;
-}
-
-/* =========================
-   LOADING
-========================= */
-.loading {
-  min-height: 100dvh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.05rem;
-  font-weight: 700;
-}
-
-/* =========================
-   RESPONSIVE
-========================= */
-@media (max-width: 768px) {
-  .player-card { gap: 18px; }
-  .gamer-name { font-size: 1.55rem; }
-  .avatar-circle { width: 95px; height: 95px; }
-  .stats-grid { grid-template-columns: repeat(3, 1fr); }
-}
-
-@media (max-width: 480px) {
-  .gamer-name { font-size: 1.35rem; }
-  .avatar-circle { width: 82px; height: 82px; }
-  .stats-grid { grid-template-columns: repeat(2, 1fr); }
-  .stats-section { padding-bottom: 260px; }
-
-  .esports-profile.keyboard-open {
-    padding-bottom: 420px;
-  }
-}
-/* src/components/Profile.css */
-.esports-profile {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-.profile-header {
-  text-align: center;
-  margin-bottom: 30px;
-}
-
-.player-card {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  background: white;
-  padding: 30px;
-  border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-}
-
-.avatar-circle {
-  flex-shrink: 0;
-}
-
-.player-details h1 {
-  margin: 0 0 10px 0;
-  color: #1f2937;
-  font-size: 2.5em;
-}
-
-.id-row {
-  color: #6b7280;
+  letter-spacing: 2px;
   font-weight: 500;
 }
-/* Profile.css में ये add करो */
-.bgmi-id-banner {
-  background: linear-gradient(135deg, #ff4444, #ff6b6b);
-  color: white;
-  padding: 15px 20px;
-  border-radius: 12px;
-  margin: 20px auto;
-  max-width: 600px;
+
+/* BIG BANK BUTTON */
+.profile-action {
+  padding: 2rem 1rem;
   display: flex;
-  align-items: center;
-  gap: 15px;
   justify-content: center;
-  box-shadow: 0 8px 25px rgba(255,68,68,0.4);
 }
 
-.id-label {
-  font-size: 14px;
-  opacity: 0.9;
-}
-
-.bgmi-id {
-  font-size: 18px;
-  font-weight: bold;
-  background: rgba(255,255,255,0.2);
-  padding: 8px 16px;
-  border-radius: 20px;
-  font-family: monospace;
-}
-
-.copy-id {
+.bank-btn {
+  background: linear-gradient(135deg, #ff6b6b 0%, #feca57 50%, #48dbfb 100%);
+  color: #1a1a2e;
+  border: none;
+  padding: 1.2rem 3rem;
+  border-radius: 50px;
+  font-size: 1.3rem;
+  font-weight: 800;
   cursor: pointer;
-  padding: 6px 12px;
-  background: rgba(255,255,255,0.2);
-  border-radius: 6px;
-  font-size: 12px;
-  transition: all 0.3s;
+  box-shadow: 
+    0 15px 35px rgba(255, 107, 107, 0.4),
+    0 5px 15px rgba(0, 0, 0, 0.2);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  position: relative;
+  overflow: hidden;
+  min-width: 280px;
+  margin-bottom: 2rem; /* ✅ Extra space */
 }
 
-.copy-id:hover {
-  background: rgba(255,255,255,0.3);
+.bank-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  transition: left 0.6s;
+}
+
+.bank-btn:hover::before {
+  left: 100%;
+}
+
+.bank-btn:hover {
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 
+    0 25px 50px rgba(255, 107, 107, 0.6),
+    0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+.bank-btn:active {
+  transform: translateY(-2px) scale(1.02);
+}
+
+/* BANK FORM */
+.bank-form-section {
+  padding: 1rem;
+  max-width: 100%;
+}
+
+.bank-card {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(25px);
+  border-radius: 24px;
+  padding: 2rem 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
+  margin: 0 0 3rem 0; /* ✅ SCROLL SPACE */
+}
+
+.bank-title {
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #fff, #e0e7ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 2rem; /* ✅ More space */
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.bank-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-weight: 700;
+  color: #e0e7ff;
+  margin-bottom: 0.75rem;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.form-input, .form-input select {
+  padding: 1.2rem 1rem;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  font-size: 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  color: white;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.form-input::placeholder {
+  color: #a0a0a0;
+}
+
+.form-input:focus, .form-input select:focus {
+  outline: none;
+  border-color: #ff6b6b;
+  box-shadow: 
+    0 0 0 4px rgba(255, 107, 107, 0.2),
+    0 10px 30px rgba(0, 0, 0, 0.3);
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+}
+
+.submit-bank-btn {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  color: white;
+  border: none;
+  padding: 1.4rem 1rem;
+  border-radius: 16px;
+  font-size: 1.1rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 10px 30px rgba(40, 167, 69, 0.4);
+  margin-top: 1rem;
+}
+
+.submit-bank-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 20px 40px rgba(40, 167, 69, 0.6);
+}
+
+/* ✅ MOBILE RESPONSIVE */
+@media (max-width: 480px) {
+  .profile-header {
+    padding: 1rem 0.8rem;
+  }
+  
+  .player-card {
+    padding: 1.5rem 1rem;
+    margin: 0 0.5rem;
+  }
+  
+  .avatar-circle {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .gamer-name {
+    font-size: 1.6rem;
+  }
+  
+  .bank-btn {
+    padding: 1.1rem 2rem;
+    font-size: 1.2rem;
+    min-width: 260px;
+    margin: 0 0.5rem 2rem;
+  }
+  
+  .bank-card {
+    padding: 1.5rem 1rem;
+    margin: 0 0.5rem 3rem;
+  }
+  
+  .bank-title {
+    font-size: 1.5rem;
+  }
+  
+  .form-input, .form-input select {
+    padding: 1rem 0.9rem;
+    font-size: 16px; /* iOS zoom fix */
+  }
+}
+
+@media (max-width: 360px) {
+  .gamer-name {
+    font-size: 1.4rem;
+  }
+  
+  .bank-btn {
+    padding: 1rem 1.8rem;
+    font-size: 1.1rem;
+  }
+}
+
+/* Hide old tabs/stats */
+.profile-tabs,
+.stats-section {
+  display: none !important;
+}
+
+/* Loading screen */
+[style*="height: 100vh"] {
+  background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 100%);
+  color: white;
 }

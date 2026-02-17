@@ -6,8 +6,6 @@ const Profile = () => {
   const navigate = useNavigate();
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState("stats");
-  const [deposits, setDeposits] = useState([]);
 
   useEffect(() => {
     const loadProfile = async () => {
@@ -24,9 +22,9 @@ const Profile = () => {
         }
 
         const parsedUser = JSON.parse(userData);
-        console.log("🔍 OLD LocalStorage ID:", parsedUser.profile_id); // BGMI-73471 ❌
+        console.log("🔍 OLD LocalStorage ID:", parsedUser.profile_id);
 
-        // 🔥 SERVER SE FRESH DATA LO (BGMI-8534)
+        // 🔥 SERVER SE FRESH DATA LO
         console.log("🔄 Fetching FRESH data from SERVER...");
         const serverRes = await fetch("https://main-server-firebase.onrender.com/api/login", {
           method: "POST",
@@ -38,55 +36,35 @@ const Profile = () => {
         console.log("🔍 SERVER RESPONSE:", serverData);
 
         if (serverData.success) {
-          // 🔥 SERVER KA FRESH DATA USE KARO
           const freshUser = serverData.user;
-          console.log("✅ FRESH Server ID:", freshUser.profile_id); // BGMI-8534 ✅
+          console.log("✅ FRESH Server ID:", freshUser.profile_id);
           
-          // LocalStorage bhi update kar do
           localStorage.setItem("bgmi_user", JSON.stringify(freshUser));
 
           const profileData = {
-            id: freshUser.profile_id,        // BGMI-8534 ✅
-            name: freshUser.username,        // Akash ✅
-            stats: {
-              kdRatio: "5.2", winRate: "42%", totalMatches: "567",
-              chickenDinners: "156", totalKills: "3248", avgDamage: "289",
-            },
+            id: freshUser.profile_id,
+            name: freshUser.username,
           };
 
           setProfile(profileData);
-          console.log("✅ Profile set with FRESH ID:", freshUser.profile_id);
         } else {
-          // Fallback (agar server fail ho)
-          console.log("⚠️ Server fail - using LocalStorage");
           const profileData = {
             id: parsedUser.profile_id || 'BGMI-Loading...',
             name: parsedUser.username,
-            stats: {
-              kdRatio: "5.2", winRate: "42%", totalMatches: "567",
-              chickenDinners: "156", totalKills: "3248", avgDamage: "289",
-            },
           };
           setProfile(profileData);
         }
 
         setLoading(false);
-
       } catch (error) {
         console.error("🚨 Profile error:", error);
-        console.log("⚠️ Using LocalStorage fallback");
         
-        // Fallback to local data
         const userData = localStorage.getItem("bgmi_user") || sessionStorage.getItem("bgmi_user");
         if (userData) {
           const parsedUser = JSON.parse(userData);
           setProfile({
             id: parsedUser.profile_id || 'BGMI-Loading...',
             name: parsedUser.username || 'User',
-            stats: {
-              kdRatio: "5.2", winRate: "42%", totalMatches: "567",
-              chickenDinners: "156", totalKills: "3248", avgDamage: "289",
-            },
           });
         }
         setLoading(false);
@@ -95,6 +73,11 @@ const Profile = () => {
 
     loadProfile();
   }, [navigate]);
+
+  // 🔥 BUTTON CLICK - BANK PAGE PE JAO
+  const goToBankDetails = () => {
+    navigate('/bank-details');
+  };
 
   if (loading) {
     return (
@@ -115,10 +98,6 @@ const Profile = () => {
     );
   }
 
-  const walletBalance = deposits
-    .filter(d => d.status === "approved")
-    .reduce((sum, d) => sum + Number(d.amount || 0), 0);
-
   return (
     <div className="esports-profile">
       <header className="profile-header">
@@ -132,54 +111,21 @@ const Profile = () => {
           <div className="player-details">
             <h1 className="gamer-name">{profile.name}</h1>
             <div className="id-row">
-              <span>ID:</span> <strong>{profile.id}</strong> {/* BGMI-8534 ✅ */}
+              <span>ID:</span> <strong>{profile.id}</strong>
             </div>
           </div>
         </div>
       </header>
 
-      <div className="profile-tabs">
+      {/* 🔥 ONLY BIG BANK BUTTON */}
+      <div className="profile-action">
         <button 
-          className={activeTab === "stats" ? "active" : ""}
-          onClick={() => setActiveTab("stats")}
+          className="bank-btn"
+          onClick={goToBankDetails}
         >
-          📊 Stats
-        </button>
-        <button 
-          className={activeTab === "wallet" ? "active" : ""}
-          onClick={() => setActiveTab("wallet")}
-        >
-          💰 Wallet (₹{walletBalance.toLocaleString()})
+          🏦 Add Bank Details
         </button>
       </div>
-
-      {activeTab === "stats" && (
-        <section className="stats-section">
-          <div className="stats-grid">
-            {Object.entries(profile.stats).map(([key, value]) => (
-              <div key={key} className="stat-box">
-                <div className="stat-value">{value}</div>
-                <div>{key.replace(/([A-Z])/g, " $1")}</div>
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {activeTab === "wallet" && (
-        <section className="stats-section">
-          <div className="stats-grid">
-            <div className="stat-box">
-              <div className="stat-value">₹{walletBalance.toLocaleString()}</div>
-              <div>✅ Approved Balance</div>
-            </div>
-            <div className="stat-box">
-              <div className="stat-value">{deposits.length}</div>
-              <div>Total Deposits</div>
-            </div>
-          </div>
-        </section>
-      )}
     </div>
   );
 };

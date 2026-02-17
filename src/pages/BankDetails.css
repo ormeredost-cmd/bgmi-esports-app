@@ -1,0 +1,210 @@
+/* RESET */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+/* FULL PAGE */
+.bank-container {
+  height: 100vh;
+  width: 100%;
+  background: #0b0f14;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+}
+
+/* TOP HEADER */
+.header-bar {
+  height: 55px;
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  background: #101826;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  flex-shrink: 0;
+}
+
+.back-btn {
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 15px;
+  cursor: pointer;
+  padding: 8px 0;
+}
+
+/* SCROLL AREA */
+.bank-card {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 16px;
+
+  /* ⚠️ IMPORTANT:
+     tere app me already bottom navbar fixed hai,
+     isliye yaha extra bottom padding dena jaruri hai
+  */
+  padding-bottom: 120px;
+
+  /* scrollbar hide */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.bank-card::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+}
+
+/* HEADER */
+.card-header {
+  text-align: center;
+  margin-bottom: 18px;
+}
+
+.icon-circle {
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 10px;
+}
+
+.bank-icon {
+  font-size: 22px;
+}
+
+.card-title {
+  color: #fff;
+  font-size: 22px;
+  margin: 0;
+  font-weight: 700;
+}
+
+.card-subtitle {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 13px;
+  margin-top: 6px;
+}
+
+/* FORM */
+.bank-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* INPUT GROUP */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-label {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.label-icon {
+  font-size: 14px;
+}
+
+/* INPUT */
+.form-input {
+  width: 100%;
+  padding: 12px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+  outline: none;
+  font-size: 14px;
+}
+
+.form-input::placeholder {
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.form-input:focus {
+  border: 1px solid rgba(0, 200, 255, 0.7);
+  box-shadow: 0 0 0 3px rgba(0, 183, 255, 0.12);
+}
+
+.form-input:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* SELECT FIX */
+select.form-input {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+/* FOOTER INFO */
+.form-footer {
+  margin-top: 8px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 13px;
+}
+
+/* BUTTON (NOW NORMAL, NOT FIXED) */
+.submit-btn {
+  width: 100%;
+  padding: 14px 12px;
+  border: none;
+  border-radius: 16px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  background: #00b7ff;
+  color: #000;
+  transition: 0.2s;
+  margin-top: 8px;
+}
+
+.submit-btn:hover {
+  transform: translateY(-1px);
+}
+
+.submit-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* LOADING SPINNER */
+.spinner {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  border-top: 2px solid #000;
+  display: inline-block;
+  margin-right: 8px;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

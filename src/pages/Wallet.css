@@ -1,26 +1,66 @@
-/* 🔥 MOBILE-FIRST GAMING WALLET - PERFECT PHONE FIT */
+/* 🔥 PERFECT MOBILE WALLET - TOP/BOTTOM SAFE + FULL FIT */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+html, body, #root {
+  height: 100vh;
+  overflow: hidden;
+}
+
 .wallet-container {
-  min-height: 100vh;
+  height: 100vh;
   background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
   color: white;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 10px; /* BALANCED PADDING */
 }
 
-/* HEADER - MOBILE */
+/* 🔥 MOBILE SAFE AREAS - TOP/BOTTOM CLEAR */
+@supports (padding: max(0px)) {
+  .wallet-container {
+    padding-top: max(20px, env(safe-area-inset-top));
+    padding-bottom: max(20px, env(safe-area-inset-bottom));
+    padding-left: max(10px, env(safe-area-inset-left));
+    padding-right: max(10px, env(safe-area-inset-right));
+  }
+}
+
+/* LOADING SCREEN */
+.loading-fullscreen {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+}
+
+.spinner-large {
+  width: 45px;
+  height: 45px;
+  border: 3px solid rgba(255,255,255,0.1);
+  border-top: 3px solid #00d4ff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 15px;
+}
+
+/* HEADER - TOP CLEAR */
 .wallet-header {
+  padding: 12px 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 25px;
-  padding-bottom: 15px;
   border-bottom: 1px solid rgba(255,255,255,0.1);
+  margin-bottom: 12px;
+  flex-shrink: 0;
 }
 
 .header-left {
@@ -28,50 +68,54 @@
 }
 
 .header-left h1 {
-  font-size: 1.8rem; /* CHOTA KIA MOBILE KE LIYE */
+  font-size: 1.4rem;
   background: linear-gradient(45deg, #00d4ff, #ff6b9d);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  margin-bottom: 2px;
-  line-height: 1.2;
+  margin: 0 0 2px 0;
+  line-height: 1.1;
 }
 
 .header-left p {
   color: #a0a0a0;
-  font-size: 0.9rem;
+  font-size: 0.75rem;
   margin: 0;
 }
 
 .refresh-btn {
   background: linear-gradient(45deg, #00d4ff, #0099cc);
   border: none;
-  border-radius: 25px;
-  padding: 10px 16px; /* CHOTA */
+  border-radius: 18px;
+  padding: 8px 12px;
   color: white;
-  cursor: pointer;
-  font-size: 0.9rem;
+  font-size: 0.75rem;
   font-weight: 600;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(0,212,255,0.3);
   flex-shrink: 0;
 }
 
-.refresh-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 212, 255, 0.4);
+/* MAIN CONTENT - FLEXIBLE HEIGHT */
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow: hidden;
+  padding-bottom: 10px;
 }
 
-/* BALANCE CARD - MOBILE PERFECT */
+/* BALANCE CARD - PERFECT SIZE */
 .balance-card {
   background: linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06));
   backdrop-filter: blur(20px);
-  border: 1px solid rgba(255,255,255,0.18);
-  border-radius: 20px;
-  padding: 25px 20px; /* CHOTA PADDING */
-  margin-bottom: 25px;
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 16px;
+  padding: 16px;
   position: relative;
   overflow: hidden;
+  flex-shrink: 0;
 }
 
 .balance-card::before {
@@ -81,212 +125,174 @@
   left: 0;
   right: 0;
   height: 3px;
-  background: linear-gradient(90deg, #00d4ff, #ff6b9d, #00d4ff);
-  background-size: 200% 100%;
+  background: linear-gradient(90deg, #00d4ff, #ff6b9d);
   animation: shimmer 2s infinite;
-}
-
-@keyframes shimmer {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
 }
 
 .balance-info {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 4px;
 }
 
 .balance-label {
-  font-size: 0.95rem;
+  font-size: 0.7rem;
   color: #a0a0a0;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
 .balance-amount {
-  font-size: 2.8rem; /* MOBILE PERFECT SIZE */
+  font-size: 2rem;
   font-weight: 800;
   background: linear-gradient(45deg, #00ff88, #00d4ff);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   margin: 0;
-  line-height: 1;
 }
 
 .profile-id {
+  font-size: 0.65rem;
   color: #a0a0a0;
-  font-size: 0.85rem;
 }
 
 .balance-actions {
   display: flex;
-  gap: 10px;
-  margin-top: 20px;
+  gap: 8px;
+  margin-top: 12px;
 }
 
 .quick-action {
   flex: 1;
-  padding: 10px 16px; /* CHOTA */
+  padding: 8px 12px;
   border: none;
-  border-radius: 25px;
-  font-size: 0.9rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
-  text-align: center;
 }
 
-.deposit-quick {
-  background: linear-gradient(45deg, #00ff88, #00cc66);
-  color: white;
-  box-shadow: 0 4px 15px rgba(0, 255, 136, 0.3);
-}
-
-.withdraw-quick {
-  background: linear-gradient(45deg, #ff6b9d, #ff416c);
-  color: white;
-  box-shadow: 0 4px 15px rgba(255, 107, 157, 0.3);
-}
-
-/* STATS GRID - MOBILE SINGLE COLUMN */
+/* STATS GRID */
 .stats-grid {
   display: grid;
-  grid-template-columns: 1fr; /* MOBILE SINGLE */
-  gap: 15px;
-  margin-bottom: 25px;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  flex-shrink: 0;
 }
 
 .stat-card {
   background: linear-gradient(145deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
   backdrop-filter: blur(15px);
   border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 16px;
-  padding: 20px 15px; /* CHOTA */
+  border-radius: 12px;
+  padding: 12px 10px;
   display: flex;
-  gap: 12px;
+  gap: 8px;
   align-items: center;
-  transition: all 0.3s ease;
-}
-
-.stat-card:hover {
-  transform: translateY(-3px);
-  border-color: rgba(0, 212, 255, 0.5);
 }
 
 .stat-icon {
-  font-size: 2rem; /* CHOTA MOBILE */
-  width: 50px;
-  height: 50px;
-  border-radius: 12px;
+  font-size: 1.6rem;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(45deg, rgba(0,212,255,0.2), rgba(255,107,157,0.2));
-  backdrop-filter: blur(10px);
+  background: rgba(0,212,255,0.2);
   flex-shrink: 0;
 }
 
 .stat-card p {
+  font-size: 0.7rem;
   color: #a0a0a0;
-  font-size: 0.85rem;
   margin: 0 0 2px 0;
 }
 
 .stat-card strong {
-  font-size: 1.4rem; /* CHOTA */
+  font-size: 1rem;
   color: white;
-  display: block;
+  font-weight: 700;
 }
 
-/* TRANSACTIONS - MOBILE */
+/* TRANSACTIONS - FLEXIBLE */
 .transactions-section {
+  flex: 1;
   background: linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
   backdrop-filter: blur(20px);
   border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 20px;
-  padding: 25px 20px; /* CHOTA */
-  margin-bottom: 25px;
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 200px;
 }
 
 .section-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  flex-shrink: 0;
 }
 
 .section-header h2 {
-  font-size: 1.4rem; /* CHOTA */
+  font-size: 1.1rem;
   background: linear-gradient(45deg, #00d4ff, #ff6b9d);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  margin: 0;
 }
 
 .transaction-count {
   background: rgba(0,212,255,0.2);
   color: #00d4ff;
-  padding: 6px 12px;
-  border-radius: 20px;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.7rem;
   font-weight: 600;
-  font-size: 0.85rem;
 }
 
 .transactions-list {
-  max-height: 350px; /* CHOTA MOBILE */
+  flex: 1;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .transaction-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px 12px; /* CHOTA */
-  margin-bottom: 12px;
+  padding: 10px 8px;
+  margin-bottom: 8px;
   background: rgba(255,255,255,0.05);
-  border-radius: 16px;
-  border: 1px solid rgba(255,255,255,0.1);
-  transition: all 0.3s ease;
-}
-
-.transaction-item:hover {
-  background: rgba(255,255,255,0.1);
-  transform: translateX(5px); /* KAM MOBILE */
+  border-radius: 10px;
+  border-left: 3px solid transparent;
 }
 
 .transaction-item.pending {
-  border-left: 3px solid #ffc107;
+  border-left-color: #ffc107;
 }
 
 .transaction-item.approved {
-  border-left: 3px solid #00ff88;
-}
-
-.transaction-details {
-  flex: 1;
-  min-width: 0;
-}
-
-.transaction-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  margin-bottom: 6px;
+  border-left-color: #00ff88;
 }
 
 .amount {
-  font-size: 1.4rem; /* CHOTA MOBILE */
-  font-weight: 800;
+  font-size: 1.1rem;
+  font-weight: 700;
   color: white;
 }
 
 .status-badge {
-  padding: 4px 12px;
-  border-radius: 15px;
-  font-size: 0.75rem;
+  padding: 3px 8px;
+  border-radius: 10px;
+  font-size: 0.65rem;
   font-weight: 600;
-  text-transform: uppercase;
 }
 
 .status-badge.completed {
@@ -300,136 +306,81 @@
 }
 
 .transaction-meta {
-  display: flex;
-  justify-content: space-between;
+  font-size: 0.7rem;
   color: #a0a0a0;
-  font-size: 0.8rem;
 }
 
 .transaction-icon {
-  font-size: 1.8rem; /* CHOTA */
-  min-width: 45px;
-  text-align: center;
+  font-size: 1.4rem;
+  min-width: 28px;
 }
 
 /* EMPTY STATE */
 .empty-state {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-align: center;
-  padding: 40px 15px; /* CHOTA */
-  color: #a0a0a0;
 }
 
 .empty-icon {
-  font-size: 4rem; /* CHOTA */
-  margin-bottom: 15px;
+  font-size: 3.5rem;
+  margin-bottom: 10px;
   opacity: 0.5;
 }
 
 .empty-state h3 {
-  font-size: 1.3rem;
+  font-size: 1rem;
   margin-bottom: 8px;
   color: white;
 }
 
-.deposit-btn-large {
-  background: linear-gradient(45deg, #00ff88, #00cc66);
-  color: white;
-  border: none;
-  padding: 12px 30px; /* CHOTA */
-  border-radius: 25px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  margin-top: 15px;
-  transition: all 0.3s ease;
-}
-
-/* ACTION BUTTONS - MOBILE STACK */
+/* ACTION BUTTONS - BOTTOM FIXED */
 .action-buttons {
+  padding: 12px 0 0 0;
   display: flex;
-  flex-direction: column; /* MOBILE STACK */
-  gap: 15px;
-  max-width: 100%;
-  margin: 0 auto;
+  flex-direction: column;
+  gap: 10px;
+  flex-shrink: 0;
 }
 
 .action-btn {
-  padding: 16px 24px; /* CHOTA */
+  padding: 14px 18px;
   border: none;
-  border-radius: 20px;
-  font-size: 1.1rem; /* CHOTA */
+  border-radius: 14px;
+  font-size: 0.95rem;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.3s ease;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
 }
 
 .primary {
   background: linear-gradient(45deg, #00ff88, #00cc66);
   color: white;
-  box-shadow: 0 6px 20px rgba(0,255,136,0.4);
+  box-shadow: 0 4px 15px rgba(0,255,136,0.3);
 }
 
 .secondary {
   background: linear-gradient(45deg, #ff6b9d, #ff416c);
   color: white;
-  box-shadow: 0 6px 20px rgba(255,107,157,0.4);
+  box-shadow: 0 4px 15px rgba(255,107,157,0.3);
 }
 
-/* LOADING */
-.loading-spinner {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 50vh;
-  gap: 15px;
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
-.spinner {
-  width: 50px; /* CHOTA */
-  height: 50px;
-  border: 3px solid rgba(255,255,255,0.1);
-  border-top: 3px solid #00d4ff;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
 }
 
-/* TABLET & DESKTOP */
 @media (min-width: 768px) {
   .wallet-container {
-    padding: 25px;
-  }
-  
-  .header-left h1 {
-    font-size: 2.2rem;
-  }
-  
-  .balance-amount {
-    font-size: 3.5rem;
-  }
-  
-  .stats-grid {
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  }
-  
-  .action-buttons {
-    flex-direction: row;
-    max-width: 500px;
-  }
-  
-  .balance-card {
-    padding: 35px 30px;
-  }
-}
-
-@media (min-width: 1024px) {
-  .balance-amount {
-    font-size: 4rem;
-  }
-  
-  .header-left h1 {
-    font-size: 2.5rem;
+    max-width: 400px;
+    margin: 0 auto;
   }
 }

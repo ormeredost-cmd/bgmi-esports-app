@@ -1,4 +1,4 @@
-// src/App.jsx
+// src/App.jsx - BANK DETAILS ROUTE ADDED ✅
 import {
   BrowserRouter as Router,
   Routes,
@@ -22,13 +22,14 @@ import Register from "./pages/Register";
 
 import Deposit from "./pages/Deposit";
 import DepositQR from "./pages/DepositQR";
+import Withdraw from "./pages/Withdraw";
 
-import ProtectedRoute from "./components/ProtectedRoute"; // ✅ ALREADY PERFECT
+// 🔥 BANK DETAILS IMPORT ✅
+import BankDetails from "./pages/BankDetails"; 
+
+import ProtectedRoute from "./components/ProtectedRoute";
 import "./styles/appTheme.css";
 
-/* =========================
-   MAIN LAYOUT
-========================= */
 const MainLayout = ({ children }) => {
   const location = useLocation();
 
@@ -42,45 +43,36 @@ const MainLayout = ({ children }) => {
 
   return (
     <div className="app-root-esports">
-      {/* TOP BAR */}
       <header className="app-topbar">
         <div className="app-topbar-left">
           <span className="app-topbar-logo-main">BGMI</span>
           <span className="app-topbar-logo-sub">Esports</span>
         </div>
-
         <div className="app-topbar-right">
           <Navbar variant="top-menu" />
         </div>
       </header>
-
-      {/* PAGE CONTENT */}
       <main className="app-main-esports has-bottom-nav">
         {children}
       </main>
-
-      {/* BOTTOM NAV */}
       <Navbar variant="bottom-tabs" />
       <Footer />
     </div>
   );
 };
 
-/* =========================
-   APP ROUTES - PERFECT SETUP
-========================= */
 function App() {
   return (
     <Router>
       <Routes>
-        {/* 🔥 PUBLIC ROUTES (No protection needed) */}
+        {/* 🔥 PUBLIC ROUTES */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/tournaments" element={<Tournaments />} /> {/* Public */}
-        <Route path="/tournaments/:id" element={<TournamentDetails />} /> {/* Public */}
-        <Route path="/help" element={<Help />} /> {/* Public */}
+        <Route path="/tournaments" element={<Tournaments />} />
+        <Route path="/tournaments/:id" element={<TournamentDetails />} />
+        <Route path="/help" element={<Help />} />
 
-        {/* 🔥 PROTECTED ROUTES (MainLayout + ProtectedRoute) */}
+        {/* 🔥 PROTECTED ROUTES */}
         <Route path="/" element={
           <ProtectedRoute>
             <MainLayout>
@@ -125,6 +117,23 @@ function App() {
           <ProtectedRoute>
             <MainLayout>
               <DepositQR />
+            </MainLayout>
+          </ProtectedRoute>
+        } />
+
+        <Route path="/withdraw" element={
+          <ProtectedRoute>
+            <MainLayout>
+              <Withdraw />
+            </MainLayout>
+          </ProtectedRoute>
+        } />
+
+        {/* 🔥 BANK DETAILS ROUTE - NEW ✅ */}
+        <Route path="/bank-details" element={
+          <ProtectedRoute>
+            <MainLayout>
+              <BankDetails />
             </MainLayout>
           </ProtectedRoute>
         } />
