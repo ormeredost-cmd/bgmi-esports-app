@@ -1,183 +1,228 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./Withdraw.css";
 
-const WITHDRAW_API = window.location.hostname === "localhost" 
-  ? "http://localhost:5002"
-  : "https://bgmi-server-save-tournament-data.onrender.com";
+const WITHDRAW_API =
+  window.location.hostname === "localhost"
+    ? "http://localhost:5002"
+    : "https://bgmi-server-save-tournament-data.onrender.com";
+
+const BALANCE_API = "https://main-server-firebase.onrender.com";
 
 const Withdraw = () => {
-  const [balance, setBalance] = useState(0);
-  const [amount, setAmount] = useState("");
-  const [phone, setPhone] = useState("");
-  const [utr, setUtr] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
-  const [error, setError] = useState("");
-  const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
-  // Load user & balance
+  const [user, setUser] = useState(null);
+
+  const [balance, setBalance] = useState(0);
+  const [amount, setAmount] = useState("");
+
+  const [loadingBalance, setLoadingBalance] = useState(true);
+  const [loadingWithdraw, setLoadingWithdraw] = useState(false);
+
+  const [success, setSuccess] = useState(false);
+  const [successAmount, setSuccessAmount] = useState(0);
+
+  const [error, setError] = useState("");
+
+  // ====== USER LOAD ======
   useEffect(() => {
     try {
-      const storedUser = JSON.parse(localStorage.getItem("bgmi_user"));
-      if (storedUser) {
-        setUser(storedUser);
-        loadBalance(storedUser.profile_id);
-        setPhone(storedUser.phone || "");
-      } else {
+      let stored = localStorage.getItem("bgmi_user");
+      if (!stored) stored = sessionStorage.getItem("bgmi_user");
+
+      if (!stored) {
         navigate("/login");
+        return;
       }
+
+      const parsed = JSON.parse(stored);
+      if (!parsed?.profile_id) {
+        navigate("/login");
+        return;
+      }
+
+      setUser(parsed);
     } catch (err) {
       navigate("/login");
     }
   }, [navigate]);
 
-  const loadBalance = async (profileId) => {
-    try {
-      const res = await axios.get(
-        `https://main-server-firebase.onrender.com/api/my-balance?profileId=${profileId}`
-      );
-      setBalance(res.data.balance || 0);
-    } catch (err) {
-      console.error("Balance load error:", err);
-      setBalance(0);
-    }
-  };
+  // ====== BALANCE LOAD ======
+  useEffect(() => {
+    if (!user?.profile_id) return;
 
+    const loadBalance = async () => {
+      try {
+        setLoadingBalance(true);
+
+        const res = await axios.get(
+          `${BALANCE_API}/api/my-balance?profileId=${user.profile_id}`
+        );
+
+        setBalance(Number(res.data.balance || 0));
+      } catch (err) {
+        setBalance(0);
+      } finally {
+        setLoadingBalance(false);
+      }
+    };
+
+    loadBalance();
+  }, [user?.profile_id]);
+
+  const numericAmount = useMemo(() => Number(amount || 0), [amount]);
+
+  // ====== SUBMIT ======
   const handleWithdraw = async (e) => {
     e.preventDefault();
-    
-    // VALIDATIONS
-    if (!amount || amount < 100) {
+    setError("");
+
+    // VALIDATION
+    if (!amount || numericAmount < 100) {
       setError("Minimum ₹100 withdraw kar sakte ho bhai!");
       return;
     }
-    if (parseFloat(amount) > balance) {
+
+    if (numericAmount > balance) {
       setError("Itna paise nahi hai wallet mein!");
       return;
     }
-    if (!phone || phone.length !== 10) {
-      setError("Valid 10 digit phone number daal!");
-      return;
-    }
-    if (!utr || utr.length < 10) {
-      setError("Valid UTR number daal bhai!");
-      return;
-    }
 
-    setLoading(true);
-    setError("");
+    setLoadingWithdraw(true);
 
     try {
       const withdrawData = {
         profile_id: user.profile_id,
-        amount: parseFloat(amount),
-        phone,
-        utr,
-        status: "pending"
+        amount: numericAmount,
+        status: "pending",
+        created_at: new Date().toISOString(),
       };
 
-      const res = await axios.post(`${WITHDRAW_API}/api/withdrawals`, withdrawData);
-      
-      if (res.data.success) {
+      const res = await axios.post(
+        `${WITHDRAW_API}/api/withdrawals`,
+        withdrawData
+      );
+
+      // ⭐ Real app feel (fake processing)
+      await new Promise((r) => setTimeout(r, 1500));
+
+      if (res.data?.success) {
+        setSuccessAmount(numericAmount);
         setSuccess(true);
-        // Update wallet balance
-        setBalance(balance - parseFloat(amount));
-        setTimeout(() => navigate("/wallet"), 2000);
+
+        // Update UI balance instantly
+        setBalance((prev) => Math.max(0, prev - numericAmount));
+
+        // Reset
+        setAmount("");
+
+        // Redirect after 2.5 sec
+        setTimeout(() => navigate("/wallet"), 2500);
+      } else {
+        setError("Withdraw request fail ho gaya!");
       }
     } catch (err) {
       setError(err.response?.data?.message || "Withdraw fail ho gaya!");
     } finally {
-      setLoading(false);
+      setLoadingWithdraw(false);
     }
   };
 
+  // ====== SUCCESS SCREEN ======
   if (success) {
     return (
       <div className="withdraw-container">
-        <div className="success-screen">
+        <div className="success-card">
+          <div className="success-glow"></div>
+
           <div className="success-icon">✅</div>
-          <h1>Withdraw Request Sent!</h1>
-          <p>Admin 24hr mein process karega</p>
-          <p className="amount-success">₹{amount}</p>
-          <p>UTR: {utr}</p>
+          <h1 className="success-title">Withdraw Request Sent!</h1>
+
+          <p className="success-sub">
+            Admin 24hr ke andar process karega
+          </p>
+
+          <div className="success-amount">
+            ₹{Number(successAmount || 0).toLocaleString()}
+          </div>
+
+          <div className="success-status">
+            ⏳ Status: <b>Pending</b>
+          </div>
+
+          <p className="success-note">Redirecting to wallet...</p>
         </div>
       </div>
     );
   }
 
+  // ====== MAIN UI ======
   return (
     <div className="withdraw-container">
-      <div className="withdraw-header">
-        <button className="back-btn" onClick={() => navigate(-1)}>
-          ← Back
-        </button>
-        <h1>💸 Withdraw</h1>
-        <div className="balance-display">
-          Available: ₹{balance.toLocaleString()}
-        </div>
-      </div>
+      <div className="withdraw-card">
+        <div className="withdraw-header">
+          <h1>💸 Withdraw</h1>
 
-      <form className="withdraw-form" onSubmit={handleWithdraw}>
-        <div className="form-group">
-          <label>Amount (₹100 minimum)</label>
-          <input
-            type="number"
-            placeholder="Enter amount"
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
-            min="100"
-            max={balance}
-            required
-          />
-          <small>Max: ₹{balance.toLocaleString()}</small>
+          <div className="balance-display">
+            {loadingBalance ? (
+              <span className="balance-loading">Loading balance...</span>
+            ) : (
+              <>
+                Available: <b>₹{Number(balance || 0).toLocaleString()}</b>
+              </>
+            )}
+          </div>
         </div>
 
-        <div className="form-group">
-          <label>Bank UPI Phone</label>
-          <input
-            type="tel"
-            placeholder="9876543210"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            maxLength={10}
-            required
-          />
+        <form className="withdraw-form" onSubmit={handleWithdraw}>
+          {/* ONLY AMOUNT */}
+          <div className="form-group">
+            <label>Withdraw Amount (₹100 minimum)</label>
+
+            <input
+              type="number"
+              placeholder="Enter amount"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              min="100"
+              max={balance}
+              required
+              disabled={loadingWithdraw || loadingBalance}
+            />
+
+            <div className="hint-row">
+              <small>Min: ₹100</small>
+              <small>Max: ₹{Number(balance || 0).toLocaleString()}</small>
+            </div>
+          </div>
+
+          {/* ERROR */}
+          {error && <div className="error-message">⚠️ {error}</div>}
+
+          {/* BUTTON */}
+          <button
+            type="submit"
+            className="withdraw-btn"
+            disabled={loadingWithdraw || loadingBalance}
+          >
+            {loadingWithdraw ? (
+              <>
+                <span className="btn-spinner"></span>
+                Processing...
+              </>
+            ) : (
+              `Withdraw ₹${numericAmount ? numericAmount : 0}`
+            )}
+          </button>
+        </form>
+
+        <div className="withdraw-info">
+          <p>
+            🔒 Withdraw request pending jayegi. Admin 24hr me process karega.
+          </p>
         </div>
-
-        <div className="form-group">
-          <label>Bank UTR Number</label>
-          <input
-            type="text"
-            placeholder="Enter UTR"
-            value={utr}
-            onChange={(e) => setUtr(e.target.value)}
-            required
-          />
-          <small>Payment screenshot ke saath bhejna hoga</small>
-        </div>
-
-        {error && <div className="error-message">{error}</div>}
-
-        <button 
-          type="submit" 
-          className="withdraw-btn"
-          disabled={loading}
-        >
-          {loading ? "Processing..." : `Withdraw ₹${amount || 0}`}
-        </button>
-      </form>
-
-      <div className="withdraw-info">
-        <h3>ℹ️ Process:</h3>
-        <ul>
-          <li>1. UTR generate karo bank se</li>
-          <li>2. Screenshot admin ko bhejo</li>
-          <li>3. 24hr mein process hoga</li>
-          <li>4. Min ₹100, Max full balance</li>
-        </ul>
       </div>
     </div>
   );

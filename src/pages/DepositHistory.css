@@ -1,22 +1,33 @@
-/* DepositHistory.css - SCROLL FIXED + CLEAN */
+/* =========================
+   DepositHistory.css (FINAL)
+   PHONE FIXED + CLEAN UI
+========================= */
 
 /* RESET */
 * {
   box-sizing: border-box;
 }
 
+html,
 body {
   margin: 0;
   padding: 0;
+  width: 100%;
+  overflow-x: hidden; /* ✅ phone side bhagna fix */
+  background: transparent;
 }
 
 /* FULL PAGE (SCROLL ENABLE) */
 .history-page {
-  height: 100vh;              /* fixed height */
-  overflow-y: auto;           /* scroll ON */
+  width: 100%;
+  min-height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden; /* ✅ important */
   -webkit-overflow-scrolling: touch;
-  padding: 15px;
-  padding-bottom: 120px;      /* bottom navbar space */
+
+  padding: 14px;
+  padding-bottom: 130px; /* bottom navbar safe */
+
   background: transparent;
 
   /* scrollbar hide */
@@ -29,61 +40,99 @@ body {
   height: 0px;
 }
 
-/* HEADER */
+/* =========================
+   WRAPPER (CENTER + FIX WIDTH)
+========================= */
+.history-wrapper {
+  width: 100%;
+  max-width: 520px; /* ✅ phone + desktop both */
+  margin: 0 auto;   /* center */
+}
+
+/* =========================
+   HEADER
+========================= */
 .history-header {
+  width: 100%;
+
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 12px;
-  margin-bottom: 20px;
+
+  margin-bottom: 18px;
+
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(20px);
-  padding: 15px 20px;
+
+  padding: 14px 16px;
   border-radius: 16px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.1);
+
+  overflow: hidden; /* ✅ overflow-x fix */
+}
+
+.header-title {
+  min-width: 0; /* ✅ text overflow fix */
 }
 
 .header-title h1 {
   margin: 0 0 4px 0;
-  font-size: 20px;
+  font-size: 19px;
   color: #2d3748;
-  font-weight: 800;
+  font-weight: 900;
 }
 
 .total-count {
   color: #718096;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .refresh-btn {
+  flex-shrink: 0;
+
   background: linear-gradient(135deg, #667eea, #764ba2);
   color: white;
   border: none;
+
   padding: 10px 14px;
   border-radius: 12px;
+
   cursor: pointer;
   font-size: 13px;
-  font-weight: 700;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+  font-weight: 800;
+
+  transition: 0.25s;
+  box-shadow: 0 4px 18px rgba(102, 126, 234, 0.28);
 }
 
 .refresh-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 8px 22px rgba(102, 126, 234, 0.35);
 }
 
-/* FILTER TABS (horizontal scroll already) */
+/* =========================
+   FILTER TABS
+========================= */
 .filter-tabs {
+  width: 100%;
+
   display: flex;
   gap: 8px;
-  margin-bottom: 20px;
+
+  margin-bottom: 18px;
+
   background: rgba(255, 255, 255, 0.9);
-  padding: 8px 15px;
+  padding: 8px 12px;
   border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+
   overflow-x: auto;
+  overflow-y: hidden;
+
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
@@ -93,53 +142,75 @@ body {
 }
 
 .filter-tab {
-  padding: 8px 16px;
+  padding: 8px 14px;
   border: none;
+
   background: transparent;
   border-radius: 12px;
-  font-weight: 700;
+
+  font-weight: 800;
   font-size: 13px;
+
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: 0.25s;
+
   white-space: nowrap;
   flex-shrink: 0;
+  color: #2d3748;
 }
 
 .filter-tab.active {
   background: linear-gradient(135deg, #00d4aa, #00b894);
   color: white;
-  box-shadow: 0 4px 15px rgba(0, 212, 170, 0.4);
+  box-shadow: 0 4px 15px rgba(0, 212, 170, 0.35);
 }
 
-/* LIST */
+/* =========================
+   LIST
+========================= */
 .history-list {
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
+/* =========================
+   CARD
+========================= */
 .history-card {
+  width: 100%;
+
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(20px);
+
   border-radius: 16px;
-  padding: 18px 20px;
+  padding: 16px 16px;
+
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  gap: 14px;
+
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
-  transition: all 0.3s ease;
+
+  transition: 0.25s;
+
+  overflow: hidden; /* ✅ overflow fix */
 }
 
 .history-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.14);
 }
 
 .card-left {
   flex: 1;
+  min-width: 0; /* ✅ text wrap fix */
 }
 
+/* Amount row */
 .amount-row {
   display: flex;
   align-items: center;
@@ -148,11 +219,12 @@ body {
 }
 
 .amount {
-  font-size: 24px;
-  font-weight: 800;
+  font-size: 22px;
+  font-weight: 900;
   color: #00d4aa;
 }
 
+/* Dot */
 .status-dot {
   width: 10px;
   height: 10px;
@@ -170,23 +242,26 @@ body {
   background: #e74c3c;
 }
 
+/* Details row */
 .details-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 10px;
+  flex-wrap: wrap; /* ✅ phone wrap fix */
 }
 
 .utr {
   color: #4a5568;
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 700;
+  word-break: break-word;
 }
 
 .date {
-  color: #a0aec0;
+  color: #718096;
   font-size: 12px;
-  background: rgba(247, 250, 252, 0.8);
+  background: rgba(247, 250, 252, 0.9);
   padding: 4px 10px;
   border-radius: 8px;
   white-space: nowrap;
@@ -195,7 +270,7 @@ body {
 .user-info {
   margin-top: 8px;
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 800;
   color: #2d3748;
 }
 
@@ -203,16 +278,23 @@ body {
   margin-top: 6px;
   font-size: 12px;
   color: #718096;
+  word-break: break-word;
 }
 
+/* Right badge */
 .status-badge-large {
+  flex-shrink: 0;
+
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 8px 16px;
+
+  padding: 8px 14px;
   border-radius: 12px;
-  font-weight: 700;
+
+  font-weight: 800;
   font-size: 12px;
+
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   white-space: nowrap;
 }
@@ -232,17 +314,23 @@ body {
   color: #721c24;
 }
 
-/* EMPTY */
+/* =========================
+   EMPTY STATE
+========================= */
 .empty-state {
+  width: 100%;
   text-align: center;
-  padding: 50px 20px;
+
+  padding: 45px 18px;
+
   background: rgba(255, 255, 255, 0.9);
   border-radius: 20px;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
 }
 
 .empty-wallet {
-  font-size: 50px;
+  font-size: 52px;
   margin-bottom: 15px;
 }
 
@@ -250,36 +338,47 @@ body {
   margin: 0 0 8px 0;
   font-size: 18px;
   color: #2d3748;
+  font-weight: 900;
 }
 
 .add-money-btn {
   margin-top: 15px;
+
   background: linear-gradient(135deg, #00d4aa, #00b894);
   border: none;
+
   color: white;
   padding: 12px 18px;
+
   border-radius: 14px;
   font-size: 14px;
-  font-weight: 800;
+  font-weight: 900;
+
   cursor: pointer;
-  box-shadow: 0 4px 18px rgba(0, 212, 170, 0.35);
-  transition: all 0.3s ease;
+  box-shadow: 0 4px 18px rgba(0, 212, 170, 0.32);
+  transition: 0.25s;
 }
 
 .add-money-btn:hover {
   transform: translateY(-2px);
 }
 
-/* LOADING */
+/* =========================
+   LOADING
+========================= */
 .history-loading {
   display: flex;
   justify-content: center;
   align-items: center;
+
   height: 60vh;
-  font-size: 18px;
-  color: #718096;
+  font-size: 16px;
+  font-weight: 800;
+
+  color: rgba(255, 255, 255, 0.65);
 }
 
+/* Pulse animation */
 @keyframes pulse {
   0%,
   100% {
@@ -290,8 +389,19 @@ body {
   }
 }
 
-/* Mobile */
+/* =========================
+   MOBILE FIX
+========================= */
 @media (max-width: 520px) {
+  .history-page {
+    padding: 12px;
+    padding-bottom: 130px;
+  }
+
+  .history-header {
+    padding: 14px 14px;
+  }
+
   .history-card {
     flex-direction: column;
     align-items: flex-start;
