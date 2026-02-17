@@ -39,18 +39,25 @@ body {
   padding: 8px 0;
 }
 
-/* SCROLL AREA */
+/* =========================
+   SCROLL AREA (WRAPPER)
+========================= */
 .bank-card {
   flex: 1;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  padding: 16px;
 
-  /* ⚠️ IMPORTANT:
-     tere app me already bottom navbar fixed hai,
-     isliye yaha extra bottom padding dena jaruri hai
-  */
-  padding-bottom: 120px;
+  /* safe spacing */
+  padding: 14px;
+  padding-bottom: 140px; /* bottom navbar safe */
+
+  /* ⭐ center + upar */
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+
+  /* ⭐ upar shift */
+  padding-top: 10px;
 
   /* scrollbar hide */
   scrollbar-width: none;
@@ -60,6 +67,19 @@ body {
 .bank-card::-webkit-scrollbar {
   width: 0px;
   height: 0px;
+}
+
+/* =========================
+   REAL CARD
+========================= */
+.bank-inner-card {
+  width: 100%;
+  max-width: 460px; /* ⭐ width badi */
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 22px;
+  padding: 18px;
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.45);
 }
 
 /* HEADER */
@@ -163,19 +183,19 @@ select.form-input {
   font-size: 13px;
 }
 
-/* BUTTON (NOW NORMAL, NOT FIXED) */
+/* BUTTON */
 .submit-btn {
   width: 100%;
   padding: 14px 12px;
   border: none;
   border-radius: 16px;
   font-size: 15px;
-  font-weight: 700;
+  font-weight: 800;
   cursor: pointer;
   background: #00b7ff;
   color: #000;
   transition: 0.2s;
-  margin-top: 8px;
+  margin-top: 6px;
 }
 
 .submit-btn:hover {
@@ -206,5 +226,14 @@ select.form-input {
   }
   100% {
     transform: rotate(360deg);
+  }
+}
+
+/* MOBILE */
+@media (max-width: 520px) {
+  .bank-inner-card {
+    max-width: 100%;
+    padding: 16px;
+    border-radius: 20px;
   }
 }
