@@ -1,6 +1,6 @@
 /* =========================
-   DepositHistory.css (FINAL PREMIUM)
-   Phone + Desktop Perfect
+   DepositHistory.css (FINAL PREMIUM + SCROLL)
+   Phone + Desktop Perfect + Finger Scroll ✅
 ========================= */
 
 /* RESET */
@@ -28,6 +28,38 @@ body {
   padding-bottom: 125px; /* bottom navbar safe */
 
   box-sizing: border-box;
+  
+  /* 🔥 SCROLL ENABLED - Full height + scrollable */
+  min-height: 100vh;
+  max-height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  
+  /* Smooth finger scroll */
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  
+  /* Custom scrollbar for premium look */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.2) transparent;
+}
+
+/* Webkit scrollbar styling */
+.history-page::-webkit-scrollbar {
+  width: 6px;
+}
+
+.history-page::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.history-page::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 999px;
+}
+
+.history-page::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
 }
 
 /* =========================

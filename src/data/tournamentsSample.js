@@ -2,7 +2,7 @@
 export const tournamentsSample = [
   {
     id: "tm1",
-    name: "1v1 TDM Fire Rush 🔥",
+    name: "1v1 TDM",
     type: "TDM",
     mode: "1v1 TDM",
     map: "Warehouse",
