@@ -1,52 +1,51 @@
 /* =========================
-   DepositHistory.css (FINAL)
-   PHONE FIXED + CLEAN UI
+   DepositHistory.css (FINAL PREMIUM)
+   PHONE FIX + CENTER + CLEAN UI
 ========================= */
 
 /* RESET */
 * {
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
 }
 
 html,
 body {
-  margin: 0;
-  padding: 0;
   width: 100%;
-  overflow-x: hidden; /* ✅ phone side bhagna fix */
+  max-width: 100%;
+  overflow-x: hidden; /* ✅ right side bhagna fix */
   background: transparent;
+  font-family: "Segoe UI", Arial, sans-serif;
 }
 
-/* FULL PAGE (SCROLL ENABLE) */
+/* FULL PAGE */
 .history-page {
   width: 100%;
   min-height: 100vh;
+
   overflow-y: auto;
-  overflow-x: hidden; /* ✅ important */
-  -webkit-overflow-scrolling: touch;
+  overflow-x: hidden;
 
   padding: 14px;
-  padding-bottom: 130px; /* bottom navbar safe */
+  padding-bottom: 120px;
 
-  background: transparent;
-
-  /* scrollbar hide */
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-
-.history-page::-webkit-scrollbar {
-  width: 0px;
-  height: 0px;
+  display: flex;
+  justify-content: center; /* ✅ CENTER FIX */
 }
 
 /* =========================
-   WRAPPER (CENTER + FIX WIDTH)
+   MAIN CONTAINER (CENTER)
 ========================= */
-.history-wrapper {
+.history-container {
   width: 100%;
-  max-width: 520px; /* ✅ phone + desktop both */
-  margin: 0 auto;   /* center */
+  max-width: 520px; /* ✅ phone + desktop */
+  margin: 0 auto;
+
+  display: flex;
+  flex-direction: column;
+
+  overflow-x: hidden; /* ✅ extra safety */
 }
 
 /* =========================
@@ -60,57 +59,59 @@ body {
   align-items: center;
   gap: 12px;
 
-  margin-bottom: 18px;
-
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(20px);
+  margin-bottom: 16px;
 
   padding: 14px 16px;
-  border-radius: 16px;
+  border-radius: 18px;
 
-  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(18px);
 
-  overflow: hidden; /* ✅ overflow-x fix */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+
+  overflow: hidden; /* ✅ */
 }
 
 .header-title {
-  min-width: 0; /* ✅ text overflow fix */
+  min-width: 0;
 }
 
 .header-title h1 {
-  margin: 0 0 4px 0;
-  font-size: 19px;
-  color: #2d3748;
+  font-size: 18px;
   font-weight: 900;
+  color: #1f2937;
+  margin-bottom: 4px;
 }
 
 .total-count {
-  color: #718096;
   font-size: 12px;
   font-weight: 700;
+  color: #6b7280;
 }
 
+/* REFRESH BUTTON */
 .refresh-btn {
   flex-shrink: 0;
 
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  color: white;
-  border: none;
-
   padding: 10px 14px;
-  border-radius: 12px;
+  border-radius: 14px;
 
+  border: none;
   cursor: pointer;
+
   font-size: 13px;
-  font-weight: 800;
+  font-weight: 900;
+  color: white;
+
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.35);
 
   transition: 0.25s;
-  box-shadow: 0 4px 18px rgba(102, 126, 234, 0.28);
 }
 
 .refresh-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 22px rgba(102, 126, 234, 0.35);
+  box-shadow: 0 10px 25px rgba(102, 126, 234, 0.45);
 }
 
 /* =========================
@@ -118,17 +119,18 @@ body {
 ========================= */
 .filter-tabs {
   width: 100%;
-
   display: flex;
-  gap: 8px;
+  gap: 10px;
 
+  padding: 10px;
   margin-bottom: 18px;
 
-  background: rgba(255, 255, 255, 0.9);
-  padding: 8px 12px;
-  border-radius: 16px;
+  border-radius: 18px;
 
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(16px);
+
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
 
   overflow-x: auto;
   overflow-y: hidden;
@@ -142,27 +144,32 @@ body {
 }
 
 .filter-tab {
-  padding: 8px 14px;
   border: none;
-
-  background: transparent;
-  border-radius: 12px;
-
-  font-weight: 800;
-  font-size: 13px;
-
   cursor: pointer;
-  transition: 0.25s;
+
+  padding: 9px 14px;
+  border-radius: 14px;
+
+  font-size: 13px;
+  font-weight: 900;
+
+  color: #111827;
+  background: rgba(243, 244, 246, 0.9);
 
   white-space: nowrap;
   flex-shrink: 0;
-  color: #2d3748;
+
+  transition: 0.25s;
+}
+
+.filter-tab:hover {
+  transform: translateY(-2px);
 }
 
 .filter-tab.active {
   background: linear-gradient(135deg, #00d4aa, #00b894);
   color: white;
-  box-shadow: 0 4px 15px rgba(0, 212, 170, 0.35);
+  box-shadow: 0 6px 18px rgba(0, 212, 170, 0.35);
 }
 
 /* =========================
@@ -172,7 +179,7 @@ body {
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
 }
 
 /* =========================
@@ -181,137 +188,141 @@ body {
 .history-card {
   width: 100%;
 
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(20px);
-
-  border-radius: 16px;
-  padding: 16px 16px;
+  padding: 16px;
+  border-radius: 18px;
 
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 14px;
 
-  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(18px);
+
   border: 1px solid rgba(255, 255, 255, 0.2);
 
-  transition: 0.25s;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.1);
 
-  overflow: hidden; /* ✅ overflow fix */
+  transition: 0.25s;
+  overflow: hidden;
 }
 
 .history-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.14);
+  transform: translateY(-3px);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.14);
 }
 
 .card-left {
   flex: 1;
-  min-width: 0; /* ✅ text wrap fix */
+  min-width: 0;
 }
 
-/* Amount row */
+/* AMOUNT ROW */
 .amount-row {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 
 .amount {
   font-size: 22px;
-  font-weight: 900;
-  color: #00d4aa;
+  font-weight: 1000;
+  color: #00b894;
+  letter-spacing: 0.2px;
 }
 
-/* Dot */
+/* DOT */
 .status-dot {
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  animation: pulse 2s infinite;
+  animation: pulse 1.8s infinite;
 }
 
 .status-dot.approved {
-  background: #00d4aa;
+  background: #00b894;
 }
 .status-dot.pending {
-  background: #f39c12;
+  background: #f59e0b;
 }
 .status-dot.rejected {
-  background: #e74c3c;
+  background: #ef4444;
 }
 
-/* Details row */
+/* DETAILS */
 .details-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 10px;
-  flex-wrap: wrap; /* ✅ phone wrap fix */
+
+  flex-wrap: wrap;
 }
 
 .utr {
-  color: #4a5568;
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 800;
+  color: #374151;
+
   word-break: break-word;
 }
 
 .date {
-  color: #718096;
   font-size: 12px;
-  background: rgba(247, 250, 252, 0.9);
-  padding: 4px 10px;
-  border-radius: 8px;
+  font-weight: 800;
+  color: #6b7280;
+
+  background: rgba(243, 244, 246, 0.9);
+  padding: 5px 10px;
+  border-radius: 10px;
+
   white-space: nowrap;
 }
 
 .user-info {
-  margin-top: 8px;
+  margin-top: 10px;
   font-size: 13px;
-  font-weight: 800;
-  color: #2d3748;
+  font-weight: 900;
+  color: #111827;
 }
 
 .deposit-id {
   margin-top: 6px;
   font-size: 12px;
-  color: #718096;
+  font-weight: 700;
+  color: #6b7280;
+
   word-break: break-word;
 }
 
-/* Right badge */
+/* RIGHT BADGE */
 .status-badge-large {
   flex-shrink: 0;
 
-  display: flex;
-  align-items: center;
-  gap: 6px;
+  padding: 9px 14px;
+  border-radius: 14px;
 
-  padding: 8px 14px;
-  border-radius: 12px;
-
-  font-weight: 800;
   font-size: 12px;
+  font-weight: 900;
 
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   white-space: nowrap;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
 }
 
 .status-badge-large.approved {
-  background: rgba(212, 237, 218, 0.9);
-  color: #155724;
+  background: rgba(209, 250, 229, 0.9);
+  color: #065f46;
 }
 
 .status-badge-large.pending {
-  background: rgba(255, 243, 205, 0.9);
-  color: #856404;
+  background: rgba(254, 243, 199, 0.9);
+  color: #92400e;
 }
 
 .status-badge-large.rejected {
-  background: rgba(248, 215, 218, 0.9);
-  color: #721c24;
+  background: rgba(254, 226, 226, 0.9);
+  color: #991b1b;
 }
 
 /* =========================
@@ -322,40 +333,42 @@ body {
   text-align: center;
 
   padding: 45px 18px;
-
-  background: rgba(255, 255, 255, 0.9);
   border-radius: 20px;
 
-  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(18px);
+
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.1);
 }
 
 .empty-wallet {
   font-size: 52px;
-  margin-bottom: 15px;
+  margin-bottom: 14px;
 }
 
 .empty-state h3 {
-  margin: 0 0 8px 0;
   font-size: 18px;
-  color: #2d3748;
-  font-weight: 900;
+  font-weight: 1000;
+  color: #111827;
+  margin-bottom: 8px;
 }
 
 .add-money-btn {
-  margin-top: 15px;
+  margin-top: 16px;
+
+  border: none;
+  cursor: pointer;
+
+  padding: 12px 18px;
+  border-radius: 16px;
+
+  font-size: 14px;
+  font-weight: 1000;
+  color: white;
 
   background: linear-gradient(135deg, #00d4aa, #00b894);
-  border: none;
+  box-shadow: 0 6px 20px rgba(0, 212, 170, 0.35);
 
-  color: white;
-  padding: 12px 18px;
-
-  border-radius: 14px;
-  font-size: 14px;
-  font-weight: 900;
-
-  cursor: pointer;
-  box-shadow: 0 4px 18px rgba(0, 212, 170, 0.32);
   transition: 0.25s;
 }
 
@@ -367,25 +380,29 @@ body {
    LOADING
 ========================= */
 .history-loading {
+  width: 100%;
+  height: 70vh;
+
   display: flex;
   justify-content: center;
   align-items: center;
 
-  height: 60vh;
   font-size: 16px;
-  font-weight: 800;
+  font-weight: 900;
 
-  color: rgba(255, 255, 255, 0.65);
+  color: rgba(255, 255, 255, 0.75);
 }
 
-/* Pulse animation */
+/* =========================
+   PULSE ANIMATION
+========================= */
 @keyframes pulse {
   0%,
   100% {
     opacity: 1;
   }
   50% {
-    opacity: 0.5;
+    opacity: 0.45;
   }
 }
 
@@ -395,11 +412,11 @@ body {
 @media (max-width: 520px) {
   .history-page {
     padding: 12px;
-    padding-bottom: 130px;
+    padding-bottom: 120px;
   }
 
   .history-header {
-    padding: 14px 14px;
+    padding: 14px;
   }
 
   .history-card {
