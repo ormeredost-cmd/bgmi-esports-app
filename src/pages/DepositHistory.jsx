@@ -113,9 +113,7 @@ const DepositHistory = () => {
             <div className="total-count">Total: {deposits.length} deposits</div>
           </div>
 
-          <button onClick={refreshHistory} className="refresh-btn">
-            ↻ Refresh
-          </button>
+          
         </div>
 
         {/* FILTER TABS */}
@@ -179,7 +177,7 @@ const DepositHistory = () => {
                   </div>
 
                   <div className="details-row">
-                    <span className="utr">UTR: {d?.utr || "—"}</span>
+                    
                     <span className="date">
                       {formatIndianTime(d?.dateIST || d?.date)}
                     </span>
