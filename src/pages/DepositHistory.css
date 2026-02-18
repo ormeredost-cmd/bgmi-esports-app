@@ -1,21 +1,38 @@
 /* =========================
-   DepositHistory.css (FINAL)
-   Mobile + Desktop Perfect
+   DepositHistory.css (FINAL PREMIUM)
+   Phone + Desktop Perfect
 ========================= */
 
-/* Page wrapper */
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  overflow-x: hidden; /* 🔥 right side cut fix */
+}
+
+/* =========================
+   PAGE
+========================= */
 .history-page {
   width: 100%;
-  max-width: 900px;
+  max-width: 520px; /* 🔥 phone center + perfect */
   margin: 0 auto;
 
-  padding: 16px;
-  padding-bottom: 120px; /* bottom navbar space */
+  padding: 14px;
+  padding-bottom: 125px; /* bottom navbar safe */
 
   box-sizing: border-box;
 }
 
-/* Loading */
+/* =========================
+   LOADING
+========================= */
 .history-loading {
   width: 100%;
   min-height: 60vh;
@@ -24,61 +41,74 @@
   justify-content: center;
   align-items: center;
 
-  font-size: 18px;
-  font-weight: 600;
-  color: #fff;
+  font-size: 16px;
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.7);
 
   padding: 30px;
   box-sizing: border-box;
 }
 
-/* Header */
+/* =========================
+   HEADER
+========================= */
 .history-header {
   width: 100%;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
-
   gap: 12px;
+
   margin-bottom: 14px;
 
-  padding: 16px;
+  padding: 14px 14px;
   border-radius: 18px;
 
   background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.09);
-  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
 
   box-sizing: border-box;
+  overflow: hidden;
+}
+
+.header-title {
+  min-width: 0;
 }
 
 .header-title h1 {
   margin: 0;
-  font-size: 18px;
+  font-size: 17px;
   color: #fff;
-  font-weight: 800;
+  font-weight: 900;
 }
 
 .total-count {
   margin-top: 4px;
-  font-size: 13px;
+  font-size: 12px;
   color: rgba(255, 255, 255, 0.65);
+  font-weight: 700;
 }
 
 /* Refresh button */
 .refresh-btn {
+  flex-shrink: 0;
+
   border: none;
   cursor: pointer;
 
-  padding: 10px 14px;
+  padding: 10px 12px;
   border-radius: 12px;
 
-  font-weight: 700;
-  font-size: 14px;
+  font-weight: 900;
+  font-size: 13px;
 
   color: #fff;
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.12);
+
+  transition: 0.2s;
 }
 
 .refresh-btn:hover {
@@ -88,14 +118,17 @@
 /* =========================
    FILTER TABS
 ========================= */
-
 .filter-tabs {
   width: 100%;
+
   display: flex;
   gap: 10px;
 
   overflow-x: auto;
+  overflow-y: hidden;
+
   padding: 10px;
+  margin-bottom: 14px;
 
   border-radius: 18px;
 
@@ -126,12 +159,12 @@
   border: none;
   cursor: pointer;
 
-  font-weight: 800;
-  font-size: 14px;
+  font-weight: 900;
+  font-size: 13px;
 
   color: rgba(255, 255, 255, 0.75);
   background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.09);
 
   transition: 0.2s;
 }
@@ -141,45 +174,48 @@
 }
 
 .filter-tab.active {
-  color: #0b1116;
+  color: #071016;
   background: #00c896;
-  border: 1px solid rgba(0, 200, 150, 0.5);
+  border: 1px solid rgba(0, 200, 150, 0.55);
 }
 
 /* =========================
    LIST + CARDS
 ========================= */
-
 .history-container {
   width: 100%;
-  margin-top: 14px;
+  box-sizing: border-box;
 }
 
 .history-list {
   width: 100%;
+
   display: flex;
   flex-direction: column;
   gap: 14px;
 }
 
-/* Card */
+/* =========================
+   CARD
+========================= */
 .history-card {
   width: 100%;
+  max-width: 100%;
+
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
 
-  gap: 14px;
+  gap: 12px;
 
-  padding: 16px;
+  padding: 14px;
   border-radius: 18px;
 
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.09);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(12px);
 
   box-sizing: border-box;
-
   overflow: hidden;
 }
 
@@ -194,11 +230,12 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+
   gap: 10px;
 }
 
 .amount {
-  font-size: 26px;
+  font-size: 24px;
   font-weight: 900;
   color: #00c896;
 }
@@ -208,7 +245,7 @@
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  flex: 0 0 auto;
+  flex-shrink: 0;
 }
 
 .status-dot.pending {
@@ -231,44 +268,50 @@
   flex-direction: column;
   gap: 6px;
 
-  font-size: 14px;
+  font-size: 13px;
   color: rgba(255, 255, 255, 0.78);
 }
 
 /* UTR */
 .utr {
-  font-weight: 700;
+  font-weight: 800;
   word-break: break-all;
 }
 
 /* Date */
 .date {
   width: fit-content;
+
   padding: 6px 10px;
   border-radius: 12px;
 
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.08);
 
-  font-size: 13px;
-  font-weight: 700;
-  color: rgba(255, 255, 255, 0.8);
+  font-size: 12px;
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.85);
 }
 
 /* User info */
 .user-info {
   margin-top: 12px;
-  font-weight: 800;
-  font-size: 14px;
+
+  font-weight: 900;
+  font-size: 13px;
+
   color: rgba(255, 255, 255, 0.9);
 }
 
 /* Deposit ID */
 .deposit-id {
   margin-top: 8px;
-  font-size: 13px;
-  font-weight: 700;
+
+  font-size: 12px;
+  font-weight: 800;
+
   color: rgba(255, 255, 255, 0.7);
+  word-break: break-word;
 }
 
 .deposit-id b {
@@ -277,18 +320,19 @@
 
 /* Right badge */
 .status-badge-large {
-  flex: 0 0 auto;
+  flex-shrink: 0;
 
-  padding: 10px 12px;
+  padding: 8px 10px;
   border-radius: 14px;
 
   font-weight: 900;
-  font-size: 13px;
+  font-size: 12px;
 
   white-space: nowrap;
   text-align: center;
 }
 
+/* Badge colors */
 .status-badge-large.pending {
   background: rgba(255, 176, 32, 0.12);
   border: 1px solid rgba(255, 176, 32, 0.3);
@@ -310,7 +354,6 @@
 /* =========================
    EMPTY STATE
 ========================= */
-
 .empty-state {
   width: 100%;
   margin-top: 18px;
@@ -322,13 +365,13 @@
 
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.09);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(12px);
 
   box-sizing: border-box;
 }
 
 .empty-wallet {
-  font-size: 40px;
+  font-size: 42px;
   margin-bottom: 10px;
 }
 
@@ -342,7 +385,8 @@
 .empty-state p {
   margin: 10px 0 0 0;
   color: rgba(255, 255, 255, 0.65) !important;
-  font-weight: 600;
+  font-weight: 700;
+  font-size: 13px;
 }
 
 /* Add money button */
@@ -360,21 +404,42 @@
 
   background: #00c896;
   color: #071016;
+
+  transition: 0.2s;
 }
 
 .add-money-btn:hover {
-  filter: brightness(1.05);
+  filter: brightness(1.06);
 }
 
 /* =========================
-   MOBILE FIX (MOST IMPORTANT)
+   MOBILE FIX
 ========================= */
-* {
-  box-sizing: border-box;
-}
+@media (max-width: 420px) {
+  .history-page {
+    padding: 12px;
+    padding-bottom: 125px;
+  }
 
-html,
-body {
-  width: 100%;
-  overflow-x: hidden; /* 🔥 This stops cut issue */
+  .history-header {
+    padding: 13px;
+  }
+
+  .filter-tab {
+    font-size: 12.5px;
+    padding: 9px 12px;
+  }
+
+  .history-card {
+    padding: 12px;
+  }
+
+  .amount {
+    font-size: 22px;
+  }
+
+  .status-badge-large {
+    font-size: 11.5px;
+    padding: 7px 9px;
+  }
 }
