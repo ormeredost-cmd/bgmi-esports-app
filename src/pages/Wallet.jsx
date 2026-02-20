@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./Wallet.css";
 
@@ -12,6 +13,8 @@ const DEPOSIT_API = window.location.hostname === "localhost"
   : "https://bgmi-server-save-tournament-data.onrender.com";
 
 const Wallet = () => {
+  const navigate = useNavigate();
+
   const [balance, setBalance] = useState(0);
   const [deposits, setDeposits] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -78,6 +81,11 @@ const Wallet = () => {
     loadDeposits();
   };
 
+  // 🔥 WITHDRAW HISTORY NAVIGATION
+  const goToWithdrawHistory = () => {
+    navigate("/withdraw-history");
+  };
+
   // 🔥 FIXED LOADING
   if (loading) {
     return (
@@ -108,7 +116,7 @@ const Wallet = () => {
 
       {/* MAIN CONTENT */}
       <div className="main-content">
-        {/* BALANCE CARD */}
+        {/* BALANCE CARD - 3 PERFECT BUTTONS */}
         <div className="balance-card">
           <div className="balance-info">
             <p className="balance-label">Available Balance</p>
@@ -116,11 +124,14 @@ const Wallet = () => {
             <p className="profile-id">ID: {user?.profile_id}</p>
           </div>
           <div className="balance-actions">
-            <button className="quick-action deposit-quick" onClick={() => window.location.href = "/deposit"}>
+            <button className="quick-action deposit-quick" onClick={() => navigate("/deposit")}>
               ➕ Add Money
             </button>
-            <button className="quick-action withdraw-quick" onClick={() => window.location.href = "/withdraw"}>
+            <button className="quick-action withdraw-quick" onClick={() => navigate("/withdraw")}>
               ➖ Withdraw
+            </button>
+            <button className="quick-action history-quick" onClick={goToWithdrawHistory}>
+              📜 Withdraw History
             </button>
           </div>
         </div>
@@ -150,28 +161,15 @@ const Wallet = () => {
           </div>
         </div>
 
-        {/* QUICK INFO INSTEAD OF TRANSACTIONS */}
+        {/* QUICK INFO - EMPTY SPACE */}
         <div className="quick-info-card">
-          <div className="quick-info-header">
-            
-            
-          </div>
           <div className="quick-info-content">
-            
-          
+            {/* SPACE FILLER */}
           </div>
         </div>
       </div>
 
-      {/* ACTION BUTTONS */}
-      <div className="action-buttons">
-        <button className="action-btn primary" onClick={() => window.location.href = "/deposit"}>
-          ➕ Deposit Money
-        </button>
-        <button className="action-btn secondary" onClick={() => window.location.href = "/withdraw"}>
-          ➖ Withdraw Money
-        </button>
-      </div>
+      {/* 🔥 NO BOTTOM BUTTONS - CLEAN! */}
     </div>
   );
 };

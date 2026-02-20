@@ -1,4 +1,4 @@
-// src/App.jsx - BANK DETAILS ROUTE ADDED ✅
+// src/App.jsx - WITHDRAW HISTORY ROUTE ADDED ✅
 import {
   BrowserRouter as Router,
   Routes,
@@ -24,7 +24,8 @@ import Deposit from "./pages/Deposit";
 import DepositQR from "./pages/DepositQR";
 import Withdraw from "./pages/Withdraw";
 
-// 🔥 BANK DETAILS IMPORT ✅
+// 🔥 WITHDRAW HISTORY + BANK DETAILS IMPORTS ✅
+import WithdrawHistory from "./pages/WithdrawHistory"; 
 import BankDetails from "./pages/BankDetails"; 
 
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -105,6 +106,14 @@ function App() {
           </ProtectedRoute>
         } />
 
+        <Route path="/withdraw-history" element={
+          <ProtectedRoute>
+            <MainLayout>
+              <WithdrawHistory />
+            </MainLayout>
+          </ProtectedRoute>
+        } />
+
         <Route path="/deposit" element={
           <ProtectedRoute>
             <MainLayout>
@@ -129,7 +138,6 @@ function App() {
           </ProtectedRoute>
         } />
 
-        {/* 🔥 BANK DETAILS ROUTE - NEW ✅ */}
         <Route path="/bank-details" element={
           <ProtectedRoute>
             <MainLayout>

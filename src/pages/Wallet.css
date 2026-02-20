@@ -157,20 +157,48 @@ html, body, #root {
   color: #a0a0a0;
 }
 
+/* 🔥 BALANCE ACTIONS - 3 BUTTONS SUPPORT */
 .balance-actions {
   display: flex;
-  gap: 8px;
+  gap: 6px;
   margin-top: 12px;
+  flex-wrap: wrap;
 }
 
 .quick-action {
   flex: 1;
-  padding: 8px 12px;
+  padding: 10px 8px;
   border: none;
   border-radius: 12px;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 600;
   cursor: pointer;
+  min-height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+/* 🔥 BUTTON COLORS */
+.deposit-quick {
+  background: linear-gradient(45deg, #00ff88, #00cc66);
+  color: white;
+  box-shadow: 0 2px 8px rgba(0,255,136,0.3);
+}
+
+.withdraw-quick {
+  background: linear-gradient(45deg, #ff6b9d, #ff416c);
+  color: white;
+  box-shadow: 0 2px 8px rgba(255,107,157,0.3);
+}
+
+/* 🔥 WITHDRAW HISTORY BUTTON - ORANGE */
+.history-quick {
+  background: linear-gradient(45deg, #f59e0b, #d97706) !important;
+  color: white !important;
+  box-shadow: 0 2px 8px rgba(245,158,11,0.4) !important;
+  font-size: 0.65rem !important;
 }
 
 /* STATS GRID */
@@ -216,130 +244,20 @@ html, body, #root {
   font-weight: 700;
 }
 
-/* TRANSACTIONS - FLEXIBLE */
-.transactions-section {
+/* QUICK INFO */
+.quick-info-card {
   flex: 1;
   background: linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
   backdrop-filter: blur(20px);
   border: 1px solid rgba(255,255,255,0.1);
   border-radius: 16px;
   padding: 16px;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  min-height: 200px;
+  min-height: 100px;
 }
 
-.section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid rgba(255,255,255,0.05);
-  flex-shrink: 0;
-}
-
-.section-header h2 {
-  font-size: 1.1rem;
-  background: linear-gradient(45deg, #00d4ff, #ff6b9d);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  margin: 0;
-}
-
-.transaction-count {
-  background: rgba(0,212,255,0.2);
-  color: #00d4ff;
-  padding: 4px 10px;
-  border-radius: 12px;
-  font-size: 0.7rem;
-  font-weight: 600;
-}
-
-.transactions-list {
-  flex: 1;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-}
-
-.transaction-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 8px;
-  margin-bottom: 8px;
-  background: rgba(255,255,255,0.05);
-  border-radius: 10px;
-  border-left: 3px solid transparent;
-}
-
-.transaction-item.pending {
-  border-left-color: #ffc107;
-}
-
-.transaction-item.approved {
-  border-left-color: #00ff88;
-}
-
-.amount {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: white;
-}
-
-.status-badge {
-  padding: 3px 8px;
-  border-radius: 10px;
-  font-size: 0.65rem;
-  font-weight: 600;
-}
-
-.status-badge.completed {
-  background: rgba(0,255,136,0.2);
-  color: #00ff88;
-}
-
-.status-badge.pending {
-  background: rgba(255,193,7,0.2);
-  color: #ffc107;
-}
-
-.transaction-meta {
-  font-size: 0.7rem;
-  color: #a0a0a0;
-}
-
-.transaction-icon {
-  font-size: 1.4rem;
-  min-width: 28px;
-}
-
-/* EMPTY STATE */
-.empty-state {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-}
-
-.empty-icon {
-  font-size: 3.5rem;
-  margin-bottom: 10px;
-  opacity: 0.5;
-}
-
-.empty-state h3 {
-  font-size: 1rem;
-  margin-bottom: 8px;
-  color: white;
-}
-
-/* ACTION BUTTONS - BOTTOM FIXED */
+/* 🔥 ACTION BUTTONS - 3 BUTTONS */
 .action-buttons {
-  padding: 12px 0 0 0;
+  padding: 12px 0 20px 0;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -347,25 +265,44 @@ html, body, #root {
 }
 
 .action-btn {
-  padding: 14px 18px;
+  padding: 16px 20px;
   border: none;
-  border-radius: 14px;
-  font-size: 0.95rem;
+  border-radius: 16px;
+  font-size: 1rem;
   font-weight: 700;
   cursor: pointer;
   text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .primary {
   background: linear-gradient(45deg, #00ff88, #00cc66);
   color: white;
-  box-shadow: 0 4px 15px rgba(0,255,136,0.3);
+  box-shadow: 0 6px 20px rgba(0,255,136,0.4);
 }
 
 .secondary {
   background: linear-gradient(45deg, #ff6b9d, #ff416c);
   color: white;
-  box-shadow: 0 4px 15px rgba(255,107,157,0.3);
+  box-shadow: 0 6px 20px rgba(255,107,157,0.4);
+}
+
+/* 🔥 WITHDRAW HISTORY ACTION BUTTON - ORANGE */
+.history-action {
+  background: linear-gradient(45deg, #f59e0b, #d97706) !important;
+  color: white !important;
+  box-shadow: 0 6px 20px rgba(245,158,11,0.5) !important;
+}
+
+/* HOVER EFFECTS */
+.quick-action:hover,
+.action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.3);
 }
 
 @keyframes spin {
@@ -378,9 +315,29 @@ html, body, #root {
   100% { background-position: -200% 0; }
 }
 
+/* MOBILE RESPONSIVE */
+@media (max-width: 480px) {
+  .balance-actions {
+    gap: 4px;
+  }
+  
+  .quick-action {
+    padding: 8px 6px;
+    font-size: 0.65rem;
+  }
+  
+  .action-buttons {
+    gap: 8px;
+  }
+}
+
 @media (min-width: 768px) {
   .wallet-container {
-    max-width: 400px;
+    max-width: 420px;
     margin: 0 auto;
+    border-radius: 24px;
+    overflow: hidden;
+    height: 90vh;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
   }
 }

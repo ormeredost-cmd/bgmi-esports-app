@@ -17,28 +17,66 @@ const BankDetails = () => {
   });
 
   const [userId, setUserId] = useState("");
+  const [realProfileName, setRealProfileName] = useState("");
+
+  // ✅ Helper: get bgmi_user from localStorage OR sessionStorage
+  const getStoredUser = () => {
+    try {
+      let userData = localStorage.getItem("bgmi_user");
+      if (!userData) userData = sessionStorage.getItem("bgmi_user");
+      if (!userData) return null;
+      return JSON.parse(userData);
+    } catch {
+      return null;
+    }
+  };
 
   useEffect(() => {
     const initBankDetails = async () => {
       try {
-        let userData = localStorage.getItem("bgmi_user");
-        if (!userData) userData = sessionStorage.getItem("bgmi_user");
+        const user = getStoredUser();
 
-        if (!userData) {
+        if (!user?.profile_id) {
           navigate("/login");
           return;
         }
 
-        const parsedUser = JSON.parse(userData);
-        setUserId(parsedUser.profile_id);
+        setUserId(user.profile_id);
 
+        // ✅ 1) Fetch REAL NAME from registeruser table (username / name)
+        const { data: profile, error: profileErr } = await supabase
+          .from("registeruser")
+          .select("username, name")
+          .eq("profile_id", user.profile_id)
+          .maybeSingle();
+
+        if (profileErr) {
+          console.log("Profile fetch error:", profileErr.message);
+        }
+
+        // ✅ FINAL NAME (priority wise)
+        const finalName =
+          profile?.username?.trim() ||
+          profile?.name?.trim() ||
+          user?.username?.trim() ||
+          user?.name?.trim() ||
+          "Unknown Player";
+
+        setRealProfileName(finalName);
+
+        // ✅ 2) Fetch existing bank details
         const { data: existing, error } = await supabase
           .from("user_bank_details")
           .select("*")
-          .eq("user_id", parsedUser.profile_id)
+          .eq("user_id", user.profile_id)
           .maybeSingle();
 
-        if (!error && existing) {
+        if (error) {
+          console.log("Bank fetch error:", error.message);
+          return;
+        }
+
+        if (existing) {
           setBankData({
             account_holder: existing.account_holder || "",
             account_number: existing.account_number || "",
@@ -47,10 +85,19 @@ const BankDetails = () => {
             ifsc_code: existing.ifsc_code || "",
           });
 
-          setSuccess(existing.is_verified || false);
+          setSuccess(existing.is_verified === true);
+
+          // ✅ If old bank record has BGMI Player, auto fix in UI
+          if (
+            existing.profile_name === "BGMI Player" ||
+            existing.profile_name === "" ||
+            existing.profile_name === null
+          ) {
+            console.log("Old profile_name found, will update on next save.");
+          }
         }
       } catch (err) {
-        console.log("No bank data found");
+        console.log("Init error:", err.message);
       }
     };
 
@@ -59,24 +106,53 @@ const BankDetails = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!userId) return;
+
+    if (!userId) return alert("❌ User ID missing!");
+    if (success) return alert("✅ Already verified, edit not allowed!");
 
     setLoading(true);
 
     try {
-      const payload = {
-        ...bankData,
-        user_id: userId,
+      // ✅ ALWAYS REAL NAME
+      const profileName = realProfileName?.trim() || "Unknown Player";
 
-        // ⭐ important: verify false on update/insert
+      const cleanAccountHolder = bankData.account_holder.trim();
+      const cleanAccountNumber = bankData.account_number.trim();
+      const cleanBankName = bankData.bank_name?.trim();
+      const cleanUpi = bankData.upi_id?.trim() ? bankData.upi_id.trim() : null;
+      const cleanIfsc = bankData.ifsc_code.trim().toUpperCase();
+
+      // ✅ search tags safe
+      const firstName = cleanAccountHolder.split(" ")[0] || "";
+      const searchTags = [cleanBankName, firstName, profileName].filter(Boolean);
+
+      const payload = {
+        user_id: userId,
+        profile_name: profileName, // ✅ REAL NAME SAVE
+        account_holder: cleanAccountHolder,
+        account_number: cleanAccountNumber,
+        bank_name: cleanBankName,
+        upi_id: cleanUpi,
+        ifsc_code: cleanIfsc,
+        is_active: true,
         is_verified: false,
+        search_tags: searchTags,
       };
 
-      const { data: existing } = await supabase
+      // ✅ Check existing record
+      const { data: existing, error: existErr } = await supabase
         .from("user_bank_details")
-        .select("id")
+        .select("id, is_verified")
         .eq("user_id", userId)
         .maybeSingle();
+
+      if (existErr) throw new Error(existErr.message);
+
+      if (existing?.is_verified === true) {
+        setSuccess(true);
+        alert("✅ Already verified, edit not allowed!");
+        return;
+      }
 
       let result;
 
@@ -84,19 +160,27 @@ const BankDetails = () => {
         result = await supabase
           .from("user_bank_details")
           .update(payload)
-          .eq("user_id", userId);
+          .eq("user_id", userId)
+          .select()
+          .maybeSingle();
       } else {
-        result = await supabase.from("user_bank_details").insert([payload]);
+        result = await supabase
+          .from("user_bank_details")
+          .insert([payload])
+          .select()
+          .maybeSingle();
       }
 
-      if (result.error) {
-        alert("❌ " + result.error.message);
-      } else {
-        alert("✅ Saved! Admin 24hr me verify karega");
-        setSuccess(true);
-      }
+      if (result.error) throw new Error(result.error.message);
+
+      alert("✅ Bank Details Added! Admin verify karega 💰");
+
+      setTimeout(() => {
+        navigate("/profile");
+      }, 800);
     } catch (error) {
-      alert("❌ " + error.message);
+      alert("❌ Error: " + error.message);
+      console.error("Save error:", error);
     } finally {
       setLoading(false);
     }
@@ -104,11 +188,7 @@ const BankDetails = () => {
 
   return (
     <div className="bank-container">
-      {/* HEADER */}
-
-      {/* SCROLL AREA */}
       <div className="bank-card">
-        {/* ⭐ REAL CARD */}
         <div className="bank-inner-card">
           <div className="card-header">
             <div className="icon-circle">
@@ -116,7 +196,11 @@ const BankDetails = () => {
             </div>
 
             <h1 className="card-title">Bank Details</h1>
-            <p className="card-subtitle">Complete withdrawal setup</p>
+
+            {/* ✅ SHOW REAL NAME */}
+            <p className="card-subtitle">
+              Profile: <b>{realProfileName || "Loading..."}</b>
+            </p>
           </div>
 
           <form className="bank-form" onSubmit={handleSubmit}>
@@ -135,7 +219,7 @@ const BankDetails = () => {
                 className="form-input"
                 placeholder="Full name as per bank"
                 required={!success}
-                disabled={success}
+                disabled={success || loading}
               />
             </div>
 
@@ -155,10 +239,10 @@ const BankDetails = () => {
                   })
                 }
                 className="form-input"
-                placeholder="Enter account number"
+                placeholder="123456789012"
                 maxLength={18}
                 required={!success}
-                disabled={success}
+                disabled={success || loading}
               />
             </div>
 
@@ -175,15 +259,15 @@ const BankDetails = () => {
                 }
                 className="form-input"
                 required={!success}
-                disabled={success}
+                disabled={success || loading}
               >
                 <option value="">Select Bank</option>
                 <option value="SBI">SBI</option>
                 <option value="HDFC">HDFC</option>
                 <option value="ICICI">ICICI</option>
-                <option value="Axis">Axis</option>
+                <option value="Axis Bank">Axis Bank</option>
                 <option value="PNB">PNB</option>
-                <option value="BOB">BOB</option>
+                <option value="Bank of Baroda">Bank of Baroda</option>
               </select>
             </div>
 
@@ -201,7 +285,7 @@ const BankDetails = () => {
                 }
                 className="form-input"
                 placeholder="username@ybl"
-                disabled={success}
+                disabled={success || loading}
               />
             </div>
 
@@ -226,34 +310,32 @@ const BankDetails = () => {
                 placeholder="SBIN0001234"
                 maxLength={11}
                 required={!success}
-                disabled={success}
+                disabled={success || loading}
               />
             </div>
 
-            {/* INFO */}
             <div className="form-footer">
               <p>
                 {success
-                  ? "✅ Ready for withdrawal"
-                  : "🔒 Admin verification needed (24hr)"}
+                  ? "✅ Verified! Withdrawal ready 💰"
+                  : "🔒 Admin approval needed (24hr)"}
               </p>
             </div>
 
-            {/* BUTTON */}
             <button
               type="submit"
-              className="submit-btn"
-              disabled={loading || success}
+              className={`submit-btn ${loading ? "loading" : ""}`}
+              disabled={success || loading}
             >
               {loading ? (
                 <>
                   <span className="spinner"></span>
-                  Saving...
+                  Saving Bank Details...
                 </>
               ) : success ? (
-                "✅ Saved!"
+                "✅ Verified!"
               ) : (
-                "💰 Save Details"
+                "💰 Save & Continue"
               )}
             </button>
           </form>
