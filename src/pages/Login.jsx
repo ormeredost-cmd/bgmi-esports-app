@@ -52,7 +52,7 @@ const Login = () => {
 
       // 2️⃣ Backend Login
       const loginRes = await fetch(
-        "https://main-server-firebase.onrender.com/api/login",
+        "https://user-register-server.onrender.com",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

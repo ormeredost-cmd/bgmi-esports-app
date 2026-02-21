@@ -6,7 +6,7 @@ import "./Register.css";
 
 // 🔥 PRODUCTION READY
 const API_URL =
-  import.meta.env.VITE_API_URL || "https://main-server-firebase.onrender.com";
+  import.meta.env.VITE_API_URL || "https://user-register-server.onrender.com";
 
 const Register = () => {
   const [username, setUsername] = useState("");
