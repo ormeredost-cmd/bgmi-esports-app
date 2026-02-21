@@ -50,9 +50,9 @@ const Login = () => {
 
       const firebaseEmail = userCredential.user.email;
 
-      // 2️⃣ Backend Login
+      // 2️⃣ Backend Login - ✅ Correct endpoint
       const loginRes = await fetch(
-        "https://user-register-server.onrender.com",
+        "https://user-register-server.onrender.com/api/login",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -69,6 +69,7 @@ const Login = () => {
 
       const freshUser = serverData.user;
 
+      // 3️⃣ Save user locally
       const userData = {
         uid: userCredential.user.uid,
         username: freshUser.username,
@@ -88,6 +89,8 @@ const Login = () => {
       window.location.href = "/profile";
 
     } catch (err) {
+      console.error("Login error:", err);
+
       if (err.code === "auth/user-not-found") {
         setError("👤 User nahi mila! Pehle register karo.");
       } else if (err.code === "auth/wrong-password") {
@@ -95,7 +98,7 @@ const Login = () => {
       } else if (err.code === "auth/invalid-email") {
         setError("📧 Invalid email!");
       } else {
-        setError("❌ Login failed!");
+        setError(err.message || "❌ Login failed!");
       }
     } finally {
       setLoading(false);
@@ -128,6 +131,7 @@ const Login = () => {
               onChange={(e) => setEmail(e.target.value)}
               required
               className="input-field"
+              autoComplete="email"
             />
           </div>
 
@@ -139,6 +143,7 @@ const Login = () => {
               onChange={(e) => setPassword(e.target.value)}
               required
               className="input-field"
+              autoComplete="current-password"
             />
           </div>
 
