@@ -6,11 +6,11 @@ import "./Wallet.css";
 // 🔥 API URLs
 const USER_API = window.location.hostname === "localhost" 
   ? "http://localhost:5001"
-  : "https://main-server-firebase.onrender.com";
+  : "https://user-register-server.onrender.com";
 
 const DEPOSIT_API = window.location.hostname === "localhost" 
   ? "http://localhost:5002"
-  : "https://bgmi-server-save-tournament-data.onrender.com";
+  : "https://deposit-and-join-tournament-server.onrender.com";
 
 const Wallet = () => {
   const navigate = useNavigate();

@@ -5,7 +5,7 @@ import "./DepositHistory.css";
 const DEPOSIT_API =
   window.location.hostname === "localhost"
     ? "http://localhost:5002"
-    : "https://bgmi-server-save-tournament-data.onrender.com";
+    : "https://deposit-and-join-tournament-server.onrender.com";
 
 const formatIndianTime = (utcDate) => {
   if (!utcDate) return "—";

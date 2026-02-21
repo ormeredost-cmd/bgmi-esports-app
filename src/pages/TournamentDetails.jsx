@@ -16,7 +16,7 @@ const TournamentDetails = () => {
   const API_URL =
     window.location.hostname === "localhost"
       ? "http://localhost:5002"
-      : "https://bgmi-server-save-tournament-data.onrender.com";
+      : "https://deposit-and-join-tournament-server.onrender.com";
 
   const checkStatus = useCallback(async () => {
     const bgmiId = localStorage.getItem("tempBgmiId") || localStorage.getItem("lastBgmiId");
