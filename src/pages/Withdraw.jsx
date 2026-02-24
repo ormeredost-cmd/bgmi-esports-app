@@ -1,3 +1,4 @@
+// src/pages/Withdraw.jsx - INSTANT APPROVED BANK SYSTEM ✅
 import React, { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -51,11 +52,9 @@ const Withdraw = () => {
   const loadBalance = async (profileId) => {
     try {
       setLoadingBalance(true);
-
       const res = await axios.get(
         `${BALANCE_API}/api/my-balance?profileId=${profileId}`
       );
-
       setBalance(Number(res.data.balance || 0));
     } catch {
       setBalance(0);
@@ -72,7 +71,7 @@ const Withdraw = () => {
 
   const numericAmount = useMemo(() => Number(amount || 0), [amount]);
 
-  // ================= WITHDRAW =================
+  // ================= WITHDRAW - SIMPLIFIED FOR AUTO VERIFY ✅
   const handleWithdraw = async (e) => {
     e.preventDefault();
     setError("");
@@ -101,23 +100,26 @@ const Withdraw = () => {
       });
 
       if (res.data?.success) {
-        // 🔥 TURANT BALANCE RELOAD (after backend minus)
+        // 🔥 Balance reload after instant deduct
         await loadBalance(user.profile_id);
-
         setAmount("");
-
-        // Optional: small delay then redirect
-        setTimeout(() => {
-          navigate("/withdraw-history");
-        }, 1000);
+        
+        alert(`✅ Withdraw ID: ${res.data.withdraw_id}\n💰 Balance deducted! Admin review pending...`);
+        setTimeout(() => navigate("/withdraw-history"), 1500);
       } else {
         setError(res.data?.error || "Withdraw failed.");
       }
     } catch (err) {
-      setError(
-        err.response?.data?.error ||
-        "Server error. Make sure 5003 wallet server running."
-      );
+      const errorData = err.response?.data;
+      
+      // 🔥 SIMPLIFIED - Only 2 cases now (Auto-verify system!)
+      if (errorData?.needBank) {
+        alert("❌ BANK DETAILS ADD KARIEN!\n👉 Profile → Bank Details → Save & APPROVE");
+        setError("🚫 No bank details! Add first.");
+        navigate("/bank-details"); // Auto redirect
+      } else {
+        setError(errorData?.error || "Server error. Check wallet server 5003.");
+      }
     } finally {
       setLoadingWithdraw(false);
     }
@@ -127,11 +129,27 @@ const Withdraw = () => {
     navigate("/withdraw-history");
   };
 
+  const goToBankDetails = () => {
+    navigate("/bank-details");
+  };
+
   // ================= UI =================
   return (
     <div className="withdraw-container">
       <div className="withdraw-card">
         <h1>💸 Withdraw</h1>
+        
+        {/* 🔥 BANK STATUS INDICATOR */}
+        <div className="bank-status">
+          <p>🏦 Bank Status: {error.includes("bank") ? "🚫 Add Bank First" : "✅ Ready"}</p>
+          <button 
+            className="bank-link-btn" 
+            onClick={goToBankDetails}
+            disabled={loadingWithdraw || loadingBalance}
+          >
+            Manage Bank Details
+          </button>
+        </div>
 
         <div className="balance-display">
           {loadingBalance
@@ -181,9 +199,9 @@ const Withdraw = () => {
         </div>
 
         <div className="withdraw-info">
-          <p>🔒 Balance will be deducted instantly</p>
-          <p>💳 Admin approval required</p>
-          <p>❌ Reject → Amount auto refund</p>
+          <p>⚡ <strong>INSTANT APPROVED BANKS</strong> - No waiting!</p>
+          <p>🔒 Balance deducts instantly on submit</p>
+          <p>💳 Admin final review (24hr) | ❌ Auto refund if rejected</p>
         </div>
       </div>
     </div>

@@ -1,4 +1,4 @@
-// src/pages/BankDetails.jsx - FIXED & PRODUCTION READY ✅
+// src/pages/BankDetails.jsx - INSTANT AUTO APPROVED ✅
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../supabaseClient";
@@ -44,10 +44,10 @@ const BankDetails = () => {
 
         setUserId(user.profile_id);
 
-        // 🔥 FIXED: सिर्फ username select करें (name column हटाया)
+        // 🔥 Get username from DB
         const { data: profile, error: profileErr } = await supabase
           .from("registeruser")
-          .select("username, profile_id")  // ✅ FIXED: name हटाया
+          .select("username, profile_id")
           .eq("profile_id", user.profile_id)
           .maybeSingle();
 
@@ -64,7 +64,7 @@ const BankDetails = () => {
 
         setRealProfileName(finalName);
 
-        // ✅ 2) Fetch existing bank details
+        // ✅ Fetch existing bank details
         const { data: existing, error } = await supabase
           .from("user_bank_details")
           .select("*")
@@ -87,7 +87,6 @@ const BankDetails = () => {
 
           setSuccess(existing.is_verified === true);
 
-          // ✅ If old bank record has BGMI Player, auto fix in UI
           if (
             existing.profile_name === "BGMI Player" ||
             existing.profile_name === "" ||
@@ -108,7 +107,7 @@ const BankDetails = () => {
     e.preventDefault();
 
     if (!userId) return alert("❌ User ID missing!");
-    if (success) return alert("✅ Already verified, edit not allowed!");
+    if (success) return alert("✅ Already verified! Withdraw ready 💰");
 
     setLoading(true);
 
@@ -131,20 +130,21 @@ const BankDetails = () => {
       const firstName = cleanAccountHolder.split(" ")[0] || "";
       const searchTags = [cleanBankName, firstName, profileName].filter(Boolean);
 
+      // 🔥 INSTANT AUTO VERIFY - is_verified: true!
       const payload = {
         user_id: userId,
-        profile_name: profileName, // ✅ REQUIRED - ये fix हो गया
+        profile_name: profileName,
         account_holder: cleanAccountHolder,
         account_number: cleanAccountNumber,
         bank_name: cleanBankName,
         upi_id: cleanUpi,
         ifsc_code: cleanIfsc,
         is_active: true,
-        is_verified: false,
+        is_verified: true,  // ✅ AUTO APPROVED!
         search_tags: searchTags,
       };
 
-      console.log("💾 SAVING PAYLOAD:", payload);
+      console.log("💾 AUTO-VERIFY PAYLOAD:", payload);
 
       // ✅ Check existing record
       const { data: existing, error: existErr } = await supabase
@@ -157,7 +157,7 @@ const BankDetails = () => {
 
       if (existing?.is_verified === true) {
         setSuccess(true);
-        alert("✅ Already verified, edit not allowed!");
+        alert("✅ Already verified! Withdraw ready 💰");
         return;
       }
 
@@ -182,12 +182,16 @@ const BankDetails = () => {
 
       if (result.error) throw new Error(result.error.message);
 
-      console.log("✅ BANK SAVED:", result.data);
-      alert("✅ Bank Details Saved! Admin will verify 💰");
-
+      console.log("✅ INSTANT APPROVED:", result.data);
+      
+      // 🔥 INSTANT APPROVED MESSAGE
+      alert("✅ Bank Details SAVED & APPROVED! ✅\nTurant withdraw kar sakte ho! 💰🚀");
+      
+      setSuccess(true); // UI update
+      
       setTimeout(() => {
-        navigate("/profile");
-      }, 1000);
+        navigate("/withdraw"); // Direct withdraw page!
+      }, 1500);
 
     } catch (error) {
       console.error("❌ SAVE ERROR:", error);
@@ -331,8 +335,8 @@ const BankDetails = () => {
             <div className="form-footer">
               <p>
                 {success
-                  ? "✅ Verified! Withdrawal ready 💰"
-                  : "🔒 Admin approval needed (24hr)"}
+                  ? "✅ INSTANT APPROVED! Withdrawal ready 💰🚀"
+                  : "⚡ Save → INSTANT APPROVED → Withdraw ready!"}
               </p>
             </div>
 
@@ -344,12 +348,12 @@ const BankDetails = () => {
               {loading ? (
                 <>
                   <span className="spinner"></span>
-                  Saving Bank Details...
+                  Saving & Approving...
                 </>
               ) : success ? (
-                "✅ Verified!"
+                "✅ INSTANT APPROVED!"
               ) : (
-                "💰 Save & Continue"
+                "🚀 Save & APPROVE INSTANTLY"
               )}
             </button>
           </form>
