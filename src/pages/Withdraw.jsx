@@ -42,37 +42,37 @@ const Withdraw = () => {
       }
 
       setUser(parsed);
-    } catch (err) {
+    } catch {
       navigate("/login");
     }
   }, [navigate]);
 
   // ================= LOAD BALANCE =================
+  const loadBalance = async (profileId) => {
+    try {
+      setLoadingBalance(true);
+
+      const res = await axios.get(
+        `${BALANCE_API}/api/my-balance?profileId=${profileId}`
+      );
+
+      setBalance(Number(res.data.balance || 0));
+    } catch {
+      setBalance(0);
+    } finally {
+      setLoadingBalance(false);
+    }
+  };
+
   useEffect(() => {
-    if (!user?.profile_id) return;
-
-    const loadBalance = async () => {
-      try {
-        setLoadingBalance(true);
-
-        const res = await axios.get(
-          `${BALANCE_API}/api/my-balance?profileId=${user.profile_id}`
-        );
-
-        setBalance(Number(res.data.balance || 0));
-      } catch {
-        setBalance(0);
-      } finally {
-        setLoadingBalance(false);
-      }
-    };
-
-    loadBalance();
+    if (user?.profile_id) {
+      loadBalance(user.profile_id);
+    }
   }, [user]);
 
   const numericAmount = useMemo(() => Number(amount || 0), [amount]);
 
-  // 🔥 DIRECT WITHDRAW HISTORY REDIRECT (NO SUCCESS SCREEN)
+  // ================= WITHDRAW =================
   const handleWithdraw = async (e) => {
     e.preventDefault();
     setError("");
@@ -101,32 +101,33 @@ const Withdraw = () => {
       });
 
       if (res.data?.success) {
-        // 🔥 SUCCESS! 1.5 SEC → DIRECT WITHDRAW HISTORY!
+        // 🔥 TURANT BALANCE RELOAD (after backend minus)
+        await loadBalance(user.profile_id);
+
+        setAmount("");
+
+        // Optional: small delay then redirect
         setTimeout(() => {
           navigate("/withdraw-history");
-        }, 1500);
-        return; // Skip success screen completely
+        }, 1000);
       } else {
         setError(res.data?.error || "Withdraw failed.");
       }
     } catch (err) {
       setError(
         err.response?.data?.error ||
-          "Server error. Check 5002 / 5003 running."
+        "Server error. Make sure 5003 wallet server running."
       );
     } finally {
       setLoadingWithdraw(false);
     }
   };
 
-  // 🔥 WITHDRAW HISTORY BUTTON
   const goToWithdrawHistory = () => {
     navigate("/withdraw-history");
   };
 
-  // 🔥 NO SUCCESS SCREEN NEEDED - DIRECT HISTORY!
-
-  // ================= MAIN UI =================
+  // ================= UI =================
   return (
     <div className="withdraw-container">
       <div className="withdraw-card">
@@ -164,14 +165,13 @@ const Withdraw = () => {
             className="withdraw-submit-btn"
           >
             {loadingWithdraw
-              ? "⏳ Processing Withdraw..."
+              ? "⏳ Processing..."
               : `Withdraw ₹${numericAmount.toLocaleString() || 0}`}
           </button>
         </form>
 
-        {/* 🔥 HISTORY BUTTON */}
         <div className="history-section">
-          <button 
+          <button
             className="history-btn"
             onClick={goToWithdrawHistory}
             disabled={loadingWithdraw || loadingBalance}
@@ -181,9 +181,9 @@ const Withdraw = () => {
         </div>
 
         <div className="withdraw-info">
-          <p>🔒 Request admin ko pending jayegi (24hr)</p>
-          <p>💳 Verified account zaroori hai</p>
-          <p>✅ Success → Direct History page!</p>
+          <p>🔒 Balance will be deducted instantly</p>
+          <p>💳 Admin approval required</p>
+          <p>❌ Reject → Amount auto refund</p>
         </div>
       </div>
     </div>

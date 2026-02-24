@@ -1,3 +1,4 @@
+// src/pages/BankDetails.jsx - FIXED & PRODUCTION READY ✅
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../supabaseClient";
@@ -43,10 +44,10 @@ const BankDetails = () => {
 
         setUserId(user.profile_id);
 
-        // ✅ 1) Fetch REAL NAME from registeruser table (username / name)
+        // 🔥 FIXED: सिर्फ username select करें (name column हटाया)
         const { data: profile, error: profileErr } = await supabase
           .from("registeruser")
-          .select("username, name")
+          .select("username, profile_id")  // ✅ FIXED: name हटाया
           .eq("profile_id", user.profile_id)
           .maybeSingle();
 
@@ -57,7 +58,6 @@ const BankDetails = () => {
         // ✅ FINAL NAME (priority wise)
         const finalName =
           profile?.username?.trim() ||
-          profile?.name?.trim() ||
           user?.username?.trim() ||
           user?.name?.trim() ||
           "Unknown Player";
@@ -113,7 +113,7 @@ const BankDetails = () => {
     setLoading(true);
 
     try {
-      // ✅ ALWAYS REAL NAME
+      // ✅ ALWAYS REAL NAME - REQUIRED FIELD
       const profileName = realProfileName?.trim() || "Unknown Player";
 
       const cleanAccountHolder = bankData.account_holder.trim();
@@ -122,13 +122,18 @@ const BankDetails = () => {
       const cleanUpi = bankData.upi_id?.trim() ? bankData.upi_id.trim() : null;
       const cleanIfsc = bankData.ifsc_code.trim().toUpperCase();
 
+      // ✅ Validation
+      if (!cleanAccountHolder || !cleanAccountNumber || !cleanBankName || !cleanIfsc) {
+        return alert("❌ Fill all required fields!");
+      }
+
       // ✅ search tags safe
       const firstName = cleanAccountHolder.split(" ")[0] || "";
       const searchTags = [cleanBankName, firstName, profileName].filter(Boolean);
 
       const payload = {
         user_id: userId,
-        profile_name: profileName, // ✅ REAL NAME SAVE
+        profile_name: profileName, // ✅ REQUIRED - ये fix हो गया
         account_holder: cleanAccountHolder,
         account_number: cleanAccountNumber,
         bank_name: cleanBankName,
@@ -138,6 +143,8 @@ const BankDetails = () => {
         is_verified: false,
         search_tags: searchTags,
       };
+
+      console.log("💾 SAVING PAYLOAD:", payload);
 
       // ✅ Check existing record
       const { data: existing, error: existErr } = await supabase
@@ -157,6 +164,7 @@ const BankDetails = () => {
       let result;
 
       if (existing?.id) {
+        // UPDATE existing
         result = await supabase
           .from("user_bank_details")
           .update(payload)
@@ -164,6 +172,7 @@ const BankDetails = () => {
           .select()
           .maybeSingle();
       } else {
+        // INSERT new
         result = await supabase
           .from("user_bank_details")
           .insert([payload])
@@ -173,14 +182,16 @@ const BankDetails = () => {
 
       if (result.error) throw new Error(result.error.message);
 
-      alert("✅ Bank Details Added! Admin verify karega 💰");
+      console.log("✅ BANK SAVED:", result.data);
+      alert("✅ Bank Details Saved! Admin will verify 💰");
 
       setTimeout(() => {
         navigate("/profile");
-      }, 800);
+      }, 1000);
+
     } catch (error) {
+      console.error("❌ SAVE ERROR:", error);
       alert("❌ Error: " + error.message);
-      console.error("Save error:", error);
     } finally {
       setLoading(false);
     }
@@ -197,9 +208,12 @@ const BankDetails = () => {
 
             <h1 className="card-title">Bank Details</h1>
 
-            {/* ✅ SHOW REAL NAME */}
+            {/* ✅ SHOW REAL NAME & USER ID */}
             <p className="card-subtitle">
-              Profile: <b>{realProfileName || "Loading..."}</b>
+              Profile: <b>{realProfileName || "Loading..."}</b> 
+              <span style={{ fontSize: '0.9em', opacity: 0.8 }}>
+                (ID: {userId})
+              </span>
             </p>
           </div>
 
