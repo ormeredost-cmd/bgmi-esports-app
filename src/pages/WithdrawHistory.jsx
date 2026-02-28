@@ -5,7 +5,7 @@ import "./WithdrawHistory.css";
 const WITHDRAW_API =
   window.location.hostname === "localhost"
     ? "http://localhost:5003"
-    : "https://your-wallet-server.onrender.com";
+    : "https://withdraw-server.onrender.com";
 
 const formatIndianTime = (utcDate) => {
   if (!utcDate) return "—";

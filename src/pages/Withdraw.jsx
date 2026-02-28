@@ -4,8 +4,14 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./Withdraw.css";
 
-const BALANCE_API = "http://localhost:5002";
-const WALLET_API = "http://localhost:5003";
+// 🔥 PRODUCTION SERVER URLs
+const BALANCE_API = window.location.hostname === "localhost" 
+  ? "http://localhost:5002"
+  : "https://deposit-and-join-tournament-server.onrender.com";
+
+const WALLET_API = window.location.hostname === "localhost" 
+  ? "http://localhost:5003"
+  : "https://withdraw-server.onrender.com";
 
 const Withdraw = () => {
   const navigate = useNavigate();
