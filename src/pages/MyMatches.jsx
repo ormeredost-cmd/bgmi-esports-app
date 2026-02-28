@@ -1,69 +1,90 @@
+// src/pages/MyMatches.jsx - 🔥 SILENT BACKGROUND REFRESH (NO BUTTONS!)
 import { useState, useEffect, useCallback } from "react";
 import "./MyMatches.css";
 
 const MyMatches = () => {
-  const [matches, setMatches] = useState([]);
+  const [allMatches, setAllMatches] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [bgmiId, setBgmiId] = useState("");
-  const [inputVisible, setInputVisible] = useState(false);
-
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
+  
   const API_URL = window.location.hostname === "localhost" 
     ? "http://localhost:5002"
     : "https://deposit-and-join-tournament-server.onrender.com";
 
-  const fetchMatches = useCallback(async (id) => {
-    if (!id) return;
+  // 🔥 GET ALL BGMI IDs
+  const getAllBgmiIds = () => {
+    try {
+      const tournamentJoins = JSON.parse(localStorage.getItem('tournamentJoins') || '[]');
+      const uniqueIds = [...new Set(tournamentJoins.map(join => join.bgmiId))];
+      const fallback = localStorage.getItem("tempBgmiId") || localStorage.getItem("lastBgmiId");
+      if (fallback && !uniqueIds.includes(fallback)) uniqueIds.push(fallback);
+      return uniqueIds.filter(Boolean);
+    } catch {
+      return [localStorage.getItem("tempBgmiId") || localStorage.getItem("lastBgmiId")].filter(Boolean);
+    }
+  };
+
+  // 🔥 SILENT BACKGROUND FETCH (NO UI CHANGE!)
+  const fetchMatchesSilently = useCallback(async (showLoading = false) => {
+    const bgmiIds = getAllBgmiIds();
+    if (bgmiIds.length === 0) {
+      if (showLoading) setAllMatches([]);
+      if (showLoading) setLoading(false);
+      return;
+    }
 
     try {
-      const res = await fetch(`${API_URL}/api/my-matches?bgmiId=${id}`);
-      const data = await res.json();
+      if (showLoading) setLoading(true);
       
-      if (Array.isArray(data.matches)) {
-        setMatches(data.matches);
-      } else {
-        setMatches([]);
-      }
+      const allMatchesPromises = bgmiIds.map(async (id) => {
+        const res = await fetch(`${API_URL}/api/my-matches?bgmiId=${id}`);
+        const data = await res.json();
+        return data.matches || [];
+      });
+
+      const allMatchesArrays = await Promise.all(allMatchesPromises);
+      const allMatchesFlat = allMatchesArrays.flat();
+      
+      // Sort by date (newest first)
+      const sortedMatches = allMatchesFlat.sort((a, b) => 
+        new Date(b.joined_at) - new Date(a.joined_at)
+      );
+      
+      // 🔥 ONLY UPDATE IF DATA CHANGED (NO BLINK!)
+      setAllMatches(prevMatches => {
+        if (JSON.stringify(prevMatches) === JSON.stringify(sortedMatches)) {
+          return prevMatches; // No change = no re-render!
+        }
+        return sortedMatches;
+      });
+      
     } catch (err) {
-      setMatches([]);
+      console.error("Fetch matches error:", err);
     } finally {
-      setLoading(false);
+      if (showLoading) setLoading(false);
     }
   }, [API_URL]);
 
+  // 🔥 INITIAL LOAD (WITH LOADING)
   useEffect(() => {
-    const storedId = localStorage.getItem("lastBgmiId") || localStorage.getItem("tempBgmiId");
+    setIsInitialLoad(true);
+    fetchMatchesSilently(true);
+    setIsInitialLoad(false);
+  }, []);
 
-    if (storedId) {
-      setBgmiId(storedId);
-      fetchMatches(storedId);
-    } else {
-      setInputVisible(true);
-      setLoading(false);
-    }
-  }, [fetchMatches]);
-
+  // 🔥 SILENT BACKGROUND REFRESH (10s - NO LOADING!)
   useEffect(() => {
-    if (!bgmiId) return;
-    const interval = setInterval(() => fetchMatches(bgmiId), 10000);
-    return () => clearInterval(interval);
-  }, [bgmiId, fetchMatches]);
-
-  const handleBgmiIdSubmit = (e) => {
-    e.preventDefault();
-    const id = bgmiId.trim();
+    const interval = setInterval(() => {
+      fetchMatchesSilently(false); // 🔥 NO UI CHANGE!
+    }, 10000);
     
-    if (!id) return;
+    return () => clearInterval(interval);
+  }, [fetchMatchesSilently]);
 
-    localStorage.setItem("lastBgmiId", id);
-    localStorage.setItem("tempBgmiId", id);
-    fetchMatches(id);
-    setInputVisible(false);
-  };
-
-  if (loading) {
+  if (loading && isInitialLoad) {
     return (
       <div className="mymatches-page">
-        <div className="loading-text">Loading matches…</div>
+        <div className="loading-text">Loading all matches…</div>
       </div>
     );
   }
@@ -73,23 +94,12 @@ const MyMatches = () => {
       <div className="mymatches-container">
         <div className="page-header">
           <h1>मेरे मैच</h1>
-          {bgmiId && <p>ID: <strong>{bgmiId}</strong></p>}
+          <p>Total: <strong>{allMatches.length}</strong> matches found</p>
         </div>
 
-        {inputVisible ? (
-          <form onSubmit={handleBgmiIdSubmit} className="bgmi-form">
-            <input
-              type="text"
-              placeholder="Enter BGMI ID"
-              value={bgmiId}
-              onChange={(e) => setBgmiId(e.target.value)}
-              autoFocus
-            />
-            <button type="submit">Load Matches</button>
-          </form>
-        ) : matches.length > 0 ? (
+        {allMatches.length > 0 ? (
           <div className="matches-grid">
-            {matches.map((match) => (
+            {allMatches.map((match) => (
               <div key={match.id} className="match-card">
                 <div className="match-header">
                   <h3>{match.tournament_name}</h3>
@@ -121,15 +131,15 @@ const MyMatches = () => {
                     <span>Time:</span>
                     <span>{match.time}</span>
                   </div>
-                  {match.roomId ? (
+                  {match.room_id ? (
                     <div className="room-box">
                       <div className="detail-row">
                         <span>Room ID:</span>
-                        <strong>{match.roomId}</strong>
+                        <strong>{match.room_id}</strong>
                       </div>
                       <div className="detail-row">
                         <span>Password:</span>
-                        <strong>{match.roomPassword}</strong>
+                        <strong>{match.room_password}</strong>
                       </div>
                     </div>
                   ) : (
@@ -142,8 +152,7 @@ const MyMatches = () => {
         ) : (
           <div className="no-matches">
             <h2>कोई मैच नहीं मिला</h2>
-            <p>ID: <strong>{bgmiId}</strong></p>
-            <button onClick={() => setInputVisible(true)}>Enter BGMI ID</button>
+            <p>No matches found for your BGMI IDs</p>
           </div>
         )}
       </div>

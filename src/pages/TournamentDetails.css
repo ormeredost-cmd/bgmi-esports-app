@@ -240,3 +240,28 @@ html, body {
     border-radius: 18px;
   }
 }
+.balance-ok {
+  color: #10b981 !important;
+}
+
+.balance-low {
+  color: #ef4444 !important;
+}
+
+.balance-warning {
+  color: #f59e0b;
+  font-size: 11px;
+  margin-left: 5px;
+}
+
+.status-card.error {
+  background: linear-gradient(135deg, #fee2e2, #fecaca);
+  border: 1px solid #fca5a5;
+  color: #dc2626;
+}
+
+.submit-btn.disabled {
+  background: linear-gradient(90deg, #6b7280, #4b5563) !important;
+  cursor: not-allowed !important;
+  opacity: 0.6;
+}

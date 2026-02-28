@@ -1,3 +1,5 @@
+// src/pages/Tournaments.jsx
+
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { tournamentsSample } from "../data/tournamentsSample";
@@ -16,7 +18,7 @@ const Tournaments = () => {
     setCategory(p.get("mode") || "All");
   }, [location.search]);
 
-  // ab data me sirf tm1, tm3 (TDM) hi hain
+  // 1v1 / 2v2 filter
   const filtered = tournamentsSample.filter((t) => {
     if (category === "All") return true;
     if (category === "1v1 TDM") return t.mode === "1v1 TDM";

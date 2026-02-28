@@ -1,4 +1,4 @@
-// src/pages/TournamentDetails.jsx - CLEAN + DIRECT JOIN + LOADING
+// src/pages/TournamentDetails.jsx - 🔥 TOURNAMENT SPECIFIC BGMI ID TRACKING!
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect, useCallback } from "react";
 import { tournamentsSample } from "../data/tournamentsSample";
@@ -7,20 +7,30 @@ import "./TournamentDetails.css";
 const TournamentDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-
   const [isJoined, setIsJoined] = useState(false);
   const [isFull, setIsFull] = useState(false);
   const [liveSlots, setLiveSlots] = useState(0);
-  const [isLoading, setIsLoading] = useState(false); // 🔄 LOADING STATE
+  const [maxSlots, setMaxSlots] = useState(2);
+  const [isLoading, setIsLoading] = useState(false);
 
   const API_URL =
     window.location.hostname === "localhost"
       ? "http://localhost:5002"
       : "https://deposit-and-join-tournament-server.onrender.com";
 
+  // 🔥 TOURNAMENT SPECIFIC BGMI ID GETTER
+  const getBgmiIdForTournament = (tournamentId) => {
+    try {
+      const tournamentJoins = JSON.parse(localStorage.getItem('tournamentJoins') || '[]');
+      const tournamentJoin = tournamentJoins.find(join => join.tournamentId === tournamentId);
+      return tournamentJoin?.bgmiId || localStorage.getItem("tempBgmiId") || localStorage.getItem("lastBgmiId") || "";
+    } catch {
+      return localStorage.getItem("tempBgmiId") || localStorage.getItem("lastBgmiId") || "";
+    }
+  };
+
   const checkStatus = useCallback(async () => {
-    const bgmiId = localStorage.getItem("tempBgmiId") || localStorage.getItem("lastBgmiId");
-    
+    const bgmiId = getBgmiIdForTournament(id);
     if (!bgmiId) return;
 
     try {
@@ -31,10 +41,13 @@ const TournamentDetails = () => {
 
       const slotsRes = await fetch(`${API_URL}/api/tournament-slots-count/${id}`);
       const slotsData = await slotsRes.json();
-      
+
       const count = slotsData.registered || 0;
+      const max = slotsData.max || 2;
+
       setLiveSlots(count);
-      setIsFull(count >= 2);
+      setMaxSlots(max);
+      setIsFull(count >= max);
     } catch (error) {
       console.error("Status check failed:", error);
     }
@@ -63,13 +76,33 @@ const TournamentDetails = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     const playerName = e.target.bgmiIdName.value.trim();
     const bgmiId = e.target.bgmiIdNumber.value.trim();
-
+    
     if (!playerName || !bgmiId) return;
 
-    setIsLoading(true); // 🔄 START LOADING
+    setIsLoading(true);
+
+    // 🔥 TOURNAMENT SPECIFIC STORAGE!
+    const tournamentJoins = JSON.parse(localStorage.getItem('tournamentJoins') || '[]');
+    const newJoin = {
+      tournamentId: t.id,
+      bgmiId,
+      playerName,
+      timestamp: Date.now()
+    };
+
+    // Replace existing entry for this tournament OR add new
+    const updatedJoins = tournamentJoins
+      .filter(join => join.tournamentId !== t.id)
+      .concat(newJoin);
+
+    localStorage.setItem('tournamentJoins', JSON.stringify(updatedJoins));
+
+    // Also keep global fallback
+    localStorage.setItem("tempBgmiId", bgmiId);
+    localStorage.setItem("lastBgmiId", bgmiId);
 
     const now = new Date();
     const realDate = now.toLocaleDateString("en-IN");
@@ -95,7 +128,7 @@ const TournamentDetails = () => {
       map: t.map || "Erangel",
       entryFee: Number(t.entryFee),
       prizePool: Number(t.prizePool),
-      slots: liveSlots,
+      slots: maxSlots,
     };
 
     try {
@@ -104,18 +137,15 @@ const TournamentDetails = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(joinedMatch),
       });
-
       const result = await response.json();
-
+      
       if (response.ok && result.success) {
-        localStorage.setItem("lastBgmiId", bgmiId);
-        localStorage.setItem("tempBgmiId", bgmiId);
         navigate("/my-matches", { replace: true });
       }
     } catch (error) {
       console.error("Join error:", error);
     } finally {
-      setIsLoading(false); // ✅ STOP LOADING (ALWAYS)
+      setIsLoading(false);
     }
   };
 
@@ -134,21 +164,18 @@ const TournamentDetails = () => {
             <div className="info-label">Date & Time</div>
             <div className="info-value">{t.date} {t.time}</div>
           </div>
-
           <div className="info-card">
             <div className="info-label">Entry Fee</div>
             <div className="info-value">₹{t.entryFee}</div>
           </div>
-
           <div className="info-card">
             <div className="info-label">Prize Pool</div>
             <div className="info-value prize">₹{t.prizePool}</div>
           </div>
-
           <div className="info-card">
             <div className="info-label">Live Slots</div>
             <div className={`info-value slots ${isFull ? "full-slots" : ""}`}>
-              {liveSlots}/2 {isFull && <span className="full-badge">FULL</span>}
+              {liveSlots}/{maxSlots} {isFull && <span className="full-badge">FULL</span>}
             </div>
           </div>
         </div>
@@ -156,8 +183,8 @@ const TournamentDetails = () => {
         <div className="register-section">
           {isFull ? (
             <div className="status-card full">
-              <h3>🔴 Tournament Full ({liveSlots}/2)</h3>
-              <p>Maximum 2 players allowed</p>
+              <h3>🔴 Tournament Full ({liveSlots}/{maxSlots})</h3>
+              <p>Maximum {maxSlots} players allowed</p>
             </div>
           ) : isJoined ? (
             <div className="status-card joined">
@@ -175,10 +202,9 @@ const TournamentDetails = () => {
                   required
                   placeholder="Enter your BGMI name"
                   maxLength={20}
-                  disabled={isLoading} // 🔒 Disable during loading
+                  disabled={isLoading}
                 />
               </div>
-
               <div className="form-group">
                 <label className="form-label">📱 BGMI ID NUMBER</label>
                 <input
@@ -188,10 +214,9 @@ const TournamentDetails = () => {
                   required
                   placeholder="e.g. 51234567890"
                   maxLength={12}
-                  disabled={isLoading} // 🔒 Disable during loading
+                  disabled={isLoading}
                 />
               </div>
-
               <div className="form-group">
                 <label className="form-label">💰 Entry Fee</label>
                 <input
@@ -202,11 +227,10 @@ const TournamentDetails = () => {
                   disabled={isLoading}
                 />
               </div>
-
-              <button 
-                type="submit" 
+              <button
+                type="submit"
                 className="submit-btn"
-                disabled={isLoading} // 🔒 Prevent double-click
+                disabled={isLoading}
               >
                 {isLoading ? "⏳ Loading....." : "✅ Join Tournament"}
               </button>
