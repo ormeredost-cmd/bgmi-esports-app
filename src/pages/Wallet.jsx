@@ -1,11 +1,10 @@
-// 🔥 Wallet.jsx - NO LOADING SCREEN, PERFECT SILENT SYNC!
+// 🔥 Wallet.jsx - PERFECT MOBILE SCROLL + SILENT SYNC
 import React, { useEffect, useState, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { supabase } from "../supabaseClient";
 import "./Wallet.css";
 
-// 🔥 API URLs
 const USER_API = window.location.hostname === "localhost" 
   ? "http://localhost:5001"
   : "https://user-register-server.onrender.com";
@@ -20,7 +19,7 @@ const Wallet = () => {
   const [supabaseBalance, setSupabaseBalance] = useState(0);
   const [deposits, setDeposits] = useState([]);
   const [user, setUser] = useState(null);
-  const [isInitialLoading, setIsInitialLoading] = useState(true); // 🔥 ONLY FIRST LOAD
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
   const lastBalanceRef = useRef(0);
   const refreshTimeoutRef = useRef(null);
 
@@ -35,7 +34,7 @@ const Wallet = () => {
     }
   }, []);
 
-  // 🔥 SUPABASE BALANCE (Silent)
+  // SUPABASE BALANCE (Silent)
   const loadSupabaseBalance = useCallback(async () => {
     if (!user?.profile_id) return 0;
     
@@ -49,7 +48,6 @@ const Wallet = () => {
       if (!error && data) {
         const supaBalance = Number(data.balance || 0);
         
-        // 🔥 SILENT UPDATE - No render if same
         if (Math.abs(supaBalance - lastBalanceRef.current) > 0.01) {
           setSupabaseBalance(supaBalance);
           lastBalanceRef.current = supaBalance;
@@ -65,7 +63,7 @@ const Wallet = () => {
     }
   }, [user?.profile_id]);
 
-  // 🔥 SERVER BALANCE (Silent)
+  // SERVER BALANCE (Silent)
   const loadWalletBalance = useCallback(async () => {
     if (!user?.profile_id) return;
     
@@ -75,7 +73,6 @@ const Wallet = () => {
       });
       const serverBalance = Number(res.data.balance || 0);
       
-      // 🔥 PRIORITY: Supabase > Server
       const finalBalance = supabaseBalance || serverBalance;
       if (Math.abs(finalBalance - lastBalanceRef.current) > 0.01) {
         setBalance(finalBalance);
@@ -86,7 +83,7 @@ const Wallet = () => {
     }
   }, [user?.profile_id, supabaseBalance]);
 
-  // 🔥 DEPOSITS (Silent)
+  // DEPOSITS (Silent)
   const loadDeposits = useCallback(async () => {
     if (!user?.profile_id) return;
     
@@ -99,28 +96,26 @@ const Wallet = () => {
     }
   }, [user?.profile_id]);
 
-  // 🔥 INITIAL LOAD ONLY (No repeat loading)
+  // INITIAL LOAD ONLY
   useEffect(() => {
     if (!user?.profile_id || !isInitialLoading) return;
     
     const initialLoad = async () => {
-      // Fast parallel load
       await Promise.all([
         loadSupabaseBalance(),
         loadWalletBalance(),
         loadDeposits()
       ]);
-      setIsInitialLoading(false); // 🔥 DISABLE LOADING FOREVER
+      setIsInitialLoading(false);
     };
     
     initialLoad();
   }, [user, isInitialLoading, loadSupabaseBalance, loadWalletBalance, loadDeposits]);
 
-  // 🔥 SILENT BACKGROUND REFRESH (No loading screen)
+  // SILENT BACKGROUND REFRESH
   useEffect(() => {
     if (!user?.profile_id || isInitialLoading) return;
     
-    // 15-sec silent refresh
     refreshTimeoutRef.current = setInterval(async () => {
       await Promise.all([
         loadSupabaseBalance(),
@@ -134,7 +129,7 @@ const Wallet = () => {
     };
   }, [user, loadSupabaseBalance, loadWalletBalance, loadDeposits, isInitialLoading]);
 
-  // 🔥 INSTANT TOURNAMENT SYNC
+  // INSTANT TOURNAMENT SYNC
   useEffect(() => {
     const handleBalanceUpdate = async () => {
       console.log("⚡ Tournament sync triggered!");
@@ -164,13 +159,12 @@ const Wallet = () => {
     navigate("/withdraw-history");
   };
 
-  // 🔥 NO LOADING AFTER FIRST LOAD
   if (isInitialLoading) {
     return (
       <div className="wallet-container">
-        <div className="loading-fullscreen" style={{background: 'transparent'}}>
-          <div className="spinner-large" style={{opacity: 0.5}}></div>
-          <p style={{fontSize: '14px'}}>Loading...</p>
+        <div className="loading-fullscreen">
+          <div className="spinner-large"></div>
+          <p style={{fontSize: '14px', marginTop: '10px'}}>Loading...</p>
         </div>
       </div>
     );
@@ -186,15 +180,10 @@ const Wallet = () => {
           <h1>💰 Wallet</h1>
           <p>Welcome back, <strong>{user?.username || 'Player'}</strong></p>
         </div>
-        <button className="refresh-btn" onClick={refreshWallet} title="Refresh">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-            <path d="M23 4v6h-2V7.07L14 12.57l-4.28-4.48L3 12V4h2v5.72l3-3.14 4.28 4.48L21 3.93V4h2Z" fill="currentColor"/>
-            <path d="M21 20v-6h-2v2.93l-4-4.14-4.15 4.13L8 13.07V20H6v-6h2v2.93l3-3.14L13.22 20l4.15-4.13L21 17.07V20h2Z" fill="currentColor"/>
-          </svg>
-        </button>
+       
       </div>
 
-      {/* MAIN CONTENT */}
+      {/* 🔥 MAIN CONTENT - NO OVERFLOW HERE */}
       <div className="main-content">
         {/* BALANCE CARD */}
         <div className="balance-card">
@@ -203,8 +192,8 @@ const Wallet = () => {
             <h1 className="balance-amount">₹{displayBalance.toLocaleString()}</h1>
             <p className="profile-id">ID: {user?.profile_id}</p>
             {supabaseBalance > 0 && (
-              <p className="sync-status" style={{fontSize: '12px', color: '#28a745', margin: 0}}>
-                ✅ Tournament synced
+              <p className="sync-status" style={{fontSize: '12px', color: '#28a745', margin: '4px 0 0 0'}}>
+              
               </p>
             )}
           </div>
@@ -247,11 +236,9 @@ const Wallet = () => {
         </div>
 
         {/* SILENT SYNC INFO */}
-        <div className="quick-info-card" style={{opacity: 0.7, fontSize: '0.8em'}}>
-          <div className="quick-info-content">
-            <p>Silent auto-sync | Tournament deducts instant</p>
-          </div>
-        </div>
+
+        {/* 🔥 EXTRA SPACE FOR SCROLL */}
+        <div style={{height: '80px'}}></div>
       </div>
     </div>
   );
