@@ -32,8 +32,6 @@ const DepositHistory = () => {
   const loadDeposits = useCallback(async () => {
     try {
       setLoading(true);
-      setError("");
-
       const res = await fetch(`${DEPOSIT_API}/api/deposits`);
       if (!res.ok) throw new Error("Server error");
 
@@ -43,17 +41,12 @@ const DepositHistory = () => {
       const storedUser = localStorage.getItem("bgmi_user");
       if (storedUser) {
         const user = JSON.parse(storedUser);
-
         if (user?.email) {
-          allDeposits = allDeposits.filter((d) => {
-            const sameUser =
-              d?.email &&
-              d.email.toLowerCase() === user.email.toLowerCase();
-
-            const isVisible = d?.visible !== false;
-
-            return sameUser && isVisible;
-          });
+          allDeposits = allDeposits.filter(
+            (d) =>
+              d?.email?.toLowerCase() === user.email.toLowerCase() &&
+              d?.visible !== false
+          );
         }
       } else {
         allDeposits = [];
@@ -62,7 +55,6 @@ const DepositHistory = () => {
       allDeposits.sort((a, b) => new Date(b?.date) - new Date(a?.date));
       setDeposits(allDeposits);
     } catch (err) {
-      console.error(err);
       setError("Failed to load deposit history");
     } finally {
       setLoading(false);
@@ -73,33 +65,16 @@ const DepositHistory = () => {
     loadDeposits();
   }, [loadDeposits]);
 
-  const filteredDeposits = deposits.filter((d) => {
-    if (filter === "all") return true;
-    return d?.status === filter;
-  });
+  const filteredDeposits =
+    filter === "all"
+      ? deposits
+      : deposits.filter((d) => d?.status === filter);
 
   const getStatusCount = (status) =>
     deposits.filter((d) => d?.status === status).length;
 
-  const refreshHistory = () => loadDeposits();
-
   if (loading) {
-    return <div className="history-loading">🔄 Loading deposit history...</div>;
-  }
-
-  if (error) {
-    return (
-      <div className="history-page">
-        <div className="history-container">
-          <div className="empty-state">
-            <h3>⚠️ {error}</h3>
-            <button onClick={refreshHistory} className="add-money-btn">
-              🔁 Retry
-            </button>
-          </div>
-        </div>
-      </div>
-    );
+    return <div className="history-loading">🔄 Loading...</div>;
   }
 
   return (
@@ -107,13 +82,13 @@ const DepositHistory = () => {
       <div className="history-container">
         {/* HEADER */}
         <div className="history-header">
-          <div className="header-title">
-            <h1>🧾 My Deposit History</h1>
-            <div className="total-count">Total: {deposits.length} deposits</div>
+          <h1>🧾 My Deposit History</h1>
+          <div className="total-count">
+            Total: {deposits.length} deposits
           </div>
         </div>
 
-        {/* FILTER TABS */}
+        {/* FILTERS */}
         <div className="filter-tabs">
           <button
             className={`filter-tab ${filter === "all" ? "active" : ""}`}
@@ -148,12 +123,7 @@ const DepositHistory = () => {
         {filteredDeposits.length === 0 ? (
           <div className="empty-state">
             <div className="empty-wallet">💰</div>
-            <h3>No {filter} deposits found</h3>
-
-            <p className="empty-sub">
-              💡 Admin may have cleaned history. Your balance is safe!
-            </p>
-
+            <h3>No deposits found</h3>
             <button
               onClick={() => navigate("/deposit")}
               className="add-money-btn"
@@ -164,38 +134,40 @@ const DepositHistory = () => {
         ) : (
           <div className="history-list">
             {filteredDeposits.map((d) => (
-              <div key={d?.id || Math.random()} className="history-card">
-                {/* 🔥 FIXED: Amount + Status Row */}
+              <div key={d?.id} className="history-card">
                 <div className="amount-status-row">
-                  <div className="amount-section">
-                    <span className="amount">
-                      ₹{Number(d?.amount || 0).toLocaleString()}
+                  <span className="amount">
+                    ₹{Number(d?.amount || 0).toLocaleString()}
+                  </span>
+
+                  <div className="status-section">
+                    <span
+                      className={`status-dot ${d?.status || "pending"}`}
+                    />
+                    <span
+                      className={`status-badge-large ${d?.status || "pending"}`}
+                    >
+                      {d?.status === "approved"
+                        ? "Approved"
+                        : d?.status === "rejected"
+                        ? "Rejected"
+                        : "Pending"}
                     </span>
                   </div>
-                  <div className="status-section">
-                    <span className={`status-dot ${d?.status || "pending"}`} />
-                    <div className={`status-badge-large ${d?.status || "pending"}`}>
-                      {d?.status === "approved"
-                        ? "✅ Approved"
-                        : d?.status === "pending"
-                        ? "⏳ Pending"
-                        : "❌ Rejected"}
-                    </div>
-                  </div>
                 </div>
 
-                {/* 🔥 FIXED: Details - Vertical Stack */}
                 <div className="details-row">
                   <div className="deposit-id">
-                    🆔 Deposit ID: <b>{(d?.id || "").slice(0, 8) || "—"}</b>
+                    🆔 {(d?.id || "").slice(0, 8)}
                   </div>
-                  <span className="date">
-                    {formatIndianTime(d?.dateIST || d?.date)}
-                  </span>
+                  <div className="date">
+                    {formatIndianTime(d?.date)}
+                  </div>
                 </div>
 
-                {/* User Info */}
-                <div className="user-info">👤 {d?.name || "Unknown"}</div>
+                <div className="user-info">
+                  👤 {d?.name || "Unknown"}
+                </div>
               </div>
             ))}
           </div>
