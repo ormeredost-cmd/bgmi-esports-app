@@ -1,6 +1,6 @@
 /* =========================
-   DepositHistory.css
-   COMPACT PREMIUM MOBILE VERSION - SCROLL + MOBILE FIXED ✅
+   DepositHistory.css - PHONE ONLY COMPACT
+   PERFECT MOBILE + TOUCH SCROLL ✅
 ========================= */
 
 /* RESET */
@@ -8,296 +8,221 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  /* 🔥 TOUCH SCROLL FIX */
   -webkit-tap-highlight-color: transparent;
-  touch-action: pan-y pinch-zoom;
 }
 
-html,
-body {
+html, body {
   width: 100%;
   height: 100%;
   overflow-x: hidden;
-  font-family: "Inter", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
   background: #0b111d;
   color: #ffffff;
 }
 
-/* =========================
-   PAGE
-========================= */
+/* PAGE */
 .history-page {
   width: 100%;
-  max-width: 480px;
-  margin: 0 auto;
-  padding: 10px;
-  padding-bottom: 120px;
+  padding: 8px;
+  padding-bottom: 100px;
+  max-width: 100%;
 }
 
-/* =========================
-   SCROLL CONTAINER - PERFECT TOUCH
-========================= */
+/* SCROLL - PERFECT TOUCH */
 .history-container {
   width: 100%;
-  height: calc(100vh - 110px);
+  height: calc(100vh - 90px);
   overflow-y: auto;
   overflow-x: hidden;
-  padding-bottom: 40px;
+  padding-bottom: 30px;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  touch-action: pan-y pinch-zoom;
 }
 
-.history-container::-webkit-scrollbar {
-  display: none;
-}
+.history-container::-webkit-scrollbar { display: none; }
 
-/* =========================
-   HEADER
-========================= */
+/* HEADER */
 .history-header {
   width: 100%;
   padding: 12px;
-  margin-bottom: 10px;
-  border-radius: 16px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(14px);
+  margin-bottom: 8px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
   position: sticky;
   top: 0;
   z-index: 10;
 }
 
 .history-header h1 {
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 800;
+  margin: 0;
 }
 
 .total-count {
-  font-size: 12px;
+  font-size: 11px;
   opacity: 0.7;
-  margin-top: 4px;
+  margin-top: 3px;
 }
 
-/* =========================
-   FILTER TABS
-========================= */
+/* FILTER TABS */
 .filter-tabs {
   display: flex;
-  gap: 8px;
+  gap: 6px;
   overflow-x: auto;
   padding: 8px;
   margin-bottom: 12px;
-  border-radius: 16px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 12px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
   position: sticky;
-  top: 65px;
+  top: 60px;
   z-index: 9;
   scrollbar-width: none;
 }
 
-.filter-tabs::-webkit-scrollbar {
-  display: none;
-}
+.filter-tabs::-webkit-scrollbar { display: none; }
 
 .filter-tab {
-  flex: 0 0 auto;
-  padding: 7px 12px;
-  font-size: 12px;
+  padding: 6px 12px;
+  font-size: 11px;
   font-weight: 700;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(255, 255, 255, 0.05);
-  color: rgba(255, 255, 255, 0.75);
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.8);
   cursor: pointer;
-  transition: 0.2s ease;
+  transition: 0.2s;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .filter-tab.active {
   background: #00c896;
-  color: #071016;
-  border: 1px solid #00c896;
+  color: #000;
+  border-color: #00c896;
 }
 
-/* =========================
-   LIST
-========================= */
+/* LIST */
 .history-list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  padding-bottom: 30px;
+  gap: 8px;
 }
 
-/* =========================
-   CARD - MOBILE PERFECT FIT
-========================= */
+/* 🔥 PHONE COMPACT CARD */
 .history-card {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 12px;
-  padding: 14px;
-  border-radius: 16px;
-  background: rgba(255, 255, 255, 0.045);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(14px);
-  /* 🔥 MOBILE SAFE */
-  max-width: 100%;
-  overflow: hidden;
+  padding: 12px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  display: block;
+  width: 100%;
 }
 
-/* LEFT CONTENT */
-.card-left {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-}
-
-.amount-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
-}
-
+/* AMOUNT */
 .amount {
-  font-size: 20px;
+  display: block;
+  font-size: 18px;
   font-weight: 800;
   color: #00c896;
-  flex-shrink: 0;
+  margin-bottom: 6px;
+}
+
+/* STATUS TOP RIGHT */
+.status-section {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  margin-bottom: 10px;
 }
 
 .status-dot {
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
-  flex-shrink: 0;
 }
 
 .status-dot.pending { background: #ffb020; }
 .status-dot.approved { background: #00c896; }
 .status-dot.rejected { background: #ff4d4d; }
 
-.details-row {
-  font-size: 11px;
-  opacity: 0.8;
-  line-height: 1.4;
-}
-
-.date {
-  padding: 4px 8px;
-  border-radius: 10px;
-  font-size: 11px;
-  background: rgba(255, 255, 255, 0.05);
-  margin-top: 4px;
-  display: block;
-}
-
-.user-info {
-  margin-top: 6px;
-  font-size: 12px;
-  font-weight: 700;
-}
-
-.deposit-id {
-  margin-top: 6px;
-  font-size: 10px;
-  opacity: 0.7;
-  word-break: break-word;
-  overflow-wrap: break-word;
-}
-
-/* RIGHT STATUS BADGE */
 .status-badge-large {
-  padding: 6px 10px;
-  font-size: 11px;
+  padding: 5px 10px;
+  font-size: 10px;
   font-weight: 700;
-  border-radius: 12px;
+  border-radius: 10px;
   white-space: nowrap;
-  flex-shrink: 0;
-  max-width: 120px;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .status-badge-large.pending {
-  background: rgba(255, 176, 32, 0.12);
-  color: #ffffff;
+  background: rgba(255,176,32,0.2);
+  color: #ffb020;
 }
 
 .status-badge-large.approved {
-  background: rgba(0, 200, 150, 0.12);
-  color: #ffffff;
+  background: rgba(0,200,150,0.2);
+  color: #00c896;
 }
 
 .status-badge-large.rejected {
-  background: rgba(255, 77, 77, 0.12);
-  color: #ffffff;
+  background: rgba(255,77,77,0.2);
+  color: #ff4d4d;
 }
 
-/* =========================
-   EMPTY STATE
-========================= */
+/* DETAILS */
+.details-row {
+  font-size: 10px;
+  opacity: 0.8;
+  line-height: 1.3;
+}
+
+.date {
+  padding: 3px 6px;
+  border-radius: 6px;
+  font-size: 10px;
+  background: rgba(255,255,255,0.08);
+  margin: 4px 0;
+  display: inline-block;
+}
+
+.user-info {
+  font-size: 11px;
+  font-weight: 600;
+  color: #00c896;
+  margin: 4px 0;
+}
+
+.deposit-id {
+  font-size: 9px;
+  opacity: 0.7;
+  word-break: break-word;
+}
+
+/* EMPTY */
 .empty-state {
   padding: 20px;
-  border-radius: 16px;
+  border-radius: 12px;
   text-align: center;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  margin: 20px 0;
 }
 
-.empty-wallet {
-  font-size: 34px;
-  margin-bottom: 8px;
-}
-
-.empty-state h3 {
-  font-size: 14px;
-  font-weight: 800;
-}
-
-.empty-state p {
-  margin-top: 8px;
-  font-size: 11px;
-  opacity: 0.7;
-}
-
+.empty-wallet { font-size: 32px; margin-bottom: 8px; }
+.empty-state h3 { font-size: 14px; font-weight: 800; margin: 8px 0; }
+.empty-state p { font-size: 11px; opacity: 0.7; }
 .add-money-btn {
   margin-top: 12px;
-  padding: 9px 14px;
+  padding: 10px 16px;
   font-size: 12px;
   font-weight: 800;
-  border-radius: 12px;
+  border-radius: 10px;
   border: none;
   background: #00c896;
-  color: #071016;
+  color: #000;
   cursor: pointer;
-  transition: 0.2s ease;
-}
-
-.add-money-btn:hover {
-  transform: translateY(-1px);
-}
-
-/* 🔥 MOBILE RESPONSIVE */
-@media (max-width: 480px) {
-  .history-card {
-    flex-direction: column !important;
-    gap: 10px;
-    padding: 12px;
-  }
-  
-  .status-badge-large {
-    max-width: 100% !important;
-    text-align: center;
-    order: 2;
-  }
-  
-  .card-left {
-    order: 1;
-  }
 }
