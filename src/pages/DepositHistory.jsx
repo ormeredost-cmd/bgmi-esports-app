@@ -104,7 +104,6 @@ const DepositHistory = () => {
 
   return (
     <div className="history-page">
-      {/* ✅ IMPORTANT WRAPPER */}
       <div className="history-container">
         {/* HEADER */}
         <div className="history-header">
@@ -112,8 +111,6 @@ const DepositHistory = () => {
             <h1>🧾 My Deposit History</h1>
             <div className="total-count">Total: {deposits.length} deposits</div>
           </div>
-
-          
         </div>
 
         {/* FILTER TABS */}
@@ -168,35 +165,37 @@ const DepositHistory = () => {
           <div className="history-list">
             {filteredDeposits.map((d) => (
               <div key={d?.id || Math.random()} className="history-card">
-                <div className="card-left">
-                  <div className="amount-row">
+                {/* 🔥 FIXED: Amount + Status Row */}
+                <div className="amount-status-row">
+                  <div className="amount-section">
                     <span className="amount">
                       ₹{Number(d?.amount || 0).toLocaleString()}
                     </span>
+                  </div>
+                  <div className="status-section">
                     <span className={`status-dot ${d?.status || "pending"}`} />
+                    <div className={`status-badge-large ${d?.status || "pending"}`}>
+                      {d?.status === "approved"
+                        ? "✅ Approved"
+                        : d?.status === "pending"
+                        ? "⏳ Pending"
+                        : "❌ Rejected"}
+                    </div>
                   </div>
+                </div>
 
-                  <div className="details-row">
-                    
-                    <span className="date">
-                      {formatIndianTime(d?.dateIST || d?.date)}
-                    </span>
-                  </div>
-
-                  <div className="user-info">👤 {d?.name || "Unknown"}</div>
-
+                {/* 🔥 FIXED: Details - Vertical Stack */}
+                <div className="details-row">
                   <div className="deposit-id">
                     🆔 Deposit ID: <b>{(d?.id || "").slice(0, 8) || "—"}</b>
                   </div>
+                  <span className="date">
+                    {formatIndianTime(d?.dateIST || d?.date)}
+                  </span>
                 </div>
 
-                <div className={`status-badge-large ${d?.status || "pending"}`}>
-                  {d?.status === "approved"
-                    ? "✅ Approved"
-                    : d?.status === "pending"
-                    ? "⏳ Pending"
-                    : "❌ Rejected"}
-                </div>
+                {/* User Info */}
+                <div className="user-info">👤 {d?.name || "Unknown"}</div>
               </div>
             ))}
           </div>
