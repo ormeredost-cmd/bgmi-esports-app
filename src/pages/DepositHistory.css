@@ -1,50 +1,61 @@
 /* =========================
-   DepositHistory.css - NUCLEAR MOBILE FIX
-   ZERO RIGHT CLIPPING - 95% WIDTH + ZERO PADDING
+   DepositHistory.css
+   COMPACT PREMIUM MOBILE VERSION - SCROLL + MOBILE FIXED ✅
 ========================= */
 
-/* RESET - EXTRA SAFE */
+/* RESET */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  /* 🔥 TOUCH SCROLL FIX */
+  -webkit-tap-highlight-color: transparent;
+  touch-action: pan-y pinch-zoom;
 }
 
-html, body {
-  width: 100vw;
-  height: 100vh;
-  overflow-x: hidden !important;
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
   font-family: "Inter", sans-serif;
   background: #0b111d;
   color: #ffffff;
 }
 
-/* 🔥 PAGE - EXTRA SAFE */
+/* =========================
+   PAGE
+========================= */
 .history-page {
-  width: 100vw !important;
-  max-width: 100% !important;
-  margin: 0 !important;
-  padding: 8px !important; /* 🔥 10px → 8px */
-  padding-bottom: 120px !important;
-  overflow-x: hidden !important;
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 10px;
+  padding-bottom: 120px;
 }
 
-/* SCROLL */
+/* =========================
+   SCROLL CONTAINER - PERFECT TOUCH
+========================= */
 .history-container {
-  width: 100vw !important;
-  max-width: 100% !important;
+  width: 100%;
   height: calc(100vh - 110px);
   overflow-y: auto;
-  overflow-x: hidden !important;
+  overflow-x: hidden;
   padding-bottom: 40px;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   -ms-overflow-style: none;
+  touch-action: pan-y pinch-zoom;
 }
 
-.history-container::-webkit-scrollbar { display: none; }
+.history-container::-webkit-scrollbar {
+  display: none;
+}
 
-/* HEADER + FILTERS - SAME */
+/* =========================
+   HEADER
+========================= */
 .history-header {
   width: 100%;
   padding: 12px;
@@ -58,7 +69,7 @@ html, body {
   z-index: 10;
 }
 
-.header-title h1 {
+.history-header h1 {
   font-size: 17px;
   font-weight: 800;
 }
@@ -69,6 +80,9 @@ html, body {
   margin-top: 4px;
 }
 
+/* =========================
+   FILTER TABS
+========================= */
 .filter-tabs {
   display: flex;
   gap: 8px;
@@ -84,7 +98,9 @@ html, body {
   scrollbar-width: none;
 }
 
-.filter-tabs::-webkit-scrollbar { display: none; }
+.filter-tabs::-webkit-scrollbar {
+  display: none;
+}
 
 .filter-tab {
   flex: 0 0 auto;
@@ -97,7 +113,6 @@ html, body {
   color: rgba(255, 255, 255, 0.75);
   cursor: pointer;
   transition: 0.2s ease;
-  white-space: nowrap;
 }
 
 .filter-tab.active {
@@ -106,46 +121,54 @@ html, body {
   border: 1px solid #00c896;
 }
 
-/* 🔥 LIST */
+/* =========================
+   LIST
+========================= */
 .history-list {
   display: flex;
   flex-direction: column;
   gap: 10px;
   padding-bottom: 30px;
-  width: 100%;
 }
 
-/* 🔥🔥 CARD - NUCLEAR COMPACT VERSION */
+/* =========================
+   CARD - MOBILE PERFECT FIT
+========================= */
 .history-card {
-  width: 95vw !important; /* 🔥 FULL PHONE WIDTH */
-  max-width: 95% !important;
-  margin: 0 auto; /* 🔥 CENTER */
-  padding: 10px !important; /* 🔥 ZERO RISK */
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px;
   border-radius: 16px;
   background: rgba(255, 255, 255, 0.045);
   border: 1px solid rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(14px);
-  overflow: hidden !important;
-  display: block !important; /* 🔥 NO FLEX OVERFLOW */
-  box-sizing: border-box !important;
+  /* 🔥 MOBILE SAFE */
+  max-width: 100%;
+  overflow: hidden;
 }
 
-/* 🔥 AMOUNT - TOP BIG */
-.amount {
-  display: block;
-  font-size: 22px !important;
-  font-weight: 800;
-  color: #00c896;
+/* LEFT CONTENT */
+.card-left {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.amount-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 8px;
 }
 
-/* 🔥 STATUS ROW - SEPARATE */
-.status-section {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  justify-content: flex-end;
-  margin-bottom: 10px;
+.amount {
+  font-size: 20px;
+  font-weight: 800;
+  color: #00c896;
+  flex-shrink: 0;
 }
 
 .status-dot {
@@ -159,13 +182,44 @@ html, body {
 .status-dot.approved { background: #00c896; }
 .status-dot.rejected { background: #ff4d4d; }
 
+.details-row {
+  font-size: 11px;
+  opacity: 0.8;
+  line-height: 1.4;
+}
+
+.date {
+  padding: 4px 8px;
+  border-radius: 10px;
+  font-size: 11px;
+  background: rgba(255, 255, 255, 0.05);
+  margin-top: 4px;
+  display: block;
+}
+
+.user-info {
+  margin-top: 6px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.deposit-id {
+  margin-top: 6px;
+  font-size: 10px;
+  opacity: 0.7;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+/* RIGHT STATUS BADGE */
 .status-badge-large {
   padding: 6px 10px;
   font-size: 11px;
   font-weight: 700;
   border-radius: 12px;
   white-space: nowrap;
-  max-width: 90px;
+  flex-shrink: 0;
+  max-width: 120px;
   overflow: hidden;
   text-overflow: ellipsis;
 }
@@ -185,49 +239,32 @@ html, body {
   color: #ffffff;
 }
 
-/* 🔥 DETAILS - SIMPLE BLOCK */
-.details-row {
-  margin: 0;
-  padding: 0;
-}
-
-.date {
-  display: block;
-  padding: 4px 8px;
-  border-radius: 10px;
-  font-size: 11px;
-  background: rgba(255, 255, 255, 0.05);
-  margin-bottom: 6px;
-}
-
-.user-info {
-  font-size: 12px;
-  font-weight: 700;
-  margin-bottom: 6px;
-  opacity: 0.9;
-}
-
-.deposit-id {
-  font-size: 10px;
-  opacity: 0.7;
-  word-break: break-word;
-  line-height: 1.3;
-}
-
-/* EMPTY STATE */
+/* =========================
+   EMPTY STATE
+========================= */
 .empty-state {
   padding: 20px;
   border-radius: 16px;
   text-align: center;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  margin: 20px auto;
-  max-width: 95%;
 }
 
-.empty-wallet { font-size: 34px; margin-bottom: 8px; }
-.empty-state h3 { font-size: 14px; font-weight: 800; }
-.empty-sub { margin-top: 8px; font-size: 11px; opacity: 0.7; }
+.empty-wallet {
+  font-size: 34px;
+  margin-bottom: 8px;
+}
+
+.empty-state h3 {
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.empty-state p {
+  margin-top: 8px;
+  font-size: 11px;
+  opacity: 0.7;
+}
 
 .add-money-btn {
   margin-top: 12px;
@@ -242,16 +279,25 @@ html, body {
   transition: 0.2s ease;
 }
 
-.add-money-btn:hover { transform: translateY(-1px); }
+.add-money-btn:hover {
+  transform: translateY(-1px);
+}
 
-/* 🔥 MOBILE NUCLEAR */
+/* 🔥 MOBILE RESPONSIVE */
 @media (max-width: 480px) {
   .history-card {
-    width: 96vw !important;
-    padding: 8px !important;
+    flex-direction: column !important;
+    gap: 10px;
+    padding: 12px;
   }
   
-  .amount {
-    font-size: 20px !important;
+  .status-badge-large {
+    max-width: 100% !important;
+    text-align: center;
+    order: 2;
+  }
+  
+  .card-left {
+    order: 1;
   }
 }
