@@ -9,7 +9,7 @@
 html,body{
   width:100%;
   overflow-x:hidden;
-  font-family: "Inter", sans-serif;
+  font-family:"Inter", sans-serif;
   background:#0b111d;
   color:white;
 }
@@ -20,7 +20,7 @@ html,body{
   width:100%;
   display:flex;
   justify-content:center;
-  padding:15px;
+  padding:15px 12px 60px; /* bottom gap fix */
 }
 
 /* CONTAINER */
@@ -33,31 +33,40 @@ html,body{
 /* HEADER */
 
 .header-title h1{
-  font-size:22px;
+  font-size:20px;
+  font-weight:600;
 }
 
 .total-count{
-  font-size:13px;
+  font-size:12px;
   color:#aaa;
+  margin-top:3px;
 }
 
 /* FILTER */
 
 .filter-tabs{
   display:flex;
-  flex-wrap:wrap;   /* mobile fix */
-  gap:8px;
-  margin:15px 0;
+  gap:6px;
+  margin:14px 0;
+  overflow-x:auto;
+  white-space:nowrap;
+  padding-bottom:4px;
+}
+
+.filter-tabs::-webkit-scrollbar{
+  display:none;
 }
 
 .filter-tab{
-  padding:7px 12px;
+  padding:6px 10px;
   border:none;
   border-radius:6px;
   background:#1a2336;
   color:white;
-  font-size:12px;
+  font-size:11px;
   cursor:pointer;
+  flex-shrink:0;
 }
 
 .filter-tab.active{
@@ -69,7 +78,8 @@ html,body{
 .history-list{
   display:flex;
   flex-direction:column;
-  gap:12px;
+  gap:10px;
+  padding-bottom:30px; /* last card fully visible */
 }
 
 /* CARD */
@@ -78,7 +88,7 @@ html,body{
   width:100%;
   background:#111827;
   border-radius:10px;
-  padding:12px;
+  padding:10px 12px;
   display:flex;
   justify-content:space-between;
   align-items:center;
@@ -95,15 +105,15 @@ html,body{
 /* AMOUNT */
 
 .amount{
-  font-size:16px;
+  font-size:15px;
   font-weight:600;
 }
 
 /* STATUS DOT */
 
 .status-dot{
-  width:8px;
-  height:8px;
+  width:7px;
+  height:7px;
   border-radius:50%;
 }
 
@@ -114,25 +124,26 @@ html,body{
 /* DETAILS */
 
 .details-row{
-  font-size:12px;
+  font-size:11px;
   color:#aaa;
 }
 
 .user-info{
-  font-size:12px;
+  font-size:11px;
 }
 
 .deposit-id{
-  font-size:11px;
+  font-size:10px;
   color:#bbb;
 }
 
 /* STATUS BADGE */
 
 .status-badge-large{
-  font-size:11px;
+  font-size:10px;
   padding:5px 8px;
   border-radius:6px;
+  font-weight:500;
 }
 
 .status-badge-large.pending{
@@ -157,7 +168,7 @@ html,body{
   .history-card{
     flex-direction:column;
     align-items:flex-start;
-    gap:8px;
+    gap:6px;
   }
 
   .status-badge-large{
