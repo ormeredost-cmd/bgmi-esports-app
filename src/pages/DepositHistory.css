@@ -1,190 +1,167 @@
 /* RESET */
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
 }
 
-html,
-body {
-  width: 100%;
-  overflow-x: hidden;
+html,body{
+  width:100%;
+  overflow-x:hidden;
   font-family: "Inter", sans-serif;
-  background: #0b111d;
-  color: white;
+  background:#0b111d;
+  color:white;
 }
 
 /* PAGE */
 
-.history-page {
-  width: 100%;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  padding: 10px;
+.history-page{
+  width:100%;
+  display:flex;
+  justify-content:center;
+  padding:15px;
 }
 
 /* CONTAINER */
 
-.history-container {
-  width: 100%;
-  max-width: 600px;
+.history-container{
+  width:100%;
+  max-width:700px;
 }
 
 /* HEADER */
 
-.header-title h1 {
-  font-size: 20px;
-  font-weight: 600;
+.header-title h1{
+  font-size:22px;
 }
 
-.total-count {
-  font-size: 12px;
-  color: #aaa;
-  margin-top: 3px;
+.total-count{
+  font-size:13px;
+  color:#aaa;
 }
 
 /* FILTER */
 
-.filter-tabs {
-  display: flex;
-  gap: 6px;
-  margin: 12px 0;
-  overflow-x: auto;
+.filter-tabs{
+  display:flex;
+  flex-wrap:wrap;   /* mobile fix */
+  gap:8px;
+  margin:15px 0;
 }
 
-.filter-tab {
-  padding: 6px 10px;
-  border-radius: 6px;
-  border: none;
-  background: #1a2336;
-  color: white;
-  font-size: 11px;
-  white-space: nowrap;
+.filter-tab{
+  padding:7px 12px;
+  border:none;
+  border-radius:6px;
+  background:#1a2336;
+  color:white;
+  font-size:12px;
+  cursor:pointer;
 }
 
-.filter-tab.active {
-  background: #00c853;
+.filter-tab.active{
+  background:#00c853;
 }
 
 /* LIST */
 
-.history-list {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+.history-list{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
 }
 
 /* CARD */
 
-.history-card {
-  width: 100%;
-  background: #111827;
-  border-radius: 10px;
-  padding: 10px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.history-card{
+  width:100%;
+  background:#111827;
+  border-radius:10px;
+  padding:12px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
 }
 
 /* LEFT */
 
-.card-left {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+.card-left{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
 }
 
 /* AMOUNT */
 
-.amount {
-  font-size: 16px;
-  font-weight: 600;
+.amount{
+  font-size:16px;
+  font-weight:600;
 }
 
-.status-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
+/* STATUS DOT */
+
+.status-dot{
+  width:8px;
+  height:8px;
+  border-radius:50%;
 }
 
-.status-dot.pending {
-  background: orange;
-}
-
-.status-dot.approved {
-  background: #00c853;
-}
-
-.status-dot.rejected {
-  background: red;
-}
+.status-dot.pending{background:orange;}
+.status-dot.approved{background:#00c853;}
+.status-dot.rejected{background:red;}
 
 /* DETAILS */
 
-.details-row {
-  font-size: 11px;
-  color: #aaa;
+.details-row{
+  font-size:12px;
+  color:#aaa;
 }
 
-.user-info {
-  font-size: 11px;
+.user-info{
+  font-size:12px;
 }
 
-.deposit-id {
-  font-size: 10px;
-  color: #bbb;
+.deposit-id{
+  font-size:11px;
+  color:#bbb;
 }
 
-/* STATUS */
+/* STATUS BADGE */
 
-.status-badge-large {
-  padding: 5px 8px;
-  border-radius: 6px;
-  font-size: 10px;
-  font-weight: 500;
+.status-badge-large{
+  font-size:11px;
+  padding:5px 8px;
+  border-radius:6px;
 }
 
-.status-badge-large.pending {
-  background: rgba(255, 165, 0, 0.2);
-  color: orange;
+.status-badge-large.pending{
+  background:rgba(255,165,0,0.2);
+  color:orange;
 }
 
-.status-badge-large.approved {
-  background: rgba(0, 200, 83, 0.2);
-  color: #00c853;
+.status-badge-large.approved{
+  background:rgba(0,200,83,0.2);
+  color:#00c853;
 }
 
-.status-badge-large.rejected {
-  background: rgba(255, 0, 0, 0.2);
-  color: red;
+.status-badge-large.rejected{
+  background:rgba(255,0,0,0.2);
+  color:red;
 }
 
-/* EMPTY */
+/* MOBILE */
 
-.empty-state {
-  text-align: center;
-  padding: 30px 10px;
-}
+@media(max-width:600px){
 
-.empty-wallet {
-  font-size: 32px;
-}
+  .history-card{
+    flex-direction:column;
+    align-items:flex-start;
+    gap:8px;
+  }
 
-.empty-sub {
-  font-size: 11px;
-  color: #aaa;
-}
+  .status-badge-large{
+    align-self:flex-end;
+  }
 
-/* BUTTON */
-
-.add-money-btn {
-  margin-top: 10px;
-  background: #00c853;
-  border: none;
-  padding: 8px 14px;
-  border-radius: 6px;
-  color: white;
-  font-size: 12px;
 }
