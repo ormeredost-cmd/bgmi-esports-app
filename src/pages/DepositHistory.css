@@ -28,7 +28,6 @@ html,body{
 .history-container{
   width:100%;
   max-width:700px;
-  padding-bottom:40px; /* 🔧 last card ke niche gap */
 }
 
 /* HEADER */
@@ -46,26 +45,19 @@ html,body{
 
 .filter-tabs{
   display:flex;
-  flex-wrap:nowrap;        /* 🔧 ek line me */
-  overflow-x:auto;        /* 🔧 scroll enable */
+  flex-wrap:wrap;   /* mobile fix */
   gap:8px;
   margin:15px 0;
 }
 
-.filter-tabs::-webkit-scrollbar{
-  display:none;           /* 🔧 scrollbar hide */
-}
-
 .filter-tab{
-  padding:6px 10px;       /* 🔧 thoda chota */
+  padding:7px 12px;
   border:none;
   border-radius:6px;
   background:#1a2336;
   color:white;
-  font-size:11px;         /* 🔧 mobile me fit */
+  font-size:12px;
   cursor:pointer;
-  white-space:nowrap;
-  flex-shrink:0;
 }
 
 .filter-tab.active{
@@ -78,7 +70,6 @@ html,body{
   display:flex;
   flex-direction:column;
   gap:12px;
-  padding-bottom:20px; /* 🔧 last card visible */
 }
 
 /* CARD */
