@@ -1,3 +1,4 @@
+// WithdrawHistory.jsx - UNIQUE CLASS NAMES
 import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import "./WithdrawHistory.css"; 
@@ -83,85 +84,86 @@ const WithdrawHistory = () => {
   const refreshHistory = () => loadWithdraws();
 
   if (loading) {
-    return <div className="history-page">{/* LOADING JSX SAME */}<div className="loading-container">
-      <div className="spinner-large"></div>
-      <p>🔄 Loading withdraw history...</p>
-    </div></div>;
+    return <div className="withdraw-history-page">
+      <div className="withdraw-loading-container">
+        <div className="withdraw-spinner-large"></div>
+        <p>🔄 Loading withdraw history...</p>
+      </div>
+    </div>;
   }
 
   if (error) {
-    return <div className="history-page">{/* ERROR JSX SAME */}<div className="empty-state">
-      <div className="empty-icon">⚠️</div>
-      <h3>{error}</h3>
-      <button onClick={refreshHistory} className="refresh-btn">🔄 Retry Load</button>
-      <button onClick={() => navigate("/wallet")} className="back-btn">← Back to Wallet</button>
-    </div></div>;
+    return <div className="withdraw-history-page">
+      <div className="withdraw-empty-state">
+        <div className="withdraw-empty-icon">⚠️</div>
+        <h3>{error}</h3>
+        <button onClick={refreshHistory} className="withdraw-refresh-btn">🔄 Retry Load</button>
+        <button onClick={() => navigate("/wallet")} className="withdraw-back-btn">← Back to Wallet</button>
+      </div>
+    </div>;
   }
 
   return (
-    <div className="history-page"> {/* 🔥 ONLY THIS SCROLLS */}
-      {/* HEADER */}
-      <div className="history-header">
-        <button className="back-button" onClick={() => navigate("/wallet")}>← Back</button>
-        <div className="header-title">
+    <div className="withdraw-history-page">
+      <div className="withdraw-history-header">
+        <button className="withdraw-back-button" onClick={() => navigate("/wallet")}>← Back</button>
+        <div className="withdraw-header-title">
           <h1>📜 Withdraw History</h1>
-          <div className="total-count">Total: {withdraws.length} requests</div>
+          <div className="withdraw-total-count">Total: {withdraws.length} requests</div>
         </div>
-        <button className="refresh-btn" onClick={refreshHistory}>🔄</button>
+        <button className="withdraw-refresh-button" onClick={refreshHistory}>🔄</button>
       </div>
 
-      {/* FILTERS */}
-      <div className="filter-tabs">
-        <button className={`filter-tab ${filter === "all" ? "active" : ""}`} onClick={() => setFilter("all")}>
+      <div className="withdraw-filter-tabs">
+        <button className={`withdraw-filter-tab ${filter === "all" ? "active" : ""}`} onClick={() => setFilter("all")}>
           All ({withdraws.length})
         </button>
-        <button className={`filter-tab ${filter === "pending" ? "active" : ""}`} onClick={() => setFilter("pending")}>
+        <button className={`withdraw-filter-tab ${filter === "pending" ? "active" : ""}`} onClick={() => setFilter("pending")}>
           ⏳ Pending ({getStatusCount("pending")})
         </button>
-        <button className={`filter-tab ${filter === "approved" ? "active" : ""}`} onClick={() => setFilter("approved")}>
+        <button className={`withdraw-filter-tab ${filter === "approved" ? "active" : ""}`} onClick={() => setFilter("approved")}>
           ✅ Approved ({getStatusCount("approved")})
         </button>
-        <button className={`filter-tab ${filter === "rejected" ? "active" : ""}`} onClick={() => setFilter("rejected")}>
+        <button className={`withdraw-filter-tab ${filter === "rejected" ? "active" : ""}`} onClick={() => setFilter("rejected")}>
           ❌ Rejected ({getStatusCount("rejected")})
         </button>
       </div>
 
-      {/* CONTENT */}
       {filteredWithdraws.length === 0 ? (
-        <div className="empty-state">
-          <div className="empty-icon">💸</div>
+        <div className="withdraw-empty-state">
+          <div className="withdraw-empty-icon">💸</div>
           <h3>No {filter === "all" ? "withdraw" : filter} requests</h3>
-          <p className="empty-sub">
+          <p className="withdraw-empty-sub">
             {filter === "all" ? "Submit your first withdraw request!" : `No ${filter} withdraws yet`}
           </p>
-          <div className="empty-actions">
-            <button onClick={() => navigate("/withdraw")} className="add-money-btn">➕ New Withdraw</button>
-            <button onClick={() => navigate("/wallet")} className="back-btn">💰 Wallet</button>
+          <div className="withdraw-empty-actions">
+            <button onClick={() => navigate("/withdraw")} className="withdraw-add-money-btn">➕ New Withdraw</button>
+            <button onClick={() => navigate("/wallet")} className="withdraw-back-btn">💰 Wallet</button>
           </div>
         </div>
       ) : (
-        <div className="history-list">
+        <div className="withdraw-history-list">
           {filteredWithdraws.map((w, index) => (
-            <div key={w?.id || w?.withdraw_id || index} className="history-card">
-              <div className="card-left">
-                <div className="amount-row">
-                  <span className="amount">₹{Number(w?.amount || w?.withdraw_amount || 0).toLocaleString()}</span>
-                  <span className={`status-dot ${w?.status || "pending"}`}></span>
+            <div key={w?.id || w?.withdraw_id || index} className="withdraw-history-card">
+              <div className="withdraw-card-left">
+                <div className="withdraw-amount-row">
+                  <span className="withdraw-amount">₹{Number(w?.amount || w?.withdraw_amount || 0).toLocaleString()}</span>
+                  <span className={`withdraw-status-dot ${w?.status || "pending"}`}></span>
                 </div>
-                <div className="details-row">
-                  <span className="date">{formatIndianTime(w?.created_at || w?.date)}</span>
+                <div className="withdraw-details-row">
+                  <span className="withdraw-date">{formatIndianTime(w?.created_at || w?.date)}</span>
                 </div>
-                <div className="user-info">👤 {w?.profile_name || w?.user_name || "You"}</div>
+                <div className="withdraw-user-info">👤 {w?.profile_name || w?.user_name || "You"}</div>
                 <div className="withdraw-id">🆔 ID: <b>{(w?.withdraw_id || w?.id || "").slice(0, 8)}</b></div>
               </div>
-              <div className={`status-badge-large ${w?.status || "pending"}`}>
+              <div className={`withdraw-status-badge-large ${w?.status || "pending"}`}>
                 {w?.status === "approved" ? "✅ Approved" : 
                  w?.status === "pending" ? "⏳ Pending" : 
                  w?.status === "rejected" ? "❌ Rejected" : "⏳ Processing"}
               </div>
             </div>
           ))}
-          <div style={{height: '80px'}}></div> {/* 🔥 SCROLL PAD */}
+          <div style={{height: '80px'}}></div>
         </div>
       )}
     </div>

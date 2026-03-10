@@ -1,3 +1,4 @@
+// DepositHistory.jsx - UNIQUE CLASS NAMES
 import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import "./DepositHistory.css";
@@ -9,7 +10,6 @@ const DEPOSIT_API =
 
 const formatIndianTime = (utcDate) => {
   if (!utcDate) return "—";
-
   const date = new Date(utcDate);
   return date.toLocaleString("en-IN", {
     timeZone: "Asia/Kolkata",
@@ -91,9 +91,9 @@ const DepositHistory = () => {
 
   if (loading) {
     return (
-      <div className="history-page">
-        <div className="history-container">
-          <div className="empty-state">
+      <div className="deposit-history-page">
+        <div className="deposit-history-container">
+          <div className="deposit-empty-state">
             <h3>🔄 Loading deposit history...</h3>
           </div>
         </div>
@@ -103,11 +103,11 @@ const DepositHistory = () => {
 
   if (error) {
     return (
-      <div className="history-page">
-        <div className="history-container">
-          <div className="empty-state">
+      <div className="deposit-history-page">
+        <div className="deposit-history-container">
+          <div className="deposit-empty-state">
             <h3>⚠️ {error}</h3>
-            <button onClick={refreshHistory} className="add-money-btn">
+            <button onClick={refreshHistory} className="deposit-add-money-btn">
               🔁 Retry
             </button>
           </div>
@@ -117,22 +117,20 @@ const DepositHistory = () => {
   }
 
   return (
-    <div className="history-page">
-      <div className="history-container">
-        {/* HEADER */}
-        <div className="history-header">
-          <div className="header-title">
+    <div className="deposit-history-page">
+      <div className="deposit-history-container">
+        <div className="deposit-history-header">
+          <div className="deposit-header-title">
             <h1>🧾 My Deposit History</h1>
-            <div className="total-count">
+            <div className="deposit-total-count">
               Total: {deposits.length} deposits
             </div>
           </div>
         </div>
 
-        {/* FILTER TABS */}
-        <div className="filter-tabs">
+        <div className="deposit-filter-tabs">
           <button
-            className={`filter-tab ${
+            className={`deposit-filter-tab ${
               filter === "all" ? "active" : ""
             }`}
             onClick={() => setFilter("all")}
@@ -141,7 +139,7 @@ const DepositHistory = () => {
           </button>
 
           <button
-            className={`filter-tab ${
+            className={`deposit-filter-tab ${
               filter === "pending" ? "active" : ""
             }`}
             onClick={() => setFilter("pending")}
@@ -150,7 +148,7 @@ const DepositHistory = () => {
           </button>
 
           <button
-            className={`filter-tab ${
+            className={`deposit-filter-tab ${
               filter === "approved" ? "active" : ""
             }`}
             onClick={() => setFilter("approved")}
@@ -159,64 +157,61 @@ const DepositHistory = () => {
           </button>
 
           <button
-            className={`filter-tab ${
+            className={`deposit-filter-tab ${
               filter === "rejected" ? "active" : ""
             }`}
             onClick={() => setFilter("rejected")}
           >
-        Rejected ({getStatusCount("rejected")})
+            Rejected ({getStatusCount("rejected")})
           </button>
         </div>
 
-        {/* LIST */}
         {filteredDeposits.length === 0 ? (
-          <div className="empty-state">
-            <div className="empty-wallet">💰</div>
+          <div className="deposit-empty-state">
+            <div className="deposit-empty-wallet">💰</div>
             <h3>No {filter} deposits found</h3>
-
-            <p className="empty-sub">
+            <p className="deposit-empty-sub">
               💡 Admin may have cleaned history. Your balance is safe!
             </p>
-
             <button
               onClick={() => navigate("/deposit")}
-              className="add-money-btn"
+              className="deposit-add-money-btn"
             >
               ➕ Add Money
             </button>
           </div>
         ) : (
-          <div className="history-list">
+          <div className="deposit-history-list">
             {filteredDeposits.map((d) => (
               <div
                 key={d?.id || Math.random()}
-                className="history-card"
+                className="deposit-history-card"
               >
-                <div className="card-left">
-                  <div className="amount-row">
-                    <span className="amount">
+                <div className="deposit-card-left">
+                  <div className="deposit-amount-row">
+                    <span className="deposit-amount">
                       ₹{Number(d?.amount || 0).toLocaleString()}
                     </span>
                     <span
-                      className={`status-dot ${
+                      className={`deposit-status-dot ${
                         d?.status || "pending"
                       }`}
                     />
                   </div>
 
-                  <div className="details-row">
-                    <span className="date">
+                  <div className="deposit-details-row">
+                    <span className="deposit-date">
                       {formatIndianTime(
                         d?.dateIST || d?.date
                       )}
                     </span>
                   </div>
 
-                  <div className="user-info">
+                  <div className="deposit-user-info">
                     👤 {d?.name || "Unknown"}
                   </div>
 
-                  <div className="deposit-id">
+                  <div className="deposit-deposit-id">
                     🆔 Deposit ID:{" "}
                     <b>
                       {(d?.id || "").slice(0, 8) || "—"}
@@ -225,7 +220,7 @@ const DepositHistory = () => {
                 </div>
 
                 <div
-                  className={`status-badge-large ${
+                  className={`deposit-status-badge-large ${
                     d?.status || "pending"
                   }`}
                 >
