@@ -1,5 +1,4 @@
 /* RESET */
-
 *{
   margin:0;
   padding:0;
@@ -15,7 +14,6 @@ html,body{
 }
 
 /* PAGE */
-
 .history-page{
   width:100%;
   display:flex;
@@ -24,14 +22,12 @@ html,body{
 }
 
 /* CONTAINER */
-
 .history-container{
   width:100%;
   max-width:700px;
 }
 
 /* HEADER */
-
 .header-title h1{
   font-size:22px;
 }
@@ -41,31 +37,43 @@ html,body{
   color:#aaa;
 }
 
-/* FILTER */
-
+/* FILTER - MOBILE OPTIMIZED */
 .filter-tabs{
   display:flex;
-  flex-wrap:wrap;   /* mobile fix */
-  gap:8px;
+  flex-wrap:nowrap; /* Single line */
+  gap:4px; /* Reduced gap */
   margin:15px 0;
+  padding:2px; /* Small padding */
+  overflow-x:auto; /* Horizontal scroll if needed */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+
+.filter-tabs::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
 }
 
 .filter-tab{
-  padding:7px 12px;
+  padding:5px 8px; /* Smaller padding */
   border:none;
-  border-radius:6px;
+  border-radius:5px; /* Slightly smaller radius */
   background:#1a2336;
   color:white;
-  font-size:12px;
+  font-size:10px; /* Smaller font */
+  font-weight:500;
   cursor:pointer;
+  white-space:nowrap; /* No wrapping */
+  flex-shrink:0; /* Don't shrink */
+  min-width:60px; /* Minimum width */
+  text-align:center;
 }
 
 .filter-tab.active{
   background:#00c853;
+  font-size:10px;
 }
 
 /* LIST */
-
 .history-list{
   display:flex;
   flex-direction:column;
@@ -73,7 +81,6 @@ html,body{
 }
 
 /* CARD */
-
 .history-card{
   width:100%;
   background:#111827;
@@ -85,7 +92,6 @@ html,body{
 }
 
 /* LEFT */
-
 .card-left{
   display:flex;
   flex-direction:column;
@@ -93,14 +99,12 @@ html,body{
 }
 
 /* AMOUNT */
-
 .amount{
   font-size:16px;
   font-weight:600;
 }
 
 /* STATUS DOT */
-
 .status-dot{
   width:8px;
   height:8px;
@@ -112,7 +116,6 @@ html,body{
 .status-dot.rejected{background:red;}
 
 /* DETAILS */
-
 .details-row{
   font-size:12px;
   color:#aaa;
@@ -128,7 +131,6 @@ html,body{
 }
 
 /* STATUS BADGE */
-
 .status-badge-large{
   font-size:11px;
   padding:5px 8px;
@@ -151,17 +153,25 @@ html,body{
 }
 
 /* MOBILE */
-
 @media(max-width:600px){
-
+  .filter-tabs{
+    gap:3px;
+    padding:1px;
+  }
+  
+  .filter-tab{
+    padding:4px 6px; /* Even smaller on mobile */
+    font-size:9.5px; /* Tiny font */
+    min-width:55px;
+  }
+  
   .history-card{
     flex-direction:column;
     align-items:flex-start;
     gap:8px;
   }
-
+  
   .status-badge-large{
     align-self:flex-end;
   }
-
 }
