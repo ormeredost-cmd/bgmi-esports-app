@@ -1,4 +1,4 @@
-/* COMPLETE FINAL CSS - FONT-SIZE 5px */
+/* FINAL CSS - BOTTOM GAP GUARANTEED */
 *{
   margin:0;
   padding:0;
@@ -11,6 +11,7 @@ html,body{
   font-family: "Inter", sans-serif;
   background:#0b111d;
   color:white;
+  padding-bottom:150px;  /* BODY ME EXTRA GAP */
 }
 
 /* PAGE */
@@ -18,13 +19,16 @@ html,body{
   width:100%;
   display:flex;
   justify-content:center;
-  padding:15px;
+  padding:15px 15px 200px 15px;  /* 200px bottom gap */
+  min-height:100vh;
 }
 
 /* CONTAINER */
 .history-container{
   width:100%;
   max-width:700px;
+  padding-bottom:50px;  /* Container bottom gap */
+  margin-bottom:50px;
 }
 
 /* HEADER */
@@ -42,7 +46,7 @@ html,body{
   color:#aaa;
 }
 
-/* FILTER - FONT 5px PERFECT */
+/* FILTER */
 .filter-tabs{
   display:flex;
   gap:3px;
@@ -58,7 +62,7 @@ html,body{
   border-radius:6px;
   background:#1a2336;
   color:white;
-  font-size:5px;           /* 5px - ULTRA SMALL */
+  font-size:5px;
   font-weight:500;
   cursor:pointer;
   white-space:nowrap;
@@ -160,14 +164,22 @@ html,body{
 
 /* MOBILE */
 @media(max-width:600px){
-  .filter-tabs{
-    gap:2.5px;
-    padding:4px;
+  html,body{
+    padding-bottom:200px;  /* Mobile extra */
+  }
+  
+  .history-page{
+    padding:10px 10px 250px 10px;
+  }
+  
+  .history-container{
+    padding-bottom:80px;
+    margin-bottom:80px;
   }
   
   .filter-tab{
     padding:4px 6px;
-    font-size:5px;        /* MOBILE BHI 5px */
+    font-size:5px;
     min-width:65px;
     max-width:82px;
     letter-spacing:-0.5px;

@@ -164,7 +164,7 @@ const DepositHistory = () => {
             }`}
             onClick={() => setFilter("rejected")}
           >
-            Rejected ({getStatusCount("rejected")})
+        Rejected ({getStatusCount("rejected")})
           </button>
         </div>
 
