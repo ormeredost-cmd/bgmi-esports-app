@@ -1,197 +1,194 @@
-/* FINAL CSS - BOTTOM GAP GUARANTEED */
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-html,body{
-  width:100%;
-  overflow-x:hidden;
+html, body {
+  width: 100%;
+  overflow-x: hidden;
   font-family: "Inter", sans-serif;
-  background:#0b111d;
-  color:white;
-  padding-bottom:150px;  /* BODY ME EXTRA GAP */
+  background: #0b111d;
+  color: white;
+  padding-bottom: 100px; /* Bottom gap */
 }
 
-/* PAGE */
-.history-page{
-  width:100%;
-  display:flex;
-  justify-content:center;
-  padding:15px 15px 200px 15px;  /* 200px bottom gap */
-  min-height:100vh;
+.history-page {
+  width: 100%;
+  padding: 15px 15px 120px 15px; /* Bottom space for cards */
+  display: flex;
+  justify-content: center;
 }
 
-/* CONTAINER */
-.history-container{
-  width:100%;
-  max-width:700px;
-  padding-bottom:50px;  /* Container bottom gap */
-  margin-bottom:50px;
+.history-container {
+  width: 100%;
+  max-width: 700px;
 }
 
-/* HEADER */
-.history-header{
-  margin-bottom:10px;
+.history-header {
+  margin-bottom: 15px;
 }
 
-.header-title h1{
-  font-size:22px;
-  margin-bottom:4px;
+.header-title h1 {
+  font-size: 22px;
+  margin-bottom: 5px;
 }
 
-.total-count{
-  font-size:13px;
-  color:#aaa;
+.total-count {
+  font-size: 13px;
+  color: #aaa;
 }
 
-/* FILTER */
-.filter-tabs{
-  display:flex;
-  gap:3px;
-  margin:15px 0;
-  padding:5px;
-  justify-content:center;
-  flex-wrap:wrap;
+/* FILTER TABS - SMALL FONT */
+.filter-tabs {
+  display: flex;
+  gap: 4px;
+  margin: 15px 0;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
-.filter-tab{
-  padding:5px 7px;
-  border:none;
-  border-radius:6px;
-  background:#1a2336;
-  color:white;
-  font-size:5px;
-  font-weight:500;
-  cursor:pointer;
-  white-space:nowrap;
-  flex:1;
-  min-width:68px;
-  max-width:85px;
-  text-align:center;
-  line-height:1.1;
-  letter-spacing:-0.4px;
+.filter-tab {
+  padding: 5px 8px;
+  border: none;
+  border-radius: 6px;
+  background: #1a2336;
+  color: white;
+  font-size: 9px; /* Small font */
+  cursor: pointer;
+  white-space: nowrap;
+  min-width: 65px;
+  max-width: 80px;
+  text-align: center;
 }
 
-.filter-tab.active{
-  background:#00c853 !important;
+.filter-tab.active {
+  background: #00c853;
 }
 
-/* LIST */
-.history-list{
-  display:flex;
-  flex-direction:column;
-  gap:12px;
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
-/* CARD */
-.history-card{
-  width:100%;
-  background:#111827;
-  border-radius:10px;
-  padding:12px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
+.history-card {
+  background: #111827;
+  border-radius: 10px;
+  padding: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-/* LEFT */
-.card-left{
-  display:flex;
-  flex-direction:column;
-  gap:4px;
+.card-left {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
 }
 
-/* AMOUNT ROW */
-.amount-row{
-  display:flex;
-  align-items:center;
-  gap:6px;
+.amount-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.amount{
-  font-size:16px;
-  font-weight:600;
+.amount {
+  font-size: 16px;
+  font-weight: 600;
 }
 
-.status-dot{
-  width:8px;
-  height:8px;
-  border-radius:50%;
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
 }
 
-.status-dot.pending{background:orange;}
-.status-dot.approved{background:#00c853;}
-.status-dot.rejected{background:red;}
+.status-dot.pending { background: orange; }
+.status-dot.approved { background: #00c853; }
+.status-dot.rejected { background: red; }
 
-/* DETAILS */
-.details-row{
-  font-size:12px;
-  color:#aaa;
+.details-row {
+  font-size: 12px;
+  color: #aaa;
 }
 
-.user-info{
-  font-size:12px;
+.user-info {
+  font-size: 12px;
 }
 
-.deposit-id{
-  font-size:11px;
-  color:#bbb;
+.deposit-id {
+  font-size: 11px;
+  color: #bbb;
 }
 
-/* STATUS BADGE */
-.status-badge-large{
-  font-size:11px;
-  padding:5px 8px;
-  border-radius:6px;
+.status-badge-large {
+  font-size: 11px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  white-space: nowrap;
 }
 
-.status-badge-large.pending{
-  background:rgba(255,165,0,0.2);
-  color:orange;
+.status-badge-large.pending {
+  background: rgba(255,165,0,0.2);
+  color: orange;
 }
 
-.status-badge-large.approved{
-  background:rgba(0,200,83,0.2);
-  color:#00c853;
+.status-badge-large.approved {
+  background: rgba(0,200,83,0.2);
+  color: #00c853;
 }
 
-.status-badge-large.rejected{
-  background:rgba(255,0,0,0.2);
-  color:red;
+.status-badge-large.rejected {
+  background: rgba(255,0,0,0.2);
+  color: red;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 50px 20px;
+}
+
+.empty-wallet {
+  font-size: 50px;
+  margin-bottom: 15px;
+}
+
+.empty-sub {
+  color: #aaa;
+  margin: 15px 0;
+}
+
+.add-money-btn {
+  background: #00c853;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
 }
 
 /* MOBILE */
-@media(max-width:600px){
-  html,body{
-    padding-bottom:200px;  /* Mobile extra */
+@media (max-width: 600px) {
+  .history-page {
+    padding: 10px 10px 150px 10px;
   }
   
-  .history-page{
-    padding:10px 10px 250px 10px;
+  .filter-tab {
+    font-size: 8px;
+    padding: 4px 6px;
+    min-width: 60px;
   }
   
-  .history-container{
-    padding-bottom:80px;
-    margin-bottom:80px;
+  .history-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
   }
   
-  .filter-tab{
-    padding:4px 6px;
-    font-size:5px;
-    min-width:65px;
-    max-width:82px;
-    letter-spacing:-0.5px;
-  }
-  
-  .history-card{
-    flex-direction:column;
-    align-items:flex-start;
-    gap:8px;
-  }
-  
-  .status-badge-large{
-    align-self:flex-end;
+  .status-badge-large {
+    align-self: flex-end;
   }
 }
