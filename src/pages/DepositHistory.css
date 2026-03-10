@@ -37,40 +37,34 @@ html,body{
   color:#aaa;
 }
 
-/* FILTER - MOBILE OPTIMIZED */
+/* FILTER - PERFECT MOBILE */
 .filter-tabs{
   display:flex;
-  flex-wrap:nowrap; /* Single line */
-  gap:4px; /* Reduced gap */
+  gap:4px;
   margin:15px 0;
-  padding:2px; /* Small padding */
-  overflow-x:auto; /* Horizontal scroll if needed */
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE/Edge */
-}
-
-.filter-tabs::-webkit-scrollbar {
-  display: none; /* Chrome/Safari */
+  padding:4px 0;
+  justify-content:center; /* CENTER ALIGN */
+  flex-wrap:wrap; /* Responsive wrap */
 }
 
 .filter-tab{
-  padding:5px 8px; /* Smaller padding */
+  padding:4px 8px;
   border:none;
-  border-radius:5px; /* Slightly smaller radius */
+  border-radius:6px;
   background:#1a2336;
   color:white;
-  font-size:10px; /* Smaller font */
+  font-size:11px; /* Perfect size */
   font-weight:500;
   cursor:pointer;
-  white-space:nowrap; /* No wrapping */
-  flex-shrink:0; /* Don't shrink */
-  min-width:60px; /* Minimum width */
+  white-space:nowrap;
+  flex:1; /* Equal width */
+  min-width:65px;
+  max-width:80px;
   text-align:center;
 }
 
 .filter-tab.active{
   background:#00c853;
-  font-size:10px;
 }
 
 /* LIST */
@@ -152,17 +146,18 @@ html,body{
   color:red;
 }
 
-/* MOBILE */
+/* MOBILE PERFECT */
 @media(max-width:600px){
   .filter-tabs{
     gap:3px;
-    padding:1px;
+    padding:2px 0;
   }
   
   .filter-tab{
-    padding:4px 6px; /* Even smaller on mobile */
-    font-size:9.5px; /* Tiny font */
-    min-width:55px;
+    padding:4px 6px;
+    font-size:10px;
+    min-width:60px;
+    max-width:75px;
   }
   
   .history-card{
