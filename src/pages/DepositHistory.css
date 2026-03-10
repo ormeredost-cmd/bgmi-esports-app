@@ -1,4 +1,4 @@
-/* RESET */
+/* TUMHARA SAME CSS - SIRF YE CHANGES */
 *{
   margin:0;
   padding:0;
@@ -42,42 +42,36 @@ html,body{
   color:#aaa;
 }
 
-/* FILTER TABS - PERFECT MOBILE FIT */
+/* FILTER - BOX THODA BADA + FONT CHOTA */
 .filter-tabs{
   display:flex;
-  gap:3px;
+  gap:3px;           /* Kam gap */
   margin:15px 0;
-  padding:4px;
+  padding:5px;       /* Thoda padding */
   justify-content:center;
   flex-wrap:wrap;
 }
 
 .filter-tab{
-  padding:3px 5px;          /* Super tight */
+  padding:5px 7px;        /* BOX THODA BADA */
   border:none;
-  border-radius:5px;
+  border-radius:6px;
   background:#1a2336;
   color:white;
-  font-size:9px;            /* Micro font */
+  font-size:9px;          /* CHOTA FONT */
   font-weight:500;
   cursor:pointer;
   white-space:nowrap;
   flex:1;
-  min-width:52px;           /* Perfect width */
-  max-width:68px;
+  min-width:68px;         /* BOX BADA */
+  max-width:85px;
   text-align:center;
   line-height:1.1;
-  letter-spacing:-0.3px;    /* Text compress */
-  height:28px;              /* Fixed height */
-  display:flex;
-  align-items:center;
-  justify-content:center;
+  letter-spacing:-0.4px;  /* TEXT COMPRESS */
 }
 
 .filter-tab.active{
   background:#00c853 !important;
-  color:white;
-  font-weight:600;
 }
 
 /* LIST */
@@ -103,10 +97,9 @@ html,body{
   display:flex;
   flex-direction:column;
   gap:4px;
-  flex:1;
 }
 
-/* AMOUNT ROW */
+/* AMOUNT ROW ADD */
 .amount-row{
   display:flex;
   align-items:center;
@@ -122,12 +115,11 @@ html,body{
   width:8px;
   height:8px;
   border-radius:50%;
-  flex-shrink:0;
 }
 
-.status-dot.pending{ background:orange; }
-.status-dot.approved{ background:#00c853; }
-.status-dot.rejected{ background:red; }
+.status-dot.pending{background:orange;}
+.status-dot.approved{background:#00c853;}
+.status-dot.rejected{background:red;}
 
 /* DETAILS */
 .details-row{
@@ -149,8 +141,6 @@ html,body{
   font-size:11px;
   padding:5px 8px;
   border-radius:6px;
-  white-space:nowrap;
-  flex-shrink:0;
 }
 
 .status-badge-large.pending{
@@ -168,65 +158,28 @@ html,body{
   color:red;
 }
 
-/* EMPTY STATE */
-.empty-state{
-  text-align:center;
-  padding:40px 20px;
-}
-
-.empty-wallet{
-  font-size:48px;
-  margin-bottom:12px;
-}
-
-.empty-sub{
-  color:#aaa;
-  margin:12px 0;
-}
-
-/* BUTTONS */
-.add-money-btn{
-  background:#00c853;
-  color:white;
-  border:none;
-  padding:10px 20px;
-  border-radius:8px;
-  font-size:14px;
-  cursor:pointer;
-  margin-top:12px;
-}
-
-/* MOBILE OPTIMIZATION */
+/* MOBILE */
 @media(max-width:600px){
-  .history-page{
-    padding:10px;
+  .filter-tabs{
+    gap:2.5px;
+    padding:4px;
   }
   
   .filter-tab{
-    padding:2px 4px;
-    font-size:8.5px;
-    min-width:48px;
-    max-width:62px;
-    height:26px;
-  }
-  
-  .header-title h1{
-    font-size:20px;
+    padding:4px 6px;      /* Mobile box size */
+    font-size:8.5px;      /* Super chota font */
+    min-width:65px;       /* Box perfect */
+    max-width:82px;
+    letter-spacing:-0.5px;
   }
   
   .history-card{
     flex-direction:column;
-    align-items:stretch;
-    gap:10px;
+    align-items:flex-start;
+    gap:8px;
   }
   
   .status-badge-large{
     align-self:flex-end;
-    font-size:10px;
-    padding:4px 7px;
-  }
-  
-  .amount-row{
-    justify-content:space-between;
   }
 }
