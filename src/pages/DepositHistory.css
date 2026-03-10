@@ -1,20 +1,29 @@
-/* DepositHistory.css - FIXED BOTTOM GAP + PERFECT CENTERING */
+/* DepositHistory.css - FULL MOBILE RESPONSIVE + SCROLL FIXED */
+
 * {
   box-sizing: border-box;
 }
 
-/* MAIN PAGE - NO CHANGE */
+/* FIX FOR PAGE CENTER + NO RIGHT CUT */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
+}
+
 .deposit-history-page {
   min-height: 100vh;
   height: 100vh;
+  width: 100%;
+  margin: 0 auto;
   background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
   padding: 0;
-  margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   overflow-y: auto;
   overflow-x: hidden;
   position: relative;
-
+  
   /* SCROLLBAR HIDE - ALL BROWSERS */
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -44,12 +53,6 @@
   z-index: 100;
   padding: 15px 20px;
   box-shadow: 0 2px 20px rgba(0,0,0,0.1);
-  /* CENTER FIX - HEADER */
-  width: 100%;
-  max-width: 480px;
-  margin: 0 auto;
-  left: 0;
-  right: 0;
 }
 
 .deposit-header-title h1 {
@@ -78,12 +81,6 @@
   scrollbar-width: none;
   -ms-overflow-style: none;
   max-height: 60px;
-  /* CENTER FIX - TABS */
-  width: 100%;
-  max-width: 480px;
-  margin: 0 auto;
-  left: 0;
-  right: 0;
 }
 
 .deposit-filter-tabs::-webkit-scrollbar {
@@ -116,15 +113,11 @@
   transform: scale(0.98);
 }
 
-/* HISTORY LIST - FIXED BOTTOM GAP */
+/* HISTORY LIST */
 .deposit-history-list {
-  /* BACK TO ORIGINAL + CENTER */
   padding: 20px;
-  padding-bottom: 150px; /* YEHI PROBLEM THI - 120px kar diya tha */
+  padding-bottom: 150px;
   min-height: calc(100vh - 200px);
-  /* CENTER FIX */
-  max-width: 480px;
-  margin: 0 auto;
 }
 
 /* HISTORY CARDS */
@@ -141,7 +134,6 @@
   justify-content: space-between;
   align-items: center;
   min-height: 90px;
-  width: 100%;
 }
 
 .deposit-history-card:hover {
@@ -233,9 +225,6 @@
   padding: 40px 20px;
   text-align: center;
   color: white;
-  /* CENTER FIX */
-  max-width: 480px;
-  margin: 0 auto;
 }
 
 .deposit-empty-wallet {
@@ -294,36 +283,29 @@
 @media (max-width: 480px) {
   .deposit-history-header {
     padding: 12px 15px;
-    max-width: 100%;
   }
-
+  
   .deposit-header-title h1 {
     font-size: 20px;
   }
-
+  
   .deposit-history-list {
     padding: 15px;
-    padding-bottom: 150px; /* BACK TO 150px - MOBILE ME BHI */
-    max-width: 100%;
+    padding-bottom: 120px;
   }
-
+  
   .deposit-history-card {
     padding: 16px;
     margin-bottom: 14px;
   }
-
+  
   .deposit-amount {
     font-size: 22px;
   }
-
+  
   .deposit-status-badge-large {
     padding: 10px 16px;
     font-size: 13px;
     min-width: 100px;
-  }
-
-  .deposit-filter-tabs {
-    max-width: 100%;
-    padding: 12px 15px;
   }
 }
