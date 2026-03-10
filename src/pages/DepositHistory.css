@@ -1,193 +1,212 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html, body {
-  width: 100%;
-  overflow-x: hidden;
-  font-family: "Inter", sans-serif;
-  background: #0b111d;
-  color: white;
-  padding-bottom: 100px; /* Bottom gap */
-}
-
+/* =========================
+   GLOBAL RESET FOR THIS COMPONENT
+========================= */
 .history-page {
   width: 100%;
-  padding: 15px 15px 120px 15px; /* Bottom space for cards */
+  min-height: 100vh;
+  background: #0b111d;
+  color: #fff;
+  font-family: "Inter", sans-serif;
   display: flex;
   justify-content: center;
+  padding: 8px 0;
 }
 
 .history-container {
   width: 100%;
-  max-width: 700px;
+  max-width: 420px; /* Phone fit */
+  padding: 0 10px;
+  box-sizing: border-box;
 }
 
+/* =========================
+   HEADER
+========================= */
 .history-header {
-  margin-bottom: 15px;
+  margin-bottom: 8px;
 }
 
 .header-title h1 {
-  font-size: 22px;
-  margin-bottom: 5px;
+  font-size: 18px;
+  margin-bottom: 4px;
 }
 
 .total-count {
-  font-size: 13px;
-  color: #aaa;
+  font-size: 12px;
+  color: #ccc;
 }
 
-/* FILTER TABS - SMALL FONT */
+/* =========================
+   FILTER TABS
+========================= */
 .filter-tabs {
   display: flex;
-  gap: 4px;
-  margin: 15px 0;
-  justify-content: center;
+  justify-content: space-between;
+  margin: 8px 0;
   flex-wrap: wrap;
+  gap: 4px;
 }
 
 .filter-tab {
-  padding: 5px 8px;
+  flex: 1 1 48%;
+  background: #1a2133;
+  color: #fff;
+  font-size: 12px;
+  padding: 6px 4px;
   border: none;
   border-radius: 6px;
-  background: #1a2336;
-  color: white;
-  font-size: 9px; /* Small font */
   cursor: pointer;
-  white-space: nowrap;
-  min-width: 65px;
-  max-width: 80px;
   text-align: center;
 }
 
 .filter-tab.active {
-  background: #00c853;
+  background: #4caf50;
+  color: #fff;
 }
 
+/* =========================
+   EMPTY STATE
+========================= */
+.empty-state {
+  text-align: center;
+  padding: 20px 0;
+}
+
+.empty-wallet {
+  font-size: 36px;
+  margin-bottom: 6px;
+}
+
+.empty-sub {
+  font-size: 11px;
+  color: #bbb;
+  margin-bottom: 10px;
+}
+
+.add-money-btn {
+  background: #4caf50;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+/* =========================
+   DEPOSIT LIST
+========================= */
 .history-list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 6px;
 }
 
 .history-card {
-  background: #111827;
-  border-radius: 10px;
-  padding: 12px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background: #1a2133;
+  padding: 8px;
+  border-radius: 8px;
+  font-size: 12px;
 }
 
 .card-left {
   display: flex;
   flex-direction: column;
   gap: 4px;
-  flex: 1;
 }
 
 .amount-row {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 }
 
 .amount {
-  font-size: 16px;
-  font-weight: 600;
+  font-weight: bold;
+  font-size: 14px;
 }
 
 .status-dot {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
+  display: inline-block;
 }
 
-.status-dot.pending { background: orange; }
-.status-dot.approved { background: #00c853; }
-.status-dot.rejected { background: red; }
-
-.details-row {
-  font-size: 12px;
-  color: #aaa;
+.status-dot.pending {
+  background: #ffc107;
 }
 
-.user-info {
-  font-size: 12px;
+.status-dot.approved {
+  background: #4caf50;
 }
 
-.deposit-id {
-  font-size: 11px;
+.status-dot.rejected {
+  background: #f44336;
+}
+
+.details-row .date {
+  font-size: 10px;
   color: #bbb;
 }
 
-.status-badge-large {
+.user-info {
   font-size: 11px;
-  padding: 6px 10px;
+}
+
+.deposit-id {
+  font-size: 10px;
+  color: #ccc;
+}
+
+/* =========================
+   STATUS BADGE
+========================= */
+.status-badge-large {
+  font-size: 10px;
+  font-weight: bold;
+  padding: 4px 6px;
   border-radius: 6px;
-  white-space: nowrap;
+  text-align: center;
+  min-width: 60px;
 }
 
 .status-badge-large.pending {
-  background: rgba(255,165,0,0.2);
-  color: orange;
+  background: #ffc107;
+  color: #000;
 }
 
 .status-badge-large.approved {
-  background: rgba(0,200,83,0.2);
-  color: #00c853;
+  background: #4caf50;
+  color: #fff;
 }
 
 .status-badge-large.rejected {
-  background: rgba(255,0,0,0.2);
-  color: red;
+  background: #f44336;
+  color: #fff;
 }
 
-.empty-state {
-  text-align: center;
-  padding: 50px 20px;
-}
-
-.empty-wallet {
-  font-size: 50px;
-  margin-bottom: 15px;
-}
-
-.empty-sub {
-  color: #aaa;
-  margin: 15px 0;
-}
-
-.add-money-btn {
-  background: #00c853;
-  color: white;
-  border: none;
-  padding: 12px 24px;
-  border-radius: 8px;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-/* MOBILE */
-@media (max-width: 600px) {
-  .history-page {
-    padding: 10px 10px 150px 10px;
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 420px) {
+  .history-container {
+    padding: 0 6px;
   }
-  
+
   .filter-tab {
-    font-size: 8px;
-    padding: 4px 6px;
-    min-width: 60px;
+    flex: 1 1 100%;
   }
-  
+
   .history-card {
     flex-direction: column;
     align-items: flex-start;
-    gap: 10px;
+    gap: 4px;
   }
-  
+
   .status-badge-large {
     align-self: flex-end;
   }
