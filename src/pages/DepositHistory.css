@@ -1,213 +1,232 @@
-/* =========================
-   GLOBAL RESET FOR THIS COMPONENT
-========================= */
-.history-page {
-  width: 100%;
-  min-height: 100vh;
-  background: #0b111d;
-  color: #fff;
+/* RESET */
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+html,body{
+  width:100%;
+  overflow-x:hidden;
   font-family: "Inter", sans-serif;
-  display: flex;
-  justify-content: center;
-  padding: 8px 0;
+  background:#0b111d;
+  color:white;
 }
 
-.history-container {
-  width: 100%;
-  max-width: 420px; /* Phone fit */
-  padding: 0 10px;
-  box-sizing: border-box;
+/* PAGE */
+.history-page{
+  width:100%;
+  display:flex;
+  justify-content:center;
+  padding:15px;
 }
 
-/* =========================
-   HEADER
-========================= */
-.history-header {
-  margin-bottom: 8px;
+/* CONTAINER */
+.history-container{
+  width:100%;
+  max-width:700px;
 }
 
-.header-title h1 {
-  font-size: 18px;
-  margin-bottom: 4px;
+/* HEADER */
+.history-header{
+  margin-bottom:10px;
 }
 
-.total-count {
-  font-size: 12px;
-  color: #ccc;
+.header-title h1{
+  font-size:22px;
+  margin-bottom:4px;
 }
 
-/* =========================
-   FILTER TABS
-========================= */
-.filter-tabs {
-  display: flex;
-  justify-content: space-between;
-  margin: 8px 0;
-  flex-wrap: wrap;
-  gap: 4px;
+.total-count{
+  font-size:13px;
+  color:#aaa;
 }
 
-.filter-tab {
-  flex: 1 1 48%;
-  background: #1a2133;
-  color: #fff;
-  font-size: 12px;
-  padding: 6px 4px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  text-align: center;
+/* FILTER TABS - PERFECT MOBILE FIT */
+.filter-tabs{
+  display:flex;
+  gap:3px;
+  margin:15px 0;
+  padding:4px;
+  justify-content:center;
+  flex-wrap:wrap;
 }
 
-.filter-tab.active {
-  background: #4caf50;
-  color: #fff;
+.filter-tab{
+  padding:3px 5px;          /* Super tight */
+  border:none;
+  border-radius:5px;
+  background:#1a2336;
+  color:white;
+  font-size:9px;            /* Micro font */
+  font-weight:500;
+  cursor:pointer;
+  white-space:nowrap;
+  flex:1;
+  min-width:52px;           /* Perfect width */
+  max-width:68px;
+  text-align:center;
+  line-height:1.1;
+  letter-spacing:-0.3px;    /* Text compress */
+  height:28px;              /* Fixed height */
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
 
-/* =========================
-   EMPTY STATE
-========================= */
-.empty-state {
-  text-align: center;
-  padding: 20px 0;
+.filter-tab.active{
+  background:#00c853 !important;
+  color:white;
+  font-weight:600;
 }
 
-.empty-wallet {
-  font-size: 36px;
-  margin-bottom: 6px;
+/* LIST */
+.history-list{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
 }
 
-.empty-sub {
-  font-size: 11px;
-  color: #bbb;
-  margin-bottom: 10px;
+/* CARD */
+.history-card{
+  width:100%;
+  background:#111827;
+  border-radius:10px;
+  padding:12px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
 }
 
-.add-money-btn {
-  background: #4caf50;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  padding: 6px 10px;
-  font-size: 12px;
-  cursor: pointer;
+/* LEFT */
+.card-left{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+  flex:1;
 }
 
-/* =========================
-   DEPOSIT LIST
-========================= */
-.history-list {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+/* AMOUNT ROW */
+.amount-row{
+  display:flex;
+  align-items:center;
+  gap:6px;
 }
 
-.history-card {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #1a2133;
-  padding: 8px;
-  border-radius: 8px;
-  font-size: 12px;
+.amount{
+  font-size:16px;
+  font-weight:600;
 }
 
-.card-left {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+.status-dot{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  flex-shrink:0;
 }
 
-.amount-row {
-  display: flex;
-  align-items: center;
-  gap: 6px;
+.status-dot.pending{ background:orange; }
+.status-dot.approved{ background:#00c853; }
+.status-dot.rejected{ background:red; }
+
+/* DETAILS */
+.details-row{
+  font-size:12px;
+  color:#aaa;
 }
 
-.amount {
-  font-weight: bold;
-  font-size: 14px;
+.user-info{
+  font-size:12px;
 }
 
-.status-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  display: inline-block;
+.deposit-id{
+  font-size:11px;
+  color:#bbb;
 }
 
-.status-dot.pending {
-  background: #ffc107;
+/* STATUS BADGE */
+.status-badge-large{
+  font-size:11px;
+  padding:5px 8px;
+  border-radius:6px;
+  white-space:nowrap;
+  flex-shrink:0;
 }
 
-.status-dot.approved {
-  background: #4caf50;
+.status-badge-large.pending{
+  background:rgba(255,165,0,0.2);
+  color:orange;
 }
 
-.status-dot.rejected {
-  background: #f44336;
+.status-badge-large.approved{
+  background:rgba(0,200,83,0.2);
+  color:#00c853;
 }
 
-.details-row .date {
-  font-size: 10px;
-  color: #bbb;
+.status-badge-large.rejected{
+  background:rgba(255,0,0,0.2);
+  color:red;
 }
 
-.user-info {
-  font-size: 11px;
+/* EMPTY STATE */
+.empty-state{
+  text-align:center;
+  padding:40px 20px;
 }
 
-.deposit-id {
-  font-size: 10px;
-  color: #ccc;
+.empty-wallet{
+  font-size:48px;
+  margin-bottom:12px;
 }
 
-/* =========================
-   STATUS BADGE
-========================= */
-.status-badge-large {
-  font-size: 10px;
-  font-weight: bold;
-  padding: 4px 6px;
-  border-radius: 6px;
-  text-align: center;
-  min-width: 60px;
+.empty-sub{
+  color:#aaa;
+  margin:12px 0;
 }
 
-.status-badge-large.pending {
-  background: #ffc107;
-  color: #000;
+/* BUTTONS */
+.add-money-btn{
+  background:#00c853;
+  color:white;
+  border:none;
+  padding:10px 20px;
+  border-radius:8px;
+  font-size:14px;
+  cursor:pointer;
+  margin-top:12px;
 }
 
-.status-badge-large.approved {
-  background: #4caf50;
-  color: #fff;
-}
-
-.status-badge-large.rejected {
-  background: #f44336;
-  color: #fff;
-}
-
-/* =========================
-   RESPONSIVE
-========================= */
-@media (max-width: 420px) {
-  .history-container {
-    padding: 0 6px;
+/* MOBILE OPTIMIZATION */
+@media(max-width:600px){
+  .history-page{
+    padding:10px;
   }
-
-  .filter-tab {
-    flex: 1 1 100%;
+  
+  .filter-tab{
+    padding:2px 4px;
+    font-size:8.5px;
+    min-width:48px;
+    max-width:62px;
+    height:26px;
   }
-
-  .history-card {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 4px;
+  
+  .header-title h1{
+    font-size:20px;
   }
-
-  .status-badge-large {
-    align-self: flex-end;
+  
+  .history-card{
+    flex-direction:column;
+    align-items:stretch;
+    gap:10px;
+  }
+  
+  .status-badge-large{
+    align-self:flex-end;
+    font-size:10px;
+    padding:4px 7px;
+  }
+  
+  .amount-row{
+    justify-content:space-between;
   }
 }
