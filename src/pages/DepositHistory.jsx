@@ -146,7 +146,7 @@ const DepositHistory = () => {
             }`}
             onClick={() => setFilter("pending")}
           >
-            ⏳ Pending ({getStatusCount("pending")})
+            Pending ({getStatusCount("pending")})
           </button>
 
           <button
@@ -155,7 +155,7 @@ const DepositHistory = () => {
             }`}
             onClick={() => setFilter("approved")}
           >
-            ✅ Approved ({getStatusCount("approved")})
+            Approved ({getStatusCount("approved")})
           </button>
 
           <button
@@ -164,7 +164,7 @@ const DepositHistory = () => {
             }`}
             onClick={() => setFilter("rejected")}
           >
-            ❌ Rejected ({getStatusCount("rejected")})
+            Rejected ({getStatusCount("rejected")})
           </button>
         </div>
 

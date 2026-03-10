@@ -1,4 +1,4 @@
-/* TUMHARA SAME CSS - SIRF YE CHANGES */
+/* COMPLETE FINAL CSS - FONT-SIZE 5px */
 *{
   margin:0;
   padding:0;
@@ -42,32 +42,32 @@ html,body{
   color:#aaa;
 }
 
-/* FILTER - BOX THODA BADA + FONT CHOTA */
+/* FILTER - FONT 5px PERFECT */
 .filter-tabs{
   display:flex;
-  gap:3px;           /* Kam gap */
+  gap:3px;
   margin:15px 0;
-  padding:5px;       /* Thoda padding */
+  padding:5px;
   justify-content:center;
   flex-wrap:wrap;
 }
 
 .filter-tab{
-  padding:5px 7px;        /* BOX THODA BADA */
+  padding:5px 7px;
   border:none;
   border-radius:6px;
   background:#1a2336;
   color:white;
-  font-size:9px;          /* CHOTA FONT */
+  font-size:5px;           /* 5px - ULTRA SMALL */
   font-weight:500;
   cursor:pointer;
   white-space:nowrap;
   flex:1;
-  min-width:68px;         /* BOX BADA */
+  min-width:68px;
   max-width:85px;
   text-align:center;
   line-height:1.1;
-  letter-spacing:-0.4px;  /* TEXT COMPRESS */
+  letter-spacing:-0.4px;
 }
 
 .filter-tab.active{
@@ -99,7 +99,7 @@ html,body{
   gap:4px;
 }
 
-/* AMOUNT ROW ADD */
+/* AMOUNT ROW */
 .amount-row{
   display:flex;
   align-items:center;
@@ -166,9 +166,9 @@ html,body{
   }
   
   .filter-tab{
-    padding:4px 6px;      /* Mobile box size */
-    font-size:8.5px;      /* Super chota font */
-    min-width:65px;       /* Box perfect */
+    padding:4px 6px;
+    font-size:5px;        /* MOBILE BHI 5px */
+    min-width:65px;
     max-width:82px;
     letter-spacing:-0.5px;
   }
