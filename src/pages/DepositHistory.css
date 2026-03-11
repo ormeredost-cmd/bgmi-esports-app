@@ -6,22 +6,17 @@
 }
 
 /* PAGE */
-
 .deposit-history-page{
   width:100%;
   min-height:100vh;
   background:#0b111d;
   color:white;
   font-family:Arial, sans-serif;
-
   display:flex;
   justify-content:center;
-
   overflow-y:auto;
   overflow-x:hidden;
-
-  padding-bottom:120px; /* bottom gap */
-
+  padding-bottom:120px;
   scrollbar-width:none;
 }
 
@@ -30,15 +25,16 @@
 }
 
 /* CONTAINER */
-
 .deposit-history-container{
   width:100%;
-  max-width:420px;   /* phone width */
+  max-width:420px;
   padding:15px;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
 }
 
 /* HEADER */
-
 .deposit-history-header{
   margin-bottom:15px;
 }
@@ -54,12 +50,12 @@
 }
 
 /* FILTER */
-
 .deposit-filter-tabs{
   display:flex;
   gap:6px;
   overflow-x:auto;
   margin-bottom:15px;
+  padding-bottom:8px;
 }
 
 .deposit-filter-tabs::-webkit-scrollbar{
@@ -73,44 +69,108 @@
   background:#1c253a;
   color:white;
   font-size:12px;
+  white-space:nowrap;
+  flex-shrink:0;
+  cursor:pointer;
+  transition:background 0.2s;
 }
 
-.deposit-filter-tab.active{
+.deposit-filter-tab.active,
+.deposit-filter-tab:hover{
   background:#3b82f6;
 }
 
-/* LIST */
+/* MAIN CONTENT - SCROLL FIXED */
+.deposit-main-content{
+  flex:1;
+  min-height:400px;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+}
 
+/* LIST */
 .deposit-history-list{
+  flex:1;
   display:flex;
   flex-direction:column;
   gap:12px;
+  overflow-y:auto;
+  padding-right:2px;
+  max-height:calc(100vh - 280px);
+  scrollbar-width:thin;
+  scrollbar-color:#3b82f6 #1c253a;
+}
+
+.deposit-history-list::-webkit-scrollbar{
+  width:4px;
+}
+
+.deposit-history-list::-webkit-scrollbar-track{
+  background:#1c253a;
+  border-radius:2px;
+}
+
+.deposit-history-list::-webkit-scrollbar-thumb{
+  background:#3b82f6;
+  border-radius:2px;
 }
 
 /* CARD */
-
 .deposit-history-card{
   width:100%;
   background:#141c2f;
   border-radius:10px;
   padding:14px;
-
   display:flex;
   justify-content:space-between;
   align-items:center;
+  flex-shrink:0;
+  border:1px solid #1c253a;
 }
 
 /* LEFT */
-
 .deposit-card-left{
   display:flex;
   flex-direction:column;
   gap:4px;
+  flex:1;
+}
+
+.deposit-amount-row{
+  display:flex;
+  align-items:center;
+  gap:8px;
 }
 
 .deposit-amount{
   font-size:18px;
   font-weight:bold;
+  color:#22c55e;
+}
+
+.deposit-status-dot{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+}
+
+.deposit-status-dot.pending{
+  background:orange;
+}
+
+.deposit-status-dot.approved{
+  background:#22c55e;
+}
+
+.deposit-status-dot.rejected{
+  background:red;
+}
+
+.deposit-details-row{
+  display:flex;
+  align-items:center;
+  gap:8px;
 }
 
 .deposit-date{
@@ -120,19 +180,21 @@
 
 .deposit-user-info{
   font-size:12px;
+  color:#94a3b8;
 }
 
 .deposit-deposit-id{
   font-size:11px;
-  opacity:0.7;
+  opacity:0.5;
 }
 
 /* STATUS */
-
 .deposit-status-badge-large{
   font-size:12px;
   padding:6px 10px;
   border-radius:6px;
+  font-weight:500;
+  white-space:nowrap;
 }
 
 .deposit-status-badge-large.pending{
@@ -147,25 +209,63 @@
 
 .deposit-status-badge-large.rejected{
   background:#3b0000;
-  color:red;
+  color:#ef4444;
 }
 
 /* EMPTY */
-
 .deposit-empty-state{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
   text-align:center;
-  padding:40px 10px;
+  padding:40px 20px;
+  gap:12px;
 }
 
 .deposit-empty-wallet{
   font-size:40px;
 }
 
+.deposit-empty-sub{
+  font-size:13px;
+  opacity:0.7;
+  max-width:280px;
+  line-height:1.4;
+}
+
 .deposit-add-money-btn{
-  margin-top:10px;
-  padding:10px 16px;
+  padding:12px 24px;
   border:none;
   border-radius:6px;
   background:#3b82f6;
   color:white;
+  font-size:14px;
+  font-weight:500;
+  cursor:pointer;
+  transition:background 0.2s;
+}
+
+.deposit-add-money-btn:hover{
+  background:#2563eb;
+}
+
+/* RESPONSIVE */
+@media (max-width: 480px) {
+  .deposit-history-container {
+    padding:10px;
+  }
+  
+  .deposit-header-title h1 {
+    font-size:18px;
+  }
+  
+  .deposit-history-card {
+    padding:12px;
+  }
+  
+  .deposit-amount {
+    font-size:16px;
+  }
 }
