@@ -2,6 +2,7 @@
 /* Base page setup */
 .withdraw-history-page {
   width: 100%;
+  max-width: 100vw;
   height: 100vh; /* Fixed height to viewport */
   overflow-y: auto; /* Enable vertical scrolling */
   overflow-x: hidden; /* Prevent horizontal scrolling */
@@ -11,6 +12,8 @@
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   box-sizing: border-box;
   position: relative;
+  margin: 0;
+  padding: 0;
   /* Bottom padding to ensure gap when scrolled to the end */
   padding-bottom: 80px; 
   -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
@@ -28,6 +31,7 @@
   top: 0;
   z-index: 10;
   width: 100%;
+  max-width: 100%;
   box-sizing: border-box;
 }
 
@@ -77,46 +81,36 @@
 .withdraw-filter-tabs {
   display: flex;
   flex-direction: row;
-  flex-wrap: nowrap;
-  align-items: center; /* Vertically center the tabs */
-  overflow-x: auto;
-  padding: 16px;
-  min-height: 76px; /* Ensure container is tall enough so tabs don't cut off vertically */
+  flex-wrap: wrap; /* Wrap tabs to next line so they NEVER cut off */
+  justify-content: flex-start;
+  align-items: center;
+  padding: 12px 16px;
+  gap: 8px;
   background-color: #ffffff;
   border-bottom: 1px solid #eee;
   width: 100%;
+  max-width: 100%;
   box-sizing: border-box;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-}
-
-.withdraw-filter-tabs::-webkit-scrollbar {
-  display: none;
 }
 
 .withdraw-filter-tab {
-  flex: 0 0 auto; /* Strictly prevent shrinking */
+  flex: 1 1 auto; /* Allow tabs to grow and fill space evenly */
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 40px;
-  padding: 0 20px;
-  margin-right: 12px;
-  border-radius: 20px;
+  height: 38px;
+  padding: 0 12px;
+  border-radius: 19px;
   border: 1px solid #ddd;
   background-color: #f9f9f9;
   color: #444;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   white-space: nowrap;
   cursor: pointer;
-  box-sizing: border-box; /* Include padding and border in height */
+  box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
   transition: all 0.2s ease;
-}
-
-.withdraw-filter-tab:last-child {
-  margin-right: 0;
 }
 
 .withdraw-filter-tab.active {
@@ -134,7 +128,9 @@
   gap: 12px;
   flex: 1;
   width: 100%;
+  max-width: 100%;
   box-sizing: border-box;
+  margin: 0;
 }
 
 /* Card */
@@ -144,20 +140,23 @@
   padding: 16px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
   display: flex;
+  flex-wrap: wrap; /* Allow contents to wrap if screen is too small */
   justify-content: space-between;
   align-items: center;
   border: 1px solid #f0f0f0;
   width: 100%;
+  max-width: 100%;
   box-sizing: border-box;
   gap: 12px;
+  margin: 0;
 }
 
 .withdraw-card-left {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  flex: 1;
-  min-width: 0; /* Important for text truncation */
+  flex: 1 1 60%; /* Take up most of the space, but allow wrapping */
+  min-width: 0; 
   overflow: hidden;
 }
 
@@ -213,7 +212,8 @@
   font-weight: 600;
   text-align: center;
   white-space: nowrap;
-  flex-shrink: 0; /* Prevent badge from squishing */
+  flex-shrink: 0; 
+  margin-left: auto; /* Push to right if wrapped */
 }
 
 .withdraw-status-badge-large.pending {
