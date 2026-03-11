@@ -76,17 +76,18 @@
 /* Filter Tabs */
 .withdraw-filter-tabs {
   display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center; /* Vertically center the tabs */
   overflow-x: auto;
-  padding: 12px 16px;
-  gap: 8px;
+  padding: 16px;
+  min-height: 76px; /* Ensure container is tall enough so tabs don't cut off vertically */
   background-color: #ffffff;
   border-bottom: 1px solid #eee;
   width: 100%;
   box-sizing: border-box;
-  /* Hide scrollbar */
-  -ms-overflow-style: none;
-  scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
 }
 
 .withdraw-filter-tabs::-webkit-scrollbar {
@@ -94,23 +95,35 @@
 }
 
 .withdraw-filter-tab {
-  white-space: nowrap;
-  padding: 8px 16px;
+  flex: 0 0 auto; /* Strictly prevent shrinking */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  padding: 0 20px;
+  margin-right: 12px;
   border-radius: 20px;
   border: 1px solid #ddd;
   background-color: #f9f9f9;
-  color: #555;
+  color: #444;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
+  white-space: nowrap;
   cursor: pointer;
+  box-sizing: border-box; /* Include padding and border in height */
+  -webkit-tap-highlight-color: transparent;
   transition: all 0.2s ease;
-  flex-shrink: 0;
+}
+
+.withdraw-filter-tab:last-child {
+  margin-right: 0;
 }
 
 .withdraw-filter-tab.active {
   background-color: #007bff;
   color: #ffffff;
   border-color: #007bff;
+  box-shadow: 0 2px 6px rgba(0, 123, 255, 0.3);
 }
 
 /* List Container */
