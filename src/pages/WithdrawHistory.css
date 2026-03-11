@@ -3,8 +3,7 @@
 .withdraw-history-page {
   width: 100%;
   max-width: 100vw;
-  height: 100vh; /* Fixed height to viewport */
-  overflow-y: auto; /* Enable vertical scrolling */
+  min-height: 100vh; /* Allow native window scrolling to fix card touch issue */
   overflow-x: hidden; /* Prevent horizontal scrolling */
   background-color: #f4f6f8;
   display: flex;
@@ -16,7 +15,6 @@
   padding: 0;
   /* Bottom padding to ensure gap when scrolled to the end */
   padding-bottom: 80px; 
-  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
 }
 
 /* Header */
@@ -81,7 +79,7 @@
 .withdraw-filter-tabs {
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap; /* Wrap tabs to next line so they NEVER cut off */
+  flex-wrap: nowrap; /* Single line */
   justify-content: flex-start;
   align-items: center;
   padding: 12px 16px;
@@ -91,20 +89,27 @@
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
+  overflow-x: auto; /* Enable horizontal scroll */
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.withdraw-filter-tabs::-webkit-scrollbar {
+  display: none;
 }
 
 .withdraw-filter-tab {
-  flex: 1 1 auto; /* Allow tabs to grow and fill space evenly */
+  flex: 0 0 auto; /* Prevent shrinking */
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 38px;
+  height: 32px; /* Chote chote (small) */
   padding: 0 12px;
-  border-radius: 19px;
+  border-radius: 16px;
   border: 1px solid #ddd;
   background-color: #f9f9f9;
   color: #444;
-  font-size: 13px;
+  font-size: 12px; /* Small font */
   font-weight: 600;
   white-space: nowrap;
   cursor: pointer;
