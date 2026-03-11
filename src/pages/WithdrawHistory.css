@@ -2,16 +2,18 @@
 /* Base page setup */
 .withdraw-history-page {
   width: 100%;
-  min-height: 100vh;
+  height: 100vh; /* Fixed height to viewport */
+  overflow-y: auto; /* Enable vertical scrolling */
+  overflow-x: hidden; /* Prevent horizontal scrolling */
   background-color: #f4f6f8;
   display: flex;
   flex-direction: column;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   box-sizing: border-box;
-  overflow-x: hidden;
   position: relative;
   /* Bottom padding to ensure gap when scrolled to the end */
   padding-bottom: 80px; 
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
 }
 
 /* Header */
@@ -25,6 +27,8 @@
   position: sticky;
   top: 0;
   z-index: 10;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .withdraw-back-button {
@@ -42,6 +46,7 @@
 .withdraw-header-title {
   text-align: center;
   flex: 1;
+  min-width: 0;
 }
 
 .withdraw-header-title h1 {
@@ -49,6 +54,9 @@
   font-size: 18px;
   font-weight: 700;
   color: #1a1a1a;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .withdraw-total-count {
@@ -73,9 +81,12 @@
   gap: 8px;
   background-color: #ffffff;
   border-bottom: 1px solid #eee;
+  width: 100%;
+  box-sizing: border-box;
   /* Hide scrollbar */
   -ms-overflow-style: none;
   scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
 }
 
 .withdraw-filter-tabs::-webkit-scrollbar {
@@ -109,6 +120,8 @@
   flex-direction: column;
   gap: 12px;
   flex: 1;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 /* Card */
@@ -121,7 +134,9 @@
   justify-content: space-between;
   align-items: center;
   border: 1px solid #f0f0f0;
-  word-wrap: break-word;
+  width: 100%;
+  box-sizing: border-box;
+  gap: 12px;
 }
 
 .withdraw-card-left {
@@ -130,12 +145,14 @@
   gap: 6px;
   flex: 1;
   min-width: 0; /* Important for text truncation */
+  overflow: hidden;
 }
 
 .withdraw-amount-row {
   display: flex;
   align-items: center;
   gap: 8px;
+  flex-wrap: wrap;
 }
 
 .withdraw-amount {
@@ -148,6 +165,7 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
+  flex-shrink: 0;
 }
 
 .withdraw-status-dot.pending { background-color: #f5a623; }
@@ -166,11 +184,13 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  width: 100%;
 }
 
 .withdraw-id {
   font-size: 12px;
   color: #999;
+  word-break: break-all;
 }
 
 .withdraw-status-badge-large {
@@ -180,7 +200,7 @@
   font-weight: 600;
   text-align: center;
   white-space: nowrap;
-  margin-left: 12px;
+  flex-shrink: 0; /* Prevent badge from squishing */
 }
 
 .withdraw-status-badge-large.pending {
@@ -210,6 +230,8 @@
   text-align: center;
   padding: 40px 20px;
   flex: 1;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .withdraw-empty-icon {
@@ -269,6 +291,7 @@
   justify-content: center;
   flex: 1;
   height: 100vh;
+  width: 100%;
 }
 
 .withdraw-spinner-large {
