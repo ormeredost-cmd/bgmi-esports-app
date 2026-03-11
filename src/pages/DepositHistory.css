@@ -1,4 +1,4 @@
-/* DepositHistory.css - COMPLETE CODE WITH 1 INCH BOTTOM GAP */
+/* DepositHistory.css - COMPLETE CODE WITH HIDDEN SCROLLBAR */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -8,13 +8,21 @@
 .deposit-history-page {
   min-height: 100vh;
   height: 100vh;
-  padding: 1rem 1rem 4rem; /* 4rem = 1 inch mobile pe */
+  padding: 1rem 1rem 4rem;
   background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
   overflow-y: auto;
   overflow-x: hidden;
   position: relative;
   scroll-behavior: smooth;
-  scroll-padding-bottom: 4rem; /* Scroll snap ke liye bottom gap */
+  scroll-padding-bottom: 4rem;
+  
+  /* SCROLLBAR HIDE - SAB BROWSERS */
+  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none;  /* IE/Edge */
+}
+
+.deposit-history-page::-webkit-scrollbar {
+  display: none;  /* Chrome/Safari */
 }
 
 .deposit-history-container {
@@ -171,7 +179,7 @@ button.deposit-add-money-btn:hover {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  padding: 0 0.5rem 6rem 0.5rem; /* 6rem = 1.5 inch extra gap */
+  padding: 0 0.5rem 6rem 0.5rem;
 }
 
 .deposit-history-card {
@@ -290,14 +298,12 @@ button.deposit-add-money-btn:hover {
   border-color: #ff4444;
 }
 
-/* LOADING & ERROR STATES */
 .deposit-empty-state h3,
 .deposit-empty-state .deposit-empty-state h3 {
   color: #ffd700 !important;
   font-weight: 800 !important;
 }
 
-/* Animations */
 @keyframes pulse {
   0%, 100% { transform: scale(1); opacity: 1; }
   50% { transform: scale(1.2); opacity: 0.8; }
@@ -309,7 +315,6 @@ button.deposit-add-money-btn:hover {
   60% { transform: translateY(-8px); }
 }
 
-/* Responsive */
 @media (min-width: 768px) {
   .deposit-history-page { padding: 1rem 2rem 5rem; }
   .deposit-history-card { padding: 2rem 2.5rem; min-height: 130px; }
