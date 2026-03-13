@@ -1,4 +1,4 @@
-/* WithdrawHistory.css - PURA PAGE UPAR + PERFECT MOBILE SCROLL */
+/* WithdrawHistory.css - FINAL PERFECT - SCROLL + NO BOTTOM GAP */
 :root {
   --bg-main: #020617;
   --bg-card: #020617;
@@ -17,39 +17,41 @@
 
 html, body {
   height: 100vh;
-  overflow: hidden; /* Body scroll disable karo */
+  background: radial-gradient(circle at top, #111827 0%, #020617 45%, #000 100%);
+  overflow: hidden;
   margin: 0;
   padding: 0;
 }
 
 .withdraw-history-page {
-  /* 🔥 PERFECT MOBILE LAYOUT */
+  /* 🔥 PERFECT MOBILE LAYOUT - NO GAP */
   position: absolute;
-  top: 72px;      /* Top navbar ke baad */
+  top: 72px;
   left: 0;
   right: 0;
-  bottom: 110px;  /* Bottom navbar se upar */
+  bottom: 110px;  /* Exact bottom nav height */
   background: radial-gradient(circle at top, #111827 0%, #020617 45%, #000 100%);
   color: var(--text-main);
-  overflow-y: auto;        /* YEH SCROLL KAREGA */
+  overflow-y: auto !important;  /* SCROLL GUARANTEED */
   overflow-x: hidden;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
   font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
   font-size: 12px;
   line-height: 1.4;
-  padding: 12px 8px;       /* CHOTA PADDING */
+  padding: 12px 8px 20px 8px;  /* Bottom padding for last card */
   margin: 0;
 }
 
+/* NO SCROLLBAR + NO GAP */
 .withdraw-history-page::-webkit-scrollbar { 
-  display: none; 
+  display: none !important; 
 }
 
-/* 🔥 CONTENT UPAR SE START */
+/* 🔥 CONTENT STARTS FROM TOP */
 .withdraw-history-header {
-  margin: 0 0 12px 0; /* ZERO TOP MARGIN */
+  margin: 0 0 12px 0;
   padding: 14px;
   background: rgba(15, 23, 42, 0.95);
   border-radius: 12px;
@@ -110,6 +112,8 @@ html, body {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  padding-bottom: 20px; /* NO BOTTOM GAP FIX */
+  min-height: calc(100% - 100px); /* Force scroll */
 }
 
 .withdraw-history-card {
@@ -235,21 +239,22 @@ html, body {
   margin: 4px;
 }
 
-/* MOBILE OPTIMIZED */
+/* LAPTOP ME PHONE SIZE */
+@media (min-width: 481px) {
+  .withdraw-history-page {
+    max-width: 400px;
+    margin: 20px auto;
+    top: 0;
+    bottom: 0;
+    padding: 72px 8px 110px;
+    border-radius: 16px;
+    box-shadow: 0 0 40px rgba(0,0,0,0.8);
+  }
+}
+
+/* MOBILE */
 @media (max-width: 480px) {
   .withdraw-history-page {
-    padding: 12px 6px;
-  }
-  
-  .withdraw-header-title h1 {
-    font-size: 18px;
-  }
-  
-  .withdraw-amount {
-    font-size: 16px;
-  }
-  
-  .withdraw-history-card {
-    padding: 10px 12px;
+    padding: 12px 6px 20px 6px;
   }
 }
