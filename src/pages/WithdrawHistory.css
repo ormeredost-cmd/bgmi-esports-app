@@ -1,4 +1,4 @@
-/* WithdrawHistory.css - MOBILE PERFECT FIT + SCROLL FIXED */
+/* WithdrawHistory.css - PURA PAGE UPAR + PERFECT MOBILE SCROLL */
 :root {
   --bg-main: #020617;
   --bg-card: #020617;
@@ -16,50 +16,54 @@
 }
 
 html, body {
-  height: 100%;
-  overflow-x: hidden;
-  overflow-y: auto;
+  height: 100vh;
+  overflow: hidden; /* Body scroll disable karo */
   margin: 0;
   padding: 0;
 }
 
 .withdraw-history-page {
-  /* 🔥 PERFECT MOBILE FIT */
-  min-height: 100vh;
-  padding: 72px 8px 110px; /* Top navbar + Bottom nav */
+  /* 🔥 PERFECT MOBILE LAYOUT */
+  position: absolute;
+  top: 72px;      /* Top navbar ke baad */
+  left: 0;
+  right: 0;
+  bottom: 110px;  /* Bottom navbar se upar */
   background: radial-gradient(circle at top, #111827 0%, #020617 45%, #000 100%);
   color: var(--text-main);
+  overflow-y: auto;        /* YEH SCROLL KAREGA */
   overflow-x: hidden;
-  overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   -ms-overflow-style: none;
   font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
-  font-size: 12px; /* CHOTA FONT */
+  font-size: 12px;
   line-height: 1.4;
-  max-width: 100%;
-  word-break: break-word;
+  padding: 12px 8px;       /* CHOTA PADDING */
+  margin: 0;
 }
 
-.withdraw-history-page::-webkit-scrollbar { display: none; }
+.withdraw-history-page::-webkit-scrollbar { 
+  display: none; 
+}
 
+/* 🔥 CONTENT UPAR SE START */
 .withdraw-history-header {
-  margin-bottom: 16px;
-  padding: 12px 14px;
+  margin: 0 0 12px 0; /* ZERO TOP MARGIN */
+  padding: 14px;
   background: rgba(15, 23, 42, 0.95);
   border-radius: 12px;
   border: 1px solid rgba(31, 41, 55, 0.95);
 }
 
 .withdraw-header-title h1 {
-  font-size: 20px; /* CHOTA */
+  font-size: 20px;
   font-weight: 700;
-  margin: 0 0 2px 0;
+  margin: 0 0 4px 0;
   background: linear-gradient(135deg, var(--accent-green), var(--accent-gold));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  line-height: 1.2;
 }
 
 .withdraw-total-count {
@@ -70,8 +74,8 @@ html, body {
 .withdraw-filter-tabs {
   display: flex;
   gap: 6px;
-  margin-bottom: 16px;
-  padding: 8px 12px;
+  margin-bottom: 12px;
+  padding: 10px 12px;
   background: rgba(15, 23, 42, 0.95);
   border-radius: 10px;
   border: 1px solid rgba(31, 41, 55, 0.95);
@@ -83,17 +87,16 @@ html, body {
 
 .withdraw-filter-tab {
   flex-shrink: 0;
-  padding: 6px 12px; /* CHOTA PADDING */
+  padding: 6px 10px;
   border-radius: 20px;
   border: 1px solid rgba(148, 163, 184, 0.6);
   background: transparent;
   color: var(--text-main);
-  font-size: 11px; /* CHOTA */
+  font-size: 11px;
   font-weight: 500;
   cursor: pointer;
   white-space: nowrap;
-  transition: all 0.2s ease;
-  min-width: 70px;
+  min-width: 60px;
   text-align: center;
 }
 
@@ -112,7 +115,7 @@ html, body {
 .withdraw-history-card {
   background: rgba(15, 23, 42, 0.95);
   border-radius: 12px;
-  padding: 12px 14px; /* CHOTA PADDING */
+  padding: 12px 14px;
   border: 1px solid rgba(31, 41, 55, 0.95);
   display: flex;
   justify-content: space-between;
@@ -128,12 +131,12 @@ html, body {
 .withdraw-amount-row {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   margin-bottom: 4px;
 }
 
 .withdraw-amount {
-  font-size: 18px; /* CHOTA */
+  font-size: 18px;
   font-weight: 700;
   color: var(--accent-gold);
 }
@@ -166,11 +169,11 @@ html, body {
 }
 
 .withdraw-status-badge-large {
-  padding: 6px 10px; /* CHOTA */
+  padding: 6px 10px;
   border-radius: 20px;
-  font-size: 11px; /* CHOTA */
+  font-size: 11px;
   font-weight: 600;
-  min-width: 80px;
+  min-width: 75px;
   text-align: center;
   flex-shrink: 0;
 }
@@ -197,7 +200,12 @@ html, body {
 .withdraw-loading-container,
 .withdraw-empty-state {
   text-align: center;
-  padding: 60px 16px;
+  padding: 80px 20px;
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .withdraw-spinner-large {
@@ -215,86 +223,33 @@ html, body {
   100% { transform: rotate(360deg); }
 }
 
-.withdraw-empty-icon {
-  font-size: 48px;
-  margin-bottom: 12px;
-}
-
-.withdraw-empty-state h3 {
-  font-size: 18px;
-  margin-bottom: 6px;
-}
-
-.withdraw-empty-sub {
-  font-size: 12px;
-  color: var(--text-muted);
-  margin-bottom: 20px;
-}
-
-.withdraw-refresh-btn,
-.withdraw-add-money-btn,
-.withdraw-back-btn {
-  padding: 8px 16px;
-  border-radius: 20px;
+.withdraw-add-money-btn {
+  background: linear-gradient(135deg, var(--accent-green), var(--accent-gold));
+  color: #020617;
+  padding: 10px 20px;
+  border-radius: 25px;
   border: none;
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
-  margin: 0 4px;
+  margin: 4px;
 }
 
-.withdraw-add-money-btn {
-  background: linear-gradient(135deg, var(--accent-green), var(--accent-gold));
-  color: #020617;
-}
-
-.withdraw-refresh-btn {
-  background: rgba(34, 197, 94, 0.2);
-  color: var(--accent-green);
-  border: 1px solid rgba(34, 197, 94, 0.4);
-}
-
-.withdraw-back-btn {
-  background: rgba(96, 165, 250, 0.2);
-  color: var(--accent-blue);
-  border: 1px solid rgba(96, 165, 250, 0.4);
-}
-
-/* MOBILE PERFECT FIT */
-@media (max-width: 768px) {
+/* MOBILE OPTIMIZED */
+@media (max-width: 480px) {
   .withdraw-history-page {
-    padding: 72px 6px 110px; /* THODA UPAR + CHOTA SIDE PADDING */
-    font-size: 11px;
+    padding: 12px 6px;
   }
   
   .withdraw-header-title h1 {
     font-size: 18px;
   }
   
-  .withdraw-history-card {
-    padding: 10px 12px;
-    gap: 8px;
-  }
-  
   .withdraw-amount {
     font-size: 16px;
   }
   
-  .withdraw-status-badge-large {
-    padding: 5px 8px;
-    font-size: 10px;
-    min-width: 70px;
-  }
-}
-
-@media (max-width: 400px) {
-  .withdraw-history-page {
-    padding: 72px 4px 110px;
-  }
-  
-  .withdraw-filter-tab {
-    padding: 5px 10px;
-    font-size: 10px;
-    min-width: 60px;
+  .withdraw-history-card {
+    padding: 10px 12px;
   }
 }
