@@ -1,12 +1,12 @@
-// src/data/tournamentsSample.js - 🔥 Dono 1v1 TDM!
+// src/data/tournamentsSample.js - 🔥 10+ NEW TOURNAMENTS!
 export const tournamentsSample = [
+  // 🔥 EXISTING 2 TDMs
   {
-    id: "tm1",  // Warehouse 1v1
+    id: "tm1",
     name: "WAREHOUSE 1v1 TDM",
     type: "TDM",
     mode: "1v1 TDM",
     map: "Warehouse",
-    date: "2026-02-06",
     time: "21:00",
     entryFee: 50,
     prizePool: 80,
@@ -16,18 +16,75 @@ export const tournamentsSample = [
     gun: "M416"
   },
   {
-    id: "tm2",  // 🔥 Livik 1v1 (2v2 se change!)
-    name: "WAREHOUSE 1v1 TDM",
+    id: "tm2", 
+    name: "LIVIK 1v1 TDM",
     type: "TDM",
-    mode: "1v1 TDM",      // 🔥 Changed!
+    mode: "1v1 TDM",
     map: "Livik",
-    date: "2026-02-07",
     time: "22:00",
-    entryFee: 50,         // 🔥 Changed!
-    prizePool: 90,        // 🔥 Changed!
-    maxSlots: 2,          // 🔥 Changed! (2 players total)
+    entryFee: 50,
+    prizePool: 90,
+    maxSlots: 2,
     registered: 0,
-    rulesShort: "M24 Only • No emulators",  // 🔥 Team rules gone!
+    rulesShort: "M24 Only • No emulators",
     gun: "M24"
+  },
+
+  // 🔥 NEW TOURNAMENTS ADD KARO ↓
+  {
+    id: "cs1",
+    name: "ERANGEL CLASSIC 1v1",
+    type: "CS",
+    mode: "Solo Classic",
+    map: "Erangel",
+    time: "20:30",
+    entryFee: 100,
+    prizePool: 180,
+    maxSlots: 100,
+    registered: 23,
+    rulesShort: "No 3rd party • FPP only",
+    gun: "AKM"
+  },
+  {
+    id: "tdm3",
+    name: "SANHOK 1v1 TDM",
+    type: "TDM",
+    mode: "1v1 TDM",
+    map: "Sanhok", 
+    time: "23:15",
+    entryFee: 75,
+    prizePool: 140,
+    maxSlots: 2,
+    registered: 1,
+    rulesShort: "SCAR-L Only • 10 kills",
+    gun: "SCAR-L"
+  },
+  {
+    id: "sq1",
+    name: "QUICK SQUAD FIRE",
+    type: "SQ",
+    mode: "4 Member Squad",
+    map: "Miramar",
+    time: "19:45",
+    entryFee: 200,
+    prizePool: 800,
+    maxSlots: 25,
+    registered: 12,
+    rulesShort: "Team entry • 1st come",
+    gun: ""
+  },
+  {
+    id: "cs2",
+    name: "MIRAMAR SNIPER DUEL",
+    type: "CS",
+    mode: "1v1 Sniper",
+    map: "Miramar",
+    time: "21:30",
+    entryFee: 150,
+    prizePool: 280,
+    maxSlots: 2,
+    registered: 0,
+    rulesShort: "Kar98 Only • Headshots",
+    gun: "Kar98"
   }
 ];

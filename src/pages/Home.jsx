@@ -4,10 +4,8 @@ import { tournamentsSample } from "../data/tournamentsSample";
 import TournamentCard from "../components/TournamentCard";
 
 const Home = () => {
-  // sirf TDM type wale tournaments
-  const featured = tournamentsSample.filter(
-    (t) => t.type.toLowerCase() === "tdm"
-  );
+  // 🔥 FIXED: SAB TOURNAMENTS SHOW KARO (6 cards!)
+  const featured = tournamentsSample;  // ← YE CHANGE KIA!
 
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
@@ -36,7 +34,7 @@ const Home = () => {
                 className="hero-btn-primary all-tour-btn"
                 onClick={() => setOpen((o) => !o)}
               >
-                <span>All Tournaments</span>
+                <span>All Tournaments ({tournamentsSample.length})</span>
                 <span className={`all-tour-arrow ${open ? "open" : ""}`}>
                   ▼
                 </span>
@@ -67,7 +65,8 @@ const Home = () => {
 
       <section className="section">
         <div className="section-header">
-          <h2>Available Tournaments</h2>
+          <h2>Available Tournaments ({featured.length})</h2>
+         
         </div>
 
         <div className="tour-grid">
