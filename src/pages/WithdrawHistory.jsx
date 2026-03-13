@@ -108,10 +108,10 @@ const WithdrawHistory = () => {
       <div className="withdraw-history-header">
        
         <div className="withdraw-header-title">
-          <h1>📜 Withdraw History</h1>
+          <h1>Withdraw History</h1>
           <div className="withdraw-total-count">Total: {withdraws.length} requests</div>
         </div>
-        <button className="withdraw-refresh-button" onClick={refreshHistory}>🔄</button>
+       
       </div>
 
       <div className="withdraw-filter-tabs">
@@ -119,13 +119,13 @@ const WithdrawHistory = () => {
           All ({withdraws.length})
         </button>
         <button className={`withdraw-filter-tab ${filter === "pending" ? "active" : ""}`} onClick={() => setFilter("pending")}>
-          ⏳ Pending ({getStatusCount("pending")})
+          Pending ({getStatusCount("pending")})
         </button>
         <button className={`withdraw-filter-tab ${filter === "approved" ? "active" : ""}`} onClick={() => setFilter("approved")}>
-          ✅ Approved ({getStatusCount("approved")})
+          Approved ({getStatusCount("approved")})
         </button>
         <button className={`withdraw-filter-tab ${filter === "rejected" ? "active" : ""}`} onClick={() => setFilter("rejected")}>
-          ❌ Rejected ({getStatusCount("rejected")})
+          Rejected ({getStatusCount("rejected")})
         </button>
       </div>
 

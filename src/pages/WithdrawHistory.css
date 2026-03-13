@@ -1,19 +1,54 @@
-/* WithdrawHistory.css - Mobile First Responsive */
+/* WithdrawHistory.css - Mobile First Responsive with Smooth Scroll */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  -webkit-overflow-scrolling: touch; /* iOS smooth scrolling */
+}
+
+body {
+  /* Hide scrollbar globally for clean look */
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+body::-webkit-scrollbar {
+  display: none;  /* Chrome, Safari, Opera */
 }
 
 .withdraw-history-page {
   min-height: 100vh;
+  height: 100vh; /* Full viewport height */
   padding: 12px;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   font-size: 14px;
   line-height: 1.4;
   color: #1f2937;
   background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  overflow-y: auto; /* Enable vertical scroll */
   overflow-x: hidden;
+  scroll-behavior: smooth; /* Smooth scroll */
+  -webkit-overflow-scrolling: touch;
+  position: relative;
+}
+
+/* Pull to refresh effect */
+.withdraw-history-page::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: linear-gradient(to bottom, rgba(248, 250, 252, 0.95), transparent);
+  z-index: 10;
+  pointer-events: none;
+  transform: translateY(-100%);
+  transition: transform 0.3s ease;
+}
+
+.withdraw-history-page.refreshing::before {
+  transform: translateY(0);
 }
 
 /* Header */
@@ -24,6 +59,12 @@
   margin-bottom: 18px;
   padding: 12px 0;
   gap: 12px;
+  position: sticky;
+  top: 0;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  z-index: 100;
+  padding-top: env(safe-area-inset-top);
 }
 
 .withdraw-header-title {
@@ -65,17 +106,21 @@
   box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4);
 }
 
-/* Filter Tabs */
+/* Filter Tabs - Also sticky */
 .withdraw-filter-tabs {
   display: flex;
   gap: 8px;
   margin-bottom: 20px;
   flex-wrap: wrap;
-  padding: 8px 0;
+  padding: 8px 4px;
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(10px);
-  padding: 4px;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  position: sticky;
+  top: 70px;
+  z-index: 50;
+  scroll-margin-top: 90px; /* Space for sticky elements */
 }
 
 .withdraw-filter-tab {
@@ -210,6 +255,7 @@
   display: flex;
   flex-direction: column;
   gap: 14px;
+  padding-bottom: 100px; /* Extra space at bottom for scroll */
 }
 
 .withdraw-history-card {
@@ -260,9 +306,18 @@
   animation: pulse 2s infinite;
 }
 
-.withdraw-status-dot.pending { background: #f59e0b; box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2); }
-.withdraw-status-dot.approved { background: #10b981; box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2); }
-.withdraw-status-dot.rejected { background: #ef4444; box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2); }
+.withdraw-status-dot.pending { 
+  background: #f59e0b; 
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2); 
+}
+.withdraw-status-dot.approved { 
+  background: #10b981; 
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2); 
+}
+.withdraw-status-dot.rejected { 
+  background: #ef4444; 
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2); 
+}
 
 @keyframes pulse {
   0%, 100% { opacity: 1; transform: scale(1); }
@@ -358,7 +413,7 @@
 
 @media (max-height: 600px) {
   .withdraw-history-page {
-    padding-bottom: 100px;
+    padding-bottom: 120px;
   }
 }
 
