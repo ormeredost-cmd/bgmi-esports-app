@@ -1,4 +1,4 @@
-/* DepositHistory.css - FILTER TABS CHOTE + SMOOTH SCROLL + PERFECT */
+/* DepositHistory.css - PERFECT SMOOTH SCROLL + BIGGER TABS + NO BOUNCE */
 :root {
   --bg-main: #020617;
   --bg-card: #020617;
@@ -24,7 +24,6 @@ html, body {
 }
 
 .deposit-history-page {
-  /* 🔥 ULTRA SMOOTH MOBILE SCROLL */
   position: absolute;
   top: 72px;
   left: 0;
@@ -32,9 +31,8 @@ html, body {
   bottom: 110px;
   background: radial-gradient(circle at top, #111827 0%, #020617 45%, #000 100%);
   color: var(--text-main);
-  overflow-y: scroll !important;  /* SCROLL GUARANTEED */
+  overflow-y: auto !important;
   overflow-x: hidden;
-  scroll-behavior: smooth !important;  /* SMOOTH SCROLL */
   -webkit-overflow-scrolling: touch !important;
   scrollbar-width: none !important;
   -ms-overflow-style: none !important;
@@ -43,22 +41,22 @@ html, body {
   line-height: 1.4;
   padding: 12px 8px 0px 8px;
   margin: 0;
-  scroll-snap-type: y proximity; /* SNAP SCROLL */
+  /* NO BOUNCE + SMOOTH */
+  overscroll-behavior: contain;
+  scroll-behavior: auto;
 }
 
-/* NO SCROLLBAR */
 .deposit-history-page::-webkit-scrollbar { 
   display: none !important; 
 }
 
-/* 🔥 COMPACT HEADER */
 .deposit-history-container {
   min-height: 100%;
 }
 
 .deposit-history-header {
-  margin: 0 0 8px 0; /* LESS MARGIN */
-  padding: 12px; /* LESS PADDING */
+  margin: 0 0 8px 0;
+  padding: 12px;
   background: rgba(15, 23, 42, 0.95);
   border-radius: 12px;
   border: 1px solid rgba(31, 41, 55, 0.95);
@@ -79,14 +77,14 @@ html, body {
   color: var(--text-muted);
 }
 
-/* 🔥 CHOTE FILTER TABS - PHONE FIT */
+/* 🔥 BIGGER FILTER TABS - PERFECT SIZE */
 .deposit-filter-tabs {
   display: flex;
-  gap: 4px; /* LESS GAP */
-  margin-bottom: 8px; /* LESS MARGIN */
-  padding: 6px 8px; /* CHOTA PADDING */
+  gap: 6px;
+  margin-bottom: 12px;
+  padding: 8px 10px;
   background: rgba(15, 23, 42, 0.95);
-  border-radius: 10px;
+  border-radius: 12px;
   border: 1px solid rgba(31, 41, 55, 0.95);
   overflow-x: auto;
   scrollbar-width: none;
@@ -96,16 +94,20 @@ html, body {
 
 .deposit-filter-tab {
   flex-shrink: 0;
-  padding: 4px 8px; /* CHOTA PADDING */
-  border-radius: 16px; /* CHOTA RADIUS */
+  padding: 6px 12px; /* THODA BADA */
+  border-radius: 20px;
   border: 1px solid rgba(148, 163, 184, 0.6);
   background: transparent;
   color: var(--text-main);
-  font-size: 10px; /* CHOTA FONT */
-  font-weight: 500;
+  font-size: 11px; /* NORMAL FONT */
+  font-weight: 600;
   cursor: pointer;
   white-space: nowrap;
-  min-width: 65px; /* CHOTA WIDTH */
+  min-width: 75px; /* THODA BADA */
+  height: 32px; /* FIXED HEIGHT */
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-align: center;
   line-height: 1.2;
 }
@@ -136,7 +138,6 @@ html, body {
   justify-content: space-between;
   align-items: flex-start;
   gap: 10px;
-  scroll-snap-align: start;
 }
 
 .deposit-card-left {
@@ -275,7 +276,7 @@ html, body {
   }
 }
 
-/* MOBILE OPTIMIZED */
+/* MOBILE */
 @media (max-width: 480px) {
   .deposit-history-page {
     padding: 12px 6px 0px 6px;
