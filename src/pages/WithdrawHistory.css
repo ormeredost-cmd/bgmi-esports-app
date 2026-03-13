@@ -1,4 +1,4 @@
-/* WithdrawHistory.css - FINAL PERFECT - FIXED HEADER + NO GAP + SCROLL */
+/* WithdrawHistory.css - PERFECT SMOOTH SCROLL + BIGGER TABS + NO BOUNCE */
 :root {
   --bg-main: #020617;
   --bg-card: #020617;
@@ -23,22 +23,34 @@ html, body {
   padding: 0;
 }
 
-/* 🔥 FIXED HEADER - NO SCROLL */
-.header-fixed {
+.withdraw-history-page {
   position: absolute;
   top: 72px;
   left: 0;
   right: 0;
-  height: 120px; /* Header + Filters height */
-  padding: 12px 8px;
+  bottom: 110px;
   background: radial-gradient(circle at top, #111827 0%, #020617 45%, #000 100%);
-  z-index: 10;
-  overflow: hidden;
+  color: var(--text-main);
+  overflow-y: auto !important;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 12px;
+  line-height: 1.4;
+  padding: 12px 8px 0px 8px;
+  margin: 0;
+  overscroll-behavior: contain;
+}
+
+.withdraw-history-page::-webkit-scrollbar { 
+  display: none !important; 
 }
 
 .withdraw-history-header {
-  margin: 0 0 12px 0;
-  padding: 14px;
+  margin: 0 0 8px 0;
+  padding: 12px;
   background: rgba(15, 23, 42, 0.95);
   border-radius: 12px;
   border: 1px solid rgba(31, 41, 55, 0.95);
@@ -59,13 +71,14 @@ html, body {
   color: var(--text-muted);
 }
 
+/* 🔥 BIGGER FILTER TABS - PERFECT SIZE */
 .withdraw-filter-tabs {
   display: flex;
   gap: 6px;
-  margin-bottom: 0;
-  padding: 10px 12px;
+  margin-bottom: 12px;
+  padding: 8px 10px;
   background: rgba(15, 23, 42, 0.95);
-  border-radius: 10px;
+  border-radius: 12px;
   border: 1px solid rgba(31, 41, 55, 0.95);
   overflow-x: auto;
   scrollbar-width: none;
@@ -75,17 +88,27 @@ html, body {
 
 .withdraw-filter-tab {
   flex-shrink: 0;
-  padding: 6px 10px;
+  padding: 6px 12px;
   border-radius: 20px;
   border: 1px solid rgba(148, 163, 184, 0.6);
   background: transparent;
   color: var(--text-main);
   font-size: 11px;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
   white-space: nowrap;
-  min-width: 60px;
+  min-width: 75px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-align: center;
+  line-height: 1.2;
+  transition: all 0.2s ease;
+}
+
+.withdraw-filter-tab:hover {
+  background: rgba(148, 163, 184, 0.2);
 }
 
 .withdraw-filter-tab.active {
@@ -94,32 +117,12 @@ html, body {
   border-color: transparent;
 }
 
-/* 🔥 ONLY CARDS SCROLL */
-.withdraw-history-page {
-  position: absolute;
-  top: 194px; /* 72px top nav + 120px header + 2px gap */
-  left: 0;
-  right: 0;
-  bottom: 110px;
-  background: radial-gradient(circle at top, #111827 0%, #020617 45%, #000 100%);
-  overflow-y: auto !important;
-  overflow-x: hidden;
-  -webkit-overflow-scrolling: touch !important;
-  scrollbar-width: none !important;
-  -ms-overflow-style: none !important;
-  padding: 0 8px 0px 8px; /* NO BOTTOM PADDING */
-  margin: 0;
-  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
-  font-size: 12px;
-}
-
-.withdraw-history-page::-webkit-scrollbar { display: none !important; }
-
 .withdraw-history-list {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  padding-bottom: 0px; /* NO GAP */
+  padding-bottom: 0px !important;
+  min-height: calc(100vh - 250px);
 }
 
 .withdraw-history-card {
@@ -164,7 +167,6 @@ html, body {
 .withdraw-date {
   font-size: 11px;
   color: var(--text-muted);
-  margin-bottom: 4px;
 }
 
 .withdraw-user-info {
@@ -176,6 +178,10 @@ html, body {
 .withdraw-id {
   font-size: 10px;
   color: var(--text-muted);
+}
+
+.withdraw-details-row {
+  margin-bottom: 4px;
 }
 
 .withdraw-status-badge-large {
@@ -206,7 +212,7 @@ html, body {
   border: 1px solid rgba(239, 68, 68, 0.4);
 }
 
-/* Loading & Empty */
+/* EMPTY & LOADING STATES */
 .withdraw-loading-container,
 .withdraw-empty-state {
   text-align: center;
@@ -228,50 +234,93 @@ html, body {
   margin-bottom: 16px;
 }
 
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+.withdraw-empty-icon {
+  font-size: 48px;
+  margin-bottom: 12px;
 }
 
-.withdraw-add-money-btn {
+.withdraw-empty-sub {
+  color: var(--text-muted);
+  font-size: 12px;
+  margin: 12px 0;
+  text-align: center;
+}
+
+.withdraw-empty-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 16px;
+  width: 100%;
+  max-width: 280px;
+}
+
+.withdraw-add-money-btn,
+.withdraw-refresh-btn,
+.withdraw-back-btn {
   background: linear-gradient(135deg, var(--accent-green), var(--accent-gold));
   color: #020617;
-  padding: 10px 20px;
+  padding: 12px 20px;
   border-radius: 25px;
   border: none;
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
-  margin: 4px;
+  transition: transform 0.2s ease;
+  text-align: center;
 }
 
-/* LAPTOP */
+.withdraw-add-money-btn:hover,
+.withdraw-refresh-btn:hover,
+.withdraw-back-btn:hover {
+  transform: translateY(-1px);
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* LAPTOP ME PHONE SIZE */
 @media (min-width: 481px) {
-  .header-fixed {
-    max-width: 400px;
-    margin: 0 auto;
-    left: 50%;
-    right: 50%;
-    margin-left: -200px;
-    margin-right: -200px;
-  }
-  
   .withdraw-history-page {
     max-width: 400px;
-    margin: 0 auto;
-    left: 50%;
-    right: 50%;
-    margin-left: -200px;
-    margin-right: -200px;
-    top: 194px;
+    margin: 20px auto;
+    top: 0;
+    bottom: 0;
+    padding: 72px 8px 110px;
     border-radius: 16px;
     box-shadow: 0 0 40px rgba(0,0,0,0.8);
   }
+  
+  .withdraw-empty-actions {
+    flex-direction: row;
+    justify-content: center;
+  }
+  
+  .withdraw-add-money-btn,
+  .withdraw-refresh-btn,
+  .withdraw-back-btn {
+    padding: 10px 16px;
+    min-width: 120px;
+  }
 }
 
-/* MOBILE */
+/* MOBILE OPTIMIZED */
 @media (max-width: 480px) {
-  .header-fixed {
-    padding: 12px 6px;
+  .withdraw-history-page {
+    padding: 12px 6px 0px 6px;
+  }
+  
+  .withdraw-header-title h1 {
+    font-size: 18px;
+  }
+  
+  .withdraw-amount {
+    font-size: 16px;
+  }
+  
+  .withdraw-history-card {
+    padding: 10px 12px;
   }
 }
