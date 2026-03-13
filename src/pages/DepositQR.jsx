@@ -130,7 +130,7 @@ export default function DepositQR() {
         <h2>Deposit Request Created</h2>
         <p>₹{amount} — Pending approval</p>
         <p>UTR: {utr}</p>
-        <div className="loading-spinner">Redirecting...</div>
+       
       </div>
     );
   }
