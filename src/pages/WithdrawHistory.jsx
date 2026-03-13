@@ -98,7 +98,7 @@ const WithdrawHistory = () => {
         <div className="withdraw-empty-icon">⚠️</div>
         <h3>{error}</h3>
         <button onClick={refreshHistory} className="withdraw-refresh-btn">🔄 Retry Load</button>
-        <button onClick={() => navigate("/wallet")} className="withdraw-back-btn">← Back to Wallet</button>
+        
       </div>
     </div>;
   }
@@ -106,7 +106,7 @@ const WithdrawHistory = () => {
   return (
     <div className="withdraw-history-page">
       <div className="withdraw-history-header">
-        <button className="withdraw-back-button" onClick={() => navigate("/wallet")}>← Back</button>
+       
         <div className="withdraw-header-title">
           <h1>📜 Withdraw History</h1>
           <div className="withdraw-total-count">Total: {withdraws.length} requests</div>

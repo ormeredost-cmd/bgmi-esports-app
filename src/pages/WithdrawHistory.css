@@ -1,257 +1,110 @@
-/* WithdrawHistory.css */
-
-/* Base page styling to ensure it fits mobile screens perfectly */
-.withdraw-history-page {
-  width: 100%;
-  max-width: 100vw;
-  min-height: 100vh;
+/* WithdrawHistory.css - Mobile First Responsive */
+* {
   box-sizing: border-box;
-  background-color: #f4f6f8;
-  color: #333;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  display: flex;
-  flex-direction: column;
+  margin: 0;
+  padding: 0;
+}
+
+.withdraw-history-page {
+  min-height: 100vh;
+  padding: 12px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 14px;
+  line-height: 1.4;
+  color: #1f2937;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
   overflow-x: hidden;
-  overflow-y: auto; /* Enable vertical scrolling */
-  padding: 10px;
-  padding-bottom: 100px; /* Gap at the bottom so nothing cuts off */
 }
 
 /* Header */
 .withdraw-history-header {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  background: #fff;
-  padding: 12px 10px;
-  border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-  margin-bottom: 15px;
-  position: sticky;
-  top: 0;
-  z-index: 10;
-}
-
-.withdraw-back-button, .withdraw-refresh-button {
-  background: none;
-  border: none;
-  font-size: 13px;
-  color: #007bff;
-  font-weight: bold;
-  cursor: pointer;
-  padding: 5px;
+  align-items: center;
+  margin-bottom: 18px;
+  padding: 12px 0;
+  gap: 12px;
 }
 
 .withdraw-header-title {
-  text-align: center;
   flex: 1;
+  min-width: 0;
 }
 
 .withdraw-header-title h1 {
-  margin: 0;
-  font-size: 15px;
+  font-size: 20px;
   font-weight: 700;
-  color: #111;
+  margin-bottom: 4px;
+  color: #1e293b;
 }
 
 .withdraw-total-count {
-  font-size: 10px;
-  color: #666;
-  margin-top: 2px;
+  font-size: 13px;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.withdraw-refresh-button {
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  color: white;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.withdraw-refresh-button:active {
+  transform: scale(0.95);
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4);
 }
 
 /* Filter Tabs */
 .withdraw-filter-tabs {
   display: flex;
-  overflow-x: auto;
   gap: 8px;
-  margin-bottom: 15px;
-  padding-bottom: 5px;
-  scrollbar-width: none; /* Hide scrollbar Firefox */
-}
-.withdraw-filter-tabs::-webkit-scrollbar {
-  display: none; /* Hide scrollbar Chrome/Safari */
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  padding: 8px 0;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  padding: 4px;
 }
 
 .withdraw-filter-tab {
-  flex: 0 0 auto;
-  background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 20px;
-  padding: 6px 10px;
-  font-size: 11px;
-  color: #555;
-  cursor: pointer;
-  white-space: nowrap;
+  flex: 1;
+  min-width: 70px;
+  padding: 10px 8px;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  background: transparent;
+  color: #64748b;
   transition: all 0.2s ease;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
 }
 
 .withdraw-filter-tab.active {
-  background: #007bff;
-  color: #fff;
-  border-color: #007bff;
-  font-weight: bold;
-}
-
-/* History List */
-.withdraw-history-list {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-/* History Card */
-.withdraw-history-card {
-  background: #fff;
-  border-radius: 10px;
-  padding: 10px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
-  border-left: 4px solid #ccc;
-}
-
-.withdraw-history-card:has(.withdraw-status-badge-large.approved) {
-  border-left-color: #28a745;
-}
-.withdraw-history-card:has(.withdraw-status-badge-large.pending) {
-  border-left-color: #ffc107;
-}
-.withdraw-history-card:has(.withdraw-status-badge-large.rejected) {
-  border-left-color: #dc3545;
-}
-
-.withdraw-card-left {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  flex: 1;
-  overflow: hidden;
-}
-
-.withdraw-amount-row {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.withdraw-amount {
-  font-size: 15px;
-  font-weight: 800;
-  color: #222;
-}
-
-.withdraw-status-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  display: inline-block;
-}
-.withdraw-status-dot.approved { background-color: #28a745; }
-.withdraw-status-dot.pending { background-color: #ffc107; }
-.withdraw-status-dot.rejected { background-color: #dc3545; }
-
-.withdraw-details-row {
-  font-size: 10px;
-  color: #777;
-}
-
-.withdraw-user-info {
-  font-size: 10px;
-  color: #444;
-  font-weight: 500;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.withdraw-id {
-  font-size: 9px;
-  color: #888;
-}
-
-.withdraw-status-badge-large {
-  font-size: 9px;
-  font-weight: 700;
-  padding: 4px 6px;
-  border-radius: 6px;
-  text-transform: uppercase;
-  white-space: nowrap;
-  margin-left: 8px;
-}
-
-.withdraw-status-badge-large.approved {
-  background: #e6f4ea;
-  color: #1e8e3e;
-}
-.withdraw-status-badge-large.pending {
-  background: #fef7e0;
-  color: #f29900;
-}
-.withdraw-status-badge-large.rejected {
-  background: #fce8e6;
-  color: #d93025;
-}
-
-/* Empty State & Error */
-.withdraw-empty-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 30px 15px;
-  background: #fff;
-  border-radius: 10px;
-  margin-top: 20px;
-}
-
-.withdraw-empty-icon {
-  font-size: 35px;
-  margin-bottom: 10px;
-}
-
-.withdraw-empty-state h3 {
-  font-size: 14px;
-  margin: 0 0 5px;
-  color: #222;
-}
-
-.withdraw-empty-sub {
-  font-size: 11px;
-  color: #666;
-  margin-bottom: 15px;
-}
-
-.withdraw-empty-actions {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  width: 100%;
-  max-width: 180px;
-}
-
-.withdraw-add-money-btn, .withdraw-refresh-btn {
-  background: #007bff;
+  background: linear-gradient(135deg, #10b981, #059669);
   color: white;
-  border: none;
-  padding: 8px;
-  border-radius: 6px;
-  font-size: 12px;
-  font-weight: bold;
-  cursor: pointer;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
 }
 
-.withdraw-back-btn {
-  background: #e0e0e0;
-  color: #333;
-  border: none;
-  padding: 8px;
-  border-radius: 6px;
-  font-size: 12px;
-  font-weight: bold;
-  cursor: pointer;
+.withdraw-filter-tab:active {
+  transform: scale(0.98);
 }
 
 /* Loading */
@@ -260,22 +113,18 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 60vh;
+  min-height: 60vh;
+  gap: 16px;
+  padding: 40px 20px;
 }
 
 .withdraw-spinner-large {
-  width: 30px;
-  height: 30px;
-  border: 3px solid #ddd;
-  border-top: 3px solid #007bff;
+  width: 48px;
+  height: 48px;
+  border: 4px solid rgba(59, 130, 246, 0.1);
+  border-top: 4px solid #3b82f6;
   border-radius: 50%;
   animation: spin 1s linear infinite;
-  margin-bottom: 10px;
-}
-
-.withdraw-loading-container p {
-  font-size: 12px;
-  color: #555;
 }
 
 @keyframes spin {
@@ -283,8 +132,240 @@
   100% { transform: rotate(360deg); }
 }
 
-/* Extra gap at bottom to ensure scrolling doesn't cut off last item */
-.withdraw-bottom-gap {
-  height: 60px;
+/* Error & Empty States */
+.withdraw-empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  min-height: 50vh;
+  justify-content: center;
+}
+
+.withdraw-empty-icon {
+  font-size: 56px;
+  line-height: 1;
+  margin-bottom: 12px;
+}
+
+.withdraw-empty-state h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 4px;
+}
+
+.withdraw-empty-sub {
+  font-size: 14px;
+  color: #64748b;
+  margin-bottom: 0;
+}
+
+.withdraw-empty-actions {
+  display: flex;
+  gap: 12px;
+  flex-direction: column;
   width: 100%;
+  max-width: 300px;
+}
+
+.withdraw-refresh-btn, .withdraw-add-money-btn, .withdraw-back-btn {
+  padding: 14px 20px;
+  border: none;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.withdraw-refresh-btn {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: white;
+  max-width: 200px;
+  margin: 0 auto;
+}
+
+.withdraw-add-money-btn {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+}
+
+.withdraw-back-btn {
+  background: linear-gradient(135deg, #6b7280, #4b5563);
+  color: white;
+}
+
+.withdraw-refresh-btn:active, .withdraw-add-money-btn:active, .withdraw-back-btn:active {
+  transform: scale(0.98);
+}
+
+/* History List */
+.withdraw-history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.withdraw-history-card {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
+  padding: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transition: all 0.2s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 14px;
+  min-height: 88px;
+}
+
+.withdraw-history-card:active {
+  transform: translateY(1px);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
+}
+
+.withdraw-card-left {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.withdraw-amount-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.withdraw-amount {
+  font-size: 22px;
+  font-weight: 800;
+  color: #1e293b;
+  line-height: 1.1;
+}
+
+.withdraw-status-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+.withdraw-status-dot.pending { background: #f59e0b; box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2); }
+.withdraw-status-dot.approved { background: #10b981; box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2); }
+.withdraw-status-dot.rejected { background: #ef4444; box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2); }
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.1); }
+}
+
+.withdraw-details-row {
+  font-size: 13px;
+  color: #64748b;
+}
+
+.withdraw-date {
+  font-weight: 500;
+}
+
+.withdraw-user-info {
+  font-size: 13px;
+  color: #475569;
+  font-weight: 500;
+}
+
+.withdraw-id {
+  font-size: 12px;
+  color: #94a3b8;
+  font-family: 'Courier New', monospace;
+}
+
+.withdraw-id b {
+  color: #3b82f6;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* Status Badge */
+.withdraw-status-badge-large {
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  min-width: 90px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transform: rotate(-2deg);
+  transition: all 0.2s ease;
+}
+
+.withdraw-status-badge-large.pending {
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  color: #92400e;
+  animation: bounce 2s infinite;
+}
+
+.withdraw-status-badge-large.approved {
+  background: linear-gradient(135deg, #34d399, #10b981);
+  color: white;
+  transform: rotate(2deg) scale(1.05);
+}
+
+.withdraw-status-badge-large.rejected {
+  background: linear-gradient(135deg, #f87171, #ef4444);
+  color: white;
+  transform: rotate(-4deg);
+}
+
+@keyframes bounce {
+  0%, 100% { transform: rotate(-2deg) translateY(0); }
+  50% { transform: rotate(-2deg) translateY(-2px); }
+}
+
+/* Responsive */
+@media (min-width: 768px) {
+  .withdraw-history-page {
+    padding: 24px;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .withdraw-header-title h1 {
+    font-size: 24px;
+  }
+  
+  .withdraw-amount {
+    font-size: 28px;
+  }
+  
+  .withdraw-history-card {
+    padding: 24px;
+    min-height: 100px;
+  }
+}
+
+@media (max-height: 600px) {
+  .withdraw-history-page {
+    padding-bottom: 100px;
+  }
+}
+
+/* Safe area for notched phones */
+@supports (padding: max(0px)) {
+  .withdraw-history-page {
+    padding-bottom: max(12px, env(safe-area-inset-bottom));
+    padding-top: max(12px, env(safe-area-inset-top));
+  }
 }
