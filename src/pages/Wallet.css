@@ -1,4 +1,4 @@
-/* Wallet.css - PERFECT MOBILE LAYOUT + NO SCROLL + CENTERED */
+/* Wallet.css - PHONE ME SAB DIKHE + COMPACT MOBILE */
 :root {
   --bg-main: #020617;
   --bg-card: #020617;
@@ -35,147 +35,103 @@ html, body {
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
-  font-size: 14px;
-  line-height: 1.4;
-  padding: 20px 12px;
+  font-family: system-ui, -apple-system, sans-serif;
+  padding: 12px 8px 0;
+  margin: 0;
+  overscroll-behavior: contain;
 }
 
-.wallet-container::-webkit-scrollbar { 
-  display: none; 
-}
+.wallet-container::-webkit-scrollbar { display: none; }
 
-/* HEADER */
+/* 🔥 PHONE ME CHOTA HEADER */
 .wallet-header {
   text-align: center;
-  margin-bottom: 24px;
-  padding: 0 12px;
+  margin-bottom: 16px;
+  padding: 12px 8px;
 }
 
 .header-left h1 {
-  font-size: 28px;
-  font-weight: 800;
-  margin: 0 0 8px 0;
+  font-size: 22px; /* CHOTA */
+  font-weight: 700;
+  margin: 0 0 4px 0;
   background: linear-gradient(135deg, var(--accent-gold), var(--accent-green));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  letter-spacing: -0.5px;
 }
 
 .header-left p {
-  font-size: 14px;
+  font-size: 12px; /* CHOTA */
   color: var(--text-muted);
   margin: 0;
 }
 
 /* MAIN CONTENT */
 .main-content {
-  max-width: 400px;
-  margin: 0 auto;
+  max-width: 100%; /* FULL WIDTH MOBILE */
   display: flex;
   flex-direction: column;
-  height: calc(100% - 80px);
-  gap: 20px;
+  gap: 12px; /* KAM GAP */
+  padding-bottom: 20px;
 }
 
-/* 🔥 BALANCE CARD - HERO */
+/* 🔥 COMPACT BALANCE CARD */
 .balance-card {
   background: rgba(15, 23, 42, 0.95);
-  border-radius: 20px;
-  padding: 28px 24px;
-  border: 1px solid rgba(31, 41, 55, 0.95);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  border-radius: 16px;
+  padding: 20px 16px; /* CHOTA PADDING */
+  border: 1px solid rgba(31, 41, 55, 0.8);
   text-align: center;
-  position: relative;
-  overflow: hidden;
-}
-
-.balance-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, var(--accent-gold), var(--accent-green));
 }
 
 .balance-info {
-  margin-bottom: 24px;
+  margin-bottom: 16px; /* KAM MARGIN */
 }
 
 .balance-label {
-  font-size: 13px;
+  font-size: 11px;
   color: var(--text-muted);
-  margin: 0 0 12px 0;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  font-weight: 500;
+  margin: 0 0 8px 0;
+  font-weight: 600;
 }
 
 .balance-amount {
-  font-size: 44px;
-  font-weight: 900;
+  font-size: 32px; /* CHOTA FOR PHONE */
+  font-weight: 800;
   color: var(--accent-gold);
-  margin: 0 0 8px 0;
+  margin: 0 0 4px 0;
   line-height: 1;
-  letter-spacing: -1px;
 }
 
 .profile-id {
-  font-size: 12px;
+  font-size: 11px;
   color: var(--text-muted);
   margin: 0;
-  font-family: 'SF Mono', monospace;
-  font-weight: 500;
 }
 
-.sync-status {
-  font-size: 11px;
-  color: var(--accent-green);
-  margin: 0;
-}
-
+/* 🔥 PHONE ME 3 BUTTONS SIDE BY SIDE */
 .balance-actions {
   display: flex;
-  flex-direction: column;
-  gap: 12px;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
-/* QUICK ACTION BUTTONS */
 .quick-action {
-  padding: 16px 20px;
-  border-radius: 16px;
+  flex: 1;
+  min-width: 90px; /* PHONE FIT */
+  padding: 12px 8px; /* CHOTA PADDING */
+  border-radius: 12px;
   border: none;
-  font-size: 14px;
-  font-weight: 700;
+  font-size: 12px; /* CHOTA FONT */
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-  text-transform: uppercase;
-  letter-spacing: 0.3px;
+  transition: all 0.2s ease;
+  text-align: center;
+  line-height: 1.3;
 }
 
-.quick-action::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-  transition: left 0.5s;
-}
-
-.quick-action:hover::before {
-  left: 100%;
-}
-
-.quick-action:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+.quick-action:active {
+  transform: scale(0.95);
 }
 
 .deposit-quick {
@@ -193,61 +149,54 @@ html, body {
   color: white;
 }
 
-/* STATS GRID */
+/* 🔥 COMPACT STATS */
 .stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
-  gap: 12px;
-  margin-bottom: 20px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
 .stat-card {
-  background: rgba(15, 23, 42, 0.8);
-  border-radius: 16px;
-  padding: 20px 16px;
+  background: rgba(15, 23, 42, 0.9);
+  border-radius: 12px;
+  padding: 12px 10px; /* CHOTA */
   border: 1px solid rgba(31, 41, 55, 0.6);
+  flex: 1;
+  min-width: 90px;
   display: flex;
-  gap: 12px;
+  flex-direction: column;
   align-items: center;
-  transition: all 0.3s ease;
-  cursor: pointer;
+  gap: 6px;
+  transition: all 0.2s ease;
 }
 
-.stat-card:hover {
-  background: rgba(34, 197, 94, 0.1);
-  border-color: rgba(34, 197, 94, 0.4);
-  transform: translateY(-2px);
+.stat-card:active {
+  transform: scale(0.98);
 }
 
 .stat-icon {
-  font-size: 24px;
-  width: 40px;
-  height: 40px;
+  font-size: 20px;
+  width: 36px;
+  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 12px;
+  border-radius: 10px;
   background: rgba(34, 197, 94, 0.2);
   color: var(--accent-green);
-  flex-shrink: 0;
-}
-
-.stat-card:hover .stat-icon {
-  background: rgba(34, 197, 94, 0.4);
 }
 
 .stat-card p {
-  font-size: 12px;
+  font-size: 10px;
   color: var(--text-muted);
-  margin: 0 0 4px 0;
-  font-weight: 500;
+  margin: 0;
+  text-align: center;
 }
 
 .stat-card strong {
-  font-size: 20px;
-  font-weight: 800;
+  font-size: 16px; /* CHOTA */
+  font-weight: 700;
   color: var(--text-main);
-  display: block;
 }
 
 /* LOADING */
@@ -266,10 +215,10 @@ html, body {
 }
 
 .spinner-large {
-  width: 48px;
-  height: 48px;
-  border: 4px solid rgba(34, 197, 94, 0.2);
-  border-top: 4px solid var(--accent-green);
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(34, 197, 94, 0.2);
+  border-top: 3px solid var(--accent-green);
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
@@ -282,50 +231,43 @@ html, body {
 /* LAPTOP */
 @media (min-width: 481px) {
   .wallet-container {
-    max-width: 400px;
+    max-width: 380px;
     margin: 20px auto;
     top: 0;
     bottom: 0;
-    padding: 72px 8px 110px;
-    border-radius: 24px;
-    box-shadow: 0 25px 50px rgba(0,0,0,0.6);
-  }
-  
-  .balance-actions {
-    flex-direction: row;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-  
-  .quick-action {
-    padding: 14px 18px;
-    min-width: 140px;
-    margin: 0 4px;
+    padding: 24px 12px 20px;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
   }
 }
 
-/* MOBILE */
-@media (max-width: 480px) {
+/* MOBILE ONLY - EXTRA COMPACT */
+@media (max-width: 400px) {
   .wallet-container {
-    padding: 16px 8px 0px 8px;
+    padding: 8px 6px 0;
   }
   
   .balance-card {
-    padding: 24px 20px;
-    margin-bottom: 16px;
+    padding: 16px 12px;
+    border-radius: 12px;
   }
   
   .balance-amount {
-    font-size: 38px;
+    font-size: 28px;
+  }
+  
+  .quick-action {
+    padding: 10px 6px;
+    font-size: 11px;
+    min-width: 80px;
   }
   
   .stats-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
+    gap: 6px;
   }
   
   .stat-card {
-    padding: 16px 12px;
-    gap: 10px;
+    padding: 10px 8px;
+    min-width: 80px;
   }
 }
