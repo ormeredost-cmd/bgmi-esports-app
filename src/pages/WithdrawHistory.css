@@ -1,4 +1,4 @@
-/* WithdrawHistory.css - FINAL SCROLL FIXED VERSION - 100% WORKING */
+/* WithdrawHistory.css - MOBILE PERFECT FIT + SCROLL FIXED */
 :root {
   --bg-main: #020617;
   --bg-card: #020617;
@@ -16,80 +16,64 @@
 }
 
 html, body {
-  height: 100% !important;
-  overflow-x: hidden !important;
-  overflow-y: visible !important;
-  position: relative;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
   margin: 0;
   padding: 0;
 }
 
-/* 🔥 MAIN SCROLL CONTAINER - YE PERFECT SCROLL KAREGA */
 .withdraw-history-page {
-  height: calc(100vh - 182px);  /* 100vh - (72px top + 110px bottom) */
-  min-height: calc(100vh - 182px);
+  /* 🔥 PERFECT MOBILE FIT */
+  min-height: 100vh;
+  padding: 72px 8px 110px; /* Top navbar + Bottom nav */
   background: radial-gradient(circle at top, #111827 0%, #020617 45%, #000 100%);
   color: var(--text-main);
-  padding: 20px 12px;
-  margin: 72px 0 110px 0;       /* Top navbar + Bottom navbar spacing */
   overflow-x: hidden;
-  overflow-y: scroll !important; /* 🔥 FORCE SCROLL */
-  -webkit-overflow-scrolling: touch !important;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   -ms-overflow-style: none;
   font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
-  font-size: 13px;
-  position: relative;
-  scroll-behavior: smooth;
+  font-size: 12px; /* CHOTA FONT */
+  line-height: 1.4;
+  max-width: 100%;
+  word-break: break-word;
 }
 
-/* Hide scrollbar everywhere */
-.withdraw-history-page::-webkit-scrollbar {
-  display: none;
-}
+.withdraw-history-page::-webkit-scrollbar { display: none; }
 
-/* 🔥 HISTORY LIST - YE BHI SCROLL KAREGA */
-.withdraw-history-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  padding-bottom: 20px; /* Extra space for last card */
-  height: auto;
-  min-height: 0;
-}
-
-/* Rest of styles same... */
 .withdraw-history-header {
-  margin-bottom: 24px;
-  padding: 16px;
+  margin-bottom: 16px;
+  padding: 12px 14px;
   background: rgba(15, 23, 42, 0.95);
-  border-radius: 16px;
+  border-radius: 12px;
   border: 1px solid rgba(31, 41, 55, 0.95);
-  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.8);
 }
 
 .withdraw-header-title h1 {
-  font-size: 24px;
-  font-weight: 800;
-  margin: 0 0 4px 0;
+  font-size: 20px; /* CHOTA */
+  font-weight: 700;
+  margin: 0 0 2px 0;
   background: linear-gradient(135deg, var(--accent-green), var(--accent-gold));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  line-height: 1.2;
 }
 
 .withdraw-total-count {
-  font-size: 13px;
+  font-size: 11px;
   color: var(--text-muted);
 }
 
 .withdraw-filter-tabs {
   display: flex;
-  gap: 8px;
-  margin-bottom: 20px;
-  padding: 12px 16px;
+  gap: 6px;
+  margin-bottom: 16px;
+  padding: 8px 12px;
   background: rgba(15, 23, 42, 0.95);
-  border-radius: 14px;
+  border-radius: 10px;
   border: 1px solid rgba(31, 41, 55, 0.95);
   overflow-x: auto;
   scrollbar-width: none;
@@ -99,16 +83,18 @@ html, body {
 
 .withdraw-filter-tab {
   flex-shrink: 0;
-  padding: 8px 16px;
-  border-radius: 999px;
+  padding: 6px 12px; /* CHOTA PADDING */
+  border-radius: 20px;
   border: 1px solid rgba(148, 163, 184, 0.6);
   background: transparent;
   color: var(--text-main);
-  font-size: 13px;
+  font-size: 11px; /* CHOTA */
   font-weight: 500;
   cursor: pointer;
   white-space: nowrap;
   transition: all 0.2s ease;
+  min-width: 70px;
+  text-align: center;
 }
 
 .withdraw-filter-tab.active {
@@ -117,16 +103,21 @@ html, body {
   border-color: transparent;
 }
 
+.withdraw-history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
 .withdraw-history-card {
   background: rgba(15, 23, 42, 0.95);
-  border-radius: 14px;
-  padding: 16px;
+  border-radius: 12px;
+  padding: 12px 14px; /* CHOTA PADDING */
   border: 1px solid rgba(31, 41, 55, 0.95);
-  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.8);
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: 12px;
+  gap: 10px;
 }
 
 .withdraw-card-left {
@@ -134,46 +125,89 @@ html, body {
   min-width: 0;
 }
 
+.withdraw-amount-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
 .withdraw-amount {
-  font-size: 20px;
-  font-weight: 800;
+  font-size: 18px; /* CHOTA */
+  font-weight: 700;
   color: var(--accent-gold);
 }
 
+.withdraw-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.withdraw-status-dot.pending { background: var(--accent-blue); }
+.withdraw-status-dot.approved { background: var(--accent-green); }
+.withdraw-status-dot.rejected { background: #ef4444; }
+
+.withdraw-date {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.withdraw-user-info {
+  font-size: 11px;
+  color: var(--text-main);
+  margin-bottom: 2px;
+}
+
+.withdraw-id {
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
 .withdraw-status-badge-large {
-  padding: 8px 14px;
-  border-radius: 999px;
-  font-size: 13px;
+  padding: 6px 10px; /* CHOTA */
+  border-radius: 20px;
+  font-size: 11px; /* CHOTA */
   font-weight: 600;
-  min-width: 100px;
+  min-width: 80px;
   text-align: center;
   flex-shrink: 0;
 }
 
-.withdraw-status-badge-large.pending { background: rgba(96, 165, 250, 0.2); color: var(--accent-blue); }
-.withdraw-status-badge-large.approved { background: rgba(34, 197, 94, 0.2); color: var(--accent-green); }
-.withdraw-status-badge-large.rejected { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+.withdraw-status-badge-large.pending {
+  background: rgba(96, 165, 250, 0.2);
+  color: var(--accent-blue);
+  border: 1px solid rgba(96, 165, 250, 0.4);
+}
+
+.withdraw-status-badge-large.approved {
+  background: rgba(34, 197, 94, 0.2);
+  color: var(--accent-green);
+  border: 1px solid rgba(34, 197, 94, 0.4);
+}
+
+.withdraw-status-badge-large.rejected {
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+}
 
 /* Loading & Empty */
 .withdraw-loading-container,
 .withdraw-empty-state {
   text-align: center;
-  padding: 80px 20px;
-  height: 400px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  padding: 60px 16px;
 }
 
 .withdraw-spinner-large {
-  width: 48px;
-  height: 48px;
-  border: 4px solid rgba(34, 197, 94, 0.2);
-  border-top: 4px solid var(--accent-green);
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(34, 197, 94, 0.2);
+  border-top: 3px solid var(--accent-green);
   border-radius: 50%;
   animation: spin 1s linear infinite;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 @keyframes spin {
@@ -181,29 +215,86 @@ html, body {
   100% { transform: rotate(360deg); }
 }
 
+.withdraw-empty-icon {
+  font-size: 48px;
+  margin-bottom: 12px;
+}
+
+.withdraw-empty-state h3 {
+  font-size: 18px;
+  margin-bottom: 6px;
+}
+
+.withdraw-empty-sub {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+}
+
+.withdraw-refresh-btn,
+.withdraw-add-money-btn,
+.withdraw-back-btn {
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: none;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  margin: 0 4px;
+}
+
 .withdraw-add-money-btn {
   background: linear-gradient(135deg, var(--accent-green), var(--accent-gold));
   color: #020617;
-  padding: 12px 24px;
-  border-radius: 999px;
-  border: none;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
 }
 
-/* MOBILE PERFECT */
+.withdraw-refresh-btn {
+  background: rgba(34, 197, 94, 0.2);
+  color: var(--accent-green);
+  border: 1px solid rgba(34, 197, 94, 0.4);
+}
+
+.withdraw-back-btn {
+  background: rgba(96, 165, 250, 0.2);
+  color: var(--accent-blue);
+  border: 1px solid rgba(96, 165, 250, 0.4);
+}
+
+/* MOBILE PERFECT FIT */
 @media (max-width: 768px) {
   .withdraw-history-page {
-    margin: 72px 0 110px 0;
-    padding: 16px 10px;
-    height: calc(100vh - 182px) !important;
-    overflow-y: scroll !important;
+    padding: 72px 6px 110px; /* THODA UPAR + CHOTA SIDE PADDING */
+    font-size: 11px;
+  }
+  
+  .withdraw-header-title h1 {
+    font-size: 18px;
+  }
+  
+  .withdraw-history-card {
+    padding: 10px 12px;
+    gap: 8px;
+  }
+  
+  .withdraw-amount {
+    font-size: 16px;
+  }
+  
+  .withdraw-status-badge-large {
+    padding: 5px 8px;
+    font-size: 10px;
+    min-width: 70px;
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 400px) {
   .withdraw-history-page {
-    padding: 14px 8px;
+    padding: 72px 4px 110px;
+  }
+  
+  .withdraw-filter-tab {
+    padding: 5px 10px;
+    font-size: 10px;
+    min-width: 60px;
   }
 }
