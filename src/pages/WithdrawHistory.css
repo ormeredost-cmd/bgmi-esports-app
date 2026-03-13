@@ -1,4 +1,4 @@
-/* WithdrawHistory.css - FINAL PERFECT - SCROLL + NO BOTTOM GAP */
+/* WithdrawHistory.css - FINAL PERFECT - FIXED HEADER + NO GAP + SCROLL */
 :root {
   --bg-main: #020617;
   --bg-card: #020617;
@@ -23,33 +23,19 @@ html, body {
   padding: 0;
 }
 
-.withdraw-history-page {
-  /* 🔥 PERFECT MOBILE LAYOUT - NO GAP */
+/* 🔥 FIXED HEADER - NO SCROLL */
+.header-fixed {
   position: absolute;
   top: 72px;
   left: 0;
   right: 0;
-  bottom: 110px;  /* Exact bottom nav height */
+  height: 120px; /* Header + Filters height */
+  padding: 12px 8px;
   background: radial-gradient(circle at top, #111827 0%, #020617 45%, #000 100%);
-  color: var(--text-main);
-  overflow-y: auto !important;  /* SCROLL GUARANTEED */
-  overflow-x: hidden;
-  -webkit-overflow-scrolling: touch !important;
-  scrollbar-width: none !important;
-  -ms-overflow-style: none !important;
-  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
-  font-size: 12px;
-  line-height: 1.4;
-  padding: 12px 8px 20px 8px;  /* Bottom padding for last card */
-  margin: 0;
+  z-index: 10;
+  overflow: hidden;
 }
 
-/* NO SCROLLBAR + NO GAP */
-.withdraw-history-page::-webkit-scrollbar { 
-  display: none !important; 
-}
-
-/* 🔥 CONTENT STARTS FROM TOP */
 .withdraw-history-header {
   margin: 0 0 12px 0;
   padding: 14px;
@@ -76,7 +62,7 @@ html, body {
 .withdraw-filter-tabs {
   display: flex;
   gap: 6px;
-  margin-bottom: 12px;
+  margin-bottom: 0;
   padding: 10px 12px;
   background: rgba(15, 23, 42, 0.95);
   border-radius: 10px;
@@ -108,12 +94,32 @@ html, body {
   border-color: transparent;
 }
 
+/* 🔥 ONLY CARDS SCROLL */
+.withdraw-history-page {
+  position: absolute;
+  top: 194px; /* 72px top nav + 120px header + 2px gap */
+  left: 0;
+  right: 0;
+  bottom: 110px;
+  background: radial-gradient(circle at top, #111827 0%, #020617 45%, #000 100%);
+  overflow-y: auto !important;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+  padding: 0 8px 0px 8px; /* NO BOTTOM PADDING */
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 12px;
+}
+
+.withdraw-history-page::-webkit-scrollbar { display: none !important; }
+
 .withdraw-history-list {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  padding-bottom: 20px; /* NO BOTTOM GAP FIX */
-  min-height: calc(100% - 100px); /* Force scroll */
+  padding-bottom: 0px; /* NO GAP */
 }
 
 .withdraw-history-card {
@@ -239,14 +245,25 @@ html, body {
   margin: 4px;
 }
 
-/* LAPTOP ME PHONE SIZE */
+/* LAPTOP */
 @media (min-width: 481px) {
+  .header-fixed {
+    max-width: 400px;
+    margin: 0 auto;
+    left: 50%;
+    right: 50%;
+    margin-left: -200px;
+    margin-right: -200px;
+  }
+  
   .withdraw-history-page {
     max-width: 400px;
-    margin: 20px auto;
-    top: 0;
-    bottom: 0;
-    padding: 72px 8px 110px;
+    margin: 0 auto;
+    left: 50%;
+    right: 50%;
+    margin-left: -200px;
+    margin-right: -200px;
+    top: 194px;
     border-radius: 16px;
     box-shadow: 0 0 40px rgba(0,0,0,0.8);
   }
@@ -254,7 +271,7 @@ html, body {
 
 /* MOBILE */
 @media (max-width: 480px) {
-  .withdraw-history-page {
-    padding: 12px 6px 20px 6px;
+  .header-fixed {
+    padding: 12px 6px;
   }
 }
