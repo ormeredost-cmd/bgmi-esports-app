@@ -257,6 +257,25 @@ a {
 }
 
 /* =========================
+   🔥 SCROLLABLE TOURNAMENTS SECTION (NEW)
+========================= */
+
+.tournaments-section {
+  max-height: 65vh;                    /* Fixed height scroll ke liye */
+  overflow-y: auto;                    /* Vertical scroll ON */
+  overflow-x: hidden;                  /* No horizontal scroll */
+  padding-right: 12px;                 /* Scrollbar space */
+  margin-top: 20px;
+  scrollbar-width: thin;               /* Firefox */
+  scrollbar-color: var(--accent-green) rgba(15, 23, 42, 0.5);
+}
+
+.tour-grid-wrapper {
+  height: 100%;
+  padding-bottom: 20px;                /* Extra scroll space */
+}
+
+/* =========================
    SECTIONS
 ========================= */
 
@@ -278,19 +297,15 @@ a {
 }
 
 /* =========================
-   TOURNAMENTS GRID (FINAL FIX)
+   TOURNAMENTS GRID (SCROLL FIXED)
 ========================= */
 
-/* IMPORTANT:
-   - Cards left aligned
-   - Responsive grid
-   - Page scroll works normally
-*/
 .tour-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 14px;
   align-items: stretch;
+  min-height: 0;                       /* 🔥 Grid scroll ke liye ZAROORI */
 }
 
 .tour-card {
@@ -301,6 +316,13 @@ a {
   box-shadow: 0 0 20px rgba(15, 23, 42, 0.8);
   font-size: 13px;
   width: 100%;
+  cursor: pointer;                     /* Touch feedback */
+  transition: transform 0.1s ease;     /* Smooth touch */
+}
+
+.tour-card:hover,
+.tour-card:active {
+  transform: translateY(-2px);         /* Touch press effect */
 }
 
 .tour-header {
@@ -366,7 +388,30 @@ a {
 }
 
 /* =========================
-   CATEGORY CHIPS
+   CUSTOM SCROLLBAR (Webkit browsers)
+========================= */
+
+.tournaments-section::-webkit-scrollbar {
+  width: 6px;
+}
+
+.tournaments-section::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.5);
+  border-radius: 3px;
+}
+
+.tournaments-section::-webkit-scrollbar-thumb {
+  background: var(--accent-green);
+  border-radius: 3px;
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.tournaments-section::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-gold);
+}
+
+/* =========================
+   OTHER SECTIONS (unchanged)
 ========================= */
 
 .category-row {
@@ -392,10 +437,6 @@ a {
   border-color: transparent;
 }
 
-/* =========================
-   FILTERS
-========================= */
-
 .filter-row {
   display: flex;
   align-items: center;
@@ -410,10 +451,6 @@ a {
   padding: 6px 10px;
   font-size: 13px;
 }
-
-/* =========================
-   DETAILS
-========================= */
 
 .details-grid {
   display: grid;
@@ -442,10 +479,6 @@ a {
   background: #020617;
   color: var(--text-main);
 }
-
-/* =========================
-   MATCHES
-========================= */
 
 .matches-grid {
   display: grid;
@@ -484,10 +517,6 @@ a {
   color: var(--accent-green);
 }
 
-/* =========================
-   PROFILE
-========================= */
-
 .profile-grid {
   display: grid;
   grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
@@ -518,10 +547,6 @@ a {
   font-size: 18px;
 }
 
-/* =========================
-   HELP
-========================= */
-
 .help-list {
   font-size: 13px;
   color: var(--text-muted);
@@ -534,7 +559,7 @@ a {
 }
 
 /* =========================
-   MOBILE
+   MOBILE RESPONSIVE
 ========================= */
 
 @media (max-width: 768px) {
@@ -568,6 +593,12 @@ a {
 
   .hero-right {
     margin-top: 8px;
+  }
+
+  /* 🔥 MOBILE SCROLL PERFECT */
+  .tournaments-section {
+    max-height: 60vh;        /* Mobile pe thoda kam height */
+    padding-right: 8px;
   }
 
   .details-grid,

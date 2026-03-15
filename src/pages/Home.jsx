@@ -4,8 +4,8 @@ import { tournamentsSample } from "../data/tournamentsSample";
 import TournamentCard from "../components/TournamentCard";
 
 const Home = () => {
-  // 🔥 FIXED: SAB TOURNAMENTS SHOW KARO (6 cards!)
-  const featured = tournamentsSample;  // ← YE CHANGE KIA!
+  // 🔥 SIRF 6 CARDS - JO ASLI HAIN
+  const featured = tournamentsSample;  // Bas 6 cards!
 
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
@@ -26,7 +26,6 @@ const Home = () => {
             Join custom BGMI tournaments, 1v1 TDM fights and classic scrims.
             Register in seconds and track your matches in real-time.
           </p>
-
           <div className="hero-actions">
             <div className="all-tour-wrapper">
               <button
@@ -39,7 +38,6 @@ const Home = () => {
                   ▼
                 </span>
               </button>
-
               {open && (
                 <div className="all-tour-dropdown">
                   {["All", "1v1 TDM", "2v2 TDM", "4v4 TDM"].map((cat) => (
@@ -57,22 +55,21 @@ const Home = () => {
             </div>
           </div>
         </div>
-
         <div className="hero-right">
           <div className="hero-glow" />
         </div>
       </section>
 
-      <section className="section">
+      <section className="tournaments-section">
         <div className="section-header">
           <h2>Available Tournaments ({featured.length})</h2>
-         
         </div>
-
-        <div className="tour-grid">
-          {featured.map((t) => (
-            <TournamentCard key={t.id} t={t} />
-          ))}
+        <div className="tour-grid-wrapper">
+          <div className="tour-grid">
+            {featured.map((t) => (
+              <TournamentCard key={t.id} t={t} />
+            ))}
+          </div>
         </div>
       </section>
     </div>

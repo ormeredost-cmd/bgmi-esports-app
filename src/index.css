@@ -1,28 +1,24 @@
-/* Global reset */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
+/* Home page me sirf tournament cards scroll */
+.section.tournament-section {
+  margin-top: 10px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
-/* Root + page */
-html,
-body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-  overflow-x: hidden;          /* horizontal scroll off */
-  overscroll-behavior-x: none; /* sideways bounce off */
-  -webkit-text-size-adjust: 100%; /* iOS zoom on rotate reduce */
+/* Tournament cards wala scroll container */
+.tour-scroll-container {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 6px 0 16px;
 }
 
-/* Whole app wrapper (React root) */
-#root {
-  height: 100%;
+/* Optional: scrollbar hide */
+.tour-scroll-container::-webkit-scrollbar {
+  width: 0;
 }
-
-/* Default touch behavior: only vertical scroll */
-body {
-  touch-action: pan-y;
+.tour-scroll-container {
+  scrollbar-width: none;
 }

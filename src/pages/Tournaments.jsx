@@ -43,14 +43,19 @@ const Tournaments = () => {
         </span>
       </div>
 
-      <div className="tour-grid">
-        {filtered.map((t) => (
-          <TournamentCard key={t.id} t={t} />
-        ))}
-        {filtered.length === 0 && (
-          <p className="empty-text">No tournaments for this category.</p>
-        )}
-      </div>
+      {/* 🔥 YAHAN WRAPPER MISSING THA, AB ADD KAR DIYA HAI */}
+      <section className="tournaments-section">
+        <div className="tour-grid-wrapper">
+          <div className="tour-grid">
+            {filtered.map((t) => (
+              <TournamentCard key={t.id} t={t} />
+            ))}
+            {filtered.length === 0 && (
+              <p className="empty-text">No tournaments for this category.</p>
+            )}
+          </div>
+        </div>
+      </section>
     </div>
   );
 };
