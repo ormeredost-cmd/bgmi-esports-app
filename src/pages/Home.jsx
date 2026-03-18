@@ -3,9 +3,9 @@ import { useState } from "react";
 import { tournamentsSample } from "../data/tournamentsSample";
 import TournamentCard from "../components/TournamentCard";
 
+
 const Home = () => {
-  // 🔥 SIRF 6 CARDS - JO ASLI HAIN
-  const featured = tournamentsSample;  // Bas 6 cards!
+  const featured = tournamentsSample; // 6 cards
 
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();

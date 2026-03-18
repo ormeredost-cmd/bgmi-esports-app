@@ -1,64 +1,399 @@
-/* 🔥 MOBILE PERFECT SCROLL */
-@media (max-width: 768px) {
-  .home-fixed-container {
-    height: 100vh !important;
-    overflow: hidden !important;
-    display: flex !important;
-    flex-direction: column !important;
-    background: #0f0f23;
-  }
+/* Card wrapper - scroll koi bhi nahi, bas visual style */
+.tour-card {
+  position: relative;
+  max-width: 520px;
+  width: 100%;
+  padding: 12px 16px;
+  padding-right: 16px;
+  background: rgba(15, 23, 42, 0.95);
+  border-radius: 16px;
+  border: 1px solid rgba(31, 41, 55, 0.95);
+  box-shadow:
+    0 0 0 1px rgba(15, 23, 42, 0.9),
+    0 14px 32px rgba(0, 0, 0, 0.65);
+  font-size: 13px;
+  color: #e5e7eb;
 
-  /* FIXED TOP */
-  .hero {
-    flex: 0 0 auto !important;
-  }
+  /* Touch scroll ke liye important */
+  -webkit-overflow-scrolling: touch;
+  touch-action: manipulation;
 
-  /* SCROLLABLE CARDS SECTION */
-  .cards-scroll-section {
-    flex: 1 !important;
-    display: flex !important;
-    flex-direction: column !important;
-  }
-
-  .tournaments-heading {
-    flex: 0 0 auto !important;
-    padding: 12px 16px !important;
-    background: #1a1a2e;
-    border-bottom: 1px solid #333;
-  }
-
-  .tournaments-heading h2 {
-    margin: 0 !important;
-    font-size: 18px !important;
-    color: white !important;
-  }
-
-  /* CARDS SCROLL */
-  .cards-scroll-container {
-    flex: 1 !important;
-    overflow-y: auto !important;
-    overflow-x: hidden !important;
-    -webkit-overflow-scrolling: touch !important;
-    padding: 12px;
-  }
-
-  .tour-grid {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 12px !important;
-  }
-
-  .tour-card {
-    touch-action: pan-y !important;
-  }
+  /* THIS LINE⚠️ remove karna zaroori hai agar card khud scrollable nahi chahiye:
+   overflow: hidden; 
+   ये card ke andar ka scroll band karta hai, scrolled area tour-grid-wrapper me hi hona chahiye */
+  transition:
+    transform 0.18s ease-out,
+    box-shadow 0.18s ease-out,
+    border-color 0.18s ease-out;
 }
 
-/* DESKTOP */
-@media (min-width: 769px) {
-  .tour-grid {
-    display: grid !important;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px !important;
-    padding: 20px;
-  }
+/* Glow effect on hover */
+.tour-card::before {
+  content: "";
+  position: absolute;
+  inset: -40%;
+  background: radial-gradient(circle at 0 0, rgba(56, 189, 248, 0.14), transparent 60%);
+  opacity: 0;
+  transform: translate3d(-40px, -40px, 0);
+  transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+  pointer-events: none;
 }
+
+.tour-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(56, 189, 248, 0.9);
+  box-shadow:
+    0 0 0 1px rgba(15, 23, 23, 1),
+    0 20px 50px rgba(15, 118, 190, 0.7);
+}
+
+.tour-card:hover::before {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+/* TDM special style */
+.tdm-card {
+  background:
+    radial-gradient(circle at 5% 0%, rgba(56, 189, 248, 0.18), transparent 55%),
+    radial-gradient(circle at 100% 100%, rgba(34, 197, 94, 0.22), transparent 52%),
+    radial-gradient(circle at 0% 100%, rgba(239, 68, 68, 0.18), transparent 48%),
+    #020617;
+  border-color: rgba(59, 130, 246, 0.85);
+  box-shadow:
+    0 0 0 1px rgba(37, 99, 235, 0.9),
+    0 20px 60px rgba(15, 23, 42, 0.95);
+}
+
+.tdm-card::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: conic-gradient(
+    from 220deg,
+    rgba(56, 189, 248, 0.9),
+    rgba(34, 197, 94, 0.7),
+    rgba(56, 189, 248, 0.9),
+    rgba(59, 130, 246, 1)
+  );
+  opacity: 0.65;
+  mix-blend-mode: screen;
+  z-index: -2;
+}
+
+.tdm-card::after {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  border-radius: inherit;
+  background: radial-gradient(circle at top left, #020617 18%, #020617 70%);
+  opacity: 0.96;
+  z-index: -1;
+}
+
+.tdm-card:hover {
+  transform: translateY(-5px);
+  box-shadow:
+    0 0 0 1px rgba(59, 130, 246, 1),
+    0 26px 80px rgba(15, 23, 42, 1);
+}
+
+/* Header: Game + Tag */
+.tour-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.tour-game {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  background: radial-gradient(circle at 0 0, #166534 0%, #052e16 70%);
+  border: 1px solid rgba(74, 222, 128, 0.9);
+  color: #bbf7d0;
+  box-shadow: 0 0 10px rgba(34, 197, 94, 0.55);
+}
+
+.tour-tag {
+  font-size: 11px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.7);
+  background: rgba(15, 23, 42, 0.98);
+}
+
+.tour-tag.tdm {
+  border-color: rgba(59, 130, 246, 0.9);
+  color: #60a5fa;
+  background: rgba(15, 23, 42, 0.96);
+}
+
+/* Title */
+.tour-title {
+  margin: 0 0 6px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #f9fafb;
+  letter-spacing: 0.02em;
+}
+
+/* Meta lines (entry, prize, time, etc) */
+.tour-meta {
+  margin: 3px 0;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.meta-label {
+  padding: 2px 7px;
+  border-radius: 999px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  background: rgba(15, 23, 42, 0.98);
+  border: 1px solid rgba(51, 65, 85, 0.9);
+  color: #94a3b8;
+}
+
+/* Gun line: same pattern */
+.gun-line .meta-label {
+  background: rgba(15, 23, 42, 0.98);
+  border: 1px solid rgba(51, 65, 85, 0.9);
+  color: #94a3b8;
+}
+
+.gun-highlight {
+  font-weight: 500;
+  color: #e5f7ff;
+}
+
+.meta-value {
+  font-weight: 500;
+  color: #e5f7ff;
+}
+
+.highlight-money {
+  color: #bbf7d0;
+}
+
+.highlight-prize {
+  color: #fbbf24;
+}
+
+/* Footer: slots + button */
+.tour-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.tour-slots {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #e5e7eb;
+}
+
+/* Join / Join View buttons */
+.btn-tour {
+  font-size: 12px;
+  padding: 5px 11px;
+  border-radius: 999px;
+  text-decoration: none;
+  background: linear-gradient(90deg, #22c55e, #16a34a);
+  color: #f9fafb;
+  border: none;
+  box-shadow: 0 0 10px rgba(34, 197, 94, 0.45);
+  transition:
+    transform 0.15s ease-out,
+    box-shadow 0.15s ease-out,
+    filter 0.15s ease-out;
+
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn-tour:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 0 16px rgba(34, 197, 94, 0.7);
+  filter: brightness(1.05);
+}
+
+.btn-tour:active {
+  transform: translateY(1px) scale(0.98);
+  box-shadow: 0 0 8px rgba(34, 197, 94, 0.5);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+import { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
+import "./TournamentCard.css";
+
+const TournamentCard = ({ t }) => {
+  const [isJoined, setIsJoined] = useState(false);
+  const [isFull, setIsFull] = useState(false);
+  const [registeredSlots, setRegisteredSlots] = useState(0);
+  // ✅ useState usage fix
+  const [maxSlots, setMaxSlots] = useState(2);
+
+  const intervalRef = useRef(null);
+  const mountedRef = useRef(true);
+
+  const API_URL =
+    window.location.hostname === "localhost"
+      ? "http://localhost:5002"
+      : "https://deposit-and-join-tournament-server.onrender.com";
+
+  const getBgmiIdForTournament = () => {
+    try {
+      const tournamentJoins = JSON.parse(
+        localStorage.getItem("tournamentJoins") || "[]"
+      );
+      const tournamentJoin = tournamentJoins.find(
+        (join) => join.tournamentId === t.id
+      );
+      return (
+        tournamentJoin?.bgmiId ||
+        localStorage.getItem("tempBgmiId") ||
+        localStorage.getItem("lastBgmiId") ||
+        ""
+      );
+    } catch {
+      return (
+        localStorage.getItem("tempBgmiId") ||
+        localStorage.getItem("lastBgmiId") ||
+        ""
+      );
+    }
+  };
+
+  const checkStatus = () => {
+    if (!mountedRef.current) return;
+
+    fetch(`${API_URL}/api/tournament-slots-count/${t.id}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setRegisteredSlots(data.registered || 0);
+        setMaxSlots(data.max || 2);
+        setIsFull((data.registered || 0) >= (data.max || 2));
+      })
+      .catch(() => {
+        setRegisteredSlots(0);
+        setMaxSlots(2);
+      });
+
+    const bgmiId = getBgmiIdForTournament();
+    if (bgmiId) {
+      fetch(`${API_URL}/api/check-join/${t.id}?bgmiId=${bgmiId}`)
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(`📊 ${t.id} joined:`, data.joined);
+          setIsJoined(data.joined || false);
+        })
+        .catch(() => setIsJoined(false));
+    }
+  };
+
+  useEffect(() => {
+    checkStatus();
+  }, []);
+
+  useEffect(() => {
+    intervalRef.current = setInterval(checkStatus, 5000);
+    return () => clearInterval(intervalRef.current);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      mountedRef.current = false;
+      clearInterval(intervalRef.current);
+    };
+  }, []);
+
+  return (
+    <div
+      className={`tour-card ${
+        t.type?.toLowerCase() === "tdm" ? "tdm-card" : ""
+      }`}
+    >
+      <div className="tour-header">
+        <span className="tour-game">BGMI</span>
+        <span className={`tour-tag ${t.type?.toLowerCase()}`}>{t.type}</span>
+      </div>
+      <h3 className="tour-title">{t.name}</h3>
+
+      <p className="tour-meta">
+        <span className="meta-label">Mode</span>
+        <span className="meta-value">{t.mode}</span>
+      </p>
+
+      <p className="tour-meta time-line">
+        <span className="meta-label">Time</span>
+        <span className="meta-value time-highlight">{t.time}</span>
+      </p>
+
+      {t.gun && (
+        <p className="tour-meta gun-line">
+          <span className="meta-label">Gun</span>
+          <span className="meta-value gun-highlight">🔫 {t.gun}</span>
+        </p>
+      )}
+
+      <p className="tour-meta">
+        <span className="meta-label">Entry</span>
+        <span className="meta-value highlight-money">₹{t.entryFee}</span>
+      </p>
+      <p className="tour-meta">
+        <span className="meta-label">Prize</span>
+        <span className="meta-value highlight-prize">₹{t.prizePool}</span>
+      </p>
+
+      <div className="tour-footer">
+        <span className={`tour-slots ${isFull ? "slots-full" : ""}`}>
+          <span className="meta-label">Slots</span>
+          <span className="meta-value live-slots">
+            {registeredSlots}/{maxSlots}
+            {isFull && <span className="full-badge">🔴 FULL</span>}
+          </span>
+        </span>
+
+        {isFull ? (
+          <button className="btn-tour btn-full" disabled>
+            Tournament Full
+          </button>
+        ) : isJoined ? (
+          <button className="btn-tour btn-joined" disabled>
+            ✅ JOINED
+          </button>
+        ) : (
+          <Link to={`/tournaments/${t.id}`} className="btn-tour btn-active">
+            View & Register
+          </Link>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default TournamentCard;

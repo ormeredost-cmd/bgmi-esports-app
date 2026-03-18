@@ -1,9 +1,10 @@
-/* TournamentCard.css - 🔥 SIMPLE GUN LINE (NO EXTRA COLORS!) */
+/* Card wrapper - scroll koi bhi nahi, bas visual style */
 .tour-card {
   position: relative;
   max-width: 520px;
   width: 100%;
   padding: 12px 16px;
+  padding-right: 16px;
   background: rgba(15, 23, 42, 0.95);
   border-radius: 16px;
   border: 1px solid rgba(31, 41, 55, 0.95);
@@ -12,13 +13,21 @@
     0 14px 32px rgba(0, 0, 0, 0.65);
   font-size: 13px;
   color: #e5e7eb;
-  overflow: hidden;
+
+  /* Touch scroll ke liye important */
+  -webkit-overflow-scrolling: touch;
+  touch-action: manipulation;
+
+  /* THIS LINE⚠️ remove karna zaroori hai agar card khud scrollable nahi chahiye:
+   overflow: hidden; 
+   ये card ke andar ka scroll band karta hai, scrolled area tour-grid-wrapper me hi hona chahiye */
   transition:
     transform 0.18s ease-out,
     box-shadow 0.18s ease-out,
     border-color 0.18s ease-out;
 }
 
+/* Glow effect on hover */
 .tour-card::before {
   content: "";
   position: absolute;
@@ -34,7 +43,7 @@
   transform: translateY(-4px);
   border-color: rgba(56, 189, 248, 0.9);
   box-shadow:
-    0 0 0 1px rgba(15, 23, 42, 1),
+    0 0 0 1px rgba(15, 23, 23, 1),
     0 20px 50px rgba(15, 118, 190, 0.7);
 }
 
@@ -43,6 +52,7 @@
   transform: translate3d(0, 0, 0);
 }
 
+/* TDM special style */
 .tdm-card {
   background:
     radial-gradient(circle at 5% 0%, rgba(56, 189, 248, 0.18), transparent 55%),
@@ -60,7 +70,13 @@
   position: absolute;
   inset: -1px;
   border-radius: inherit;
-  background: conic-gradient(from 220deg, rgba(56, 189, 248, 0.9), rgba(34, 197, 94, 0.7), rgba(56, 189, 248, 0.9), rgba(59, 130, 246, 1));
+  background: conic-gradient(
+    from 220deg,
+    rgba(56, 189, 248, 0.9),
+    rgba(34, 197, 94, 0.7),
+    rgba(56, 189, 248, 0.9),
+    rgba(59, 130, 246, 1)
+  );
   opacity: 0.65;
   mix-blend-mode: screen;
   z-index: -2;
@@ -83,6 +99,7 @@
     0 26px 80px rgba(15, 23, 42, 1);
 }
 
+/* Header: Game + Tag */
 .tour-header {
   display: flex;
   justify-content: space-between;
@@ -118,6 +135,7 @@
   background: rgba(15, 23, 42, 0.96);
 }
 
+/* Title */
 .tour-title {
   margin: 0 0 6px;
   font-size: 15px;
@@ -126,6 +144,7 @@
   letter-spacing: 0.02em;
 }
 
+/* Meta lines (entry, prize, time, etc) */
 .tour-meta {
   margin: 3px 0;
   font-size: 13px;
@@ -145,7 +164,7 @@
   color: #94a3b8;
 }
 
-/* 🔥 SIMPLE GUN LINE - SAME STYLE AS OTHERS */
+/* Gun line: same pattern */
 .gun-line .meta-label {
   background: rgba(15, 23, 42, 0.98);
   border: 1px solid rgba(51, 65, 85, 0.9);
@@ -170,6 +189,7 @@
   color: #fbbf24;
 }
 
+/* Footer: slots + button */
 .tour-footer {
   display: flex;
   justify-content: space-between;
@@ -185,6 +205,7 @@
   color: #e5e7eb;
 }
 
+/* Join / Join View buttons */
 .btn-tour {
   font-size: 12px;
   padding: 5px 11px;
@@ -198,6 +219,9 @@
     transform 0.15s ease-out,
     box-shadow 0.15s ease-out,
     filter 0.15s ease-out;
+
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .btn-tour:hover {
