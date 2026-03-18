@@ -22,10 +22,7 @@ const Home = () => {
       <section className="hero">
         <div className="hero-left">
           <h1>BGMI Esports</h1>
-          <p>
-            Join custom BGMI tournaments, 1v1 TDM fights and classic scrims.
-            Register in seconds and track your matches in real-time.
-          </p>
+          
           <div className="hero-actions">
             <div className="all-tour-wrapper">
               <button
@@ -38,6 +35,9 @@ const Home = () => {
                   ▼
                 </span>
               </button>
+               <div className="section-header">
+          <h2>Available Tournaments ({featured.length})</h2>
+        </div>
               {open && (
                 <div className="all-tour-dropdown">
                   {["All", "1v1 TDM", "2v2 TDM", "4v4 TDM"].map((cat) => (
@@ -61,9 +61,7 @@ const Home = () => {
       </section>
 
       <section className="tournaments-section">
-        <div className="section-header">
-          <h2>Available Tournaments ({featured.length})</h2>
-        </div>
+       
         <div className="tour-grid-wrapper">
           <div className="tour-grid">
             {featured.map((t) => (
