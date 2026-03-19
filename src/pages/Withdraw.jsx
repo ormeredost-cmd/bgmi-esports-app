@@ -270,9 +270,7 @@ const Withdraw = () => {
           </button>
         </div>
 
-        <div style={{ marginTop: '20px', padding: '15px', background: '#e9ecef', borderRadius: '10px', fontSize: '14px' }}>
-          <strong>⚡ Instant Processing:</strong> Balance deducts immediately | Admin review 24hr | Auto-refund if rejected
-        </div>
+        
       </div>
     </div>
   );

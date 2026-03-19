@@ -1,15 +1,14 @@
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react"; // 🔥 useEffect added for height fix
+import { useState, useEffect } from "react";
 import { tournamentsSample } from "../data/tournamentsSample";
 import TournamentCard from "../components/TournamentCard";
 
 const Home = () => {
   const featured = tournamentsSample;
-
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
 
-  // 🔥 Mobile height perfect fix
+  // 🔥 Mobile viewport fix
   useEffect(() => {
     const setVH = () => {
       document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
