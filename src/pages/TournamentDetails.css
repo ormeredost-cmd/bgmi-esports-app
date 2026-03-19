@@ -265,3 +265,17 @@ html, body {
   cursor: not-allowed !important;
   opacity: 0.6;
 }
+.status-card.error {
+  background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+  color: white;
+  border: 2px solid #ff4757;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.status-card.error h3 {
+  margin: 0 0 10px 0;
+  font-size: 1.2em;
+}

@@ -1,4 +1,4 @@
-// 🔥 SUPABASE FIXED + ONE TIME LOADING - Perfect!
+// 🔥 FINAL FIXED CODE - NO ALERTS + NO PREMATURE WALLET DEDUCTION!
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect, useCallback, useRef } from "react";
 import { supabase } from "../supabaseClient";
@@ -10,14 +10,15 @@ const TournamentDetails = () => {
   const navigate = useNavigate();
   const [isJoined, setIsJoined] = useState(false);
   const [isFull, setIsFull] = useState(false);
-  const [isInitialLoading, setIsInitialLoading] = useState(true); // 🔥 ONE TIME ONLY!
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [liveSlots, setLiveSlots] = useState(0);
   const [maxSlots, setMaxSlots] = useState(2);
   const [isLoading, setIsLoading] = useState(false);
   const [balance, setBalance] = useState(0);
   const [user, setUser] = useState(null);
+  const [errorMsg, setErrorMsg] = useState("");
   
-  const hasLoadedRef = useRef(false); // 🔥 STOP RELOADING!
+  const hasLoadedRef = useRef(false);
 
   const API_URL = window.location.hostname === "localhost"
     ? "http://localhost:5002"
@@ -84,14 +85,14 @@ const TournamentDetails = () => {
       console.error("Initial status check failed:", error);
       setIsJoined(false);
     } finally {
-      setIsInitialLoading(false); // 🔥 LOADING END FOREVER!
+      setIsInitialLoading(false);
       hasLoadedRef.current = true;
     }
   }, [id, API_URL]);
 
   // 🔥 BACKGROUND CHECK (No loading)
   const checkStatusBackground = useCallback(async () => {
-    if (hasLoadedRef.current && (isJoined || isFull)) return; // 🔥 Already final = NO CHECK!
+    if (hasLoadedRef.current && (isJoined || isFull)) return;
 
     const bgmiId = getBgmiIdForTournament(id);
     if (!bgmiId) return;
@@ -101,7 +102,7 @@ const TournamentDetails = () => {
       const joinData = await joinRes.json();
       if (joinData.joined) {
         setIsJoined(true);
-        hasLoadedRef.current = true; // 🔥 STOP ALL!
+        hasLoadedRef.current = true;
       }
 
       const slotsRes = await fetch(`${API_URL}/api/tournament-slots-count/${id}`);
@@ -119,12 +120,10 @@ const TournamentDetails = () => {
   useEffect(() => {
     if (!id) return;
     
-    // 🔥 ONE TIME LOAD
     loadBalance();
     checkStatusInitial();
     
-    // 🔥 BACKGROUND CHECK (Silent - No loading)
-    const interval = setInterval(checkStatusBackground, 10000); // 10s silent check
+    const interval = setInterval(checkStatusBackground, 10000);
     return () => clearInterval(interval);
   }, [id, checkStatusInitial, checkStatusBackground]);
 
@@ -140,56 +139,37 @@ const TournamentDetails = () => {
     );
   }
 
+  // 🔥 FIXED HANDLE SUBMIT - NO ALERTS!
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const playerName = e.target.bgmiIdName.value.trim();
     const bgmiId = e.target.bgmiIdNumber.value.trim();
     
+    // Validation
     if (!playerName || !bgmiId) {
-      alert("❌ BGMI Name & ID daalo!");
+      setErrorMsg("❌ BGMI Name & ID daalo!");
       return;
     }
 
     if (!user?.profile_id) {
-      alert("❌ Login karo pehle!");
+      setErrorMsg("❌ Login karo pehle!");
       navigate("/login");
       return;
     }
 
     const entryFee = Number(t.entryFee);
     if (entryFee > 0 && balance < entryFee) {
-      alert(`❌ Balance kam hai!\n💰 Chahiye: ₹${entryFee}\n💳 Hai: ₹${balance}`);
+      setErrorMsg(`❌ Balance kam hai!\n💰 Chahiye: ₹${entryFee}\n💳 Hai: ₹${balance}`);
       return;
     }
 
     setIsLoading(true);
-    const originalBalance = balance;
+    setErrorMsg("");
 
     try {
-      if (entryFee > 0) {
-        const { error } = await supabase
-          .from("registeruser")
-          .update({ balance: Math.max(0, balance - entryFee) })
-          .eq("profile_id", user.profile_id);
-
-        if (error) throw new Error(`Balance update fail: ${error.message}`);
-        await loadBalance();
-      }
-
-      const tournamentJoins = JSON.parse(localStorage.getItem('tournamentJoins') || '[]');
-      const newJoin = {
-        tournamentId: t.id,
-        bgmiId,
-        playerName,
-        timestamp: Date.now()
-      };
-      const updatedJoins = tournamentJoins.filter(join => join.tournamentId !== t.id).concat(newJoin);
-      
-      localStorage.setItem('tournamentJoins', JSON.stringify(updatedJoins));
-      localStorage.setItem("tempBgmiId", bgmiId);
-      localStorage.setItem("lastBgmiId", bgmiId);
-
+      // 🔥 STEP 1: SERVER JOIN PEHLE (SLOT CHECK + REGISTER)
+      console.log("🔥 STEP 1: Server join attempt...");
       const now = new Date();
       const joinedMatch = {
         tournamentId: t.id,
@@ -216,22 +196,59 @@ const TournamentDetails = () => {
       
       const result = await response.json();
       
+      // 🔥 SERVER SUCCESS KE BAAD HI WALLET CUT!
       if (response.ok && result.success) {
-        alert(`✅ JOIN SUCCESS!\n💰 Entry Fee: -₹${entryFee}\n🎮 My Matches me dekho!`);
+        console.log("✅ Server JOIN confirmed, now wallet deduct...");
+
+        // Local storage update
+        const tournamentJoins = JSON.parse(localStorage.getItem('tournamentJoins') || '[]');
+        const newJoin = {
+          tournamentId: t.id,
+          bgmiId,
+          playerName,
+          timestamp: Date.now()
+        };
+        const updatedJoins = tournamentJoins.filter(join => join.tournamentId !== t.id).concat(newJoin);
+        localStorage.setItem('tournamentJoins', JSON.stringify(updatedJoins));
+        localStorage.setItem("tempBgmiId", bgmiId);
+        localStorage.setItem("lastBgmiId", bgmiId);
+
+        // 🔥 STEP 2: WALLET DEDUCT (SAFE NOW!)
+        if (entryFee > 0) {
+          const { error } = await supabase
+            .from("registeruser")
+            .update({ balance: Math.max(0, balance - entryFee) })
+            .eq("profile_id", user.profile_id);
+
+          if (error) {
+            console.error("💀 Wallet deduct failed AFTER server success:", error);
+            // Emergency rollback server join
+            try {
+              await fetch(`${API_URL}/api/rollback-join/${t.id}?bgmiId=${bgmiId}`, { 
+                method: 'POST' 
+              });
+            } catch (rollbackError) {
+              console.error("💀 Rollback also failed:", rollbackError);
+            }
+            setErrorMsg("Wallet update failed - rolled back server join");
+            return;
+          }
+        }
+
+        // Refresh balance display
+        await loadBalance();
+        
+        // SUCCESS - Navigate silently
         navigate("/my-matches", { replace: true });
+        
       } else {
-        throw new Error(result.error || "Server fail");
+        console.error("❌ Server rejected join:", result.error);
+        setErrorMsg(result.error || "Tournament full or server error");
       }
 
     } catch (error) {
-      if (entryFee > 0 && originalBalance !== balance) {
-        await supabase
-          .from("registeruser")
-          .update({ balance: originalBalance })
-          .eq("profile_id", user.profile_id);
-        await loadBalance();
-      }
-      alert("❌ Join fail: " + error.message);
+      console.error("❌ Complete join failed:", error);
+      setErrorMsg(error.message || "Join failed");
     } finally {
       setIsLoading(false);
     }
@@ -285,39 +302,46 @@ const TournamentDetails = () => {
               <h3>✅ Already Joined!</h3>
             </div>
           ) : (
-            <form className="register-form" onSubmit={handleSubmit}>
-              <div className="form-group">
-                <label className="form-label">🎮 BGMI ID NAME</label>
-                <input
-                  name="bgmiIdName"
-                  type="text"
-                  className="form-input"
-                  required
-                  placeholder="Your BGMI name"
-                  maxLength={20}
-                  disabled={isLoading}
-                />
-              </div>
-              <div className="form-group">
-                <label className="form-label">📱 BGMI ID NUMBER</label>
-                <input
-                  name="bgmiIdNumber"
-                  type="text"
-                  className="form-input"
-                  required
-                  placeholder="51234567890"
-                  maxLength={12}
-                  disabled={isLoading}
-                />
-              </div>
-              <button
-                type="submit"
-                className={`submit-btn ${isLoading || balance < Number(t.entryFee) ? "disabled" : ""}`}
-                disabled={isLoading || balance < Number(t.entryFee)}
-              >
-                {isLoading ? "⏳ Processing..." : `✅ JOIN (₹${t.entryFee})`}
-              </button>
-            </form>
+            <>
+              {errorMsg && (
+                <div className="status-card error">
+                  <h3>{errorMsg}</h3>
+                </div>
+              )}
+              <form className="register-form" onSubmit={handleSubmit}>
+                <div className="form-group">
+                  <label className="form-label">🎮 BGMI ID NAME</label>
+                  <input
+                    name="bgmiIdName"
+                    type="text"
+                    className="form-input"
+                    required
+                    placeholder="Your BGMI name"
+                    maxLength={20}
+                    disabled={isLoading}
+                  />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">📱 BGMI ID NUMBER</label>
+                  <input
+                    name="bgmiIdNumber"
+                    type="text"
+                    className="form-input"
+                    required
+                    placeholder="51234567890"
+                    maxLength={12}
+                    disabled={isLoading}
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className={`submit-btn ${isLoading || balance < Number(t.entryFee) ? "disabled" : ""}`}
+                  disabled={isLoading || balance < Number(t.entryFee)}
+                >
+                  {isLoading ? "⏳ Processing..." : `✅ JOIN (₹${t.entryFee})`}
+                </button>
+              </form>
+            </>
           )}
         </div>
       </div>
