@@ -1,23 +1,24 @@
-// src/components/TournamentCard.jsx - 🔥 LOADING + SERVER CONFIRMED JOIN!
-import { useState, useEffect, useRef } from "react";
+// src/components/TournamentCard.jsx - 🔥 ONE TIME LOADING + SILENT CHECK!
+import { useState, useEffect, useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
 import "./TournamentCard.css";
 
 const TournamentCard = ({ t }) => {
   const [isJoined, setIsJoined] = useState(false);
   const [isFull, setIsFull] = useState(false);
-  const [isLoading, setIsLoading] = useState(true); // 🔥 LOADING START!
+  const [isInitialLoading, setIsInitialLoading] = useState(true); // 🔥 ONE TIME ONLY!
   const [registeredSlots, setRegisteredSlots] = useState(0);
-  const [maxSlots, setMaxSlots] = useState(2);
+  const [maxSlots, setMaxSlots] = useState(t.slots || 64); // Default from t
   
   const intervalRef = useRef(null);
   const mountedRef = useRef(true);
+  const hasLoadedRef = useRef(false); // 🔥 STOP RELOADING!
 
   const API_URL = window.location.hostname === "localhost" 
     ? "http://localhost:5002" 
     : "https://deposit-and-join-tournament-server.onrender.com";
 
-  const getBgmiIdForTournament = () => {
+  const getBgmiIdForTournament = useCallback(() => {
     try {
       const tournamentJoins = JSON.parse(localStorage.getItem('tournamentJoins') || '[]');
       const tournamentJoin = tournamentJoins.find(join => join.tournamentId === t.id);
@@ -25,64 +26,74 @@ const TournamentCard = ({ t }) => {
     } catch {
       return localStorage.getItem("tempBgmiId") || localStorage.getItem("lastBgmiId") || "";
     }
-  };
+  }, [t.id]);
 
-  const checkStatus = () => {
-    if (!mountedRef.current) return;
+  // 🔥 ONE TIME INITIAL CHECK (WITH LOADING)
+  const checkStatusInitial = useCallback(async () => {
+    setIsInitialLoading(true);
+    
+    try {
+      // SLOTS CHECK
+      const slotsRes = await fetch(`${API_URL}/api/tournament-slots-count/${t.id}`);
+      const slotsData = await slotsRes.json();
+      setRegisteredSlots(slotsData.registered || 0);
+      setMaxSlots(slotsData.max || t.slots || 64);
+      setIsFull((slotsData.registered || 0) >= (slotsData.max || t.slots || 64));
 
-    setIsLoading(true); // 🔥 LOADING ON EVERY CHECK!
-
-    // SLOTS CHECK
-    fetch(`${API_URL}/api/tournament-slots-count/${t.id}`)
-      .then(res => res.json())
-      .then(data => {
-        setRegisteredSlots(data.registered || 0);
-        setMaxSlots(data.max || 2);
-        setIsFull((data.registered || 0) >= (data.max || 2));
-      })
-      .catch(() => {
-        setRegisteredSlots(0);
-        setMaxSlots(2);
-      });
-
-    // 🔥 SERVER CONFIRMED JOIN CHECK
-    const bgmiId = getBgmiIdForTournament();
-    if (bgmiId) {
-      fetch(`${API_URL}/api/check-join/${t.id}?bgmiId=${bgmiId}`)
-        .then(res => res.json())
-        .then(data => {
-          console.log(`📊 ${t.id} (${bgmiId}) joined:`, data.joined);
-          
-          // 🔥 SERVER TRUE = JOINED FOREVER!
-          if (data.joined) {
-            setIsJoined(true);
-            setIsLoading(false);
-            return;
-          }
-          
-          setIsJoined(false);
-          setIsLoading(false); // 🔥 LOADING END!
-        })
-        .catch(() => {
-          setIsJoined(false);
-          setIsLoading(false); // 🔥 NETWORK FAIL = REGISTER
-        });
-    } else {
+      // JOIN CHECK
+      const bgmiId = getBgmiIdForTournament();
+      if (bgmiId) {
+        const joinRes = await fetch(`${API_URL}/api/check-join/${t.id}?bgmiId=${bgmiId}`);
+        const joinData = await joinRes.json();
+        console.log(`📊 Initial ${t.id}:`, joinData.joined);
+        setIsJoined(!!joinData.joined);
+      }
+    } catch (error) {
+      console.error("Initial check failed:", error);
       setIsJoined(false);
-      setIsLoading(false);
+    } finally {
+      setIsInitialLoading(false); // 🔥 LOADING END FOREVER!
+      hasLoadedRef.current = true;
     }
-  };
+  }, [t.id, API_URL, t.slots, getBgmiIdForTournament]);
 
-  // 🔥 FIRST LOAD
-  useEffect(() => {
-    checkStatus();
-  }, []);
+  // 🔥 SILENT BACKGROUND CHECK (NO LOADING)
+  const checkStatusSilent = useCallback(async () => {
+    // 🔥 Already final status = NO CHECK!
+    if (hasLoadedRef.current && (isJoined || isFull)) return;
+    
+    try {
+      const bgmiId = getBgmiIdForTournament();
+      if (bgmiId) {
+        const joinRes = await fetch(`${API_URL}/api/check-join/${t.id}?bgmiId=${bgmiId}`);
+        const joinData = await joinRes.json();
+        if (joinData.joined) {
+          setIsJoined(true);
+          hasLoadedRef.current = true; // 🔥 STOP ALL CHECKS!
+        }
+      }
 
-  // 🔥 4s INTERVAL
+      // Silent slots update
+      const slotsRes = await fetch(`${API_URL}/api/tournament-slots-count/${t.id}`);
+      const slotsData = await slotsRes.json();
+      setRegisteredSlots(slotsData.registered || 0);
+      setMaxSlots(slotsData.max || t.slots || 64);
+      setIsFull((slotsData.registered || 0) >= (slotsData.max || t.slots || 64));
+    } catch (error) {
+      console.error("Silent check failed:", error);
+    }
+  }, [t.id, API_URL, t.slots, getBgmiIdForTournament, isJoined, isFull]);
+
+  // 🔥 ONE TIME INITIAL LOAD
   useEffect(() => {
-    intervalRef.current = setInterval(checkStatus, 4000);
+    checkStatusInitial();
+  }, [checkStatusInitial]);
+
+  // 🔥 SILENT 8s BACKGROUND CHECK (No loading blink!)
+  useEffect(() => {
+    intervalRef.current = setInterval(checkStatusSilent, 8000);
     return () => clearInterval(intervalRef.current);
-  }, []);
+  }, [checkStatusSilent]);
 
   // 🔥 CLEANUP
   useEffect(() => {
@@ -112,8 +123,8 @@ const TournamentCard = ({ t }) => {
 
       {t.gun && (
         <p className="tour-meta gun-line">
-          <span className="meta-label">Gun</span>
-          <span className="meta-value gun-highlight">🔫 {t.gun}</span>
+          <span className="meta-label">Special</span>
+          <span className="meta-value gun-highlight">🎮 {t.gun}</span>
         </p>
       )}
       
@@ -130,21 +141,19 @@ const TournamentCard = ({ t }) => {
         <span className={`tour-slots ${isFull ? "slots-full" : ""}`}>
           <span className="meta-label">Slots</span>
           <span className="meta-value live-slots">
-            {registeredSlots}/{maxSlots}
-            {isFull && <span className="full-badge">🔴 FULL</span>}
+            {isInitialLoading ? "⏳" : `${registeredSlots}/${maxSlots}`}
+            {isFull && !isInitialLoading && <span className="full-badge">🔴 FULL</span>}
           </span>
         </span>
 
-        {isLoading ? (
-          <button className="btn-tour btn-loading" disabled>
-            ⏳ Checking...
-          </button>
+        {isInitialLoading ? (
+          <button className="btn-tour btn-loading" disabled>Checking...</button>
         ) : isFull ? (
           <button className="btn-tour btn-full" disabled>Tournament Full</button>
         ) : isJoined ? (
           <button className="btn-tour btn-joined" disabled>✅ JOINED</button>
         ) : (
-          <Link to={`/tournaments/${t.id}`} className="btn-tour btn-active">Register</Link>
+          <Link to={`/tournaments/${t.id}`} className="btn-tour btn-active">Join Now</Link>
         )}
       </div>
     </div>

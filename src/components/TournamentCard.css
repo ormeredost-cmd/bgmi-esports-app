@@ -234,3 +234,6 @@
   transform: translateY(1px) scale(0.98);
   box-shadow: 0 0 8px rgba(34, 197, 94, 0.5);
 }
+.gun-line .meta-value::before {
+  content: "🎮 ";
+}
