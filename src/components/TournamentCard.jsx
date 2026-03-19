@@ -130,7 +130,7 @@ const TournamentCard = ({ t }) => {
         ) : isJoined ? (
           <button className="btn-tour btn-joined" disabled>✅ JOINED</button>
         ) : (
-          <Link to={`/tournaments/${t.id}`} className="btn-tour btn-active">View & Register</Link>
+          <Link to={`/tournaments/${t.id}`} className="btn-tour btn-active">Register</Link>
         )}
       </div>
     </div>

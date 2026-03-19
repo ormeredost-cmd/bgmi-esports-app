@@ -48,9 +48,9 @@ a {
 /* 🔥 MAIN CONTENT - PHONE PERFECT */
 .app-main-esports {
   flex: 1;
-  max-width: 100%; /* 🔥 FULL SCREEN WIDTH */
+  max-width: 100%;
   margin: 0;
-  padding: 65px 4px 90px 4px; /* 🔥 MINIMUM PADDING MOBILE */
+  padding: 65px 12px 90px 12px; /* 🔥 BACK TO NORMAL PADDING */
 }
 
 /* =========================
@@ -96,49 +96,65 @@ a {
 }
 
 /* =========================
-   FOOTER
+   🔥 HERO SECTION - BGMI ESPORTS COLORED + COMPACT
 ========================= */
 
-.footer-root {
-  padding: 8px 16px 12px;
-  border-top: 1px solid rgba(31, 41, 55, 0.9);
-  font-size: 12px;
-  color: var(--text-muted);
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  background: rgba(15, 23, 42, 0.96);
+.hero {
+  grid-template-columns: 1fr;
+  gap: 8px;
+  padding: 0;
+  margin-bottom: 12px;
 }
 
-.footer-subtext {
-  opacity: 0.8;
+.hero-left h1 {
+  font-size: 26px; /* 🔥 CHOTA SIZE */
+  margin: 0 0 8px 0;
+  background: linear-gradient(135deg, var(--accent-green), var(--accent-gold));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 800;
+  letter-spacing: -0.01em;
 }
 
 /* =========================
-   🔥 ALL TOURNAMENTS BUTTON - TOP & THIN
+   🔥 ALL TOURNAMENTS BUTTON - COMPACT PERFECT SIZE
 ========================= */
 
 .all-tour-wrapper {
   position: relative;
-  margin-top: -10px; /* 🔥 UPAR LAYA */
-  margin-bottom: 8px; /* 🔥 THIN */
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
+.hero-btn-primary,
 .all-tour-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 12px; /* 🔥 THIN BUTTON */
-  background: rgba(15, 23, 42, 0.95);
-  border: 1px solid rgba(31, 41, 55, 0.9);
-  border-radius: 12px;
-  font-size: 13px;
-  color: var(--text-main);
+  padding: 10px 16px !important; /* 🔥 CHOTA PADDING */
+  border-radius: 12px !important;
+  font-size: 13px !important; /* 🔥 NORMAL SIZE */
+  font-weight: 600 !important;
+  background: linear-gradient(135deg, var(--accent-green), var(--accent-gold)) !important;
+  border: none !important;
+  color: #020617 !important;
+  box-shadow: 0 4px 16px rgba(34, 197, 94, 0.3) !important;
+  transition: all 0.2s ease !important;
+  width: auto !important; /* 🔥 NOT FULL WIDTH */
+  justify-content: center !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+}
+
+.hero-btn-primary:hover,
+.all-tour-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(34, 197, 94, 0.4) !important;
 }
 
 .all-tour-arrow {
-  font-size: 10px;
-  transition: transform 0.18s ease-out;
+  font-size: 10px !important;
+  transition: transform 0.2s ease-out !important;
+  font-weight: 600 !important;
 }
 
 .all-tour-arrow.open {
@@ -149,18 +165,19 @@ a {
   position: absolute;
   top: 110%;
   left: 0;
-  min-width: 150px;
+  min-width: 160px; /* 🔥 FIXED WIDTH */
   background: rgba(15, 23, 42, 0.98);
   border-radius: 10px;
   border: 1px solid rgba(31, 41, 55, 0.9);
-  box-shadow: 0 12px 25px rgba(15, 23, 42, 0.9);
+  box-shadow: 0 8px 25px rgba(15, 23, 42, 0.9);
   padding: 6px 4px;
   z-index: 15;
+  margin-top: 4px;
 }
 
 .all-tour-item {
   width: 100%;
-  padding: 6px 10px;
+  padding: 8px 12px;
   background: transparent;
   border: none;
   color: var(--text-main);
@@ -168,24 +185,25 @@ a {
   text-align: left;
   border-radius: 8px;
   cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
 }
 
 .all-tour-item:hover {
-  background: rgba(31, 41, 55, 0.9);
+  background: linear-gradient(135deg, var(--accent-green), var(--accent-gold));
+  color: #020617;
 }
 
 /* =========================
-   🔥 PHONE PERFECT TOURNAMENTS SECTION
+   PHONE PERFECT TOURNAMENTS SECTION
 ========================= */
 
 .tournaments-section {
   max-height: 65vh;
   overflow-y: auto;
   overflow-x: hidden;
-  margin-top: 0; /* 🔥 NO TOP MARGIN */
-  padding: 0 2px; /* 🔥 FULL WIDTH */
-  
-  /* 🔥 HIDDEN SCROLLBAR */
+  margin-top: 0;
+  padding: 0 4px;
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
@@ -200,27 +218,27 @@ a {
 }
 
 /* =========================
-   🔥 FULL SCREEN TOURNAMENT CARDS
+   FULL SCREEN TOURNAMENT CARDS
 ========================= */
 
 .tour-grid {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  padding: 0 2px; /* 🔥 EDGE TO EDGE */
+  padding: 0 4px;
 }
 
 .tour-card {
   background: rgba(15, 23, 42, 0.95);
   border-radius: 18px;
-  padding: 22px 20px; /* 🔥 BIGGER PADDING */
+  padding: 22px 20px;
   border: 1px solid rgba(31, 41, 55, 0.95);
   box-shadow: 0 8px 32px rgba(15, 23, 42, 0.9);
   font-size: 14px;
   width: 100%;
   cursor: pointer;
   transition: all 0.2s ease;
-  margin: 0 2px; /* 🔥 PERFECT EDGE SPACING */
+  margin: 0 2px;
 }
 
 .tour-card:hover,
@@ -297,7 +315,7 @@ a {
   box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
 }
 
-/* 🔥 OTHER SECTIONS SAME */
+/* 🔥 OTHER SECTIONS */
 .section {
   margin-top: 8px;
 }
@@ -316,44 +334,28 @@ a {
 }
 
 /* =========================
-   MOBILE ONLY - PERFECT PHONE LAYOUT
+   MOBILE ONLY
 ========================= */
 
 @media (max-width: 768px) {
   .app-main-esports {
-    padding: 62px 2px 85px 2px; /* 🔥 ULTRA MINIMUM PADDING */
+    padding: 62px 8px 85px 8px;
   }
   
   .tournaments-section {
     max-height: 68vh;
-    padding: 0 1px;
+    padding: 0 2px;
   }
   
   .tour-grid {
     gap: 14px;
-    padding: 0 1px;
+    padding: 0 2px;
   }
   
   .tour-card {
-    padding: 24px 22px; /* 🔥 PHONE PERFECT BIG */
+    padding: 24px 22px;
     margin: 0 1px;
     border-radius: 20px;
-  }
-  
-  .tour-title {
-    font-size: 18px;
-  }
-  
-  .btn-tour {
-    padding: 10px 20px;
-    font-size: 14px;
-  }
-  
-  /* 🔥 HERO ALSO FULL WIDTH MOBILE */
-  .hero {
-    grid-template-columns: 1fr;
-    gap: 12px;
-    padding: 0 2px;
   }
   
   .hero-left h1 {
@@ -361,14 +363,11 @@ a {
   }
 }
 
-/* =========================
-   HIDE ALL OTHER UNUSED STYLES
-========================= */
-
+/* HIDE UNUSED */
 .category-row,
 .filter-row,
 .details-grid,
 .profile-grid,
 .matches-grid {
-  display: none !important; /* 🔥 Hide unused */
+  display: none !important;
 }
