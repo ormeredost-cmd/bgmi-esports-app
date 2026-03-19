@@ -8,7 +8,7 @@ const Home = () => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
 
-  // 🔥 Mobile viewport fix
+  // 🔥 Mobile viewport fix - ye PERFECT hai
   useEffect(() => {
     const setVH = () => {
       document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
