@@ -1,14 +1,23 @@
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react"; // 🔥 useEffect added for height fix
 import { tournamentsSample } from "../data/tournamentsSample";
 import TournamentCard from "../components/TournamentCard";
 
-
 const Home = () => {
-  const featured = tournamentsSample; // 6 cards
+  const featured = tournamentsSample;
 
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
+
+  // 🔥 Mobile height perfect fix
+  useEffect(() => {
+    const setVH = () => {
+      document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
+    };
+    setVH();
+    window.addEventListener('resize', setVH);
+    return () => window.removeEventListener('resize', setVH);
+  }, []);
 
   const handleCategoryClick = (cat) => {
     const params = new URLSearchParams();
@@ -22,7 +31,6 @@ const Home = () => {
       <section className="hero">
         <div className="hero-left">
           <h1>BGMI Esports</h1>
-          
           <div className="hero-actions">
             <div className="all-tour-wrapper">
               <button
@@ -58,7 +66,6 @@ const Home = () => {
       </section>
 
       <section className="tournaments-section">
-        
         <div className="tour-grid-wrapper">
           <div className="tour-grid">
             {featured.map((t) => (
