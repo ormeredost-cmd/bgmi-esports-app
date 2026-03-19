@@ -28,16 +28,7 @@
 }
 
 /* Glow effect on hover */
-.tour-card::before {
-  content: "";
-  position: absolute;
-  inset: -40%;
-  background: radial-gradient(circle at 0 0, rgba(56, 189, 248, 0.14), transparent 60%);
-  opacity: 0;
-  transform: translate3d(-40px, -40px, 0);
-  transition: opacity 0.3s ease-out, transform 0.3s ease-out;
-  pointer-events: none;
-}
+
 
 .tour-card:hover {
   transform: translateY(-4px);

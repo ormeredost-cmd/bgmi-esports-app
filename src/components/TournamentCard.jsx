@@ -1,4 +1,4 @@
-// src/components/TournamentCard.jsx - 🔥 ONE TIME LOADING + SILENT CHECK!
+// src/components/TournamentCard.jsx - 🔥 MAP + ONE TIME LOADING!
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
 import "./TournamentCard.css";
@@ -6,13 +6,13 @@ import "./TournamentCard.css";
 const TournamentCard = ({ t }) => {
   const [isJoined, setIsJoined] = useState(false);
   const [isFull, setIsFull] = useState(false);
-  const [isInitialLoading, setIsInitialLoading] = useState(true); // 🔥 ONE TIME ONLY!
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [registeredSlots, setRegisteredSlots] = useState(0);
-  const [maxSlots, setMaxSlots] = useState(t.slots || 64); // Default from t
+  const [maxSlots, setMaxSlots] = useState(t.slots || 64);
   
   const intervalRef = useRef(null);
   const mountedRef = useRef(true);
-  const hasLoadedRef = useRef(false); // 🔥 STOP RELOADING!
+  const hasLoadedRef = useRef(false);
 
   const API_URL = window.location.hostname === "localhost" 
     ? "http://localhost:5002" 
@@ -28,19 +28,31 @@ const TournamentCard = ({ t }) => {
     }
   }, [t.id]);
 
-  // 🔥 ONE TIME INITIAL CHECK (WITH LOADING)
+  // 🔥 MAP EMOJIS
+  const getMapEmoji = (mapName) => {
+    const maps = {
+      "Erangel": "🏝️",
+      "Miramar": "🏜️", 
+      "Sanhok": "🌴",
+      "Vikendi": "❄️",
+      "Karakin": "🏔️",
+      "Livik": "🏕️",
+      "Rondo": "🎋"
+    };
+    return maps[mapName] || "🗺️";
+  };
+
+  // 🔥 ONE TIME INITIAL CHECK
   const checkStatusInitial = useCallback(async () => {
     setIsInitialLoading(true);
     
     try {
-      // SLOTS CHECK
       const slotsRes = await fetch(`${API_URL}/api/tournament-slots-count/${t.id}`);
       const slotsData = await slotsRes.json();
       setRegisteredSlots(slotsData.registered || 0);
       setMaxSlots(slotsData.max || t.slots || 64);
       setIsFull((slotsData.registered || 0) >= (slotsData.max || t.slots || 64));
 
-      // JOIN CHECK
       const bgmiId = getBgmiIdForTournament();
       if (bgmiId) {
         const joinRes = await fetch(`${API_URL}/api/check-join/${t.id}?bgmiId=${bgmiId}`);
@@ -52,14 +64,13 @@ const TournamentCard = ({ t }) => {
       console.error("Initial check failed:", error);
       setIsJoined(false);
     } finally {
-      setIsInitialLoading(false); // 🔥 LOADING END FOREVER!
+      setIsInitialLoading(false);
       hasLoadedRef.current = true;
     }
   }, [t.id, API_URL, t.slots, getBgmiIdForTournament]);
 
-  // 🔥 SILENT BACKGROUND CHECK (NO LOADING)
+  // 🔥 SILENT BACKGROUND CHECK
   const checkStatusSilent = useCallback(async () => {
-    // 🔥 Already final status = NO CHECK!
     if (hasLoadedRef.current && (isJoined || isFull)) return;
     
     try {
@@ -69,11 +80,10 @@ const TournamentCard = ({ t }) => {
         const joinData = await joinRes.json();
         if (joinData.joined) {
           setIsJoined(true);
-          hasLoadedRef.current = true; // 🔥 STOP ALL CHECKS!
+          hasLoadedRef.current = true;
         }
       }
 
-      // Silent slots update
       const slotsRes = await fetch(`${API_URL}/api/tournament-slots-count/${t.id}`);
       const slotsData = await slotsRes.json();
       setRegisteredSlots(slotsData.registered || 0);
@@ -84,18 +94,15 @@ const TournamentCard = ({ t }) => {
     }
   }, [t.id, API_URL, t.slots, getBgmiIdForTournament, isJoined, isFull]);
 
-  // 🔥 ONE TIME INITIAL LOAD
   useEffect(() => {
     checkStatusInitial();
   }, [checkStatusInitial]);
 
-  // 🔥 SILENT 8s BACKGROUND CHECK (No loading blink!)
   useEffect(() => {
     intervalRef.current = setInterval(checkStatusSilent, 8000);
     return () => clearInterval(intervalRef.current);
   }, [checkStatusSilent]);
 
-  // 🔥 CLEANUP
   useEffect(() => {
     return () => {
       mountedRef.current = false;
@@ -111,6 +118,16 @@ const TournamentCard = ({ t }) => {
       </div>
       <h3 className="tour-title">{t.name}</h3>
       
+      {/* 🔥 NEW MAP LINE */}
+      {t.map && (
+        <p className="tour-meta map-line">
+          <span className="meta-label">Map</span>
+          <span className="meta-value map-highlight">
+            {getMapEmoji(t.map)} {t.map}
+          </span>
+        </p>
+      )}
+      
       <p className="tour-meta">
         <span className="meta-label">Mode</span>
         <span className="meta-value">{t.mode}</span>
@@ -124,7 +141,7 @@ const TournamentCard = ({ t }) => {
       {t.gun && (
         <p className="tour-meta gun-line">
           <span className="meta-label">Special</span>
-          <span className="meta-value gun-highlight">🎮 {t.gun}</span>
+          <span className="meta-value gun-highlight">🔫 {t.gun}</span>
         </p>
       )}
       
