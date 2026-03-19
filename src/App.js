@@ -1,4 +1,4 @@
-// src/App.jsx - WITHDRAW HISTORY ROUTE ADDED ✅
+// src/App.jsx - ALL ROUTES PERFECT ✅
 import {
   BrowserRouter as Router,
   Routes,
@@ -24,7 +24,6 @@ import Deposit from "./pages/Deposit";
 import DepositQR from "./pages/DepositQR";
 import Withdraw from "./pages/Withdraw";
 
-// 🔥 WITHDRAW HISTORY + BANK DETAILS IMPORTS ✅
 import WithdrawHistory from "./pages/WithdrawHistory"; 
 import BankDetails from "./pages/BankDetails"; 
 
@@ -66,18 +65,32 @@ function App() {
   return (
     <Router>
       <Routes>
-        {/* 🔥 PUBLIC ROUTES */}
+        {/* 🔥 PUBLIC ROUTES (NO TOPBAR/BOTTOMBAR) */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/tournaments" element={<Tournaments />} />
-        <Route path="/tournaments/:id" element={<TournamentDetails />} />
-        <Route path="/help" element={<Help />} />
 
-        {/* 🔥 PROTECTED ROUTES */}
+        {/* 🔥 PROTECTED ROUTES WITH FULL LAYOUT (TOPBAR + BOTTOMBAR) */}
         <Route path="/" element={
           <ProtectedRoute>
             <MainLayout>
               <Home />
+            </MainLayout>
+          </ProtectedRoute>
+        } />
+
+        {/* 🔥 TOURNAMENTS - AB MAINLAYOUT MEIN ✅ */}
+        <Route path="/tournaments" element={
+          <ProtectedRoute>
+            <MainLayout>
+              <Tournaments />
+            </MainLayout>
+          </ProtectedRoute>
+        } />
+
+        <Route path="/tournaments/:id" element={
+          <ProtectedRoute>
+            <MainLayout>
+              <TournamentDetails />
             </MainLayout>
           </ProtectedRoute>
         } />
@@ -150,6 +163,14 @@ function App() {
           <ProtectedRoute>
             <MainLayout>
               <Profile />
+            </MainLayout>
+          </ProtectedRoute>
+        } />
+
+        <Route path="/help" element={
+          <ProtectedRoute>
+            <MainLayout>
+              <Help />
             </MainLayout>
           </ProtectedRoute>
         } />

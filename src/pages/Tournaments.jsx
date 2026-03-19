@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import TournamentCard from '../components/TournamentCard';
 import { tournamentsSample } from '../data/tournamentsSample';
+import BackButton from '../components/BackButton';
 import "./Tournaments.css";
 
 const Tournaments = () => {
@@ -28,6 +29,9 @@ const Tournaments = () => {
 
   return (
     <div className="tournaments-page">
+      {/* 🔥 BACKBUTTON - FIXED POSITION (CSS handle karega) */}
+      <BackButton fallbackPath="/" />
+      
       <div className="tournaments-container">
         <header className="page-header">
           <h1>{getModeTitle(mode)}</h1>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import BackButton from '../components/BackButton'; // 🔥 IMPORT ADD
 import "./Profile.css";
 
 const Profile = () => {
@@ -92,7 +93,9 @@ const Profile = () => {
     return (
       <div className="esports-profile">
         <div className="profile-container">
-          <div className="no-profile">❌ No profile data. <a href="/login">Go to Login</a></div>
+          <div className="no-profile">
+            ❌ No profile data. <a href="/login">Go to Login</a>
+          </div>
         </div>
       </div>
     );
@@ -100,7 +103,10 @@ const Profile = () => {
 
   return (
     <div className="esports-profile">
-      <div className="profile-container"> {/* 🔥 MAIN FIX - WRAPPER ADD */}
+      {/* 🔥 BACKBUTTON - TOP LEFT CYAN GLOW */}
+      <BackButton fallbackPath="/wallet" />
+      
+      <div className="profile-container">
         <header className="profile-header">
           <div className="player-card">
             <div className="avatar-circle">

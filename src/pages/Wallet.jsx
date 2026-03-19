@@ -1,8 +1,9 @@
-// 🔥 Wallet.jsx - PERFECT MOBILE SCROLL + SILENT SYNC
+// 🔥 Wallet.jsx - PERFECT MOBILE SCROLL + SILENT SYNC + BACKBUTTON
 import React, { useEffect, useState, useCallback, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import { supabase } from "../supabaseClient";
+import BackButton from '../components/BackButton'; // 🔥 BACKBUTTON IMPORT
 import "./Wallet.css";
 
 const USER_API = window.location.hostname === "localhost" 
@@ -174,16 +175,18 @@ const Wallet = () => {
 
   return (
     <div className="wallet-container">
+      {/* 🔥 BACKBUTTON - TOP LEFT */}
+      <BackButton fallbackPath="/" />
+      
       {/* HEADER */}
       <div className="wallet-header">
         <div className="header-left">
           <h1>💰 Wallet</h1>
           <p>Welcome back, <strong>{user?.username || 'Player'}</strong></p>
         </div>
-       
       </div>
 
-      {/* 🔥 MAIN CONTENT - NO OVERFLOW HERE */}
+      {/* 🔥 MAIN CONTENT */}
       <div className="main-content">
         {/* BALANCE CARD */}
         <div className="balance-card">
@@ -193,7 +196,7 @@ const Wallet = () => {
             <p className="profile-id">ID: {user?.profile_id}</p>
             {supabaseBalance > 0 && (
               <p className="sync-status" style={{fontSize: '12px', color: '#28a745', margin: '4px 0 0 0'}}>
-              
+                
               </p>
             )}
           </div>
@@ -234,8 +237,6 @@ const Wallet = () => {
             </div>
           </div>
         </div>
-
-        {/* SILENT SYNC INFO */}
 
         {/* 🔥 EXTRA SPACE FOR SCROLL */}
         <div style={{height: '80px'}}></div>

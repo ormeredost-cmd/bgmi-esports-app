@@ -1,6 +1,7 @@
 // src/pages/MyMatches.jsx - 🔥 SILENT BACKGROUND REFRESH (NO BUTTONS!)
 import { useState, useEffect, useCallback } from "react";
 import "./MyMatches.css";
+import BackButton from '../components/BackButton';
 
 const MyMatches = () => {
   const [allMatches, setAllMatches] = useState([]);
@@ -91,6 +92,7 @@ const MyMatches = () => {
 
   return (
     <div className="mymatches-page">
+      <BackButton fallbackPath="/" />
       <div className="mymatches-container">
         <div className="page-header">
           <h1>मेरे मैच</h1>
