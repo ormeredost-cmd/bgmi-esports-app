@@ -10,45 +10,36 @@
   --accent-blue: #60a5fa;
 }
 
-
 /* =========================
    GLOBAL
 ========================= */
 
-
 * {
   box-sizing: border-box;
 }
-
 
 html,
 body {
   height: 100%;
 }
 
-
 body {
   margin: 0;
   font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
   background: radial-gradient(circle at top, #111827 0, #020617 45%, #000 100%);
   color: var(--text-main);
-
-
-  /* IMPORTANT: page scroll */
-  overflow-x: hidden;
-  overflow-y: auto;
+  
+  /* 🔥 HOME PAGE SCROLL DISABLED */
+  overflow: hidden;
 }
-
 
 a {
   color: inherit;
 }
 
-
 /* =========================
    ROOT LAYOUT
 ========================= */
-
 
 .app-root-esports {
   min-height: 100vh;
@@ -56,29 +47,23 @@ a {
   flex-direction: column;
 }
 
-
 /* MAIN CONTENT */
 .app-main-esports {
   flex: 1;
   max-width: 1120px;
   margin: 0 auto;
-
-
   /* topbar = 56px, bottom nav = 70px approx */
-  padding: 72px 16px 110px;
+  padding: 72px 12px 110px;
 }
-
 
 /* keep bottom padding */
 .app-main-esports.has-bottom-nav {
   padding-bottom: 110px;
 }
 
-
 /* =========================
    TOP BAR
 ========================= */
-
 
 .app-topbar {
   position: fixed;
@@ -96,12 +81,10 @@ a {
   z-index: 30;
 }
 
-
 .app-topbar-left {
   display: flex;
   flex-direction: column;
 }
-
 
 .app-topbar-logo-main {
   font-size: 18px;
@@ -110,23 +93,19 @@ a {
   color: var(--accent-green);
 }
 
-
 .app-topbar-logo-sub {
   font-size: 11px;
   color: var(--text-muted);
 }
-
 
 .app-topbar-right {
   display: flex;
   align-items: center;
 }
 
-
 /* =========================
    FOOTER
 ========================= */
-
 
 .footer-root {
   padding: 8px 16px 12px;
@@ -139,21 +118,17 @@ a {
   background: rgba(15, 23, 42, 0.96);
 }
 
-
 .footer-subtext {
   opacity: 0.8;
 }
-
 
 /* =========================
    PAGES
 ========================= */
 
-
 .page-esports {
   color: var(--text-main);
 }
-
 
 .page-tagline {
   font-size: 13px;
@@ -162,11 +137,9 @@ a {
   margin-bottom: 18px;
 }
 
-
 /* =========================
    HERO
 ========================= */
-
 
 .hero {
   display: grid;
@@ -176,25 +149,21 @@ a {
   margin-bottom: 30px;
 }
 
-
 .hero-left h1 {
   font-size: 32px;
   margin-bottom: 8px;
 }
-
 
 .hero-left p {
   font-size: 14px;
   color: var(--text-muted);
 }
 
-
 .hero-actions {
   margin-top: 14px;
   display: flex;
   gap: 10px;
 }
-
 
 .hero-btn-primary,
 .hero-btn-secondary {
@@ -208,13 +177,11 @@ a {
   justify-content: center;
 }
 
-
 .hero-btn-primary {
   background: linear-gradient(135deg, var(--accent-green), var(--accent-gold));
   color: #020617;
   font-weight: 600;
 }
-
 
 .hero-btn-secondary {
   background: transparent;
@@ -222,11 +189,9 @@ a {
   color: var(--text-main);
 }
 
-
 .hero-right {
   position: relative;
 }
-
 
 .hero-glow {
   position: absolute;
@@ -237,16 +202,13 @@ a {
   filter: blur(4px);
 }
 
-
 /* =========================
    ALL TOURNAMENTS DROPDOWN
 ========================= */
 
-
 .all-tour-wrapper {
   position: relative;
 }
-
 
 .all-tour-btn {
   display: inline-flex;
@@ -254,17 +216,14 @@ a {
   gap: 6px;
 }
 
-
 .all-tour-arrow {
   font-size: 10px;
   transition: transform 0.18s ease-out;
 }
 
-
 .all-tour-arrow.open {
   transform: rotate(180deg);
 }
-
 
 .all-tour-dropdown {
   position: absolute;
@@ -279,7 +238,6 @@ a {
   z-index: 15;
 }
 
-
 .all-tour-item {
   width: 100%;
   padding: 6px 10px;
@@ -292,43 +250,42 @@ a {
   cursor: pointer;
 }
 
-
 .all-tour-item:hover {
   background: rgba(31, 41, 55, 0.9);
 }
 
-
 /* =========================
-   🔥 SCROLLABLE TOURNAMENTS SECTION (NEW)
+   🔥 FIXED HEIGHT SCROLLABLE TOURNAMENTS SECTION (HIDDEN SCROLLBAR)
 ========================= */
 
-
 .tournaments-section {
-  max-height: 65vh;                    /* Fixed height scroll ke liye */
-  overflow-y: auto;                    /* Vertical scroll ON */
-  overflow-x: hidden;                  /* No horizontal scroll */
-  padding-right: 12px;                 /* Scrollbar space */
+  max-height: 65vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 12px;
   margin-top: 20px;
-  scrollbar-width: thin;               /* Firefox */
-  scrollbar-color: var(--accent-green) rgba(15, 23, 42, 0.5);
+  
+  /* 🔥 HIDDEN SCROLLBAR */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
 }
 
+.tournaments-section::-webkit-scrollbar {
+  display: none; /* Chrome/Safari/Webkit */
+}
 
 .tour-grid-wrapper {
   height: 100%;
-  padding-bottom: 20px;                /* Extra scroll space */
+  padding-bottom: 20px;
 }
-
 
 /* =========================
    SECTIONS
 ========================= */
 
-
 .section {
   margin-top: 10px;
 }
-
 
 .section-header {
   display: flex;
@@ -337,53 +294,46 @@ a {
   margin-bottom: 12px;
 }
 
-
 .section-link {
   font-size: 13px;
   color: var(--accent-blue);
   text-decoration: none;
 }
 
-
 /* =========================
-   TOURNAMENTS GRID (SCROLL FIXED)
+   🔥 FIXED FULL WIDTH TOURNAMENTS CARDS (MOBILE PERFECT)
 ========================= */
-
 
 .tour-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); /* 🔥 Increased width */
   gap: 14px;
   align-items: stretch;
-  min-height: 0;                       /* 🔥 Grid scroll ke liye ZAROORI */
+  min-height: 0;
 }
-
 
 .tour-card {
   background: rgba(15, 23, 42, 0.95);
   border-radius: 16px;
-  padding: 12px 13px;
+  padding: 16px 18px; /* 🔥 More padding for bigger look */
   border: 1px solid rgba(31, 41, 55, 0.95);
   box-shadow: 0 0 20px rgba(15, 23, 42, 0.8);
   font-size: 13px;
   width: 100%;
-  cursor: pointer;                     /* Touch feedback */
-  transition: transform 0.1s ease;     /* Smooth touch */
+  cursor: pointer;
+  transition: transform 0.1s ease;
 }
-
 
 .tour-card:hover,
 .tour-card:active {
-  transform: translateY(-2px);         /* Touch press effect */
+  transform: translateY(-2px);
 }
-
 
 .tour-header {
   display: flex;
   justify-content: space-between;
   margin-bottom: 6px;
 }
-
 
 .tour-game {
   font-size: 11px;
@@ -392,7 +342,6 @@ a {
   color: var(--text-muted);
 }
 
-
 .tour-tag {
   font-size: 11px;
   padding: 2px 8px;
@@ -400,30 +349,25 @@ a {
   border: 1px solid rgba(148, 163, 184, 0.7);
 }
 
-
 .tour-tag.tdm {
   border-color: rgba(96, 165, 250, 0.7);
   color: var(--accent-blue);
 }
-
 
 .tour-tag.classic {
   border-color: rgba(248, 250, 252, 0.7);
   color: var(--accent-gold);
 }
 
-
 .tour-title {
   margin: 0 0 4px;
   font-size: 15px;
 }
 
-
 .tour-meta {
   margin: 2px 0;
   color: var(--text-muted);
 }
-
 
 .tour-footer {
   display: flex;
@@ -432,12 +376,10 @@ a {
   margin-top: 8px;
 }
 
-
 .tour-slots {
   font-size: 12px;
   color: var(--text-muted);
 }
-
 
 .btn-tour {
   font-size: 12px;
@@ -449,39 +391,9 @@ a {
   border: 1px solid rgba(34, 197, 94, 0.8);
 }
 
-
-/* =========================
-   CUSTOM SCROLLBAR (Webkit browsers)
-========================= */
-
-
-.tournaments-section::-webkit-scrollbar {
-  width: 6px;
-}
-
-
-.tournaments-section::-webkit-scrollbar-track {
-  background: rgba(15, 23, 42, 0.5);
-  border-radius: 3px;
-}
-
-
-.tournaments-section::-webkit-scrollbar-thumb {
-  background: var(--accent-green);
-  border-radius: 3px;
-  border: 1px solid rgba(34, 197, 94, 0.3);
-}
-
-
-.tournaments-section::-webkit-scrollbar-thumb:hover {
-  background: var(--accent-gold);
-}
-
-
 /* =========================
    OTHER SECTIONS (unchanged)
 ========================= */
-
 
 .category-row {
   display: flex;
@@ -489,7 +401,6 @@ a {
   gap: 8px;
   margin-bottom: 12px;
 }
-
 
 .category-chip {
   padding: 6px 12px;
@@ -501,20 +412,17 @@ a {
   cursor: pointer;
 }
 
-
 .category-chip-active {
   background: linear-gradient(135deg, var(--accent-green), var(--accent-gold));
   color: #020617;
   border-color: transparent;
 }
 
-
 .filter-row {
   display: flex;
   align-items: center;
   gap: 8px;
 }
-
 
 .filter-select {
   background: #020617;
@@ -525,13 +433,11 @@ a {
   font-size: 13px;
 }
 
-
 .details-grid {
   display: grid;
   grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
   gap: 20px;
 }
-
 
 .details-main,
 .details-side {
@@ -542,12 +448,10 @@ a {
   font-size: 13px;
 }
 
-
 .form-stack {
   display: grid;
   gap: 8px;
 }
-
 
 .form-stack input {
   border-radius: 8px;
@@ -557,13 +461,11 @@ a {
   color: var(--text-main);
 }
 
-
 .matches-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 14px;
 }
-
 
 .match-card {
   background: rgba(15, 23, 42, 0.95);
@@ -573,13 +475,11 @@ a {
   font-size: 13px;
 }
 
-
 .match-top {
   display: flex;
   justify-content: space-between;
   font-size: 11px;
 }
-
 
 .match-status {
   padding: 2px 7px;
@@ -587,26 +487,22 @@ a {
   border: 1px solid rgba(148, 163, 184, 0.7);
 }
 
-
 .match-status.upcoming,
 .match-status.registered {
   border-color: rgba(96, 165, 250, 0.8);
   color: var(--accent-blue);
 }
 
-
 .match-status.completed {
   border-color: rgba(52, 211, 153, 0.8);
   color: var(--accent-green);
 }
-
 
 .profile-grid {
   display: grid;
   grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
   gap: 20px;
 }
-
 
 .profile-main,
 .profile-stats {
@@ -617,24 +513,20 @@ a {
   font-size: 13px;
 }
 
-
 .profile-stats {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
 }
 
-
 .profile-label {
   font-size: 11px;
   color: var(--text-muted);
 }
 
-
 .profile-value {
   font-size: 18px;
 }
-
 
 .help-list {
   font-size: 13px;
@@ -642,76 +534,70 @@ a {
   padding-left: 18px;
 }
 
-
 .empty-text {
   font-size: 13px;
   color: var(--text-muted);
 }
 
-
 /* =========================
-   MOBILE RESPONSIVE
+   🔥 MOBILE RESPONSIVE (CARDS FULL WIDTH FIXED)
 ========================= */
-
 
 @media (max-width: 768px) {
   .app-main-esports,
   .app-main-esports.has-bottom-nav {
-    padding: 72px 10px 100px;
+    padding: 72px 8px 100px; /* 🔥 Less padding for full width */
   }
-
 
   .hero {
     grid-template-columns: minmax(0, 1fr);
     gap: 16px;
   }
 
-
   .hero-left h1 {
     font-size: 26px;
   }
 
-
   .hero-left p {
     font-size: 13px;
   }
-
 
   .hero-actions {
     flex-direction: column;
     gap: 8px;
   }
 
-
   .hero-btn-primary,
   .hero-btn-secondary {
     width: 100%;
   }
 
-
   .hero-right {
     margin-top: 8px;
   }
 
-
-  /* 🔥 MOBILE SCROLL PERFECT */
+  /* 🔥 MOBILE TOURNAMENTS PERFECT */
   .tournaments-section {
-    max-height: 60vh;        /* Mobile pe thoda kam height */
+    max-height: 60vh;
     padding-right: 8px;
+    /* Scrollbar already hidden globally */
   }
 
+  /* 🔥 MOBILE CARDS FULL WIDTH & BIGGER */
+  .tour-grid {
+    grid-template-columns: 1fr; /* Single full-width column */
+    gap: 16px;
+  }
+
+  .tour-card {
+    padding: 20px 20px; /* 🔥 Much bigger padding mobile */
+    margin: 0 4px; /* 🔥 Side spacing perfect */
+  }
 
   .details-grid,
   .profile-grid {
     grid-template-columns: minmax(0, 1fr);
   }
-
-
-  /* Mobile pe 1 column */
-  .tour-grid {
-    grid-template-columns: 1fr;
-  }
-
 
   .tour-card,
   .match-card,
@@ -719,9 +605,8 @@ a {
   .profile-stats,
   .details-main,
   .details-side {
-    padding: 12px;
+    padding: 16px;
   }
-
 
   .footer-root {
     flex-direction: column;
