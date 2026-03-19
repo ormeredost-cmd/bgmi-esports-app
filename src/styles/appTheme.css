@@ -30,21 +30,21 @@ a { color: inherit; }
   flex-direction: column;
 }
 
-/* 🔥 HERO THINNER + BETTER SPACING */
+/* 🔥 PERFECT HEIGHT + NO CUT CARDS */
 .app-main-esports {
   flex: 1;
   max-width: 1120px;
   margin: 0 auto;
-  padding: 60px 16px 80px; /* 🔥 TOP 60px (kam), BOTTOM 80px (zyada) */
-  height: calc(var(--vh, 100vh) - 140px); /* 🔥 Adjusted height */
+  padding: 60px 16px 120px; /* 🔥 BOTTOM 120px - full card safe */
+  height: calc(var(--vh, 100vh) - 180px); /* 🔥 Perfect calc */
   overflow: hidden;
   min-height: -webkit-fill-available;
 }
 
-/* 🔥 MOBILE FULL BLEED */
+/* 🔥 MOBILE FULL BLEED + NO CUT */
 @media (max-width: 768px) {
   .app-main-esports {
-    padding: 60px 0 80px 0 !important; /* 🔥 TOP 60px, BOTTOM 80px */
+    padding: 60px 0 130px 0 !important; /* 🔥 130px bottom */
     margin: 0 !important;
     width: 100vw !important;
     max-width: none !important;
@@ -53,44 +53,46 @@ a { color: inherit; }
     right: 50%;
     margin-left: -50vw !important;
     margin-right: -50vw !important;
-    height: calc(var(--vh, 100vh) - 140px) !important;
+    height: calc(var(--vh, 100vh) - 190px) !important;
   }
 }
 
+/* 🔥 ULTRA SMOOTH SCROLL + FULL LAST CARD */
 .tournaments-section {
-  height: 68vh; /* 🔥 Zyada cards space */
+  height: 70vh; /* 🔥 Perfect balance */
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 0 0 20px;
-  margin-top: 12px; /* 🔥 Kam margin */
+  padding: 0 0 60px !important; /* 🔥 60px bottom padding */
+  margin-top: 8px;
+  scroll-behavior: smooth; /* 🔥 Smooth scroll */
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   -ms-overflow-style: none;
+  scroll-snap-type: y proximity; /* 🔥 Snap effect */
 }
 .tournaments-section::-webkit-scrollbar { display: none; }
 
 .tour-grid-wrapper { 
-  height: 100%; 
-  padding-bottom: 10px; 
-  padding-left: 12px;
-  padding-right: 12px;
+  height: auto !important; /* 🔥 Remove height:100% */
+  min-height: 100%;
+  padding: 0 12px 40px 12px !important; /* 🔥 Extra bottom */
 }
 
 .tour-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 14px;
+  gap: 16px;
   align-items: stretch;
   min-height: 0;
   padding: 0;
 }
 
-/* 🔥 MOBILE CARDS */
+/* 🔥 MOBILE PERFECT */
 @media (max-width: 768px) {
   .tournaments-section {
-    height: 75vh; /* 🔥 MAX cards space */
-    margin-top: 8px; /* 🔥 Aur kam */
-    padding: 0;
+    height: 78vh; /* 🔥 Max cards */
+    padding-bottom: 80px !important; /* 🔥 Full last card */
+    margin-top: 4px;
     width: 100vw;
     position: relative;
     left: 50%;
@@ -100,13 +102,18 @@ a { color: inherit; }
   }
   
   .tour-grid-wrapper {
-    padding: 0 16px 16px 16px !important;
-    height: 100%;
+    padding: 0 16px 60px 16px !important; /* 🔥 60px bottom */
   }
   
   .tour-grid {
     grid-template-columns: 1fr !important;
-    gap: 16px;
+    gap: 18px; /* 🔥 Bada gap */
+  }
+  
+  .tour-card {
+    scroll-snap-align: start; /* 🔥 Perfect snap */
+    padding: 28px !important;
+    min-height: 170px;
   }
 }
 
@@ -151,14 +158,14 @@ a { color: inherit; }
   grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
   gap: 20px;
   align-items: center;
-  margin-bottom: 20px; /* 🔥 Kam margin */
+  margin-bottom: 16px;
   padding: 0 4px;
 }
 
 @media (max-width: 768px) {
   .hero {
     grid-template-columns: 1fr;
-    gap: 12px; /* 🔥 Patla gap */
+    gap: 12px;
     padding: 0 20px;
   }
 }
@@ -173,11 +180,11 @@ a { color: inherit; }
 }
 
 @media (max-width: 768px) {
-  .hero-left h1 { font-size: 30px; } /* 🔥 Thoda chota */
+  .hero-left h1 { font-size: 30px; }
 }
 
 .hero-actions { 
-  margin-top: 12px; /* 🔥 Kam margin */
+  margin-top: 12px; 
   display: flex; 
   gap: 10px; 
 }
@@ -267,11 +274,11 @@ a { color: inherit; }
 
 @media (max-width: 768px) {
   .tour-card {
-    padding: 24px !important;
+    padding: 28px !important;
     border-radius: 20px;
     font-size: 14px;
     box-shadow: 0 12px 40px rgba(0,0,0,0.6) !important;
-    min-height: 160px;
+    min-height: 170px;
   }
 }
 
