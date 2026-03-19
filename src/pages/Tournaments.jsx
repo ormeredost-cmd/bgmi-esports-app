@@ -1,61 +1,56 @@
-// src/pages/Tournaments.jsx
-
-import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
-import { tournamentsSample } from "../data/tournamentsSample";
-import TournamentCard from "../components/TournamentCard";
-import BackButton from "../components/BackButton";
+import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import TournamentCard from '../components/TournamentCard';
+import { tournamentsSample } from '../data/tournamentsSample';
+import "./Tournaments.css";
 
 const Tournaments = () => {
-  const location = useLocation();
-  const params = new URLSearchParams(location.search);
-  const initialMode = params.get("mode") || "All";
-
-  const [category, setCategory] = useState(initialMode);
+  const [searchParams] = useSearchParams();
+  const [filteredTournaments, setFilteredTournaments] = useState([]);
+  const mode = searchParams.get('mode') || 'All';
 
   useEffect(() => {
-    const p = new URLSearchParams(location.search);
-    setCategory(p.get("mode") || "All");
-  }, [location.search]);
+    const filtered = tournamentsSample.filter(t => 
+      mode === 'All' || t.mode === mode
+    );
+    setFilteredTournaments(filtered);
+  }, [mode]);
 
-  // 1v1 / 2v2 filter
-  const filtered = tournamentsSample.filter((t) => {
-    if (category === "All") return true;
-    if (category === "1v1 TDM") return t.mode === "1v1 TDM";
-    if (category === "2v2 TDM") return t.mode === "2v2 TDM";
-    if (category === "4v4 TDM") return t.mode === "4v4 TDM";
-    return true;
-  });
+  const getModeTitle = (mode) => {
+    const titles = {
+      'All': 'All Tournaments',
+      '1v1 TDM': '1v1 TDM',
+      '2v2 TDM': '2v2 TDM', 
+      '4v4 TDM': '4v4 TDM'
+    };
+    return titles[mode] || mode;
+  };
 
   return (
-    <div className="page-esports">
-      {/* Top-left fixed back button */}
-      <BackButton fallbackPath="/" />
+    <div className="tournaments-page">
+      <div className="tournaments-container">
+        <header className="page-header">
+          <h1>{getModeTitle(mode)}</h1>
+          <p className="tournaments-count">({filteredTournaments.length})</p>
+        </header>
 
-      <div className="section-header">
-        <h2>All Tournaments</h2>
-      </div>
-
-      {/* Sirf current category chip dikhegi */}
-      <div className="category-row">
-        <span className="category-chip category-chip-active">
-          {category === "All" ? "All" : category}
-        </span>
-      </div>
-
-      {/* 🔥 YAHAN WRAPPER MISSING THA, AB ADD KAR DIYA HAI */}
-      <section className="tournaments-section">
-        <div className="tour-grid-wrapper">
-          <div className="tour-grid">
-            {filtered.map((t) => (
-              <TournamentCard key={t.id} t={t} />
-            ))}
-            {filtered.length === 0 && (
-              <p className="empty-text">No tournaments for this category.</p>
-            )}
+        <div className="tournaments-section">
+          <div className="tour-grid-wrapper">
+            <div className="tour-grid">
+              {filteredTournaments.length > 0 ? (
+                filteredTournaments.map((t) => (
+                  <TournamentCard key={t.id} t={t} />
+                ))
+              ) : (
+                <div className="no-tournaments">
+                  <h3>कोई टूर्नामेंट नहीं मिला</h3>
+                  <p>No tournaments available for this mode</p>
+                </div>
+              )}
+            </div>
           </div>
         </div>
-      </section>
+      </div>
     </div>
   );
 };

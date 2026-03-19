@@ -10,16 +10,12 @@
   --accent-blue: #60a5fa;
 }
 
-/* =========================
-   GLOBAL
-========================= */
-
+/* GLOBAL */
 * {
   box-sizing: border-box;
 }
 
-html,
-body {
+html, body {
   height: 100%;
 }
 
@@ -31,32 +27,21 @@ body {
   overflow: hidden;
 }
 
-a {
-  color: inherit;
-}
-
-/* =========================
-   ROOT LAYOUT
-========================= */
-
+/* ROOT LAYOUT */
 .app-root-esports {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
-/* 🔥 MAIN CONTENT - PHONE PERFECT */
 .app-main-esports {
   flex: 1;
   max-width: 100%;
   margin: 0;
-  padding: 65px 12px 90px 12px; /* 🔥 BACK TO NORMAL PADDING */
+  padding: 65px 12px 90px 12px;
 }
 
-/* =========================
-   TOP BAR
-========================= */
-
+/* TOP BAR */
 .app-topbar {
   position: fixed;
   top: 0;
@@ -73,32 +58,7 @@ a {
   z-index: 30;
 }
 
-.app-topbar-left {
-  display: flex;
-  flex-direction: column;
-}
-
-.app-topbar-logo-main {
-  font-size: 18px;
-  font-weight: 800;
-  letter-spacing: 0.18em;
-  color: var(--accent-green);
-}
-
-.app-topbar-logo-sub {
-  font-size: 11px;
-  color: var(--text-muted);
-}
-
-.app-topbar-right {
-  display: flex;
-  align-items: center;
-}
-
-/* =========================
-   🔥 HERO SECTION - BGMI ESPORTS COLORED + COMPACT
-========================= */
-
+/* HERO - HOME PAGE */
 .hero {
   grid-template-columns: 1fr;
   gap: 8px;
@@ -107,54 +67,40 @@ a {
 }
 
 .hero-left h1 {
-  font-size: 26px; /* 🔥 CHOTA SIZE */
+  font-size: 26px;
   margin: 0 0 8px 0;
   background: linear-gradient(135deg, var(--accent-green), var(--accent-gold));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   font-weight: 800;
-  letter-spacing: -0.01em;
 }
 
-/* =========================
-   🔥 ALL TOURNAMENTS BUTTON - COMPACT PERFECT SIZE
-========================= */
-
+/* ALL TOURNAMENTS BUTTON */
 .all-tour-wrapper {
   position: relative;
   margin-top: 0;
   margin-bottom: 0;
 }
 
-.hero-btn-primary,
-.all-tour-btn {
-  padding: 10px 16px !important; /* 🔥 CHOTA PADDING */
+.hero-btn-primary, .all-tour-btn {
+  padding: 10px 16px !important;
   border-radius: 12px !important;
-  font-size: 13px !important; /* 🔥 NORMAL SIZE */
+  font-size: 13px !important;
   font-weight: 600 !important;
   background: linear-gradient(135deg, var(--accent-green), var(--accent-gold)) !important;
   border: none !important;
   color: #020617 !important;
   box-shadow: 0 4px 16px rgba(34, 197, 94, 0.3) !important;
-  transition: all 0.2s ease !important;
-  width: auto !important; /* 🔥 NOT FULL WIDTH */
-  justify-content: center !important;
+  width: auto !important;
   display: inline-flex !important;
   align-items: center !important;
   gap: 6px !important;
 }
 
-.hero-btn-primary:hover,
-.all-tour-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(34, 197, 94, 0.4) !important;
-}
-
 .all-tour-arrow {
   font-size: 10px !important;
   transition: transform 0.2s ease-out !important;
-  font-weight: 600 !important;
 }
 
 .all-tour-arrow.open {
@@ -165,14 +111,13 @@ a {
   position: absolute;
   top: 110%;
   left: 0;
-  min-width: 160px; /* 🔥 FIXED WIDTH */
+  min-width: 160px;
   background: rgba(15, 23, 42, 0.98);
   border-radius: 10px;
   border: 1px solid rgba(31, 41, 55, 0.9);
   box-shadow: 0 8px 25px rgba(15, 23, 42, 0.9);
   padding: 6px 4px;
   z-index: 15;
-  margin-top: 4px;
 }
 
 .all-tour-item {
@@ -186,7 +131,6 @@ a {
   border-radius: 8px;
   cursor: pointer;
   font-weight: 500;
-  transition: all 0.2s ease;
 }
 
 .all-tour-item:hover {
@@ -194,10 +138,7 @@ a {
   color: #020617;
 }
 
-/* =========================
-   PHONE PERFECT TOURNAMENTS SECTION
-========================= */
-
+/* HOME TOURNAMENTS */
 .tournaments-section {
   max-height: 65vh;
   overflow-y: auto;
@@ -216,10 +157,6 @@ a {
   height: 100%;
   padding-bottom: 20px;
 }
-
-/* =========================
-   FULL SCREEN TOURNAMENT CARDS
-========================= */
 
 .tour-grid {
   display: flex;
@@ -241,133 +178,160 @@ a {
   margin: 0 2px;
 }
 
-.tour-card:hover,
-.tour-card:active {
-  transform: translateY(-3px);
+/* 🔥 MY MATCHES PAGE - UNHIDE & PERFECT STYLE */
+.mymatches-page {
+  min-height: 100vh;
+  background: radial-gradient(circle at top, #111827 0, #020617 45%, #000 100%);
+  padding: 72px 12px 110px;
+  color: var(--text-main);
+}
+
+.mymatches-container {
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.page-header h1 {
+  font-size: 28px;
+  margin: 0 0 8px 0;
+  background: linear-gradient(135deg, var(--accent-green), var(--accent-gold));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 800;
+}
+
+.page-header p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+/* 🔥 MATCHES GRID - UNHIDDEN & PERFECT */
+.matches-grid {
+  display: flex !important; /* 🔥 FIXED! */
+  flex-direction: column;
+  gap: 14px;
+}
+
+.match-card {
+  background: rgba(15, 23, 42, 0.95);
+  border-radius: 16px;
+  padding: 18px;
+  border: 1px solid rgba(31, 41, 55, 0.95);
+  box-shadow: 0 8px 32px rgba(15, 23, 42, 0.8);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.match-card:hover {
+  transform: translateY(-2px);
   box-shadow: 0 12px 40px rgba(34, 197, 94, 0.2);
 }
 
-.tour-header {
+.match-header {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 8px;
+  align-items: flex-start;
+  margin-bottom: 12px;
 }
 
-.tour-game {
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.16em;
-  color: var(--text-muted);
+.match-header h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-main);
+  margin: 0;
+  line-height: 1.3;
 }
 
-.tour-tag {
-  font-size: 12px;
+.status {
   padding: 4px 10px;
-  border-radius: 999px;
-  border: 1px solid rgba(148, 163, 184, 0.7);
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
 }
 
-.tour-tag.tdm {
-  border-color: rgba(96, 165, 250, 0.7);
+.status.registered {
+  background: rgba(34, 197, 94, 0.2);
+  color: var(--accent-green);
+  border: 1px solid rgba(34, 197, 94, 0.4);
+}
+
+.match-details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.detail-row span:first-child {
+  font-weight: 500;
+}
+
+.highlight {
   color: var(--accent-blue);
-}
-
-.tour-tag.classic {
-  border-color: rgba(248, 250, 252, 0.7);
-  color: var(--accent-gold);
-}
-
-.tour-title {
-  margin: 0 0 6px;
-  font-size: 17px;
   font-weight: 600;
 }
 
-.tour-meta {
-  margin: 4px 0;
-  color: var(--text-muted);
-  font-size: 13px;
+.prize-pool {
+  color: var(--accent-gold) !important;
+  font-weight: 700 !important;
+  font-size: 14px !important;
 }
 
-.tour-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 12px;
-  padding-top: 12px;
-  border-top: 1px solid rgba(31, 41, 55, 0.5);
-}
-
-.tour-slots {
-  font-size: 13px;
-  color: var(--text-muted);
-}
-
-.btn-tour {
-  font-size: 13px;
-  font-weight: 600;
-  padding: 8px 16px;
-  border-radius: 999px;
-  text-decoration: none;
-  background: linear-gradient(135deg, var(--accent-green), var(--accent-gold));
-  color: #020617;
-  border: none;
-  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
-}
-
-/* 🔥 OTHER SECTIONS */
-.section {
+.room-box {
+  background: rgba(34, 197, 94, 0.1);
+  padding: 12px;
+  border-radius: 12px;
   margin-top: 8px;
+  border: 1px solid rgba(34, 197, 94, 0.2);
 }
 
-.section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
-}
-
-.page-tagline {
-  font-size: 13px;
+.no-matches {
+  text-align: center;
+  padding: 60px 20px;
   color: var(--text-muted);
-  margin: 4px 0 12px;
 }
 
-/* =========================
-   MOBILE ONLY
-========================= */
+.no-matches h2 {
+  font-size: 24px;
+  color: var(--text-main);
+  margin: 0 0 8px;
+}
 
+.loading-text {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--accent-green);
+  font-size: 16px;
+}
+
+/* MOBILE */
 @media (max-width: 768px) {
   .app-main-esports {
     padding: 62px 8px 85px 8px;
   }
   
-  .tournaments-section {
-    max-height: 68vh;
-    padding: 0 2px;
-  }
-  
-  .tour-grid {
-    gap: 14px;
-    padding: 0 2px;
-  }
-  
-  .tour-card {
-    padding: 24px 22px;
-    margin: 0 1px;
-    border-radius: 20px;
-  }
-  
-  .hero-left h1 {
-    font-size: 28px;
+  .mymatches-page {
+    padding: 72px 8px 100px;
   }
 }
 
-/* HIDE UNUSED */
+/* 🔥 HIDE ONLY HOME UNUSED */
 .category-row,
 .filter-row,
 .details-grid,
-.profile-grid,
-.matches-grid {
+.profile-grid {
   display: none !important;
 }

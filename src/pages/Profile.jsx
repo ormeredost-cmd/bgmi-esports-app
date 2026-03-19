@@ -74,57 +74,58 @@ const Profile = () => {
     loadProfile();
   }, [navigate]);
 
-  // 🔥 BUTTON CLICK - BANK PAGE PE JAO
   const goToBankDetails = () => {
     navigate('/bank-details');
   };
 
   if (loading) {
     return (
-      <div style={{ 
-        display: 'flex', justifyContent: 'center', alignItems: 'center', 
-        height: '100vh', flexDirection: 'column', gap: 20
-      }}>
-        <div style={{ fontSize: '24px', color: '#ff4444' }}>🔄 Loading Profile...</div>
+      <div className="esports-profile">
+        <div className="profile-container">
+          <div className="loading-text">🔄 Loading Profile...</div>
+        </div>
       </div>
     );
   }
 
   if (!profile) {
     return (
-      <div style={{ textAlign: 'center', padding: '50px', color: 'red' }}>
-        ❌ No profile data. <a href="/login">Go to Login</a>
+      <div className="esports-profile">
+        <div className="profile-container">
+          <div className="no-profile">❌ No profile data. <a href="/login">Go to Login</a></div>
+        </div>
       </div>
     );
   }
 
   return (
     <div className="esports-profile">
-      <header className="profile-header">
-        <div className="player-card">
-          <div className="avatar-circle">
-            <img
-              src={`https://ui-avatars.com/api/?name=${encodeURIComponent(profile.name)}&background=1e40af&color=fff&size=512`}
-              alt="Avatar"
-            />
-          </div>
-          <div className="player-details">
-            <h1 className="gamer-name">{profile.name}</h1>
-            <div className="id-row">
-              <span>ID:</span> <strong>{profile.id}</strong>
+      <div className="profile-container"> {/* 🔥 MAIN FIX - WRAPPER ADD */}
+        <header className="profile-header">
+          <div className="player-card">
+            <div className="avatar-circle">
+              <img
+                src={`https://ui-avatars.com/api/?name=${encodeURIComponent(profile.name)}&background=1e40af&color=fff&size=512`}
+                alt="Avatar"
+              />
+            </div>
+            <div className="player-details">
+              <h1 className="gamer-name">{profile.name}</h1>
+              <div className="id-row">
+                <span>ID:</span> <strong>{profile.id}</strong>
+              </div>
             </div>
           </div>
-        </div>
-      </header>
+        </header>
 
-      {/* 🔥 ONLY BIG BANK BUTTON */}
-      <div className="profile-action">
-        <button 
-          className="bank-btn"
-          onClick={goToBankDetails}
-        >
-          🏦 Add Bank Details
-        </button>
+        <div className="profile-action">
+          <button 
+            className="bank-btn"
+            onClick={goToBankDetails}
+          >
+            🏦 Add Bank Details
+          </button>
+        </div>
       </div>
     </div>
   );

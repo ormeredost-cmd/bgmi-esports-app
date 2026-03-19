@@ -1,48 +1,49 @@
-/* Profile.css - SCROLL FIXED + MOBILE PERFECT */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  padding-bottom: 100px; /* Extra space for scroll */
-}
-
+/* Profile.css - MAIN CSS KE SAATH COMPATIBLE */
 .esports-profile {
+  background: radial-gradient(circle at top, #111827 0, #020617 45%, #000 100%);
+  color: var(--text-main);
   min-height: 100vh;
-  background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: white;
-  padding-bottom: 3rem; /* ✅ SCROLL FIX */
-  overflow-x: hidden;
+  padding: 72px 16px 120px; /* 🔥 Topbar + Bottom nav space */
+  overflow: hidden; /* Main CSS ke saath sync */
 }
 
-/* Profile Header */
+/* 🔥 PROFILE CONTAINER - CENTERED + PERFECT */
+.profile-container {
+  max-width: 420px;
+  margin: 0 auto;
+  height: calc(100vh - 192px); /* Top 72px + Bottom 120px */
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.profile-container::-webkit-scrollbar {
+  display: none;
+}
+
 .profile-header {
-  padding: 1.5rem 1rem;
   text-align: center;
+  padding: 20px 0;
 }
 
 .player-card {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(15, 23, 42, 0.95);
   backdrop-filter: blur(20px);
   border-radius: 24px;
-  padding: 2rem 1.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-  margin-bottom: 1rem;
+  padding: 30px 24px;
+  border: 1px solid rgba(31, 41, 55, 0.95);
+  box-shadow: 0 12px 40px rgba(15, 23, 42, 0.9);
+  margin-bottom: 32px;
 }
 
 .avatar-circle {
   width: 100px;
   height: 100px;
-  margin: 0 auto 1.5rem;
+  margin: 0 auto 20px;
   border-radius: 50%;
-  border: 4px solid #667eea;
+  border: 4px solid var(--accent-blue);
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 8px 25px rgba(96, 165, 250, 0.3);
 }
 
 .avatar-circle img {
@@ -52,182 +53,72 @@ body {
 }
 
 .gamer-name {
-  font-size: 2rem;
+  font-size: 24px;
   font-weight: 800;
-  background: linear-gradient(135deg, #fff, #e0e7ff);
+  background: linear-gradient(135deg, var(--accent-green), var(--accent-gold));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  margin-bottom: 0.5rem;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  margin: 0 0 12px;
+  letter-spacing: -0.02em;
 }
 
 .id-row {
-  font-size: 1rem;
-  color: #a0a0a0;
+  font-size: 14px;
+  color: var(--text-muted);
   text-transform: uppercase;
-  letter-spacing: 2px;
-  font-weight: 500;
+  letter-spacing: 1.5px;
+  font-weight: 600;
 }
 
-/* BIG BANK BUTTON */
+.id-row strong {
+  color: var(--accent-blue);
+  font-size: 16px;
+}
+
+/* 🔥 PERFECT BANK BUTTON */
 .profile-action {
-  padding: 2rem 1rem;
   display: flex;
   justify-content: center;
+  padding: 0 12px;
 }
 
 .bank-btn {
-  background: linear-gradient(135deg, #ff6b6b 0%, #feca57 50%, #48dbfb 100%);
-  color: #1a1a2e;
+  background: linear-gradient(135deg, var(--accent-orange), var(--accent-gold));
+  color: #020617;
   border: none;
-  padding: 1.2rem 3rem;
+  padding: 14px 32px;
   border-radius: 50px;
-  font-size: 1.3rem;
-  font-weight: 800;
+  font-size: 15px;
+  font-weight: 700;
   cursor: pointer;
-  box-shadow: 
-    0 15px 35px rgba(255, 107, 107, 0.4),
-    0 5px 15px rgba(0, 0, 0, 0.2);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 8px 25px rgba(251, 146, 60, 0.4);
+  transition: all 0.3s ease;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
+  min-width: 280px;
   position: relative;
   overflow: hidden;
-  min-width: 280px;
-  margin-bottom: 2rem; /* ✅ Extra space */
-}
-
-.bank-btn::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-  transition: left 0.6s;
-}
-
-.bank-btn:hover::before {
-  left: 100%;
 }
 
 .bank-btn:hover {
-  transform: translateY(-5px) scale(1.05);
-  box-shadow: 
-    0 25px 50px rgba(255, 107, 107, 0.6),
-    0 10px 25px rgba(0, 0, 0, 0.3);
+  transform: translateY(-3px);
+  box-shadow: 0 15px 35px rgba(251, 146, 60, 0.6);
 }
 
 .bank-btn:active {
-  transform: translateY(-2px) scale(1.02);
+  transform: translateY(-1px);
 }
 
-/* BANK FORM */
-.bank-form-section {
-  padding: 1rem;
-  max-width: 100%;
-}
-
-.bank-card {
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(25px);
-  border-radius: 24px;
-  padding: 2rem 1.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
-  margin: 0 0 3rem 0; /* ✅ SCROLL SPACE */
-}
-
-.bank-title {
-  text-align: center;
-  font-size: 1.8rem;
-  font-weight: 800;
-  background: linear-gradient(135deg, #fff, #e0e7ff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin-bottom: 2rem; /* ✅ More space */
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-}
-
-.bank-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-}
-
-.form-group label {
-  font-weight: 700;
-  color: #e0e7ff;
-  margin-bottom: 0.75rem;
-  font-size: 0.95rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.form-input, .form-input select {
-  padding: 1.2rem 1rem;
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  border-radius: 16px;
-  font-size: 1rem;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  color: white;
-  transition: all 0.3s ease;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-}
-
-.form-input::placeholder {
-  color: #a0a0a0;
-}
-
-.form-input:focus, .form-input select:focus {
-  outline: none;
-  border-color: #ff6b6b;
-  box-shadow: 
-    0 0 0 4px rgba(255, 107, 107, 0.2),
-    0 10px 30px rgba(0, 0, 0, 0.3);
-  background: rgba(255, 255, 255, 0.15);
-  transform: translateY(-2px);
-}
-
-.submit-bank-btn {
-  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-  color: white;
-  border: none;
-  padding: 1.4rem 1rem;
-  border-radius: 16px;
-  font-size: 1.1rem;
-  font-weight: 800;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  box-shadow: 0 10px 30px rgba(40, 167, 69, 0.4);
-  margin-top: 1rem;
-}
-
-.submit-bank-btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 20px 40px rgba(40, 167, 69, 0.6);
-}
-
-/* ✅ MOBILE RESPONSIVE */
-@media (max-width: 480px) {
-  .profile-header {
-    padding: 1rem 0.8rem;
+/* MOBILE */
+@media (max-width: 768px) {
+  .esports-profile {
+    padding: 72px 12px 110px;
   }
   
-  .player-card {
-    padding: 1.5rem 1rem;
-    margin: 0 0.5rem;
+  .profile-container {
+    height: calc(100vh - 182px);
+    max-width: 100%;
   }
   
   .avatar-circle {
@@ -236,50 +127,12 @@ body {
   }
   
   .gamer-name {
-    font-size: 1.6rem;
+    font-size: 22px;
   }
   
   .bank-btn {
-    padding: 1.1rem 2rem;
-    font-size: 1.2rem;
+    padding: 12px 28px;
+    font-size: 14px;
     min-width: 260px;
-    margin: 0 0.5rem 2rem;
   }
-  
-  .bank-card {
-    padding: 1.5rem 1rem;
-    margin: 0 0.5rem 3rem;
-  }
-  
-  .bank-title {
-    font-size: 1.5rem;
-  }
-  
-  .form-input, .form-input select {
-    padding: 1rem 0.9rem;
-    font-size: 16px; /* iOS zoom fix */
-  }
-}
-
-@media (max-width: 360px) {
-  .gamer-name {
-    font-size: 1.4rem;
-  }
-  
-  .bank-btn {
-    padding: 1rem 1.8rem;
-    font-size: 1.1rem;
-  }
-}
-
-/* Hide old tabs/stats */
-.profile-tabs,
-.stats-section {
-  display: none !important;
-}
-
-/* Loading screen */
-[style*="height: 100vh"] {
-  background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 100%);
-  color: white;
 }
