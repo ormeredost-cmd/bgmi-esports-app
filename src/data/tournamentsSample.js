@@ -3,7 +3,7 @@ export const tournamentsSample = [
   // 🔥 EXISTING 2 TDMs
   {
     id: "tm1",
-    name: "WAREHOUSE 1v1 TDM",
+    name: "👑 KingMaker TDM",
     type: "TDM",
     mode: "1v1 TDM",
     map: "Warehouse",
@@ -17,7 +17,7 @@ export const tournamentsSample = [
   },
   {
     id: "tm2", 
-    name: "LIVIK 1v1 TDM",
+    name: "🌑 DarkZone TDM",
     type: "TDM",
     mode: "1v1 TDM",
     map: "Livik",
@@ -32,9 +32,9 @@ export const tournamentsSample = [
 
   // 🔥 NEW TOURNAMENTS ADD KARO ↓
   {
-    id: "cs1",
-    name: "ERANGEL CLASSIC 1v1",
-    type: "CS",
+    id: "tm3",
+    name: "💀 Headshot Mania TDM",
+    type: "TDM",
     mode: "Solo Classic",
     map: "Erangel",
     time: "20:30",
@@ -46,8 +46,8 @@ export const tournamentsSample = [
     gun: "AKM"
   },
   {
-    id: "tdm3",
-    name: "SANHOK 1v1 TDM",
+    id: "tm4",
+    name: "BulletHell TDM",
     type: "TDM",
     mode: "1v1 TDM",
     map: "Sanhok", 
@@ -60,9 +60,9 @@ export const tournamentsSample = [
     gun: "SCAR-L"
   },
   {
-    id: "sq1",
-    name: "QUICK SQUAD FIRE",
-    type: "SQ",
+    id: "tm5",
+    name: "QUICK JOIN TDM",
+    type: "TDM",
     mode: "4 Member Squad",
     map: "Miramar",
     time: "19:45",
@@ -74,9 +74,9 @@ export const tournamentsSample = [
     gun: ""
   },
   {
-    id: "cs2",
-    name: "MIRAMAR SNIPER DUEL",
-    type: "CS",
+    id: "tm6",
+    name: "VictoryRush TDM",
+    type: "TDM",
     mode: "1v1 Sniper",
     map: "Miramar",
     time: "21:30",

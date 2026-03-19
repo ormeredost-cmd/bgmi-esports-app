@@ -1,4 +1,4 @@
-// src/components/TournamentCard.jsx - 🔥 TIME LINE + GUN + TOURNAMENT STATUS!
+// src/components/TournamentCard.jsx - 🔥 LOADING + SERVER CONFIRMED JOIN!
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import "./TournamentCard.css";
@@ -6,7 +6,7 @@ import "./TournamentCard.css";
 const TournamentCard = ({ t }) => {
   const [isJoined, setIsJoined] = useState(false);
   const [isFull, setIsFull] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); // 🔥 LOADING START!
   const [registeredSlots, setRegisteredSlots] = useState(0);
   const [maxSlots, setMaxSlots] = useState(2);
   
@@ -17,7 +17,6 @@ const TournamentCard = ({ t }) => {
     ? "http://localhost:5002" 
     : "https://deposit-and-join-tournament-server.onrender.com";
 
-  // 🔥 TOURNAMENT SPECIFIC BGMI ID GETTER
   const getBgmiIdForTournament = () => {
     try {
       const tournamentJoins = JSON.parse(localStorage.getItem('tournamentJoins') || '[]');
@@ -31,7 +30,9 @@ const TournamentCard = ({ t }) => {
   const checkStatus = () => {
     if (!mountedRef.current) return;
 
-    // SLOTS - Always works
+    setIsLoading(true); // 🔥 LOADING ON EVERY CHECK!
+
+    // SLOTS CHECK
     fetch(`${API_URL}/api/tournament-slots-count/${t.id}`)
       .then(res => res.json())
       .then(data => {
@@ -44,27 +45,42 @@ const TournamentCard = ({ t }) => {
         setMaxSlots(2);
       });
 
-    // 🔥 JOIN STATUS - TOURNAMENT SPECIFIC
+    // 🔥 SERVER CONFIRMED JOIN CHECK
     const bgmiId = getBgmiIdForTournament();
     if (bgmiId) {
       fetch(`${API_URL}/api/check-join/${t.id}?bgmiId=${bgmiId}`)
         .then(res => res.json())
         .then(data => {
-          console.log(`📊 ${t.id} joined:`, data.joined);
-          setIsJoined(data.joined || false);
+          console.log(`📊 ${t.id} (${bgmiId}) joined:`, data.joined);
+          
+          // 🔥 SERVER TRUE = JOINED FOREVER!
+          if (data.joined) {
+            setIsJoined(true);
+            setIsLoading(false);
+            return;
+          }
+          
+          setIsJoined(false);
+          setIsLoading(false); // 🔥 LOADING END!
         })
-        .catch(() => setIsJoined(false));
+        .catch(() => {
+          setIsJoined(false);
+          setIsLoading(false); // 🔥 NETWORK FAIL = REGISTER
+        });
+    } else {
+      setIsJoined(false);
+      setIsLoading(false);
     }
   };
 
-  // 🔥 LOAD IMMEDIATE
+  // 🔥 FIRST LOAD
   useEffect(() => {
     checkStatus();
   }, []);
 
-  // 🔥 INTERVAL 5s
+  // 🔥 4s INTERVAL
   useEffect(() => {
-    intervalRef.current = setInterval(checkStatus, 5000);
+    intervalRef.current = setInterval(checkStatus, 4000);
     return () => clearInterval(intervalRef.current);
   }, []);
 
@@ -84,21 +100,16 @@ const TournamentCard = ({ t }) => {
       </div>
       <h3 className="tour-title">{t.name}</h3>
       
-      {/* 🔥 MODE LINE */}
       <p className="tour-meta">
         <span className="meta-label">Mode</span>
         <span className="meta-value">{t.mode}</span>
       </p>
       
-      {/* 🔥 TIME LINE - JOIN → START */}
-      {/* 🔥 SIMPLE TIME LINE */}
-<p className="tour-meta time-line">
-  <span className="meta-label">Time</span>
-  <span className="meta-value time-highlight">{t.time}</span>  {/* Sirf ek time! */}
-</p>
+      <p className="tour-meta time-line">
+        <span className="meta-label">Time</span>
+        <span className="meta-value time-highlight">{t.time}</span>
+      </p>
 
-      
-      {/* 🔥 GUN LINE */}
       {t.gun && (
         <p className="tour-meta gun-line">
           <span className="meta-label">Gun</span>
@@ -106,7 +117,6 @@ const TournamentCard = ({ t }) => {
         </p>
       )}
       
-      {/* 🔥 ENTRY + PRIZE */}
       <p className="tour-meta">
         <span className="meta-label">Entry</span>
         <span className="meta-value highlight-money">₹{t.entryFee}</span>
@@ -125,7 +135,11 @@ const TournamentCard = ({ t }) => {
           </span>
         </span>
 
-        {isFull ? (
+        {isLoading ? (
+          <button className="btn-tour btn-loading" disabled>
+            ⏳ Checking...
+          </button>
+        ) : isFull ? (
           <button className="btn-tour btn-full" disabled>Tournament Full</button>
         ) : isJoined ? (
           <button className="btn-tour btn-joined" disabled>✅ JOINED</button>

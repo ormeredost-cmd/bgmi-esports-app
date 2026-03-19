@@ -78,3 +78,11 @@
     max-width: 100%;
   }
 }
+.simple-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+  font-size: 1.2rem;
+  color: #666;
+}

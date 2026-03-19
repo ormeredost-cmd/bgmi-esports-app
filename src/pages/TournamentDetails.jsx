@@ -1,6 +1,6 @@
-// 🔥 SUPABASE ERROR FIXED - Complete working code!
+// 🔥 SUPABASE FIXED + ONE TIME LOADING - Perfect!
 import { useParams, useNavigate } from "react-router-dom";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { supabase } from "../supabaseClient";
 import { tournamentsSample } from "../data/tournamentsSample";
 import "./TournamentDetails.css";
@@ -10,17 +10,19 @@ const TournamentDetails = () => {
   const navigate = useNavigate();
   const [isJoined, setIsJoined] = useState(false);
   const [isFull, setIsFull] = useState(false);
+  const [isInitialLoading, setIsInitialLoading] = useState(true); // 🔥 ONE TIME ONLY!
   const [liveSlots, setLiveSlots] = useState(0);
   const [maxSlots, setMaxSlots] = useState(2);
   const [isLoading, setIsLoading] = useState(false);
   const [balance, setBalance] = useState(0);
   const [user, setUser] = useState(null);
+  
+  const hasLoadedRef = useRef(false); // 🔥 STOP RELOADING!
 
   const API_URL = window.location.hostname === "localhost"
     ? "http://localhost:5002"
     : "https://deposit-and-join-tournament-server.onrender.com";
 
-  // 🔥 FIXED BALANCE LOAD - maybeSingle() use kiya
   const loadBalance = async () => {
     try {
       const storedUser = JSON.parse(localStorage.getItem("bgmi_user") || "{}");
@@ -30,7 +32,7 @@ const TournamentDetails = () => {
         .from("registeruser")
         .select("balance, username")
         .eq("profile_id", storedUser.profile_id)
-        .maybeSingle(); // 🔥 FIXED: maybeSingle instead of single
+        .maybeSingle();
 
       if (error) throw error;
       
@@ -55,14 +57,19 @@ const TournamentDetails = () => {
     }
   };
 
-  const checkStatus = useCallback(async () => {
+  // 🔥 ONE TIME INITIAL LOAD!
+  const checkStatusInitial = useCallback(async () => {
     const bgmiId = getBgmiIdForTournament(id);
-    if (!bgmiId) return;
+    if (!bgmiId) {
+      setIsInitialLoading(false);
+      return;
+    }
 
     try {
       const joinUrl = `${API_URL}/api/check-join/${id}?bgmiId=${bgmiId}`;
       const joinRes = await fetch(joinUrl);
       const joinData = await joinRes.json();
+      console.log(`📊 Initial ${id}:`, joinData.joined);
       setIsJoined(joinData.joined);
 
       const slotsRes = await fetch(`${API_URL}/api/tournament-slots-count/${id}`);
@@ -74,17 +81,52 @@ const TournamentDetails = () => {
       setMaxSlots(max);
       setIsFull(count >= max);
     } catch (error) {
-      console.error("Status check failed:", error);
+      console.error("Initial status check failed:", error);
+      setIsJoined(false);
+    } finally {
+      setIsInitialLoading(false); // 🔥 LOADING END FOREVER!
+      hasLoadedRef.current = true;
     }
   }, [id, API_URL]);
 
+  // 🔥 BACKGROUND CHECK (No loading)
+  const checkStatusBackground = useCallback(async () => {
+    if (hasLoadedRef.current && (isJoined || isFull)) return; // 🔥 Already final = NO CHECK!
+
+    const bgmiId = getBgmiIdForTournament(id);
+    if (!bgmiId) return;
+
+    try {
+      const joinRes = await fetch(`${API_URL}/api/check-join/${id}?bgmiId=${bgmiId}`);
+      const joinData = await joinRes.json();
+      if (joinData.joined) {
+        setIsJoined(true);
+        hasLoadedRef.current = true; // 🔥 STOP ALL!
+      }
+
+      const slotsRes = await fetch(`${API_URL}/api/tournament-slots-count/${id}`);
+      const slotsData = await slotsRes.json();
+      const count = slotsData.registered || 0;
+      const max = slotsData.max || 2;
+      setLiveSlots(count);
+      setMaxSlots(max);
+      setIsFull(count >= max);
+    } catch (error) {
+      console.error("Background check failed:", error);
+    }
+  }, [id, API_URL, isJoined, isFull]);
+
   useEffect(() => {
     if (!id) return;
+    
+    // 🔥 ONE TIME LOAD
     loadBalance();
-    checkStatus();
-    const interval = setInterval(checkStatus, 5000);
+    checkStatusInitial();
+    
+    // 🔥 BACKGROUND CHECK (Silent - No loading)
+    const interval = setInterval(checkStatusBackground, 10000); // 10s silent check
     return () => clearInterval(interval);
-  }, [id, checkStatus]);
+  }, [id, checkStatusInitial, checkStatusBackground]);
 
   const t = tournamentsSample.find((x) => x.id === id);
 
@@ -98,7 +140,6 @@ const TournamentDetails = () => {
     );
   }
 
-  // 🔥 FIXED HANDLE SUBMIT - NO .single() error
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -117,7 +158,6 @@ const TournamentDetails = () => {
     }
 
     const entryFee = Number(t.entryFee);
-    
     if (entryFee > 0 && balance < entryFee) {
       alert(`❌ Balance kam hai!\n💰 Chahiye: ₹${entryFee}\n💳 Hai: ₹${balance}`);
       return;
@@ -127,28 +167,16 @@ const TournamentDetails = () => {
     const originalBalance = balance;
 
     try {
-      // 🔥 STEP 1: ENTRY FEE DEDUCT - NO .single()
       if (entryFee > 0) {
-        console.log(`💰 ₹${entryFee} deduct kar rahe hai...`);
-        
         const { error } = await supabase
           .from("registeruser")
-          .update({ 
-            balance: Math.max(0, balance - entryFee) // 🔥 Negative nahi jayega
-          })
+          .update({ balance: Math.max(0, balance - entryFee) })
           .eq("profile_id", user.profile_id);
 
-        if (error) {
-          console.error("❌ Update error:", error);
-          throw new Error(`Balance update fail: ${error.message}`);
-        }
-
-        // 🔥 REFRESH BALANCE AFTER UPDATE
+        if (error) throw new Error(`Balance update fail: ${error.message}`);
         await loadBalance();
-        console.log(`✅ Entry fee deducted: ₹${entryFee}`);
       }
 
-      // 🔥 STEP 2: BGMI DETAILS SAVE
       const tournamentJoins = JSON.parse(localStorage.getItem('tournamentJoins') || '[]');
       const newJoin = {
         tournamentId: t.id,
@@ -162,11 +190,7 @@ const TournamentDetails = () => {
       localStorage.setItem("tempBgmiId", bgmiId);
       localStorage.setItem("lastBgmiId", bgmiId);
 
-      // 🔥 STEP 3: SERVER JOIN
       const now = new Date();
-      const realDate = now.toLocaleDateString("en-IN");
-      const realTime = now.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" });
-
       const joinedMatch = {
         tournamentId: t.id,
         tournamentName: t.name,
@@ -176,8 +200,8 @@ const TournamentDetails = () => {
         profileId: user.profile_id,
         mode: t.mode,
         rulesShort: t.rulesShort,
-        date: realDate,
-        time: realTime,
+        date: now.toLocaleDateString("en-IN"),
+        time: now.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" }),
         map: t.map || "Erangel",
         entryFee,
         prizePool: Number(t.prizePool),
@@ -200,18 +224,13 @@ const TournamentDetails = () => {
       }
 
     } catch (error) {
-      console.error("❌ Join error:", error);
-      
-      // 🔥 ROLLBACK BALANCE
       if (entryFee > 0 && originalBalance !== balance) {
         await supabase
           .from("registeruser")
           .update({ balance: originalBalance })
           .eq("profile_id", user.profile_id);
         await loadBalance();
-        console.log("🔄 Balance rollback successful");
       }
-      
       alert("❌ Join fail: " + error.message);
     } finally {
       setIsLoading(false);
@@ -245,13 +264,19 @@ const TournamentDetails = () => {
           <div className="info-card">
             <div className="info-label">📊 Slots</div>
             <div className={`info-value slots ${isFull ? "full-slots" : ""}`}>
-              {liveSlots}/{maxSlots} {isFull && <span className="full-badge">FULL</span>}
+              {isInitialLoading ? "⏳" : `${liveSlots}/${maxSlots}`} 
+              {isFull && !isInitialLoading && <span className="full-badge">FULL</span>}
             </div>
           </div>
         </div>
 
         <div className="register-section">
-          {isFull ? (
+          {isInitialLoading ? (
+            <div className="status-card loading">
+              <h3>⏳ Checking Status...</h3>
+              <p>Loading tournament data...</p>
+            </div>
+          ) : isFull ? (
             <div className="status-card full">
               <h3>🔴 Tournament FULL</h3>
             </div>

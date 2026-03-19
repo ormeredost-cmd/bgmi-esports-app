@@ -1,18 +1,17 @@
-// src/pages/MyMatches.jsx - 🔥 SILENT BACKGROUND REFRESH (NO BUTTONS!)
-import { useState, useEffect, useCallback } from "react";
+// src/pages/MyMatches.jsx - 🔥 SIMPLE LOADING + SILENT REFRESH!
+import { useState, useEffect, useCallback, useRef } from "react";
 import "./MyMatches.css";
 import BackButton from '../components/BackButton';
 
 const MyMatches = () => {
   const [allMatches, setAllMatches] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [isInitialLoad, setIsInitialLoad] = useState(true);
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
+  const hasLoadedRef = useRef(false);
   
   const API_URL = window.location.hostname === "localhost" 
     ? "http://localhost:5002"
     : "https://deposit-and-join-tournament-server.onrender.com";
 
-  // 🔥 GET ALL BGMI IDs
   const getAllBgmiIds = () => {
     try {
       const tournamentJoins = JSON.parse(localStorage.getItem('tournamentJoins') || '[]');
@@ -25,18 +24,17 @@ const MyMatches = () => {
     }
   };
 
-  // 🔥 SILENT BACKGROUND FETCH (NO UI CHANGE!)
-  const fetchMatchesSilently = useCallback(async (showLoading = false) => {
+  const fetchMatchesInitial = useCallback(async () => {
+    setIsInitialLoading(true);
+    
     const bgmiIds = getAllBgmiIds();
     if (bgmiIds.length === 0) {
-      if (showLoading) setAllMatches([]);
-      if (showLoading) setLoading(false);
+      setAllMatches([]);
+      setIsInitialLoading(false);
       return;
     }
 
     try {
-      if (showLoading) setLoading(true);
-      
       const allMatchesPromises = bgmiIds.map(async (id) => {
         const res = await fetch(`${API_URL}/api/my-matches?bgmiId=${id}`);
         const data = await res.json();
@@ -45,47 +43,67 @@ const MyMatches = () => {
 
       const allMatchesArrays = await Promise.all(allMatchesPromises);
       const allMatchesFlat = allMatchesArrays.flat();
-      
-      // Sort by date (newest first)
       const sortedMatches = allMatchesFlat.sort((a, b) => 
         new Date(b.joined_at) - new Date(a.joined_at)
       );
       
-      // 🔥 ONLY UPDATE IF DATA CHANGED (NO BLINK!)
-      setAllMatches(prevMatches => {
-        if (JSON.stringify(prevMatches) === JSON.stringify(sortedMatches)) {
-          return prevMatches; // No change = no re-render!
-        }
-        return sortedMatches;
-      });
-      
+      setAllMatches(sortedMatches);
     } catch (err) {
-      console.error("Fetch matches error:", err);
+      console.error("Initial fetch error:", err);
+      setAllMatches([]);
     } finally {
-      if (showLoading) setLoading(false);
+      setIsInitialLoading(false);
+      hasLoadedRef.current = true;
     }
   }, [API_URL]);
 
-  // 🔥 INITIAL LOAD (WITH LOADING)
-  useEffect(() => {
-    setIsInitialLoad(true);
-    fetchMatchesSilently(true);
-    setIsInitialLoad(false);
-  }, []);
-
-  // 🔥 SILENT BACKGROUND REFRESH (10s - NO LOADING!)
-  useEffect(() => {
-    const interval = setInterval(() => {
-      fetchMatchesSilently(false); // 🔥 NO UI CHANGE!
-    }, 10000);
+  const fetchMatchesSilently = useCallback(async () => {
+    if (hasLoadedRef.current && allMatches.length > 0) return;
     
+    const bgmiIds = getAllBgmiIds();
+    if (bgmiIds.length === 0) return;
+
+    try {
+      const allMatchesPromises = bgmiIds.map(async (id) => {
+        const res = await fetch(`${API_URL}/api/my-matches?bgmiId=${id}`);
+        const data = await res.json();
+        return data.matches || [];
+      });
+
+      const allMatchesArrays = await Promise.all(allMatchesPromises);
+      const allMatchesFlat = allMatchesArrays.flat();
+      const sortedMatches = allMatchesFlat.sort((a, b) => 
+        new Date(b.joined_at) - new Date(a.joined_at)
+      );
+      
+      setAllMatches(prevMatches => {
+        if (JSON.stringify(prevMatches) === JSON.stringify(sortedMatches)) {
+          return prevMatches;
+        }
+        return sortedMatches;
+      });
+    } catch (err) {
+      console.error("Silent fetch error:", err);
+    }
+  }, [API_URL]);
+
+  useEffect(() => {
+    fetchMatchesInitial();
+  }, [fetchMatchesInitial]);
+
+  useEffect(() => {
+    const interval = setInterval(fetchMatchesSilently, 12000);
     return () => clearInterval(interval);
   }, [fetchMatchesSilently]);
 
-  if (loading && isInitialLoad) {
+  // 🔥 SIMPLE NORMAL LOADING
+  if (isInitialLoading) {
     return (
       <div className="mymatches-page">
-        <div className="loading-text">Loading all matches…</div>
+        <BackButton fallbackPath="/" />
+        <div className="simple-loading">
+          <div>⏳ Loading matches...</div>
+        </div>
       </div>
     );
   }
@@ -107,7 +125,6 @@ const MyMatches = () => {
                   <h3>{match.tournament_name}</h3>
                   <span className="status registered">Registered</span>
                 </div>
-
                 <div className="match-details">
                   <div className="detail-row">
                     <span>Player:</span>
