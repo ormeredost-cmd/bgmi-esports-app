@@ -1,6 +1,5 @@
-// src/data/tournamentsSample.js - 🔥 10+ NEW TOURNAMENTS!
+// src/data/tournamentsSample.js
 export const tournamentsSample = [
-  // 🔥 EXISTING 2 TDMs
   {
     id: "tm1",
     name: "👑 M416 Rush TDM",
@@ -29,8 +28,6 @@ export const tournamentsSample = [
     rulesShort: "M24 Only • No emulators",
     gun: "M24"
   },
-
-  // 🔥 NEW TOURNAMENTS ADD KARO ↓
   {
     id: "tm3",
     name: "💀 Headshot Mania TDM",
