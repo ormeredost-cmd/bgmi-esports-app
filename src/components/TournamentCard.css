@@ -1,129 +1,106 @@
-/* Card wrapper - scroll koi bhi nahi, bas visual style */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&family=Rajdhani:wght@400;600&display=swap');
+
+/* Card wrapper */
 .tour-card {
   position: relative;
-  max-width: 520px;
+  max-width: 460px;
   width: 100%;
-  padding: 12px 16px;
-  padding-right: 16px;
-  background: rgba(15, 23, 42, 0.95);
-  border-radius: 16px;
-  border: 1px solid rgba(31, 41, 55, 0.95);
+  padding: 12px 14px;
+  background:
+    radial-gradient(circle at 0% 0%, rgba(56, 189, 248, 0.14), transparent 55%),
+    radial-gradient(circle at 100% 100%, rgba(45, 212, 191, 0.16), transparent 52%),
+    #020617;
+  border-radius: 14px;
+  border: 1px solid rgba(30, 64, 175, 0.7);
   box-shadow:
     0 0 0 1px rgba(15, 23, 42, 0.9),
-    0 14px 32px rgba(0, 0, 0, 0.65);
+    0 14px 32px rgba(15, 23, 42, 0.95);
   font-size: 13px;
   color: #e5e7eb;
 
-  /* Touch scroll ke liye important */
+  font-family: 'Rajdhani', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+
   -webkit-overflow-scrolling: touch;
   touch-action: manipulation;
 
-  /* THIS LINE⚠️ remove karna zaroori hai agar card khud scrollable nahi chahiye:
-   overflow: hidden; 
-   ये card ke andar ka scroll band karta hai, scrolled area tour-grid-wrapper me hi hona chahiye */
   transition:
     transform 0.18s ease-out,
     box-shadow 0.18s ease-out,
-    border-color 0.18s ease-out;
+    border-color 0.18s ease-out,
+    filter 0.18s ease-out;
 }
 
-/* Glow effect on hover */
-
-
+/* Hover */
 .tour-card:hover {
   transform: translateY(-4px);
   border-color: rgba(56, 189, 248, 0.9);
   box-shadow:
-    0 0 0 1px rgba(15, 23, 23, 1),
-    0 20px 50px rgba(15, 118, 190, 0.7);
+    0 0 0 1px rgba(15, 23, 42, 1),
+    0 20px 50px rgba(15, 23, 42, 1);
+  filter: saturate(1.04);
 }
 
-.tour-card:hover::before {
-  opacity: 1;
-  transform: translate3d(0, 0, 0);
-}
-
-/* TDM special style */
+/* TDM special */
 .tdm-card {
   background:
-    radial-gradient(circle at 5% 0%, rgba(56, 189, 248, 0.18), transparent 55%),
-    radial-gradient(circle at 100% 100%, rgba(34, 197, 94, 0.22), transparent 52%),
-    radial-gradient(circle at 0% 100%, rgba(239, 68, 68, 0.18), transparent 48%),
+    radial-gradient(circle at 0% 0%, rgba(56, 189, 248, 0.20), transparent 55%),
+    radial-gradient(circle at 100% 100%, rgba(59, 130, 246, 0.24), transparent 52%),
     #020617;
-  border-color: rgba(59, 130, 246, 0.85);
+  border-color: rgba(59, 130, 246, 0.95);
   box-shadow:
-    0 0 0 1px rgba(37, 99, 235, 0.9),
-    0 20px 60px rgba(15, 23, 42, 0.95);
+    0 0 0 1px rgba(30, 64, 175, 0.9),
+    0 20px 60px rgba(15, 23, 42, 1);
 }
 
-.tdm-card::before {
-  content: "";
-  position: absolute;
-  inset: -1px;
-  border-radius: inherit;
-  background: conic-gradient(
-    from 220deg,
-    rgba(56, 189, 248, 0.9),
-    rgba(34, 197, 94, 0.7),
-    rgba(56, 189, 248, 0.9),
-    rgba(59, 130, 246, 1)
-  );
-  opacity: 0.65;
-  mix-blend-mode: screen;
-  z-index: -2;
+/* Content above effects */
+.tour-header,
+.tour-title,
+.tour-meta,
+.tour-footer {
+  position: relative;
+  z-index: 1;
 }
 
-.tdm-card::after {
-  content: "";
-  position: absolute;
-  inset: 2px;
-  border-radius: inherit;
-  background: radial-gradient(circle at top left, #020617 18%, #020617 70%);
-  opacity: 0.96;
-  z-index: -1;
-}
-
-.tdm-card:hover {
-  transform: translateY(-5px);
-  box-shadow:
-    0 0 0 1px rgba(59, 130, 246, 1),
-    0 26px 80px rgba(15, 23, 42, 1);
-}
-
-/* Header: Game + Tag */
+/* Header */
 .tour-header {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 8px;
+  align-items: center;
+  margin-bottom: 6px;
+  gap: 8px;
 }
 
 .tour-game {
   display: inline-flex;
   align-items: center;
-  padding: 3px 10px;
+  padding: 3px 9px;
   border-radius: 999px;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.18em;
-  background: radial-gradient(circle at 0 0, #166534 0%, #052e16 70%);
-  border: 1px solid rgba(74, 222, 128, 0.9);
-  color: #bbf7d0;
-  box-shadow: 0 0 10px rgba(34, 197, 94, 0.55);
+  background: radial-gradient(circle at 0 0, #0f172a 0%, #020617 70%);
+  border: 1px solid rgba(56, 189, 248, 0.9);
+  color: #e0f2fe;
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.45);
+  font-family: 'Orbitron', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 .tour-tag {
-  font-size: 11px;
-  padding: 3px 9px;
+  font-size: 10px;
+  padding: 3px 8px;
   border-radius: 999px;
   border: 1px solid rgba(148, 163, 184, 0.7);
   background: rgba(15, 23, 42, 0.98);
+  color: #cbd5f5;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-family: 'Orbitron', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 .tour-tag.tdm {
   border-color: rgba(59, 130, 246, 0.9);
-  color: #60a5fa;
-  background: rgba(15, 23, 42, 0.96);
+  color: #93c5fd;
 }
 
 /* Title */
@@ -132,13 +109,15 @@
   font-size: 15px;
   font-weight: 600;
   color: #f9fafb;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  font-family: 'Orbitron', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-/* Meta lines (entry, prize, time, etc) */
+/* Meta */
 .tour-meta {
   margin: 3px 0;
-  font-size: 13px;
+  font-size: 12px;
   display: flex;
   align-items: center;
   gap: 6px;
@@ -147,15 +126,33 @@
 .meta-label {
   padding: 2px 7px;
   border-radius: 999px;
-  font-size: 10px;
+  font-size: 9px;
   text-transform: uppercase;
   letter-spacing: 0.16em;
   background: rgba(15, 23, 42, 0.98);
   border: 1px solid rgba(51, 65, 85, 0.9);
-  color: #94a3b8;
+  color: #9ca3af;
 }
 
-/* Gun line: same pattern */
+.meta-value {
+  font-weight: 500;
+  color: #e5f7ff;
+}
+
+/* Tournament ID highlight */
+.tour-meta-id .meta-label {
+  border-color: rgba(56, 189, 248, 0.6);
+  color: #bae6fd;
+}
+
+.tour-meta-id .meta-value {
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: #e0f2fe;
+}
+
+/* Gun line */
 .gun-line .meta-label {
   background: rgba(15, 23, 42, 0.98);
   border: 1px solid rgba(51, 65, 85, 0.9);
@@ -167,25 +164,34 @@
   color: #e5f7ff;
 }
 
-.meta-value {
-  font-weight: 500;
-  color: #e5f7ff;
+.gun-line .meta-value::before {
+  content: "🎮 ";
+}
+
+/* Map / time / money */
+.map-highlight {
+  color: #e0f2fe;
+}
+
+.time-highlight {
+  color: #bfdbfe;
 }
 
 .highlight-money {
-  color: #bbf7d0;
+  color: #6ee7b7;
 }
 
 .highlight-prize {
-  color: #fbbf24;
+  color: #facc15;
 }
 
-/* Footer: slots + button */
+/* Footer */
 .tour-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-top: 8px;
+  gap: 8px;
 }
 
 .tour-slots {
@@ -196,23 +202,39 @@
   color: #e5e7eb;
 }
 
-/* Join / Join View buttons */
+.live-slots {
+  font-weight: 600;
+}
+
+.slots-full .live-slots {
+  color: #fecaca;
+}
+
+.full-badge {
+  margin-left: 4px;
+  font-size: 10px;
+}
+
+/* Buttons */
 .btn-tour {
-  font-size: 12px;
-  padding: 5px 11px;
+  font-size: 11px;
+  padding: 5px 12px;
   border-radius: 999px;
   text-decoration: none;
-  background: linear-gradient(90deg, #22c55e, #16a34a);
-  color: #f9fafb;
   border: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+
+  font-family: 'Orbitron', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+
+  background: linear-gradient(90deg, #22c55e, #14b8a6);
+  color: #f9fafb;
   box-shadow: 0 0 10px rgba(34, 197, 94, 0.45);
+  cursor: pointer;
   transition:
     transform 0.15s ease-out,
     box-shadow 0.15s ease-out,
     filter 0.15s ease-out;
-
-  user-select: none;
-  -webkit-tap-highlight-color: transparent;
 }
 
 .btn-tour:hover {
@@ -225,6 +247,81 @@
   transform: translateY(1px) scale(0.98);
   box-shadow: 0 0 8px rgba(34, 197, 94, 0.5);
 }
-.gun-line .meta-value::before {
-  content: "🎮 ";
+
+/* State buttons */
+.btn-loading {
+  background: linear-gradient(90deg, #64748b, #475569);
+  box-shadow: 0 0 10px rgba(148, 163, 184, 0.35);
+}
+
+.btn-full {
+  background: linear-gradient(90deg, #6b7280, #4b5563);
+  box-shadow: 0 0 10px rgba(75, 85, 99, 0.4);
+}
+
+.btn-joined {
+  background: linear-gradient(90deg, #22c55e, #16a34a);
+  box-shadow: 0 0 12px rgba(34, 197, 94, 0.55);
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .tour-card {
+    max-width: 100%;
+    padding: 10px 12px;
+  }
+
+  .tour-title {
+    font-size: 14px;
+  }
+
+  .tour-footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .btn-tour {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+
+
+
+
+.tour-slots-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.slots-progress-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.slots-progress-track {
+  flex: 1;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  overflow: hidden;
+}
+
+.slots-progress-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #22c55e, #22d3ee);
+  box-shadow: 0 0 10px rgba(34, 211, 238, 0.4);
+  transition: width 0.35s ease-out;
+}
+
+.slots-progress-text {
+  font-size: 0.7rem;
+  color: #9ca3af;
+  white-space: nowrap;
 }

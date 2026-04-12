@@ -1,19 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&family=Rajdhani:wght@400;600&display=swap');
+
 /* =========================
-   GLOBAL SCROLL LOCK
+   GLOBAL
 ========================= */
 * {
   box-sizing: border-box;
   overscroll-behavior: none;
 }
 
-html, body {
+html,
+body {
   height: 100%;
   margin: 0;
   padding: 0;
-  overflow: hidden;        /* PAGE SCROLL OFF */
-  touch-action: none;      /* MOBILE FINGER MOVE OFF */
-  background: #0b0f1a;
-  font-family: Arial, sans-serif;
+  background: #020617;
+  font-family: 'Rajdhani', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 /* =========================
@@ -22,41 +23,41 @@ html, body {
 :root {
   --primary: #8b5cf6;
   --secondary: #06b6d4;
-  --glass-border: rgba(255, 255, 255, 0.1);
-  --card-bg: rgba(15, 20, 35, 0.98);
+  --glass-border: rgba(255, 255, 255, 0.12);
+  --card-bg: rgba(15, 23, 42, 0.98);
 }
 
 /* =========================
    PAGE WRAPPER
 ========================= */
 .tdm-page {
-  height: 100vh;
+  min-height: 100vh;
   width: 100%;
-  overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding-top: 10px;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding: 10px;
 }
 
 /* =========================
-   MAIN CARD (FIXED)
+   MAIN CARD
 ========================= */
 .tdm-container {
   width: 100%;
   max-width: 340px;
-                /* FIXED HEIGHT */
-  overflow: hidden;           /* NO INNER SCROLL */
   backdrop-filter: blur(25px);
   border-radius: 20px;
   border: 1px solid var(--glass-border);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.9);
+  box-shadow:
+    0 0 0 1px rgba(15, 23, 42, 0.9),
+    0 20px 40px rgba(0, 0, 0, 0.9);
   display: flex;
   flex-direction: column;
   margin-top: 20px;
-  touch-action: none;
+  background:
+    radial-gradient(circle at 0% 0%, rgba(56, 189, 248, 0.18), transparent 55%),
+    radial-gradient(circle at 100% 100%, rgba(45, 212, 191, 0.18), transparent 52%),
+    var(--card-bg);
 }
 
 /* =========================
@@ -65,7 +66,11 @@ html, body {
 .tdm-header {
   padding: 20px 18px 14px;
   text-align: center;
-  background: rgba(139, 92, 246, 0.12);
+  background: linear-gradient(
+    135deg,
+    rgba(139, 92, 246, 0.18),
+    rgba(6, 182, 212, 0.12)
+  );
   flex-shrink: 0;
   position: relative;
 }
@@ -87,6 +92,7 @@ html, body {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   margin: 0 0 2px;
+  font-family: 'Orbitron', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 .tdm-subtitle {
@@ -96,17 +102,18 @@ html, body {
   -webkit-text-fill-color: transparent;
   margin: 0;
   font-weight: 600;
+  font-family: 'Orbitron', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 /* =========================
-   INFO CARDS (TIGHT)
+   INFO CARDS
 ========================= */
 .tournament-info {
   display: grid;
   grid-template-columns: 1fr 1fr;
   height: 105px;
   flex-shrink: 0;
-  background: rgba(255, 255, 255, 0.02);
+  background: rgba(15, 23, 42, 0.96);
 }
 
 .info-card {
@@ -116,8 +123,8 @@ html, body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: rgba(20, 25, 45, 0.8);
-  border: 1px solid rgba(139, 92, 246, 0.15);
+  background: rgba(15, 23, 42, 0.98);
+  border: 1px solid rgba(148, 163, 184, 0.35);
   position: relative;
   overflow: hidden;
 }
@@ -149,25 +156,102 @@ html, body {
   line-height: 1;
 }
 
+.info-value.success {
+  color: #10b981;
+}
+
+.info-value.warning {
+  color: #fbbf24;
+}
+
+.insufficient {
+  font-size: 0.65rem;
+  color: #f97316;
+}
+
+/* Slots line */
+.info-value.slots {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.full-slots {
+  color: #f97373;
+}
+
+.full-badge {
+  font-size: 0.62rem;
+  padding: 2px 6px;
+  border-radius: 999px;
+  background: rgba(239, 68, 68, 0.15);
+  color: #fecaca;
+}
+
 /* =========================
-   REGISTER SECTION (FIXED)
+   REGISTER SECTION
 ========================= */
 .register-section {
   flex: 1;
-  overflow: hidden;      /* FORM SCROLL OFF */
-  padding: 22px 18px 28px;
-  background: rgba(139, 92, 246, 0.05);
+  padding: 22px 18px 22px;
+  background: rgba(15, 23, 42, 0.98);
   border-top: 1px solid var(--glass-border);
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  gap: 12px;
+}
+
+/* Status cards */
+.status-card {
+  padding: 12px 10px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+}
+
+.status-card.loading {
+  background: rgba(15, 23, 42, 0.95);
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  color: #e5e7eb;
+}
+
+.status-card.full {
+  background: rgba(30, 64, 175, 0.15);
+  border: 1px solid rgba(59, 130, 246, 0.7);
+  color: #bfdbfe;
+}
+
+.status-card.joined {
+  background: rgba(22, 163, 74, 0.18);
+  border: 1px solid rgba(34, 197, 94, 0.7);
+  color: #bbf7d0;
+}
+
+.status-card.error {
+  background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+  color: white;
+  border: 2px solid #ff4757;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.status-card.error h3 {
+  margin: 0;
+  font-size: 0.9rem;
 }
 
 /* =========================
    FORM
 ========================= */
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
 .form-group {
-  margin-bottom: 14px;
+  margin-bottom: 6px;
 }
 
 .form-label {
@@ -183,7 +267,7 @@ html, body {
   padding: 0 14px;
   border: 1.8px solid rgba(139, 92, 246, 0.3);
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(15, 23, 42, 0.96);
   color: #f8fafc;
   font-size: 0.88rem;
 }
@@ -213,33 +297,29 @@ html, body {
   font-weight: 800;
   text-transform: uppercase;
   box-shadow: 0 8px 20px rgba(16, 185, 129, 0.35);
+  cursor: pointer;
+  transition:
+    transform 0.16s ease,
+    box-shadow 0.16s ease,
+    filter 0.16s ease;
+  font-family: 'Orbitron', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.submit-btn:hover:not(.disabled) {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+  box-shadow: 0 10px 26px rgba(16, 185, 129, 0.45);
+}
+
+.submit-btn.disabled {
+  background: linear-gradient(90deg, #6b7280, #4b5563) !important;
+  cursor: not-allowed !important;
+  opacity: 0.6;
 }
 
 /* =========================
-   BACK BUTTON
+   EXTRA STATES
 ========================= */
-.back-btn {
-  position: fixed;
-  top: 58px;
-  left: 6px;
-  z-index: 1002;
-  background: rgba(15, 20, 35, 0.98);
-  border: 1.5px solid rgba(139, 92, 246, 0.4);
-  border-radius: 10px;
-  padding: 6px 8px;
-  color: #cbd5e1;
-  font-size: 0.72rem;
-}
-
-/* =========================
-   MOBILE SAFE
-========================= */
-@media (max-width: 430px) {
-  .tdm-container {
-    height: 89vh;
-    border-radius: 18px;
-  }
-}
 .balance-ok {
   color: #10b981 !important;
 }
@@ -254,28 +334,11 @@ html, body {
   margin-left: 5px;
 }
 
-.status-card.error {
-  background: linear-gradient(135deg, #fee2e2, #fecaca);
-  border: 1px solid #fca5a5;
-  color: #dc2626;
-}
-
-.submit-btn.disabled {
-  background: linear-gradient(90deg, #6b7280, #4b5563) !important;
-  cursor: not-allowed !important;
-  opacity: 0.6;
-}
-.status-card.error {
-  background: linear-gradient(135deg, #ff6b6b, #ee5a52);
-  color: white;
-  border: 2px solid #ff4757;
-  border-radius: 12px;
-  padding: 20px;
-  margin-bottom: 20px;
-  text-align: center;
-}
-
-.status-card.error h3 {
-  margin: 0 0 10px 0;
-  font-size: 1.2em;
+/* =========================
+   MOBILE
+========================= */
+@media (max-width: 430px) {
+  .tdm-container {
+    border-radius: 18px;
+  }
 }

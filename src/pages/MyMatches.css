@@ -1,21 +1,24 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800&family=Rajdhani:wght@400;500;600;700&display=swap');
+
 /* 🔥 MY MATCHES PAGE - FIXED BOTTOM CUT! */
 .mymatches-page {
   min-height: 100vh;
   background: radial-gradient(circle at top, #111827 0, #020617 45%, #000 100%);
-  padding: 72px 12px 140px; /* 🔥 +30px EXTRA BOTTOM SPACE! */
+  padding: 72px 12px 140px;
   color: var(--text-main);
   overflow: hidden;
+  font-family: 'Rajdhani', system-ui, sans-serif;
 }
 
 .mymatches-container {
   max-width: 420px;
   margin: 0 auto;
-  height: calc(100vh - 212px); /* 🔥 REDUCED HEIGHT (72px + 140px) */
+  height: calc(100vh - 212px);
   overflow-y: auto;
   overflow-x: hidden;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  padding-bottom: 20px; /* 🔥 EXTRA BOTTOM PADDING INSIDE! */
+  padding-bottom: 20px;
 }
 
 /* 🔥 HIDDEN SCROLLBAR */
@@ -32,17 +35,24 @@
 .page-header h1 {
   font-size: 28px;
   margin: 0 0 8px 0;
-  background: linear-gradient(135deg, var(--accent-green), var(--accent-gold));
+  font-family: 'Orbitron', system-ui, sans-serif;
+  background: linear-gradient(135deg, #22c55e 0%, #22d3ee 55%, #facc15 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  text-shadow: 0 0 16px rgba(34, 211, 238, 0.08);
 }
 
 .page-header p {
   margin: 0;
   color: var(--text-muted);
   font-size: 14px;
+  font-family: 'Rajdhani', system-ui, sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.03em;
 }
 
 /* 🔥 MATCHES GRID - MORE BOTTOM SPACE */
@@ -50,41 +60,87 @@
   display: flex !important;
   flex-direction: column;
   gap: 14px;
-  padding-bottom: 40px; /* 🔥 DOUBLED BOTTOM PADDING! */
-  min-height: calc(100% - 20px); /* 🔥 FULL HEIGHT */
+  padding-bottom: 40px;
+  min-height: calc(100% - 20px);
 }
 
 .match-card {
-  background: rgba(15, 23, 42, 0.95);
+  background:
+    radial-gradient(circle at top left, rgba(34, 211, 238, 0.08), transparent 35%),
+    rgba(15, 23, 42, 0.95);
   border-radius: 16px;
   padding: 18px;
-  border: 1px solid rgba(31, 41, 55, 0.95);
+  border: 1px solid rgba(34, 211, 238, 0.14);
   box-shadow: 0 8px 32px rgba(15, 23, 42, 0.8);
   transition: all 0.2s ease;
   cursor: pointer;
-  margin-bottom: 8px; /* 🔥 EXTRA GAP BETWEEN CARDS */
+  margin-bottom: 8px;
+  position: relative;
+}
+
+.match-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, #22c55e, #22d3ee, #facc15);
+  border-radius: 16px 16px 0 0;
 }
 
 .match-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 40px rgba(34, 197, 94, 0.2);
+  box-shadow:
+    0 12px 40px rgba(34, 197, 94, 0.12),
+    0 0 18px rgba(34, 211, 238, 0.06);
 }
 
-/* 🔥 MOBILE PERFECT FIX */
-@media (max-width: 768px) {
-  .mymatches-page {
-    padding: 72px 8px 150px; /* 🔥 +10px MOBILE EXTRA */
-  }
-  
-  .mymatches-container {
-    height: calc(100vh - 222px); /* 🔥 MOBILE HEIGHT FIXED */
-    max-width: 100%;
-    padding-bottom: 30px; /* 🔥 MOBILE EXTRA PADDING */
-  }
-  
-  .matches-grid {
-    padding-bottom: 50px; /* 🔥 MOBILE BOTTOM SPACE */
-  }
+.match-header h3,
+.match-card h3 {
+  font-family: 'Orbitron', system-ui, sans-serif;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #f8fafc;
+  font-weight: 700;
+}
+
+.status {
+  font-family: 'Orbitron', system-ui, sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.detail-row span:first-child {
+  font-family: 'Rajdhani', system-ui, sans-serif;
+  font-weight: 600;
+  color: #94a3b8;
+}
+
+.detail-row span:last-child,
+.detail-row strong {
+  font-family: 'Rajdhani', system-ui, sans-serif;
+  font-weight: 700;
+  color: #f8fafc;
+}
+
+.room-box,
+.room-pending,
+.no-matches,
+.simple-loading {
+  font-family: 'Rajdhani', system-ui, sans-serif;
+}
+
+.room-pending {
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.no-matches h2 {
+  font-family: 'Orbitron', system-ui, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .simple-loading {
@@ -94,5 +150,32 @@
   min-height: 60vh;
   font-size: 1.2rem;
   color: #666;
-  padding-bottom: 40px; /* 🔥 LOADING ALSO SAFE */
+  padding-bottom: 40px;
+  font-weight: 600;
+}
+
+/* 🔥 MOBILE PERFECT FIX */
+@media (max-width: 768px) {
+  .mymatches-page {
+    padding: 72px 8px 150px;
+  }
+
+  .mymatches-container {
+    height: calc(100vh - 222px);
+    max-width: 100%;
+    padding-bottom: 30px;
+  }
+
+  .matches-grid {
+    padding-bottom: 50px;
+  }
+
+  .page-header h1 {
+    font-size: 24px;
+    letter-spacing: 0.06em;
+  }
+
+  .page-header p {
+    font-size: 13px;
+  }
 }
