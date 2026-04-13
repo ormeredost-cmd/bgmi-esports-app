@@ -1,4 +1,4 @@
-// src/components/TournamentCard.jsx - 🔥 SLOTS 50 FIX EDITION
+// src/components/TournamentCard.jsx
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
 import "./TournamentCard.css";
@@ -8,7 +8,7 @@ const TournamentCard = ({ t }) => {
   const [isFull, setIsFull] = useState(false);
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [registeredSlots, setRegisteredSlots] = useState(0);
-  const [maxSlots, setMaxSlots] = useState(50); // 🔥 FORCE 50 - NO MORE 1/2
+  const [maxSlots, setMaxSlots] = useState(50);
 
   const intervalRef = useRef(null);
   const mountedRef = useRef(true);
@@ -27,6 +27,7 @@ const TournamentCard = ({ t }) => {
       const tournamentJoin = tournamentJoins.find(
         (join) => join.tournamentId === t.id
       );
+
       return (
         tournamentJoin?.bgmiId ||
         localStorage.getItem("tempBgmiId") ||
@@ -71,14 +72,15 @@ const TournamentCard = ({ t }) => {
 
       if (!mountedRef.current) return;
 
-      // 🔥 FORCE 50 LOGIC - t.slots ko ignore kar do
       const registered = slotsData.registered || 0;
-      const apiMaxSlots = slotsData.max || 50; // server se max ya 50
+      const fixedMaxSlots = 50;
+
       setRegisteredSlots(registered);
-      setMaxSlots(apiMaxSlots);
-      setIsFull(registered >= apiMaxSlots);
+      setMaxSlots(fixedMaxSlots);
+      setIsFull(registered >= fixedMaxSlots);
 
       const bgmiId = getBgmiIdForTournament();
+
       if (bgmiId) {
         const joinRes = await fetch(
           `${API_URL}/api/check-join/${t.id}?bgmiId=${bgmiId}`
@@ -86,6 +88,7 @@ const TournamentCard = ({ t }) => {
         const joinData = await joinRes.json();
 
         if (!mountedRef.current) return;
+
         setIsJoined(!!joinData.joined);
       }
     } catch (error) {
@@ -128,12 +131,12 @@ const TournamentCard = ({ t }) => {
 
       if (!mountedRef.current) return;
 
-      // 🔥 FORCE 50 LOGIC - t.slots ko ignore kar do
       const registered = slotsData.registered || 0;
-      const apiMaxSlots = slotsData.max || 50; // server se max ya 50
+      const fixedMaxSlots = 50;
+
       setRegisteredSlots(registered);
-      setMaxSlots(apiMaxSlots);
-      setIsFull(registered >= apiMaxSlots);
+      setMaxSlots(fixedMaxSlots);
+      setIsFull(registered >= fixedMaxSlots);
     } catch (error) {
       console.error("Silent check failed:", error);
     }
@@ -228,7 +231,7 @@ const TournamentCard = ({ t }) => {
             <span className="meta-value live-slots">
               {isInitialLoading ? "⏳" : `${registeredSlots}/${maxSlots}`}
               {isFull && !isInitialLoading && (
-                <span className="full-badge">🔴 FULL</span>
+                <span className="full-badge"> 🔴 FULL</span>
               )}
             </span>
           </span>
