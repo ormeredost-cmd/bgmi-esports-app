@@ -1,4 +1,4 @@
-// src/pages/MyMatches.jsx - ✅ ENTRY FEE + OPTIONAL PRIZE FIX
+// src/pages/MyMatches.jsx - ✅ ENGLISH VERSION + ENTRY FEE + OPTIONAL PRIZE
 import { useState, useEffect, useCallback, useRef } from "react";
 import "./MyMatches.css";
 import BackButton from "../components/BackButton";
@@ -109,7 +109,7 @@ const MyMatches = () => {
     return () => clearInterval(interval);
   }, [fetchMatchesSilently]);
 
-  // 🔥 SIMPLE NORMAL LOADING
+  // 🔥 SIMPLE LOADING
   if (isInitialLoading) {
     return (
       <div className="mymatches-page">
@@ -126,7 +126,7 @@ const MyMatches = () => {
       <BackButton fallbackPath="/" />
       <div className="mymatches-container">
         <div className="page-header">
-          <h1>मेरे मैच</h1>
+          <h1>My Matches</h1>
           <p>
             Total: <strong>{allMatches.length}</strong> matches found
           </p>
@@ -135,14 +135,14 @@ const MyMatches = () => {
         {allMatches.length > 0 ? (
           <div className="matches-grid">
             {allMatches.map((match) => {
-              // ✅ ENTRY FEE NORMALIZATION (snake_case + camelCase + generic)
+              // ✅ ENTRY FEE NORMALIZATION
               const fee =
                 match.entry_fee ??
                 match.entryFee ??
                 match.entry ??
                 null;
 
-              // ✅ OPTIONAL PRIZE (agar API bhej rahi ho)
+              // ✅ OPTIONAL PRIZE
               const prize =
                 match.prize_pool ??
                 match.prizePool ??
@@ -176,7 +176,7 @@ const MyMatches = () => {
                       </span>
                     </div>
 
-                    {/* ✅ OPTIONAL: PRIZE SHOW KARNA HO TO YEH BLOCK RAKH */}
+                    {/* ✅ OPTIONAL PRIZE SHOW */}
                     {prize !== null && prize !== "" && (
                       <div className="detail-row">
                         <span>Prize:</span>
@@ -217,7 +217,7 @@ const MyMatches = () => {
           </div>
         ) : (
           <div className="no-matches">
-            <h2>कोई मैच नहीं मिला</h2>
+            <h2>No Matches Found</h2>
             <p>No matches found for your BGMI IDs</p>
           </div>
         )}
