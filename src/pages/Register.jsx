@@ -111,7 +111,7 @@ const Register = () => {
   return (
     <div className="register-wrapper">
       <div className="register-container">
-        <h2 className="register-title">BGMI Register</h2>
+        <h2 className="register-title">Free Fire Register</h2>
         <p className="register-subtitle">Create your gaming account</p>
 
         {error && <div className="error-message">{error}</div>}

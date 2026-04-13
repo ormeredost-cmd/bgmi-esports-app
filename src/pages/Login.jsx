@@ -110,7 +110,7 @@ const Login = () => {
       <div className="login-container">
         <div className="login-header">
           <div className="bgmi-logo">🔐</div>
-          <h2 className="login-title">BGMI Login</h2>
+          <h2 className="login-title">Free Fire Login</h2>
         </div>
 
         {/* 🔥 NEW VERIFICATION MESSAGE */}
