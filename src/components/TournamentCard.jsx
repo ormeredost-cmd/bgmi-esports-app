@@ -1,4 +1,4 @@
-// src/components/TournamentCard.jsx
+// src/components/TournamentCard.jsx - 🔥 SLOTS 50 FIX EDITION
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
 import "./TournamentCard.css";
@@ -8,7 +8,7 @@ const TournamentCard = ({ t }) => {
   const [isFull, setIsFull] = useState(false);
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [registeredSlots, setRegisteredSlots] = useState(0);
-  const [maxSlots, setMaxSlots] = useState(t.slots || 64);
+  const [maxSlots, setMaxSlots] = useState(50); // 🔥 FORCE 50 - NO MORE 1/2
 
   const intervalRef = useRef(null);
   const mountedRef = useRef(true);
@@ -17,7 +17,7 @@ const TournamentCard = ({ t }) => {
   const API_URL =
     window.location.hostname === "localhost"
       ? "http://localhost:5002"
-      : "https://freefire-server-t.onrender.com";
+      : "https://deposit-and-join-tournament-server.onrender.com";
 
   const getBgmiIdForTournament = useCallback(() => {
     try {
@@ -71,11 +71,12 @@ const TournamentCard = ({ t }) => {
 
       if (!mountedRef.current) return;
 
-      setRegisteredSlots(slotsData.registered || 0);
-      setMaxSlots(slotsData.max || t.slots || 64);
-      setIsFull(
-        (slotsData.registered || 0) >= (slotsData.max || t.slots || 64)
-      );
+      // 🔥 FORCE 50 LOGIC - t.slots ko ignore kar do
+      const registered = slotsData.registered || 0;
+      const apiMaxSlots = slotsData.max || 50; // server se max ya 50
+      setRegisteredSlots(registered);
+      setMaxSlots(apiMaxSlots);
+      setIsFull(registered >= apiMaxSlots);
 
       const bgmiId = getBgmiIdForTournament();
       if (bgmiId) {
@@ -85,8 +86,6 @@ const TournamentCard = ({ t }) => {
         const joinData = await joinRes.json();
 
         if (!mountedRef.current) return;
-
-        console.log(`📊 Initial ${t.id}:`, joinData.joined);
         setIsJoined(!!joinData.joined);
       }
     } catch (error) {
@@ -100,7 +99,7 @@ const TournamentCard = ({ t }) => {
         hasLoadedRef.current = true;
       }
     }
-  }, [t.id, API_URL, t.slots, getBgmiIdForTournament]);
+  }, [t.id, API_URL, getBgmiIdForTournament]);
 
   const checkStatusSilent = useCallback(async () => {
     if (hasLoadedRef.current && (isJoined || isFull)) return;
@@ -129,15 +128,21 @@ const TournamentCard = ({ t }) => {
 
       if (!mountedRef.current) return;
 
-      setRegisteredSlots(slotsData.registered || 0);
-      setMaxSlots(slotsData.max || t.slots || 64);
-      setIsFull(
-        (slotsData.registered || 0) >= (slotsData.max || t.slots || 64)
-      );
+      // 🔥 FORCE 50 LOGIC - t.slots ko ignore kar do
+      const registered = slotsData.registered || 0;
+      const apiMaxSlots = slotsData.max || 50; // server se max ya 50
+      setRegisteredSlots(registered);
+      setMaxSlots(apiMaxSlots);
+      setIsFull(registered >= apiMaxSlots);
     } catch (error) {
       console.error("Silent check failed:", error);
     }
-  }, [t.id, API_URL, t.slots, getBgmiIdForTournament, isJoined, isFull]);
+  }, [t.id, API_URL, getBgmiIdForTournament, isJoined, isFull]);
+
+  const filledPercent =
+    maxSlots > 0
+      ? Math.min(100, Math.round((registeredSlots / maxSlots) * 100))
+      : 0;
 
   useEffect(() => {
     mountedRef.current = true;
@@ -156,11 +161,6 @@ const TournamentCard = ({ t }) => {
     };
   }, []);
 
-  const filledPercent =
-    maxSlots > 0
-      ? Math.min(100, Math.round((registeredSlots / maxSlots) * 100))
-      : 0;
-
   return (
     <div
       className={`tour-card ${
@@ -176,9 +176,7 @@ const TournamentCard = ({ t }) => {
 
       {t.tournamentId && (
         <p className="tour-meta tour-meta-id">
-          <span className="meta-label" data-label="Tournament ID">
-            Tournament ID
-          </span>
+          <span className="meta-label">Tournament ID</span>
           <span className="meta-value">{t.tournamentId}</span>
         </p>
       )}
@@ -230,16 +228,22 @@ const TournamentCard = ({ t }) => {
             <span className="meta-value live-slots">
               {isInitialLoading ? "⏳" : `${registeredSlots}/${maxSlots}`}
               {isFull && !isInitialLoading && (
-                <span className="full-badge"> 🔴 FULL</span>
+                <span className="full-badge">🔴 FULL</span>
               )}
             </span>
           </span>
 
-          {/* slots fill line only, no percentage text */}
           <div className="slots-progress-wrap">
-            <div className="slots-progress-track">
+            <div
+              className="slots-progress-track"
+              role="progressbar"
+              aria-valuenow={filledPercent}
+              aria-valuemin="0"
+              aria-valuemax="100"
+              aria-label="Tournament slots progress"
+            >
               <div
-                className="slots-progress-fill"
+                className={`slots-progress-fill ${isFull ? "full" : ""}`}
                 style={{
                   width: isInitialLoading ? "0%" : `${filledPercent}%`,
                 }}
