@@ -8,7 +8,7 @@ const TournamentCard = ({ t }) => {
   const [isFull, setIsFull] = useState(false);
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [registeredSlots, setRegisteredSlots] = useState(0);
-  const [maxSlots, setMaxSlots] = useState(t.slots || 64); // ✅ 64 slots default
+  const [maxSlots, setMaxSlots] = useState(t.slots || 50); // ✅ 64 slots default
 
   const intervalRef = useRef(null);
   const mountedRef = useRef(true);
