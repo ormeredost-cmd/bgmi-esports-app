@@ -45,8 +45,8 @@ const MainLayout = ({ children }) => {
     <div className="app-root-esports">
       <header className="app-topbar">
         <div className="app-topbar-left">
-          <span className="app-topbar-logo-main">BGMI</span>
-          <span className="app-topbar-logo-sub">Esports</span>
+          <span className="app-topbar-logo-main">FREE FIRE</span>
+          
         </div>
         <div className="app-topbar-right">
           <Navbar variant="top-menu" />

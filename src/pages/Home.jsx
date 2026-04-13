@@ -29,7 +29,7 @@ const Home = () => {
     <div className="page-esports">
       <section className="hero">
         <div className="hero-left">
-          <h1>BGMI Esports</h1>
+          <h1>Free Fire Tournament</h1>
           <div className="hero-actions">
             <div className="all-tour-wrapper">
               <button
