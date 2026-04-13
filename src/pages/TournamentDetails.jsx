@@ -358,7 +358,7 @@ const TournamentDetails = () => {
                   />
                 </div>
                 <div className="form-group">
-                  <label className="form-label">📱 FREE FIRE ID NUMBER</label>
+                  <label className="form-label">📱 FREE FIRE ID No.</label>
                   <input
                     name="bgmiIdNumber"
                     type="text"
