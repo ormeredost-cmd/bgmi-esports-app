@@ -1,4 +1,4 @@
-// src/pages/MyMatches.jsx - 🔥 SIMPLE LOADING + SILENT REFRESH!
+// src/pages/MyMatches.jsx - ✅ ENTRY FEE + OPTIONAL PRIZE FIX
 import { useState, useEffect, useCallback, useRef } from "react";
 import "./MyMatches.css";
 import BackButton from "../components/BackButton";
@@ -19,10 +19,13 @@ const MyMatches = () => {
         localStorage.getItem("tournamentJoins") || "[]"
       );
       const uniqueIds = [...new Set(tournamentJoins.map((join) => join.bgmiId))];
+
       const fallback =
         localStorage.getItem("tempBgmiId") ||
         localStorage.getItem("lastBgmiId");
+
       if (fallback && !uniqueIds.includes(fallback)) uniqueIds.push(fallback);
+
       return uniqueIds.filter(Boolean);
     } catch {
       return [
@@ -51,6 +54,7 @@ const MyMatches = () => {
 
       const allMatchesArrays = await Promise.all(allMatchesPromises);
       const allMatchesFlat = allMatchesArrays.flat();
+
       const sortedMatches = allMatchesFlat.sort(
         (a, b) => new Date(b.joined_at) - new Date(a.joined_at)
       );
@@ -80,6 +84,7 @@ const MyMatches = () => {
 
       const allMatchesArrays = await Promise.all(allMatchesPromises);
       const allMatchesFlat = allMatchesArrays.flat();
+
       const sortedMatches = allMatchesFlat.sort(
         (a, b) => new Date(b.joined_at) - new Date(a.joined_at)
       );
@@ -129,70 +134,86 @@ const MyMatches = () => {
 
         {allMatches.length > 0 ? (
           <div className="matches-grid">
-            {allMatches.map((match) => (
-              <div key={match.id} className="match-card">
-                <div className="match-header">
-                  <h3>{match.tournament_name}</h3>
-                  <span className="status registered">Registered</span>
-                </div>
+            {allMatches.map((match) => {
+              // ✅ ENTRY FEE NORMALIZATION (snake_case + camelCase + generic)
+              const fee =
+                match.entry_fee ??
+                match.entryFee ??
+                match.entry ??
+                null;
 
-                <div className="match-details">
-                  <div className="detail-row">
-                    <span>Player:</span>
-                    <span className="highlight">{match.player_name}</span>
+              // ✅ OPTIONAL PRIZE (agar API bhej rahi ho)
+              const prize =
+                match.prize_pool ??
+                match.prizePool ??
+                match.winnerPrize ??
+                null;
+
+              return (
+                <div key={match.id} className="match-card">
+                  <div className="match-header">
+                    <h3>{match.tournament_name}</h3>
+                    <span className="status registered">Registered</span>
                   </div>
 
-                  <div className="detail-row">
-                    <span>BGMI ID:</span>
-                    <span className="highlight">{match.bgmi_id}</span>
-                  </div>
-
-                  <div className="detail-row">
-                    <span>Entry:</span>
-                    {/* agar entry_fee undefined/null hai to empty string, 0 ko bhi avoid kiya */}
-                    <span>
-                      {match.entry_fee != null && match.entry_fee !== ""
-                        ? `₹${match.entry_fee}`
-                        : "-"}
-                    </span>
-                  </div>
-
-                  {/* 🔥 PRIZE ROW COMPLETELY REMOVED FROM CARD
-                  <div className="detail-row">
-                    <span>Prize:</span>
-                    <span className="prize-pool">₹{match.prize_pool || 0}</span>
-                  </div>
-                  */}
-
-                  <div className="detail-row">
-                    <span>Date:</span>
-                    <span>{match.date}</span>
-                  </div>
-
-                  <div className="detail-row">
-                    <span>Time:</span>
-                    <span>{match.time}</span>
-                  </div>
-
-                  {match.room_id ? (
-                    <div className="room-box">
-                      <div className="detail-row">
-                        <span>Room ID:</span>
-                        <strong>{match.room_id}</strong>
-                      </div>
-                      <div className="detail-row">
-                        <span>Password:</span>
-                        <strong>{match.room_password}</strong>
-                      </div>
+                  <div className="match-details">
+                    <div className="detail-row">
+                      <span>Game Name:</span>
+                      <span className="highlight">{match.player_name}</span>
                     </div>
-                  ) : (
-                    <div className="room-pending">
-                      ⏳ Room details coming soon
+
+                    <div className="detail-row">
+                      <span>Game ID:</span>
+                      <span className="highlight">{match.bgmi_id}</span>
                     </div>
-                  )}
+
+                    <div className="detail-row">
+                      <span>Entry:</span>
+                      <span>
+                        {fee !== null && fee !== ""
+                          ? `₹${fee}`
+                          : "-"}
+                      </span>
+                    </div>
+
+                    {/* ✅ OPTIONAL: PRIZE SHOW KARNA HO TO YEH BLOCK RAKH */}
+                    {prize !== null && prize !== "" && (
+                      <div className="detail-row">
+                        <span>Prize:</span>
+                        <span className="prize-pool">₹{prize}</span>
+                      </div>
+                    )}
+
+                    <div className="detail-row">
+                      <span>Date:</span>
+                      <span>{match.date}</span>
+                    </div>
+
+                    <div className="detail-row">
+                      <span>Time:</span>
+                      <span>{match.time}</span>
+                    </div>
+
+                    {match.room_id ? (
+                      <div className="room-box">
+                        <div className="detail-row">
+                          <span>Room ID:</span>
+                          <strong>{match.room_id}</strong>
+                        </div>
+                        <div className="detail-row">
+                          <span>Password:</span>
+                          <strong>{match.room_password}</strong>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="room-pending">
+                        ⏳ Room details coming soon
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         ) : (
           <div className="no-matches">
