@@ -1,4 +1,4 @@
-// src/components/TournamentCard.jsx
+// src/components/TournamentCard.jsx - 🔥 SLOTS 50 FIX EDITION
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
 import "./TournamentCard.css";
@@ -8,7 +8,7 @@ const TournamentCard = ({ t }) => {
   const [isFull, setIsFull] = useState(false);
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [registeredSlots, setRegisteredSlots] = useState(0);
-  const [maxSlots, setMaxSlots] = useState(t.slots || 50);
+  const [maxSlots, setMaxSlots] = useState(50); // 🔥 FORCE 50 - NO MORE 1/2
 
   const intervalRef = useRef(null);
   const mountedRef = useRef(true);
@@ -71,12 +71,12 @@ const TournamentCard = ({ t }) => {
 
       if (!mountedRef.current) return;
 
+      // 🔥 FORCE 50 LOGIC - t.slots ko ignore kar do
       const registered = slotsData.registered || 0;
-      const max = slotsData.max || t.slots || 50;
-
+      const apiMaxSlots = slotsData.max || 50; // server se max ya 50
       setRegisteredSlots(registered);
-      setMaxSlots(max);
-      setIsFull(registered >= max);
+      setMaxSlots(apiMaxSlots);
+      setIsFull(registered >= apiMaxSlots);
 
       const bgmiId = getBgmiIdForTournament();
       if (bgmiId) {
@@ -86,7 +86,6 @@ const TournamentCard = ({ t }) => {
         const joinData = await joinRes.json();
 
         if (!mountedRef.current) return;
-
         setIsJoined(!!joinData.joined);
       }
     } catch (error) {
@@ -100,48 +99,45 @@ const TournamentCard = ({ t }) => {
         hasLoadedRef.current = true;
       }
     }
-  }, [t.id, API_URL, t.slots, getBgmiIdForTournament]);
+  }, [t.id, API_URL, getBgmiIdForTournament]);
 
-  const checkStatusSilent = useCallback(
-    async () => {
-      if (hasLoadedRef.current && (isJoined || isFull)) return;
+  const checkStatusSilent = useCallback(async () => {
+    if (hasLoadedRef.current && (isJoined || isFull)) return;
 
-      try {
-        const bgmiId = getBgmiIdForTournament();
+    try {
+      const bgmiId = getBgmiIdForTournament();
 
-        if (bgmiId) {
-          const joinRes = await fetch(
-            `${API_URL}/api/check-join/${t.id}?bgmiId=${bgmiId}`
-          );
-          const joinData = await joinRes.json();
-
-          if (!mountedRef.current) return;
-
-          if (joinData.joined) {
-            setIsJoined(true);
-            hasLoadedRef.current = true;
-          }
-        }
-
-        const slotsRes = await fetch(
-          `${API_URL}/api/tournament-slots-count/${t.id}`
+      if (bgmiId) {
+        const joinRes = await fetch(
+          `${API_URL}/api/check-join/${t.id}?bgmiId=${bgmiId}`
         );
-        const slotsData = await slotsRes.json();
+        const joinData = await joinRes.json();
 
         if (!mountedRef.current) return;
 
-        const registered = slotsData.registered || 0;
-        const max = slotsData.max || t.slots || 50;
-
-        setRegisteredSlots(registered);
-        setMaxSlots(max);
-        setIsFull(registered >= max);
-      } catch (error) {
-        console.error("Silent check failed:", error);
+        if (joinData.joined) {
+          setIsJoined(true);
+          hasLoadedRef.current = true;
+        }
       }
-    },
-    [t.id, API_URL, t.slots, getBgmiIdForTournament, isJoined, isFull]
-  );
+
+      const slotsRes = await fetch(
+        `${API_URL}/api/tournament-slots-count/${t.id}`
+      );
+      const slotsData = await slotsRes.json();
+
+      if (!mountedRef.current) return;
+
+      // 🔥 FORCE 50 LOGIC - t.slots ko ignore kar do
+      const registered = slotsData.registered || 0;
+      const apiMaxSlots = slotsData.max || 50; // server se max ya 50
+      setRegisteredSlots(registered);
+      setMaxSlots(apiMaxSlots);
+      setIsFull(registered >= apiMaxSlots);
+    } catch (error) {
+      console.error("Silent check failed:", error);
+    }
+  }, [t.id, API_URL, getBgmiIdForTournament, isJoined, isFull]);
 
   const filledPercent =
     maxSlots > 0
@@ -180,9 +176,7 @@ const TournamentCard = ({ t }) => {
 
       {t.tournamentId && (
         <p className="tour-meta tour-meta-id">
-          <span className="meta-label" data-label="Tournament ID">
-            Tournament ID
-          </span>
+          <span className="meta-label">Tournament ID</span>
           <span className="meta-value">{t.tournamentId}</span>
         </p>
       )}
@@ -239,7 +233,6 @@ const TournamentCard = ({ t }) => {
             </span>
           </span>
 
-          {/* ✅ PROGRESS BAR */}
           <div className="slots-progress-wrap">
             <div
               className="slots-progress-track"
