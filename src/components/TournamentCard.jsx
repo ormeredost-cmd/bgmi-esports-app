@@ -8,13 +8,12 @@ const TournamentCard = ({ t }) => {
   const [isFull, setIsFull] = useState(false);
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [registeredSlots, setRegisteredSlots] = useState(0);
-  const [maxSlots, setMaxSlots] = useState(t.slots || 50); // ✅ 64 slots default
+  const [maxSlots, setMaxSlots] = useState(t.slots || 50);
 
   const intervalRef = useRef(null);
   const mountedRef = useRef(true);
   const hasLoadedRef = useRef(false);
 
-  // ✅ PRODUCTION API URL
   const API_URL =
     window.location.hostname === "localhost"
       ? "http://localhost:5002"
@@ -72,11 +71,12 @@ const TournamentCard = ({ t }) => {
 
       if (!mountedRef.current) return;
 
-      setRegisteredSlots(slotsData.registered || 0);
-      setMaxSlots(slotsData.max || t.slots || 64);
-      setIsFull(
-        (slotsData.registered || 0) >= (slotsData.max || t.slots || 64)
-      );
+      const registered = slotsData.registered || 0;
+      const max = slotsData.max || t.slots || 50;
+
+      setRegisteredSlots(registered);
+      setMaxSlots(max);
+      setIsFull(registered >= max);
 
       const bgmiId = getBgmiIdForTournament();
       if (bgmiId) {
@@ -87,7 +87,6 @@ const TournamentCard = ({ t }) => {
 
         if (!mountedRef.current) return;
 
-        console.log(`📊 Initial ${t.id}:`, joinData.joined);
         setIsJoined(!!joinData.joined);
       }
     } catch (error) {
@@ -103,44 +102,47 @@ const TournamentCard = ({ t }) => {
     }
   }, [t.id, API_URL, t.slots, getBgmiIdForTournament]);
 
-  const checkStatusSilent = useCallback(async () => {
-    if (hasLoadedRef.current && (isJoined || isFull)) return;
+  const checkStatusSilent = useCallback(
+    async () => {
+      if (hasLoadedRef.current && (isJoined || isFull)) return;
 
-    try {
-      const bgmiId = getBgmiIdForTournament();
+      try {
+        const bgmiId = getBgmiIdForTournament();
 
-      if (bgmiId) {
-        const joinRes = await fetch(
-          `${API_URL}/api/check-join/${t.id}?bgmiId=${bgmiId}`
+        if (bgmiId) {
+          const joinRes = await fetch(
+            `${API_URL}/api/check-join/${t.id}?bgmiId=${bgmiId}`
+          );
+          const joinData = await joinRes.json();
+
+          if (!mountedRef.current) return;
+
+          if (joinData.joined) {
+            setIsJoined(true);
+            hasLoadedRef.current = true;
+          }
+        }
+
+        const slotsRes = await fetch(
+          `${API_URL}/api/tournament-slots-count/${t.id}`
         );
-        const joinData = await joinRes.json();
+        const slotsData = await slotsRes.json();
 
         if (!mountedRef.current) return;
 
-        if (joinData.joined) {
-          setIsJoined(true);
-          hasLoadedRef.current = true;
-        }
+        const registered = slotsData.registered || 0;
+        const max = slotsData.max || t.slots || 50;
+
+        setRegisteredSlots(registered);
+        setMaxSlots(max);
+        setIsFull(registered >= max);
+      } catch (error) {
+        console.error("Silent check failed:", error);
       }
+    },
+    [t.id, API_URL, t.slots, getBgmiIdForTournament, isJoined, isFull]
+  );
 
-      const slotsRes = await fetch(
-        `${API_URL}/api/tournament-slots-count/${t.id}`
-      );
-      const slotsData = await slotsRes.json();
-
-      if (!mountedRef.current) return;
-
-      setRegisteredSlots(slotsData.registered || 0);
-      setMaxSlots(slotsData.max || t.slots || 64);
-      setIsFull(
-        (slotsData.registered || 0) >= (slotsData.max || t.slots || 64)
-      );
-    } catch (error) {
-      console.error("Silent check failed:", error);
-    }
-  }, [t.id, API_URL, t.slots, getBgmiIdForTournament, isJoined, isFull]);
-
-  // ✅ PROGRESS CALCULATION
   const filledPercent =
     maxSlots > 0
       ? Math.min(100, Math.round((registeredSlots / maxSlots) * 100))
@@ -237,9 +239,16 @@ const TournamentCard = ({ t }) => {
             </span>
           </span>
 
-          {/* ✅ PROGRESS BAR - Live filling line */}
+          {/* ✅ PROGRESS BAR */}
           <div className="slots-progress-wrap">
-            <div className="slots-progress-track" role="progressbar" aria-valuenow={filledPercent} aria-valuemin="0" aria-valuemax="100" aria-label="Tournament slots progress">
+            <div
+              className="slots-progress-track"
+              role="progressbar"
+              aria-valuenow={filledPercent}
+              aria-valuemin="0"
+              aria-valuemax="100"
+              aria-label="Tournament slots progress"
+            >
               <div
                 className={`slots-progress-fill ${isFull ? "full" : ""}`}
                 style={{
