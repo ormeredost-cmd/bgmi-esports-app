@@ -172,7 +172,10 @@ const TournamentCard = ({ t }) => {
     >
       <div className="tour-header">
         <span className="tour-game">{t.game || "FREE FIRE"}</span>
-        <span className={`tour-tag ${t.type?.toLowerCase()}`}>{t.type}</span>
+        {/* 🔥 WARRIORS SPECIAL BADGE */}
+        <span className={`tour-tag ${t.type?.toLowerCase()}`}>
+          {t.type}
+        </span>
       </div>
 
       <h3 className="tour-title">{t.name}</h3>
@@ -218,7 +221,7 @@ const TournamentCard = ({ t }) => {
       {(t.winnerPrize !== undefined || t.prizePool !== undefined) && (
         <p className="tour-meta">
           <span className="meta-label">Winner Prize</span>
-          <span className="meta-value highlight-money">
+          <span className="meta-value highlight-prize">
             ₹{t.winnerPrize ?? t.prizePool}
           </span>
         </p>
@@ -231,7 +234,7 @@ const TournamentCard = ({ t }) => {
             <span className="meta-value live-slots">
               {isInitialLoading ? "⏳" : `${registeredSlots}/${maxSlots}`}
               {isFull && !isInitialLoading && (
-                <span className="full-badge"> 🔴 FULL</span>
+                <span className="full-badge">🔴 FULL</span>
               )}
             </span>
           </span>
