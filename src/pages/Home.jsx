@@ -11,11 +11,14 @@ const Home = () => {
   // 🔥 Mobile viewport fix - ye PERFECT hai
   useEffect(() => {
     const setVH = () => {
-      document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
+      document.documentElement.style.setProperty(
+        "--vh",
+        `${window.innerHeight * 0.01}px`
+      );
     };
     setVH();
-    window.addEventListener('resize', setVH);
-    return () => window.removeEventListener('resize', setVH);
+    window.addEventListener("resize", setVH);
+    return () => window.removeEventListener("resize", setVH);
   }, []);
 
   const handleCategoryClick = (cat) => {
@@ -29,11 +32,7 @@ const Home = () => {
     <div className="page-esports">
       <section className="hero">
         <div className="hero-left">
-<<<<<<< HEAD
-          <h1>Free Fire Tournament</h1>
-=======
           <h1>FREE FIRE ESPORTS</h1>
->>>>>>> f03563068ccc377e5abc2dcfec2605d3bfbfea10
           <div className="hero-actions">
             <div className="all-tour-wrapper">
               <button

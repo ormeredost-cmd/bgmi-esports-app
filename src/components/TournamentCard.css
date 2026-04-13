@@ -286,10 +286,7 @@
   }
 }
 
-
-
-
-
+/* Slots + Progress bar */
 .tour-slots-wrap {
   display: flex;
   flex-direction: column;
@@ -324,9 +321,4 @@
   font-size: 0.7rem;
   color: #9ca3af;
   white-space: nowrap;
-<<<<<<< HEAD
 }
-
-=======
-}
->>>>>>> f03563068ccc377e5abc2dcfec2605d3bfbfea10
