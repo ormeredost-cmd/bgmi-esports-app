@@ -45,7 +45,11 @@ const MainLayout = ({ children }) => {
     <div className="app-root-esports">
       <header className="app-topbar">
         <div className="app-topbar-left">
+<<<<<<< HEAD
           <span className="app-topbar-logo-main">FREE FIRE</span>
+=======
+          <span className="app-topbar-logo-main">FREE FIRE ESPORT</span>
+>>>>>>> f03563068ccc377e5abc2dcfec2605d3bfbfea10
           
         </div>
         <div className="app-topbar-right">

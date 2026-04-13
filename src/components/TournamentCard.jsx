@@ -8,7 +8,11 @@ const TournamentCard = ({ t }) => {
   const [isFull, setIsFull] = useState(false);
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [registeredSlots, setRegisteredSlots] = useState(0);
+<<<<<<< HEAD
   const [maxSlots, setMaxSlots] = useState(t.slots || 50);
+=======
+  const [maxSlots, setMaxSlots] = useState(t.slots || 64);
+>>>>>>> f03563068ccc377e5abc2dcfec2605d3bfbfea10
 
   const intervalRef = useRef(null);
   const mountedRef = useRef(true);
@@ -17,7 +21,11 @@ const TournamentCard = ({ t }) => {
   const API_URL =
     window.location.hostname === "localhost"
       ? "http://localhost:5002"
+<<<<<<< HEAD
       : "https://freefire-server-t.onrender.com";
+=======
+      : "https://deposit-and-join-tournament-server.onrender.com";
+>>>>>>> f03563068ccc377e5abc2dcfec2605d3bfbfea10
 
   const getBgmiIdForTournament = useCallback(() => {
     try {
