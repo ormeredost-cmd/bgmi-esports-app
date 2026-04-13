@@ -346,19 +346,19 @@ const TournamentDetails = () => {
               )}
               <form className="register-form" onSubmit={handleSubmit}>
                 <div className="form-group">
-                  <label className="form-label">🎮 BGMI ID NAME</label>
+                  <label className="form-label">🎮 FREE FIRE ID NAME</label>
                   <input
                     name="bgmiIdName"
                     type="text"
                     className="form-input"
                     required
-                    placeholder="Your BGMI name"
+                    placeholder="Free Fire ID"
                     maxLength={20}
                     disabled={isLoading}
                   />
                 </div>
                 <div className="form-group">
-                  <label className="form-label">📱 BGMI ID NUMBER</label>
+                  <label className="form-label">📱 FREE FIRE ID NUMBER</label>
                   <input
                     name="bgmiIdNumber"
                     type="text"
