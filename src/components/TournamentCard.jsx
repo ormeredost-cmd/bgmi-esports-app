@@ -8,24 +8,17 @@ const TournamentCard = ({ t }) => {
   const [isFull, setIsFull] = useState(false);
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [registeredSlots, setRegisteredSlots] = useState(0);
-<<<<<<< HEAD
-  const [maxSlots, setMaxSlots] = useState(t.slots || 50);
-=======
-  const [maxSlots, setMaxSlots] = useState(t.slots || 64);
->>>>>>> f03563068ccc377e5abc2dcfec2605d3bfbfea10
+  const [maxSlots, setMaxSlots] = useState(t.slots || 64); // ✅ 64 slots default
 
   const intervalRef = useRef(null);
   const mountedRef = useRef(true);
   const hasLoadedRef = useRef(false);
 
+  // ✅ PRODUCTION API URL
   const API_URL =
     window.location.hostname === "localhost"
       ? "http://localhost:5002"
-<<<<<<< HEAD
-      : "https://freefire-server-t.onrender.com";
-=======
       : "https://deposit-and-join-tournament-server.onrender.com";
->>>>>>> f03563068ccc377e5abc2dcfec2605d3bfbfea10
 
   const getBgmiIdForTournament = useCallback(() => {
     try {
@@ -147,6 +140,12 @@ const TournamentCard = ({ t }) => {
     }
   }, [t.id, API_URL, t.slots, getBgmiIdForTournament, isJoined, isFull]);
 
+  // ✅ PROGRESS CALCULATION
+  const filledPercent =
+    maxSlots > 0
+      ? Math.min(100, Math.round((registeredSlots / maxSlots) * 100))
+      : 0;
+
   useEffect(() => {
     mountedRef.current = true;
     checkStatusInitial();
@@ -163,11 +162,6 @@ const TournamentCard = ({ t }) => {
       clearInterval(intervalRef.current);
     };
   }, []);
-
-  const filledPercent =
-    maxSlots > 0
-      ? Math.min(100, Math.round((registeredSlots / maxSlots) * 100))
-      : 0;
 
   return (
     <div
@@ -238,16 +232,16 @@ const TournamentCard = ({ t }) => {
             <span className="meta-value live-slots">
               {isInitialLoading ? "⏳" : `${registeredSlots}/${maxSlots}`}
               {isFull && !isInitialLoading && (
-                <span className="full-badge"> 🔴 FULL</span>
+                <span className="full-badge">🔴 FULL</span>
               )}
             </span>
           </span>
 
-          {/* slots fill line only, no percentage text */}
+          {/* ✅ PROGRESS BAR - Live filling line */}
           <div className="slots-progress-wrap">
-            <div className="slots-progress-track">
+            <div className="slots-progress-track" role="progressbar" aria-valuenow={filledPercent} aria-valuemin="0" aria-valuemax="100" aria-label="Tournament slots progress">
               <div
-                className="slots-progress-fill"
+                className={`slots-progress-fill ${isFull ? "full" : ""}`}
                 style={{
                   width: isInitialLoading ? "0%" : `${filledPercent}%`,
                 }}
