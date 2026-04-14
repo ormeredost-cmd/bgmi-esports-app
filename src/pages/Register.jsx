@@ -1,12 +1,15 @@
 import React, { useState } from "react";
-import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
-import { auth } from "../firebase";
 import { supabase } from "../supabaseClient";
 import "./Register.css";
 
-// 🔥 PRODUCTION READY
-const API_URL =
-  import.meta.env.VITE_API_URL || "https://user-register-server.onrender.com";
+const isLocalhost =
+  window.location.hostname === "localhost" ||
+  window.location.hostname === "127.0.0.1" ||
+  window.location.hostname === "[::1]";
+
+const API_URL = isLocalhost
+  ? "http://localhost:5001"
+  : import.meta.env.VITE_API_URL || "https://user-register-server.onrender.com";
 
 const Register = () => {
   const [username, setUsername] = useState("");
@@ -15,20 +18,22 @@ const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   const handleRegister = async (e) => {
     e.preventDefault();
     setError("");
+    setSuccess("");
     setLoading(true);
 
-    if (password !== confirmPassword) {
-      setError("❌ Passwords match nahi kar rahe!");
+    if (!username || !email || !password || !confirmPassword) {
+      setError("❌ Sab fields bharo!");
       setLoading(false);
       return;
     }
 
-    if (!username || !email || !password || !confirmPassword) {
-      setError("❌ Sab fields bharo!");
+    if (password !== confirmPassword) {
+      setError("❌ Passwords match nahi kar rahe!");
       setLoading(false);
       return;
     }
@@ -40,32 +45,24 @@ const Register = () => {
     }
 
     try {
-      // 1️⃣ Firebase Auth - FASTER (parallel calls)
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      
-      // 🔥 PARALLEL CALLS - Backend + Email verification together
-      const [verificationPromise, serverPromise] = await Promise.allSettled([
-        sendEmailVerification(userCredential.user),
-        fetch(`${API_URL}/api/register`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            email: email.toLowerCase().trim(),
-            username: username.trim(),
-            password: password.trim(),
-            uid: userCredential.user.uid,
-          }),
-        }).then(res => res.json())
-      ]);
+      const payload = {
+        username: username.trim(),
+        email: email.toLowerCase().trim(),
+        password: password.trim(),
+      };
 
-      const serverData = serverPromise.status === 'fulfilled' ? serverPromise.value : null;
-      if (!serverData?.success) throw new Error(serverData?.error || "Server error");
+      const res = await fetch(`${API_URL}/api/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
 
-      // 2️⃣ IST Time
+      const data = await res.json();
+
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || "Registration failed");
+      }
+
       const now = new Date();
       const istTime =
         now.toLocaleDateString("en-GB", { timeZone: "Asia/Kolkata" }) +
@@ -75,32 +72,30 @@ const Register = () => {
           hour12: true,
         });
 
-      // 3️⃣ Supabase backup
       await supabase.from("registeruser").insert([
         {
-          uid: userCredential.user.uid,
-          profile_id: serverData.user.profile_id,
+          profile_id: data.user?.profile_id || "",
           username: username.trim(),
           email: email.toLowerCase().trim(),
-          "User Password": password.trim(),
-          verified: false,
-          balance: serverData.user.balance || 0,
-          token: serverData.user.token || "",
+          verified: data.user?.verified ?? false,
+          balance: data.user?.balance || 0,
+          token: data.user?.token || "",
           register_time_ist: istTime,
         },
       ]);
 
-      // 🔥 4️⃣ PROFILE DATA → localStorage (TOURNAMENT JOIN KE LIYE!)
-      localStorage.setItem("profileId", serverData.user.profile_id);      // ✅ NEW!
-      localStorage.setItem("profileName", username.trim());               // ✅ NEW!
+      sessionStorage.setItem("auto_login_email", email.toLowerCase().trim());
+      sessionStorage.setItem("auto_login_password", password.trim());
 
-      // 🔥 5️⃣ AUTO LOGIN DATA (TEMP – TAB BAND HOTE HI DELETE)
-      sessionStorage.setItem("auto_login_email", email);
-      sessionStorage.setItem("auto_login_password", password);
-
-      // 🔥 6️⃣ INSTANT REDIRECT - No waiting
-      window.location.href = "/login?verify=1";
-
+      if (data.requiresVerification) {
+        setSuccess(
+          "✅ Account created! Verification link email par bhej diya gaya hai."
+        );
+        window.location.href = "/login?verify=1";
+      } else {
+        setSuccess("✅ Account created successfully!");
+        window.location.href = "/login?registered=1";
+      }
     } catch (err) {
       setError(err.message || "Registration failed");
     } finally {
@@ -115,6 +110,7 @@ const Register = () => {
         <p className="register-subtitle">Create your gaming account</p>
 
         {error && <div className="error-message">{error}</div>}
+        {success && <div className="success-message">{success}</div>}
 
         <form onSubmit={handleRegister}>
           <div className="input-group">
@@ -124,6 +120,7 @@ const Register = () => {
               placeholder="🎮 Username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
+              required
             />
           </div>
 
@@ -134,6 +131,7 @@ const Register = () => {
               placeholder="📧 Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              required
             />
           </div>
 
@@ -144,6 +142,7 @@ const Register = () => {
               placeholder="🔒 Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              required
             />
           </div>
 
@@ -154,6 +153,7 @@ const Register = () => {
               placeholder="🔐 Confirm Password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
+              required
             />
           </div>
 

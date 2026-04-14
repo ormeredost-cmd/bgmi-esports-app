@@ -1,31 +1,34 @@
 import React, { useState, useEffect } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../firebase";
 import "./Login.css";
+
+const isLocalhost =
+  window.location.hostname === "localhost" ||
+  window.location.hostname === "127.0.0.1" ||
+  window.location.hostname === "[::1]";
+
+const API_URL = isLocalhost
+  ? "http://localhost:5001"
+  : import.meta.env.VITE_API_URL || "https://user-register-server.onrender.com";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [showVerifyMsg, setShowVerifyMsg] = useState(false);
+  const [showRegisteredMsg, setShowRegisteredMsg] = useState(false);
 
-  // 🔥 AUTO FILL FROM REGISTER + CHECK URL PARAM
   useEffect(() => {
     const savedEmail = sessionStorage.getItem("auto_login_email");
     const savedPassword = sessionStorage.getItem("auto_login_password");
     const urlParams = new URLSearchParams(window.location.search);
-    const verifyParam = urlParams.get("verify");
+    const registeredParam = urlParams.get("registered");
 
-    if (savedEmail && savedPassword) {
-      setEmail(savedEmail);
-      setPassword(savedPassword);
-    }
+    if (savedEmail) setEmail(savedEmail);
+    if (savedPassword) setPassword(savedPassword);
 
-    // 🔥 SHOW VERIFICATION MESSAGE
-    if (verifyParam === "1") {
-      setShowVerifyMsg(true);
-      setTimeout(() => setShowVerifyMsg(false), 8000); // Hide after 8s
+    if (registeredParam === "1") {
+      setShowRegisteredMsg(true);
+      setTimeout(() => setShowRegisteredMsg(false), 5000);
     }
   }, []);
 
@@ -35,71 +38,42 @@ const Login = () => {
     setLoading(true);
 
     try {
-      // 1️⃣ Firebase Login
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-
-      if (!userCredential.user.emailVerified) {
-        setError("⚠️ Pehle email verify karo (Inbox / Spam check)");
-        setLoading(false);
-        return;
-      }
-
-      const firebaseEmail = userCredential.user.email;
-
-      // 2️⃣ Backend Login - ✅ Correct endpoint
-      const loginRes = await fetch(
-        "https://user-register-server.onrender.com/api/login",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            email: firebaseEmail.toLowerCase().trim(),
-          }),
-        }
-      );
+      const loginRes = await fetch(`${API_URL}/api/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: email.toLowerCase().trim(),
+          password: password.trim(),
+        }),
+      });
 
       const serverData = await loginRes.json();
-      if (!serverData.success) {
-        throw new Error("User not found in system");
+
+      if (!loginRes.ok || !serverData.success) {
+        throw new Error(serverData.error || "❌ Login failed!");
       }
 
       const freshUser = serverData.user;
 
-      // 3️⃣ Save user locally
       const userData = {
-        uid: userCredential.user.uid,
+        id: freshUser.id,
         username: freshUser.username,
-        email: firebaseEmail,
+        email: freshUser.email,
         profile_id: freshUser.profile_id,
         verified: true,
         balance: freshUser.balance || 0,
-        backend_token: freshUser.token,
+        backend_token: freshUser.token || "",
       };
 
       localStorage.setItem("bgmi_user", JSON.stringify(userData));
 
-      // 🔥 CLEAR TEMP AUTO LOGIN DATA
       sessionStorage.removeItem("auto_login_email");
       sessionStorage.removeItem("auto_login_password");
 
       window.location.href = "/profile";
-
     } catch (err) {
       console.error("Login error:", err);
-
-      if (err.code === "auth/user-not-found") {
-        setError("👤 User nahi mila! Pehle register karo.");
-      } else if (err.code === "auth/wrong-password") {
-        setError("🔒 Galat password!");
-      } else if (err.code === "auth/invalid-email") {
-        setError("📧 Invalid email!");
-      } else {
-        setError(err.message || "❌ Login failed!");
-      }
+      setError(err.message || "❌ Login failed!");
     } finally {
       setLoading(false);
     }
@@ -113,10 +87,9 @@ const Login = () => {
           <h2 className="login-title">Free Fire Login</h2>
         </div>
 
-        {/* 🔥 NEW VERIFICATION MESSAGE */}
-        {showVerifyMsg && (
+        {showRegisteredMsg && (
           <div className="success-message">
-            ✅ Email verification link bhej diya! Inbox/Spam folder check karo 🚀
+            ✅ Account created successfully! Ab login karo.
           </div>
         )}
 
@@ -147,11 +120,7 @@ const Login = () => {
             />
           </div>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="login-button"
-          >
+          <button type="submit" disabled={loading} className="login-button">
             {loading ? "Logging In..." : "🚀 Login"}
           </button>
         </form>

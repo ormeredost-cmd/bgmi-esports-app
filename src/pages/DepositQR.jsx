@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./DepositQR.css";
+import qrImageFile from "../assets/qr.png";
 
 const DEPOSIT_API =
   window.location.hostname === "localhost"
@@ -14,14 +15,11 @@ export default function DepositQR() {
   const [amount, setAmount] = useState(0);
   const [email, setEmail] = useState("");
   const [profileId, setProfileId] = useState("");
-  const [username, setUsername] = useState("");  // 🔥 ADDED USERNAME STATE
+  const [username, setUsername] = useState("");
   const [utr, setUtr] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
-  /* =============================
-     LOAD AMOUNT + REAL USER DATA (BGMI-8547)
-  ============================= */
   useEffect(() => {
     if (!location.state?.amount) {
       navigate("/deposit");
@@ -39,12 +37,10 @@ export default function DepositQR() {
       }
 
       const parsed = JSON.parse(stored);
-      console.log("👤 FULL USER DATA:", parsed);
 
-      // 🔥 REAL DATA ONLY - NO FALLBACKS!
       const userEmail = parsed?.email || parsed?.user?.email;
-      const realProfileId = parsed?.profile_id;        // BGMI-8547 ONLY!
-      const realUsername = parsed?.username;           // kajal ONLY!
+      const realProfileId = parsed?.profile_id;
+      const realUsername = parsed?.username;
 
       if (!userEmail || !realProfileId) {
         alert("User data missing. Login again.");
@@ -54,24 +50,14 @@ export default function DepositQR() {
       }
 
       setEmail(userEmail.toLowerCase().trim());
-      setProfileId(realProfileId);                    // BGMI-8547
-      setUsername(realUsername || "");                // kajal
-
-      console.log("✅ REAL DATA SET:", {
-        email: userEmail,
-        profileId: realProfileId,     // BGMI-8547 ✅
-        username: realUsername        // kajal ✅
-      });
-
+      setProfileId(realProfileId);
+      setUsername(realUsername || "");
     } catch (err) {
-      console.error("❌ localStorage error:", err);
+      console.error("localStorage error:", err);
       navigate("/login");
     }
   }, [location.state, navigate]);
 
-  /* =============================
-     SUBMIT DEPOSIT WITH REAL DATA
-  ============================= */
   const handleSubmit = async () => {
     if (utr.length !== 12) {
       alert("Enter valid 12 digit UTR");
@@ -82,14 +68,12 @@ export default function DepositQR() {
 
     try {
       const payload = {
-        profileId: profileId,         // BGMI-8547
-        username: username,           // kajal 🔥
+        profileId: profileId,
+        username: username,
         email: email,
         amount: Number(amount),
-        utr: utr.trim()
+        utr: utr.trim(),
       };
-
-      console.log("📤 Deposit payload:", payload);
 
       const response = await fetch(`${DEPOSIT_API}/api/deposit`, {
         method: "POST",
@@ -105,7 +89,6 @@ export default function DepositQR() {
         throw new Error(data?.message || "Deposit failed");
       }
 
-      console.log("✅ Deposit success:", data);
       setSuccess(true);
 
       setTimeout(() => {
@@ -113,16 +96,13 @@ export default function DepositQR() {
       }, 2000);
 
     } catch (err) {
-      console.error("❌ Deposit error:", err);
+      console.error("Deposit error:", err);
       alert(err.message);
     } finally {
       setLoading(false);
     }
   };
 
-  /* =============================
-     SUCCESS SCREEN
-  ============================= */
   if (success) {
     return (
       <div className="qr-success">
@@ -130,23 +110,18 @@ export default function DepositQR() {
         <h2>Deposit Request Created</h2>
         <p>₹{amount} — Pending approval</p>
         <p>UTR: {utr}</p>
-       
       </div>
     );
   }
 
-  /* =============================
-     MAIN UI
-  ============================= */
   return (
     <div className="qr-page">
       <h2 className="qr-title">Pay ₹{amount}</h2>
       <p className="qr-subtitle">Enter UTR after UPI payment</p>
 
       <div className="qr-container">
-        <img src="/qr-payment.png" alt="QR" className="qr-image" />
+        <img src={qrImageFile} alt="QR" className="qr-image" />
         <p className="qr-info">
-          UPI ID: yourapp@paytm <br />
           Amount: ₹{amount}
         </p>
       </div>

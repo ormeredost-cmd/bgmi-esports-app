@@ -1,4 +1,4 @@
-// src/pages/MyMatches.jsx - ✅ ENGLISH VERSION + ENTRY FEE + OPTIONAL PRIZE
+// src/pages/MyMatches.jsx
 import { useState, useEffect, useCallback, useRef } from "react";
 import "./MyMatches.css";
 import BackButton from "../components/BackButton";
@@ -13,6 +13,9 @@ const MyMatches = () => {
       ? "http://localhost:5002"
       : "https://deposit-and-join-tournament-server.onrender.com";
 
+  // ------------------------------------------------
+  // Helpers
+  // ------------------------------------------------
   const getAllBgmiIds = () => {
     try {
       const tournamentJoins = JSON.parse(
@@ -35,6 +38,18 @@ const MyMatches = () => {
     }
   };
 
+  const formatTeamType = (teamType) => {
+    const types = {
+      solo: "Solo",
+      duo: "Duo",
+      squad: "Squad",
+    };
+    return types[teamType?.toLowerCase()] || teamType || "-";
+  };
+
+  // ------------------------------------------------
+  // Fetch initial matches
+  // ------------------------------------------------
   const fetchMatchesInitial = useCallback(async () => {
     setIsInitialLoading(true);
 
@@ -69,6 +84,9 @@ const MyMatches = () => {
     }
   }, [API_URL]);
 
+  // ------------------------------------------------
+  // Silent refresh (background)
+  // ------------------------------------------------
   const fetchMatchesSilently = useCallback(async () => {
     if (hasLoadedRef.current && allMatches.length > 0) return;
 
@@ -100,6 +118,9 @@ const MyMatches = () => {
     }
   }, [API_URL, allMatches.length]);
 
+  // ------------------------------------------------
+  // Effects
+  // ------------------------------------------------
   useEffect(() => {
     fetchMatchesInitial();
   }, [fetchMatchesInitial]);
@@ -109,7 +130,9 @@ const MyMatches = () => {
     return () => clearInterval(interval);
   }, [fetchMatchesSilently]);
 
-  // 🔥 SIMPLE LOADING
+  // ------------------------------------------------
+  // Render
+  // ------------------------------------------------
   if (isInitialLoading) {
     return (
       <div className="mymatches-page">
@@ -124,6 +147,7 @@ const MyMatches = () => {
   return (
     <div className="mymatches-page">
       <BackButton fallbackPath="/" />
+
       <div className="mymatches-container">
         <div className="page-header">
           <h1>My Matches</h1>
@@ -134,49 +158,147 @@ const MyMatches = () => {
 
         {allMatches.length > 0 ? (
           <div className="matches-grid">
-            {allMatches.map((match) => {
-              // ✅ ENTRY FEE NORMALIZATION
+            {allMatches.map((match, index) => {
+              // Normalize fields (snake_case + camelCase)
               const fee =
                 match.entry_fee ??
                 match.entryFee ??
                 match.entry ??
                 null;
 
-              // ✅ OPTIONAL PRIZE
               const prize =
                 match.prize_pool ??
                 match.prizePool ??
                 match.winnerPrize ??
                 null;
 
+              const perKill =
+                match.per_kill ??
+                match.perKill ??
+                null;
+
+              const teamType =
+                match.team_type ??
+                match.teamType ??
+                null;
+
+              const mode = match.mode ?? null;
+              const map = match.map ?? null;
+
+              const rulesShort =
+                match.rules_short ??
+                match.rulesShort ??
+                null;
+
+              const gun = match.gun ?? null;
+
+              const tournamentId =
+                match.tournament_id ??
+                match.tournamentId ??
+                null;
+
+              const gameName =
+                match.player_name ??
+                match.game_name ??
+                match.playerName ??
+                "-";
+
+              const tournamentName =
+                match.tournament_name ??
+                match.tournamentName ??
+                "Tournament";
+
+              const matchDate = match.date ?? "-";
+              const matchTime = match.time ?? "-";
+
+              const bgmiId =
+                match.bgmi_id ??
+                match.bgmiId ??
+                "-";
+
+              const roomId = match.room_id ?? match.roomId ?? "";
+              const roomPassword =
+                match.room_password ??
+                match.roomPassword ??
+                "";
+
               return (
-                <div key={match.id} className="match-card">
+                <div
+                  key={match.id ?? `${bgmiId}-${index}`}
+                  className="match-card"
+                >
                   <div className="match-header">
-                    <h3>{match.tournament_name}</h3>
+                    <h3>{tournamentName}</h3>
                     <span className="status registered">Registered</span>
                   </div>
 
                   <div className="match-details">
+                    {tournamentId && (
+                      <div className="detail-row">
+                        <span>Tournament ID:</span>
+                        <span className="highlight">{tournamentId}</span>
+                      </div>
+                    )}
+
                     <div className="detail-row">
                       <span>Game Name:</span>
-                      <span className="highlight">{match.player_name}</span>
+                      <span className="highlight">{gameName}</span>
                     </div>
 
                     <div className="detail-row">
                       <span>Game ID:</span>
-                      <span className="highlight">{match.bgmi_id}</span>
+                      <span className="highlight">{bgmiId}</span>
                     </div>
+
+                    {teamType && (
+                      <div className="detail-row">
+                        <span>Team Type:</span>
+                        <span>{formatTeamType(teamType)}</span>
+                      </div>
+                    )}
+
+                    {mode && (
+                      <div className="detail-row">
+                        <span>Mode:</span>
+                        <span>{mode}</span>
+                      </div>
+                    )}
+
+                    {map && (
+                      <div className="detail-row">
+                        <span>Map:</span>
+                        <span>{map}</span>
+                      </div>
+                    )}
+
+                    {gun && (
+                      <div className="detail-row">
+                        <span>Gun:</span>
+                        <span>{gun}</span>
+                      </div>
+                    )}
+
+                    {rulesShort && (
+                      <div className="detail-row">
+                        <span>Rules:</span>
+                        <span>{rulesShort}</span>
+                      </div>
+                    )}
 
                     <div className="detail-row">
                       <span>Entry:</span>
                       <span>
-                        {fee !== null && fee !== ""
-                          ? `₹${fee}`
-                          : "-"}
+                        {fee !== null && fee !== "" ? `₹${fee}` : "-"}
                       </span>
                     </div>
 
-                    {/* ✅ OPTIONAL PRIZE SHOW */}
+                    {perKill !== null && perKill !== "" && (
+                      <div className="detail-row">
+                        <span>Per Kill:</span>
+                        <span className="highlight">₹{perKill}</span>
+                      </div>
+                    )}
+
                     {prize !== null && prize !== "" && (
                       <div className="detail-row">
                         <span>Prize:</span>
@@ -186,23 +308,24 @@ const MyMatches = () => {
 
                     <div className="detail-row">
                       <span>Date:</span>
-                      <span>{match.date}</span>
+                      <span>{matchDate}</span>
                     </div>
 
                     <div className="detail-row">
                       <span>Time:</span>
-                      <span>{match.time}</span>
+                      <span>{matchTime}</span>
                     </div>
 
-                    {match.room_id ? (
+                    {roomId ? (
                       <div className="room-box">
                         <div className="detail-row">
-                          <span>Room ID:</span>
-                          <strong>{match.room_id}</strong>
+                          {/* Yahi pe label change kar sakta hai */}
+                          <span>Custom ID:</span>
+                          <strong>{roomId}</strong>
                         </div>
                         <div className="detail-row">
-                          <span>Password:</span>
-                          <strong>{match.room_password}</strong>
+                          <span>Custom Password:</span>
+                          <strong>{roomPassword || "-"}</strong>
                         </div>
                       </div>
                     ) : (

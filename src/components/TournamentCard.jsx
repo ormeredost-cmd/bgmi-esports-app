@@ -61,6 +61,15 @@ const TournamentCard = ({ t }) => {
     return maps[mapName] || "🗺️";
   };
 
+  const formatTeamType = (teamType) => {
+    const types = {
+      solo: "Solo",
+      duo: "Duo",
+      squad: "Squad",
+    };
+    return types[teamType?.toLowerCase()] || teamType;
+  };
+
   const checkStatusInitial = useCallback(async () => {
     setIsInitialLoading(true);
 
@@ -172,7 +181,6 @@ const TournamentCard = ({ t }) => {
     >
       <div className="tour-header">
         <span className="tour-game">{t.game || "FREE FIRE"}</span>
-        {/* 🔥 WARRIORS SPECIAL BADGE */}
         <span className={`tour-tag ${t.type?.toLowerCase()}`}>
           {t.type}
         </span>
@@ -184,6 +192,13 @@ const TournamentCard = ({ t }) => {
         <p className="tour-meta tour-meta-id">
           <span className="meta-label">Tournament ID</span>
           <span className="meta-value">{t.tournamentId}</span>
+        </p>
+      )}
+
+      {t.teamType && (
+        <p className="tour-meta">
+          <span className="meta-label">Team Type</span>
+          <span className="meta-value">{formatTeamType(t.teamType)}</span>
         </p>
       )}
 

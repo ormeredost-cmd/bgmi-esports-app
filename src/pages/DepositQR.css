@@ -1,287 +1,248 @@
-/* DepositQR.css - PHONE PERFECT + COMPACT LAYOUT */
-:root {
-  --bg-main: #020617;
-  --bg-card: #020617;
-  --bg-alt: #020617;
-  --text-main: #e5e7eb;
-  --text-muted: #9ca3af;
-  --accent-green: #22c55e;
-  --accent-gold: #fbbf24;
-  --accent-orange: #fb923c;
-  --accent-blue: #60a5fa;
-}
-
 * {
   box-sizing: border-box;
 }
 
-html, body {
-  height: 100vh;
-  background: radial-gradient(circle at top, #111827 0%, #020617 45%, #000 100%);
-  overflow: hidden;
+html,
+body {
   margin: 0;
   padding: 0;
+  width: 100%;
+  overflow-x: hidden;
+  background: #05070d;
+  font-family: "Poppins", "Segoe UI", sans-serif;
+}
+
+body {
+  color: #fff;
 }
 
 .qr-page {
-  position: absolute;
-  top: 72px;
-  left: 0;
-  right: 0;
-  bottom: 110px;
-  background: radial-gradient(circle at top, #111827 0%, #020617 45%, #000 100%);
-  color: var(--text-main);
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  font-family: system-ui, -apple-system, sans-serif;
-  padding: 16px 12px 20px;
-  margin: 0;
-  overscroll-behavior: contain;
-}
-
-.qr-page::-webkit-scrollbar { 
-  display: none; 
-}
-
-/* TITLE */
-.qr-title {
-  font-size: 26px;
-  font-weight: 800;
-  margin: 0 0 8px 0;
-  background: linear-gradient(135deg, var(--accent-green), var(--accent-gold));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  text-align: center;
-  padding: 0 12px;
-}
-
-.qr-subtitle {
-  font-size: 14px;
-  color: var(--text-muted);
-  text-align: center;
-  margin: 0 0 20px 0;
-  font-weight: 500;
-}
-
-/* QR CONTAINER */
-.qr-container {
-  background: rgba(15, 23, 42, 0.95);
-  border-radius: 16px;
-  padding: 20px 16px;
-  border: 1px solid rgba(31, 41, 55, 0.8);
-  text-align: center;
-  margin-bottom: 24px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-}
-
-.qr-image {
-  width: 200px;
-  height: 200px;
-  border-radius: 12px;
-  margin: 0 auto 16px;
-  display: block;
-  border: 2px solid rgba(34, 197, 94, 0.3);
-  background: #1e293b;
-}
-
-.qr-info {
-  font-size: 14px;
-  color: var(--text-main);
-  margin: 0;
-  line-height: 1.5;
-  font-weight: 500;
-}
-
-.qr-info br {
-  margin-bottom: 4px;
-}
-
-/* UTR SECTION */
-.utr-section {
-  margin-bottom: 24px;
-}
-
-.utr-section label {
-  display: block;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-muted);
-  margin-bottom: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.utr-section input {
+  min-height: 100vh;
   width: 100%;
-  padding: 18px 16px;
-  font-size: 20px;
-  font-weight: 700;
-  border-radius: 12px;
-  border: 2px solid rgba(148, 163, 184, 0.3);
-  background: rgba(15, 23, 42, 0.9);
-  color: var(--text-main);
-  text-align: center;
-  letter-spacing: 2px;
-  transition: all 0.2s ease;
-}
-
-.utr-section input:focus {
-  outline: none;
-  border-color: var(--accent-gold);
-  box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.1);
-}
-
-.utr-section input::placeholder {
-  color: var(--text-muted);
-  letter-spacing: 0;
-}
-
-.utr-section input:disabled {
-  background: rgba(31, 41, 55, 0.5);
-  cursor: not-allowed;
-  opacity: 0.7;
-}
-
-/* SUBMIT BUTTON */
-.submit-btn {
-  width: 100%;
-  padding: 18px 24px;
-  font-size: 18px;
-  font-weight: 700;
-  border-radius: 15px;
-  border: none;
-  background: linear-gradient(135deg, var(--accent-green), var(--accent-gold));
-  color: #020617;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 8px 25px rgba(34, 197, 94, 0.3);
-}
-
-.submit-btn:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 35px rgba(34, 197, 94, 0.4);
-}
-
-.submit-btn:active:not(:disabled) {
-  transform: scale(0.98);
-}
-
-.submit-btn:disabled {
-  background: rgba(31, 41, 55, 0.5);
-  color: var(--text-muted);
-  cursor: not-allowed;
-  box-shadow: none;
-  transform: none;
-}
-
-/* SUCCESS SCREEN */
-.qr-success {
+  padding: 16px 12px 110px; /* bottom nav ke liye extra space */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background:
+    radial-gradient(circle at top, rgba(255, 40, 40, 0.14), transparent 28%),
+    linear-gradient(180deg, #08101c 0%, #04060b 100%);
+}
+
+.qr-title {
+  margin: 0 0 6px;
+  font-size: clamp(22px, 5vw, 28px);
+  font-weight: 800;
   text-align: center;
-  padding: 40px 20px;
-  background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(251, 191, 36, 0.1));
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.qr-subtitle {
+  margin: 0 0 14px;
+  font-size: 13px;
+  color: #b8c0d9;
+  text-align: center;
+}
+
+.qr-container {
+  width: 100%;
+  max-width: 290px;
+  background: linear-gradient(180deg, #121826 0%, #0a0f18 100%);
+  border: 1px solid rgba(255, 71, 71, 0.20);
+  border-radius: 18px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow:
+    0 10px 24px rgba(0, 0, 0, 0.32),
+    0 0 14px rgba(255, 60, 60, 0.08);
+}
+
+.qr-container::before {
+  align-self: flex-start;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  color: #ff6262;
+  background: rgba(255, 70, 70, 0.08);
+  border: 1px solid rgba(255, 70, 70, 0.18);
+  border-radius: 999px;
+  padding: 5px 10px;
+  margin-bottom: 10px;
+}
+
+.qr-image {
+  width: 100%;
+  max-width: 180px;
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+  background: #fff;
+  border-radius: 14px;
+  padding: 8px;
+  box-shadow:
+    0 0 0 3px rgba(255, 70, 70, 0.08),
+    0 8px 18px rgba(0, 0, 0, 0.28);
+}
+
+.qr-info {
+  margin-top: 12px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.qr-info::before {
+  content: "Deposit Amount";
+  display: block;
+  font-size: 11px;
+  font-weight: 500;
+  color: #92a0bd;
+  margin-bottom: 3px;
+}
+
+.utr-section {
+  width: 100%;
+  max-width: 290px;
+  margin-top: 14px;
+  background: rgba(17, 22, 34, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  padding: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.20);
+}
+
+.utr-section label {
+  display: block;
+  margin-bottom: 7px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #e3e8f8;
+}
+
+.utr-section input {
+  width: 100%;
+  height: 44px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 80, 80, 0.35);
+  background: #09101b;
+  color: #ffffff;
+  padding: 0 12px;
+  font-size: 14px;
+  outline: none;
+}
+
+.utr-section input::placeholder {
+  color: #7d88a4;
+}
+
+.utr-section input:focus {
+  border-color: #ff4a4a;
+  box-shadow: 0 0 0 3px rgba(255, 74, 74, 0.14);
+}
+
+.submit-btn {
+  width: 100%;
+  max-width: 290px;
+  margin-top: 14px;
+  height: 46px;
+  border: none;
+  border-radius: 14px;
+  background: linear-gradient(90deg, #ff3d3d 0%, #ff0055 100%);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  cursor: pointer;
+  box-shadow: 0 10px 20px rgba(255, 0, 85, 0.22);
+  transition: 0.2s ease;
+}
+
+.submit-btn:hover {
+  transform: translateY(-1px);
+}
+
+.submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.qr-success {
+  min-height: 100vh;
+  padding: 20px 14px 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(180deg, #07110b 0%, #030805 100%);
+  text-align: center;
 }
 
 .success-icon {
-  font-size: 64px;
-  margin-bottom: 20px;
-  animation: bounce 1s ease-in-out;
+  font-size: 46px;
+  margin-bottom: 10px;
 }
 
 .qr-success h2 {
-  font-size: 24px;
-  font-weight: 800;
-  margin: 0 0 12px 0;
-  background: linear-gradient(135deg, var(--accent-green), var(--accent-gold));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  margin: 0 0 8px;
+  font-size: 22px;
+  color: #d9ffe9;
 }
 
 .qr-success p {
-  font-size: 16px;
-  color: var(--text-main);
-  margin: 8px 0;
-  font-weight: 600;
+  margin: 4px 0;
+  font-size: 14px;
+  color: #b8c6be;
 }
 
-.loading-spinner {
-  width: 40px;
-  height: 40px;
-  border: 3px solid rgba(34, 197, 94, 0.3);
-  border-top: 3px solid var(--accent-green);
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin-top: 24px;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-@keyframes bounce {
-  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-  40% { transform: translateY(-10px); }
-  60% { transform: translateY(-5px); }
-}
-
-/* LAPTOP */
-@media (min-width: 481px) {
+@media (max-width: 480px) {
   .qr-page {
-    max-width: 400px;
-    margin: 20px auto;
-    top: 0;
-    bottom: 0;
-    padding: 24px 16px 20px;
-    border-radius: 20px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    justify-content: flex-start;
+    padding-top: 20px;
+    padding-bottom: 120px;
   }
-  
-  .qr-image {
-    width: 220px;
-    height: 220px;
-  }
-}
 
-/* MOBILE EXTRA COMPACT */
-@media (max-width: 400px) {
-  .qr-page {
-    padding: 12px 8px 20px;
-  }
-  
   .qr-title {
-    font-size: 22px;
+    font-size: 20px;
   }
-  
-  .qr-container {
-    padding: 16px 12px;
-    margin-bottom: 20px;
+
+  .qr-subtitle {
+    font-size: 12px;
+    margin-bottom: 12px;
   }
-  
-  .qr-image {
-    width: 180px;
-    height: 180px;
-  }
-  
-  .utr-section input {
-    padding: 16px 12px;
-    font-size: 18px;
-  }
-  
+
+  .qr-container,
+  .utr-section,
   .submit-btn {
-    padding: 16px 20px;
-    font-size: 16px;
+    max-width: 270px;
+  }
+
+  .qr-image {
+    max-width: 165px;
+  }
+}
+
+@media (max-width: 360px) {
+  .qr-container,
+  .utr-section,
+  .submit-btn {
+    max-width: 250px;
+  }
+
+  .qr-image {
+    max-width: 150px;
+  }
+
+  .submit-btn,
+  .utr-section input {
+    height: 42px;
+    font-size: 13px;
   }
 }
