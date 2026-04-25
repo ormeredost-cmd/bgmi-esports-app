@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./DepositQR.css";
-import qrImageFile from "../assets/qr.png";
+
 
 const DEPOSIT_API =
   window.location.hostname === "localhost"
@@ -119,12 +119,7 @@ export default function DepositQR() {
       <h2 className="qr-title">Pay ₹{amount}</h2>
       <p className="qr-subtitle">Enter UTR after UPI payment</p>
 
-      <div className="qr-container">
-        <img src={qrImageFile} alt="QR" className="qr-image" />
-        <p className="qr-info">
-          Amount: ₹{amount}
-        </p>
-      </div>
+      
 
       <div className="utr-section">
         <label>Enter UTR (12 digits)</label>
