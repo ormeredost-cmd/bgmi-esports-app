@@ -1,3 +1,4 @@
+
 :root {
   --bg-main: #020617;
   --bg-card: #020617;
@@ -8,116 +9,373 @@
   --accent-gold: #fbbf24;
   --accent-orange: #fb923c;
   --accent-blue: #60a5fa;
+  --accent-red: #ff2525;
 }
 
 /* GLOBAL */
+
 * {
   box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   height: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-  margin: 0;
   font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
-  background: radial-gradient(circle at top, #111827 0, #020617 45%, #000 100%);
   color: var(--text-main);
   overflow: hidden;
+  background-image:
+    linear-gradient(rgba(2, 6, 23, 0.25), rgba(2, 6, 23, 0.55)),
+    url("../assets/bg/home-desktop.webp");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+/* MOBILE BACKGROUND */
+
+@media (max-width: 768px) {
+  body {
+    background-image:
+      linear-gradient(rgba(2, 6, 23, 0.25), rgba(2, 6, 23, 0.55)),
+      url("../assets/bg/home-mobile.webp");
+  }
 }
 
 /* ROOT LAYOUT */
+
 .app-root-esports {
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 .app-main-esports {
   flex: 1;
+  display: flex;
+  flex-direction: column;
   max-width: 100%;
   margin: 0;
-  padding: 65px 12px 90px 12px;
+  padding: 48px 12px 10px;
+  overflow: hidden;
 }
 
-/* TOP BAR */
+.page-esports {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  height: 100%;
+}
+
+/* TOP NAVBAR */
+
 .app-topbar {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  height: 56px;
+  height: 50px;
   padding: 0 12px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: rgba(15, 23, 42, 0.96);
-  border-bottom: 1px solid rgba(31, 41, 55, 0.9);
+  background: rgba(8, 8, 14, 0.97);
+  border-bottom: 1px solid rgba(255, 37, 37, 0.35);
   backdrop-filter: blur(18px);
-  z-index: 30;
+  -webkit-backdrop-filter: blur(18px);
+  z-index: 100;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
 }
 
-/* HERO - HOME PAGE */
-.hero {
-  grid-template-columns: 1fr;
+.app-topbar-left,
+.app-topbar-right {
+  display: flex;
+  align-items: center;
+}
+
+.app-topbar-right {
+  margin-left: auto;
+}
+
+/* NAVBAR LOGO */
+
+.app-topbar-logo-image {
+  display: block;
+  width: 240px;
+  height: 63px;
+  object-fit: contain;
+  object-position: left center;
+  transform: translateY(4px);
+}
+
+/* NAVBAR MENU LAYOUT */
+
+.nav-top-menu {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.menu-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* MENU OPEN/CLOSE BUTTON */
+
+.menu-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   gap: 8px;
-  padding: 0;
-  margin-bottom: 12px;
+  min-height: 36px;
+  padding: 8px 13px;
+  color: #ffffff;
+  background: linear-gradient(135deg, #241014, #100b10);
+  border: 1px solid rgba(255, 50, 50, 0.65);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 750;
+  letter-spacing: 0.4px;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(255, 0, 0, 0.12);
+  transition: background 0.2s ease, border-color 0.2s ease,
+    box-shadow 0.2s ease, transform 0.2s ease;
 }
 
-.hero-left h1 {
-  font-size: 26px;
-  margin: 0 0 8px 0;
-  background: linear-gradient(135deg, var(--accent-green), var(--accent-gold));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  font-weight: 800;
+.menu-btn:hover,
+.menu-btn:focus-visible {
+  color: #ffffff;
+  background: linear-gradient(135deg, #8f1018, #39080e);
+  border-color: #ff4545;
+  box-shadow: 0 0 14px rgba(255, 30, 30, 0.3);
+  outline: none;
+}
+
+.menu-btn:active {
+  transform: scale(0.97);
+}
+
+/* DROPDOWN PANEL */
+
+.menu-dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  left: auto;
+  min-width: 205px;
+  padding: 8px;
+  background: linear-gradient(160deg, #171018, #08090f 75%);
+  border: 1px solid rgba(255, 45, 45, 0.48);
+  border-radius: 12px;
+  box-shadow:
+    0 12px 35px rgba(0, 0, 0, 0.65),
+    0 0 18px rgba(255, 0, 0, 0.12);
+  z-index: 200;
+  animation: menuDropIn 0.16s ease-out;
+}
+
+@keyframes menuDropIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* MENU ITEMS
+   Covers button-based menu links and link-based menu links. */
+
+.menu-dropdown button,
+.menu-dropdown a {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 40px;
+  padding: 10px 12px;
+  margin: 2px 0;
+  color: #e5e7eb;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 650;
+  line-height: 1.4;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.18s ease, background 0.18s ease,
+    border-color 0.18s ease, padding-left 0.18s ease;
+}
+
+.menu-dropdown button:hover,
+.menu-dropdown a:hover,
+.menu-dropdown button:focus-visible,
+.menu-dropdown a:focus-visible {
+  color: #ffffff;
+  background: linear-gradient(90deg, rgba(255, 35, 35, 0.2), rgba(130, 0, 0, 0.08));
+  border-color: rgba(255, 55, 55, 0.28);
+  padding-left: 16px;
+  outline: none;
+}
+
+/* LOGOUT BUTTON */
+
+.menu-dropdown .menu-logout,
+.menu-dropdown button.menu-logout {
+  color: #ff6b6b;
+  border-top: 1px solid rgba(255, 60, 60, 0.18);
+  margin-top: 6px;
+  padding-top: 12px;
+}
+
+.menu-dropdown .menu-logout:hover,
+.menu-dropdown button.menu-logout:hover {
+  color: #ffffff;
+  background: linear-gradient(90deg, #b91c1c, #6f1010);
+  border-color: rgba(255, 80, 80, 0.5);
+}
+
+/* HOME HERO */
+
+.hero {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  padding: 8px 4px 2px;
+  margin-bottom: 4px;
+  flex-shrink: 0;
+}
+
+.hero-left {
+  min-width: 0;
+}
+
+/* BGMI ESPORTS TITLE */
+
+.hero-left h1,
+.hero-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 18px;
+  font-size: clamp(34px, 5vw, 58px);
+  font-weight: 950;
+  line-height: 1.1;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.hero-title-main {
+  color: #ffffff;
+  -webkit-text-fill-color: #ffffff;
+  text-shadow:
+    0 0 8px rgba(255, 255, 255, 0.2),
+    0 0 20px rgba(255, 30, 30, 0.35);
+}
+
+.hero-title-accent {
+  color: #ff2525;
+  -webkit-text-fill-color: #ff2525;
+  text-shadow:
+    0 0 8px rgba(255, 30, 30, 0.8),
+    0 0 22px rgba(255, 0, 0, 0.45);
+}
+
+/* HERO ACTIONS */
+
+.hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.all-tour-wrapper {
+  position: relative;
+  margin: 0;
 }
 
 /* ALL TOURNAMENTS BUTTON */
-.all-tour-wrapper {
-  position: relative;
-  margin-top: 0;
-  margin-bottom: 0;
-}
 
-.hero-btn-primary, .all-tour-btn {
-  padding: 10px 16px !important;
-  border-radius: 12px !important;
-  font-size: 13px !important;
-  font-weight: 600 !important;
-  background: linear-gradient(135deg, var(--accent-green), var(--accent-gold)) !important;
-  border: none !important;
-  color: #020617 !important;
-  box-shadow: 0 4px 16px rgba(34, 197, 94, 0.3) !important;
-  width: auto !important;
+.all-tour-btn-red,
+.hero-btn-primary.all-tour-btn {
   display: inline-flex !important;
   align-items: center !important;
-  gap: 6px !important;
+  justify-content: center;
+  gap: 10px !important;
+  width: auto !important;
+  min-height: 46px;
+  padding: 12px 18px !important;
+  color: #ffffff !important;
+  font-size: 14px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.4px;
+  background: linear-gradient(135deg, #ff3434, #b90000) !important;
+  border: 1px solid #ff5555 !important;
+  border-radius: 8px !important;
+  box-shadow:
+    0 0 10px rgba(255, 0, 0, 0.3),
+    0 5px 18px rgba(160, 0, 0, 0.25) !important;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease,
+    background 0.2s ease;
 }
 
+.all-tour-btn-red:hover,
+.hero-btn-primary.all-tour-btn:hover {
+  background: linear-gradient(135deg, #ff4b4b, #e00000) !important;
+  box-shadow:
+    0 0 18px rgba(255, 0, 0, 0.5),
+    0 7px 22px rgba(160, 0, 0, 0.35) !important;
+  transform: translateY(-2px);
+}
+
+.all-tour-btn-red:active {
+  transform: scale(0.98);
+}
+
+/* ALL TOURNAMENTS ARROW */
+
 .all-tour-arrow {
+  display: inline-block;
   font-size: 10px !important;
-  transition: transform 0.2s ease-out !important;
+  transition: transform 0.2s ease;
 }
 
 .all-tour-arrow.open {
   transform: rotate(180deg);
 }
 
+/* TOURNAMENT CATEGORY DROPDOWN */
+
 .all-tour-dropdown {
   position: absolute;
   top: 110%;
   left: 0;
   min-width: 160px;
-  background: rgba(15, 23, 42, 0.98);
-  border-radius: 10px;
-  border: 1px solid rgba(31, 41, 55, 0.9);
-  box-shadow: 0 8px 25px rgba(15, 23, 42, 0.9);
   padding: 6px 4px;
-  z-index: 15;
+  background: rgba(12, 10, 16, 0.98);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 45, 45, 0.45);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.65);
+  z-index: 35;
 }
 
 .all-tour-item {
@@ -130,21 +388,25 @@ body {
   text-align: left;
   border-radius: 8px;
   cursor: pointer;
-  font-weight: 500;
+  font-weight: 600;
+  transition: background 0.18s ease, color 0.18s ease;
 }
 
-.all-tour-item:hover {
-  background: linear-gradient(135deg, var(--accent-green), var(--accent-gold));
-  color: #020617;
+.all-tour-item:hover,
+.all-tour-item:focus-visible {
+  background: linear-gradient(135deg, #ff3434, #b90000);
+  color: #ffffff;
+  outline: none;
 }
 
 /* HOME TOURNAMENTS */
+
 .tournaments-section {
-  max-height: 65vh;
-  overflow-y: auto;
+  flex: 1;
+  overflow-y: auto !important;
   overflow-x: hidden;
-  margin-top: 0;
-  padding: 0 4px;
+  margin-top: 2px;
+  padding: 8px 4px 110px;
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
@@ -154,8 +416,7 @@ body {
 }
 
 .tour-grid-wrapper {
-  height: 100%;
-  padding-bottom: 20px;
+  width: 100%;
 }
 
 .tour-grid {
@@ -165,23 +426,12 @@ body {
   padding: 0 4px;
 }
 
-.tour-card {
-  background: rgba(15, 23, 42, 0.95);
-  border-radius: 18px;
-  padding: 22px 20px;
-  border: 1px solid rgba(31, 41, 55, 0.95);
-  box-shadow: 0 8px 32px rgba(15, 23, 42, 0.9);
-  font-size: 14px;
-  width: 100%;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  margin: 0 2px;
-}
+/* MY MATCHES PAGE */
 
-/* 🔥 MY MATCHES PAGE - UNHIDE & PERFECT STYLE */
 .mymatches-page {
   min-height: 100vh;
-  background: radial-gradient(circle at top, #111827 0, #020617 45%, #000 100%);
+  background:
+    radial-gradient(circle at top, #111827 0, #020617 45%, #000 100%);
   padding: 72px 12px 110px;
   color: var(--text-main);
 }
@@ -198,7 +448,7 @@ body {
 
 .page-header h1 {
   font-size: 28px;
-  margin: 0 0 8px 0;
+  margin: 0 0 8px;
   background: linear-gradient(135deg, var(--accent-green), var(--accent-gold));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -212,9 +462,10 @@ body {
   font-size: 14px;
 }
 
-/* 🔥 MATCHES GRID - UNHIDDEN & PERFECT */
+/* MATCHES GRID */
+
 .matches-grid {
-  display: flex !important; /* 🔥 FIXED! */
+  display: flex !important;
   flex-direction: column;
   gap: 14px;
 }
@@ -317,21 +568,71 @@ body {
   font-size: 16px;
 }
 
-/* MOBILE */
-@media (max-width: 768px) {
-  .app-main-esports {
-    padding: 62px 8px 85px 8px;
-  }
-  
-  .mymatches-page {
-    padding: 72px 8px 100px;
-  }
-}
+/* HIDE UNUSED HOME ELEMENTS */
 
-/* 🔥 HIDE ONLY HOME UNUSED */
 .category-row,
 .filter-row,
 .details-grid,
 .profile-grid {
   display: none !important;
+}
+
+/* TABLET */
+
+@media (max-width: 768px) {
+  .app-main-esports {
+    padding: 50px 8px 10px;
+  }
+
+  .mymatches-page {
+    padding: 60px 8px 100px;
+  }
+
+  .tournaments-section {
+    padding-top: 8px;
+    padding-bottom: 120px;
+  }
+}
+
+/* MOBILE */
+
+@media (max-width: 480px) {
+  .app-topbar-logo-image {
+    width: 145px;
+    height: 54px;
+    transform: translateY(2px);
+  }
+
+  .hero-title,
+  .hero-left h1 {
+    gap: 8px;
+    font-size: clamp(29px, 8vw, 38px);
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+  }
+
+  .all-tour-btn-red,
+  .hero-btn-primary.all-tour-btn {
+    padding: 11px 15px !important;
+    min-height: 44px;
+    font-size: 13px !important;
+    gap: 8px !important;
+  }
+
+  .menu-btn {
+    min-height: 34px;
+    padding: 7px 10px;
+    font-size: 12px;
+  }
+
+  .menu-dropdown {
+    min-width: 190px;
+    max-width: calc(100vw - 24px);
+  }
+
+  .menu-dropdown button,
+  .menu-dropdown a {
+    min-height: 42px;
+    font-size: 13px;
+  }
 }

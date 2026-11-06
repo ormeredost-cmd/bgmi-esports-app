@@ -60,7 +60,7 @@ const Login = () => {
         username: freshUser.username,
         email: freshUser.email,
         profile_id: freshUser.profile_id,
-        verified: true,
+        verified: Boolean(freshUser.verified),
         balance: freshUser.balance || 0,
         backend_token: freshUser.token || "",
       };
@@ -89,7 +89,7 @@ const Login = () => {
 
         {showRegisteredMsg && (
           <div className="success-message">
-            ✅ Account created successfully! Ab login karo.
+            ✅ Account created successfully! Login Now.
           </div>
         )}
 

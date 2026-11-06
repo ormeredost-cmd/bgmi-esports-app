@@ -1,25 +1,33 @@
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&family=Rajdhani:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800&family=Rajdhani:wght@400;500;600;700&display=swap');
 
-/* Card wrapper */
+/* ==========================================
+   BGMI TOURNAMENT CARD
+   Original PNG, image sizing, position, overlay,
+   card dimensions and content layout preserved.
+========================================== */
+
 .tour-card {
   position: relative;
   max-width: 460px;
   width: 100%;
   padding: 12px 14px;
+
   background:
-    radial-gradient(circle at 0% 0%, rgba(56, 189, 248, 0.14), transparent 55%),
-    radial-gradient(circle at 100% 100%, rgba(45, 212, 191, 0.16), transparent 52%),
+    radial-gradient(circle at 0% 0%, rgba(239, 68, 68, 0.12), transparent 55%),
+    radial-gradient(circle at 100% 100%, rgba(127, 29, 29, 0.16), transparent 52%),
     #020617;
+
   border-radius: 14px;
   border: 1px solid rgba(30, 64, 175, 0.7);
+
   box-shadow:
     0 0 0 1px rgba(15, 23, 42, 0.9),
     0 14px 32px rgba(15, 23, 42, 0.95);
+
   font-size: 13px;
   color: #e5e7eb;
   font-family: 'Rajdhani', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  -webkit-overflow-scrolling: touch;
-  touch-action: manipulation;
+
   transition:
     transform 0.18s ease-out,
     box-shadow 0.18s ease-out,
@@ -27,29 +35,54 @@
     filter 0.18s ease-out;
 }
 
-/* Hover */
+/* ORIGINAL PNG BACKGROUND — KEEP UNCHANGED */
+.tour-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background-image:
+    linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.10),
+      rgba(0, 0, 0, 0.25) 50%,
+      rgba(0, 0, 0, 0.65) 100%
+    ),
+    var(--map-bg);
+
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 14px;
+
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* HOVER */
 .tour-card:hover {
   transform: translateY(-4px);
-  border-color: rgba(56, 189, 248, 0.9);
+  border-color: rgba(248, 55, 65, 0.9);
   box-shadow:
     0 0 0 1px rgba(15, 23, 42, 1),
     0 20px 50px rgba(15, 23, 42, 1);
   filter: saturate(1.04);
 }
 
-/* TDM special */
+/* TDM */
 .tdm-card {
   background:
-    radial-gradient(circle at 0% 0%, rgba(56, 189, 248, 0.20), transparent 55%),
-    radial-gradient(circle at 100% 100%, rgba(59, 130, 246, 0.24), transparent 52%),
+    radial-gradient(circle at 0% 0%, rgba(239, 68, 68, 0.18), transparent 55%),
+    radial-gradient(circle at 100% 100%, rgba(127, 29, 29, 0.22), transparent 52%),
     #020617;
-  border-color: rgba(59, 130, 246, 0.95);
+
+  border-color: rgba(248, 55, 65, 0.85);
   box-shadow:
-    0 0 0 1px rgba(30, 64, 175, 0.9),
+    0 0 0 1px rgba(70, 12, 22, 0.9),
     0 20px 60px rgba(15, 23, 42, 1);
 }
 
-/* Content above effects */
+/* CONTENT ABOVE IMAGE */
 .tour-header,
 .tour-title,
 .tour-meta,
@@ -58,7 +91,7 @@
   z-index: 1;
 }
 
-/* Header */
+/* HEADER */
 .tour-header {
   display: flex;
   justify-content: space-between;
@@ -73,17 +106,16 @@
   padding: 3px 9px;
   border-radius: 999px;
   font-size: 10px;
-  font-weight: 600;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.14em;
   background: radial-gradient(circle at 0 0, #0f172a 0%, #020617 70%);
-  border: 1px solid rgba(56, 189, 248, 0.9);
-  color: #e0f2fe;
-  box-shadow: 0 0 10px rgba(56, 189, 248, 0.45);
-  font-family: 'Orbitron', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  border: 1px solid rgba(248, 55, 65, 0.85);
+  color: #ffe4e6;
+  box-shadow: 0 0 10px rgba(248, 55, 65, 0.25);
+  font-family: 'Orbitron', sans-serif;
 }
 
-/* 🔥 WARRIORS TYPE - GAMING BADGE */
 .tour-tag {
   font-size: 10px;
   padding: 3px 8px;
@@ -92,34 +124,32 @@
   background: rgba(15, 23, 42, 0.98);
   color: #cbd5f5;
   text-transform: uppercase;
-  letter-spacing: 0.16em;
-  font-family: 'Orbitron', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  letter-spacing: 0.14em;
+  font-family: 'Orbitron', sans-serif;
 }
 
+/* WARRIORS BADGE */
 .tour-tag.warriors {
   font-size: 9px !important;
   padding: 4px 10px !important;
   font-weight: 700 !important;
-  letter-spacing: 0.2em;
-  text-shadow: 
+  letter-spacing: 0.16em;
+  text-shadow:
     0 0 8px rgba(254, 215, 0, 0.8),
     0 0 16px rgba(254, 215, 0, 0.4);
-  
-  /* 🏆 GOLD + FIRE GRADIENT */
-  background: linear-gradient(135deg, 
-    #fed7aa 0%, 
-    #fbbf24 30%, 
-    #f59e0b 70%, 
-    #d97706 100%);
-  
-  /* 🔥 GLOWING BORDER */
+  background: linear-gradient(
+    135deg,
+    #fed7aa 0%,
+    #fbbf24 30%,
+    #f59e0b 70%,
+    #d97706 100%
+  );
   border: 1px solid transparent;
   border-image: linear-gradient(45deg, #fbbf24, #ef4444, #fbbf24) 1;
-  box-shadow: 
+  box-shadow:
     0 0 12px rgba(254, 215, 0, 0.6),
     inset 0 0 4px rgba(255, 255, 255, 0.2),
     0 2px 8px rgba(0, 0, 0, 0.4);
-  
   position: relative;
   overflow: hidden;
 }
@@ -138,10 +168,7 @@
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, 
-    transparent, 
-    rgba(255, 255, 255, 0.4), 
-    transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
   transition: left 0.6s;
 }
 
@@ -150,93 +177,103 @@
 }
 
 .tour-tag.tdm {
-  border-color: rgba(59, 130, 246, 0.9);
-  color: #93c5fd;
+  border-color: rgba(248, 55, 65, 0.85);
+  color: #fda4af;
 }
 
-/* Title */
+/* GAMING TITLE */
 .tour-title {
-  margin: 0 0 6px;
+  margin: 0 0 8px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: 0.025em;
+  line-height: 1.35;
+  text-transform: uppercase;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+}
+
+/* INFO ROWS */
+.tour-meta {
+  margin: 4px 0;
   font-size: 15px;
   font-weight: 600;
-  color: #f9fafb;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
-  font-family: 'Orbitron', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-}
-
-/* Meta */
-.tour-meta {
-  margin: 3px 0;
-  font-size: 12px;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 7px;
+  line-height: 1.3;
+  font-family: 'Rajdhani', system-ui, sans-serif;
 }
 
+/* LABEL PILLS */
 .meta-label {
-  padding: 2px 7px;
-  border-radius: 999px;
+  padding: 3px 7px;
+  border-radius: 7px;
+  font-family: 'Orbitron', sans-serif;
   font-size: 9px;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.16em;
-  background: rgba(15, 23, 42, 0.98);
-  border: 1px solid rgba(51, 65, 85, 0.9);
-  color: #9ca3af;
+  letter-spacing: 0.07em;
+  line-height: 1.35;
+  white-space: nowrap;
+  background: rgba(12, 12, 18, 0.96);
+  border: 1px solid rgba(248, 55, 65, 0.58);
+  color: #ffd9dc;
 }
 
+/* VALUES */
 .meta-value {
-  font-weight: 500;
-  color: #e5f7ff;
+  font-family: 'Rajdhani', system-ui, sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: #ffffff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
 }
 
-/* Tournament ID highlight */
+/* TOURNAMENT ID */
 .tour-meta-id .meta-label {
-  border-color: rgba(56, 189, 248, 0.6);
-  color: #bae6fd;
+  border-color: rgba(248, 55, 65, 0.8);
+  color: #ffd9dc;
 }
 
 .tour-meta-id .meta-value {
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 12px;
   font-weight: 600;
-  color: #e0f2fe;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #ffffff;
 }
 
-/* Gun line */
-.gun-line .meta-label {
-  background: rgba(15, 23, 42, 0.98);
-  border: 1px solid rgba(51, 65, 85, 0.9);
-  color: #94a3b8;
-}
-
-.gun-highlight {
-  font-weight: 500;
-  color: #e5f7ff;
-}
-
-.gun-line .meta-value::before {
-  content: "🎮 ";
-}
-
-/* Map / time / money */
+/* MAP */
 .map-highlight {
-  color: #e0f2fe;
+  color: #ffaaa0;
+  font-weight: 700;
 }
 
+/* TIME */
 .time-highlight {
-  color: #bfdbfe;
+  color: #ffffff;
+  font-weight: 700;
 }
 
+/* ENTRY FEE + PER KILL */
 .highlight-money {
   color: #6ee7b7;
+  font-size: 18px;
+  font-weight: 700;
 }
 
+/* WINNER PRIZE */
 .highlight-prize {
-  color: #facc15;
+  color: #ffd43b;
+  font-size: 20px;
+  font-weight: 800;
 }
 
-/* FIXED FOOTER - RIGHT SIDE SMALL BUTTON */
+/* FOOTER — LAYOUT PRESERVED */
 .tour-footer {
   display: flex;
   align-items: center;
@@ -244,9 +281,10 @@
   gap: 12px;
   margin-top: 12px;
   padding-top: 8px;
-  border-top: 1px solid rgba(148, 163, 184, 0.2);
+  border-top: 1px solid rgba(248, 55, 65, 0.38);
 }
 
+/* SLOTS */
 .tour-slots-wrap {
   flex: 1;
   min-width: 0;
@@ -256,12 +294,16 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 12px;
+  font-size: 15px;
   color: #e5e7eb;
 }
 
 .live-slots {
-  font-weight: 600;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: #ffffff;
 }
 
 .slots-full .live-slots {
@@ -273,7 +315,7 @@
   font-size: 10px;
 }
 
-/* PROGRESS BAR */
+/* SLOT PROGRESS — RED FILL AS REQUESTED */
 .slots-progress-wrap {
   display: flex;
   align-items: center;
@@ -285,42 +327,50 @@
   flex: 1;
   height: 5px;
   border-radius: 999px;
-  background: rgba(15, 23, 42, 0.9);
-  border: 1px solid rgba(148, 163, 184, 0.35);
+  background: rgba(15, 10, 15, 0.92);
+  border: 1px solid rgba(248, 55, 65, 0.45);
   overflow: hidden;
 }
 
 .slots-progress-fill {
   height: 100%;
   border-radius: 999px;
-  background: linear-gradient(90deg, #22c55e, #22d3ee);
-  box-shadow: 0 0 10px rgba(34, 211, 238, 0.4);
+  background: linear-gradient(90deg, #b91c1c, #ef4444, #fb7185);
+  box-shadow: 0 0 8px rgba(239, 68, 68, 0.55);
   transition: width 0.35s ease-out;
 }
 
 .slots-progress-fill.full {
-  background: linear-gradient(90deg, #ef4444, #f87171);
+  background: linear-gradient(90deg, #ef4444, #fca5a5);
 }
 
-/* Buttons - FIXED FOR MOBILE */
+/* BUTTONS — RED GAMING STYLE */
 .btn-tour {
-  font-size: 11px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.025em;
   padding: 7px 16px;
   min-height: 34px;
   border-radius: 999px;
   text-decoration: none;
-  border: none;
+  border: 1px solid rgba(255, 125, 135, 0.55);
   user-select: none;
   -webkit-tap-highlight-color: transparent;
-  font-family: 'Orbitron', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  background: linear-gradient(90deg, #22c55e, #14b8a6);
-  color: #f9fafb;
-  box-shadow: 0 0 10px rgba(34, 197, 94, 0.45);
+
+  background: linear-gradient(135deg, #991b1b 0%, #dc2626 52%, #ef4444 100%);
+  color: #ffffff;
+
+  box-shadow:
+    0 0 10px rgba(239, 68, 68, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+
   cursor: pointer;
   transition:
     transform 0.15s ease-out,
     box-shadow 0.15s ease-out,
     filter 0.15s ease-out;
+
   width: fit-content;
   margin-left: auto;
   display: inline-flex;
@@ -331,32 +381,42 @@
 
 .btn-tour:hover {
   transform: translateY(-1px);
-  box-shadow: 0 0 16px rgba(34, 197, 94, 0.7);
+  background: linear-gradient(135deg, #b91c1c 0%, #ef4444 55%, #fb7185 100%);
+  box-shadow: 0 0 16px rgba(239, 68, 68, 0.65);
   filter: brightness(1.05);
 }
 
 .btn-tour:active {
   transform: translateY(1px) scale(0.98);
-  box-shadow: 0 0 8px rgba(34, 197, 94, 0.5);
+  box-shadow: 0 0 8px rgba(239, 68, 68, 0.5);
 }
 
-/* State buttons */
+/* LOADING */
 .btn-loading {
-  background: linear-gradient(90deg, #64748b, #475569);
-  box-shadow: 0 0 10px rgba(148, 163, 184, 0.35);
+  background: linear-gradient(135deg, #374151, #6b7280);
+  border-color: rgba(156, 163, 175, 0.45);
+  box-shadow: 0 0 10px rgba(107, 114, 128, 0.25);
 }
 
+/* FULL */
 .btn-full {
-  background: linear-gradient(90deg, #ef4444, #f87171);
-  box-shadow: 0 0 12px rgba(239, 68, 68, 0.5);
+  background: linear-gradient(135deg, #450a0a, #991b1b);
+  border-color: rgba(248, 113, 113, 0.65);
+  box-shadow: 0 0 12px rgba(239, 68, 68, 0.4);
 }
 
+/* JOINED — RED TOO, CLEARLY SHOWS JOINED STATE */
 .btn-joined {
-  background: linear-gradient(90deg, #22c55e, #16a34a);
-  box-shadow: 0 0 12px rgba(34, 197, 94, 0.55);
+  background: linear-gradient(135deg, #7f1d1d 0%, #dc2626 55%, #991b1b 100%);
+  border-color: rgba(252, 165, 165, 0.65);
+  color: #ffffff;
+  box-shadow:
+    0 0 12px rgba(239, 68, 68, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  opacity: 1;
 }
 
-/* MOBILE - NO MORE FULL WIDTH */
+/* MOBILE — KEEP ORIGINAL CARD LAYOUT */
 @media (max-width: 480px) {
   .tour-card {
     max-width: 100%;
@@ -365,7 +425,33 @@
   }
 
   .tour-title {
+    font-size: 16px;
+  }
+
+  .tour-meta {
     font-size: 14px;
+    gap: 6px;
+  }
+
+  .meta-label {
+    font-size: 8px;
+    padding: 3px 6px;
+  }
+
+  .meta-value {
+    font-size: 15px;
+  }
+
+  .tour-meta-id .meta-value {
+    font-size: 11px;
+  }
+
+  .highlight-money {
+    font-size: 16px;
+  }
+
+  .highlight-prize {
+    font-size: 18px;
   }
 
   .tour-footer {
@@ -378,18 +464,16 @@
   .btn-tour {
     width: fit-content !important;
     min-width: 80px;
-    padding: 8px 14px;
-    font-size: 11px;
+    padding: 8px 12px;
+    font-size: 9px;
     margin-left: auto !important;
+  }
+
+  .live-slots {
+    font-size: 12px;
   }
 
   .slots-progress-track {
     height: 4px;
-  }
-
-  /* MOBILE WARRIORS BADGE */
-  .tour-tag.warriors {
-    font-size: 8px !important;
-    padding: 3px 8px !important;
   }
 }

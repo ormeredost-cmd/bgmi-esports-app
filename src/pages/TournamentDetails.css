@@ -1,8 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&family=Rajdhani:wght@400;600&display=swap');
 
-/* =========================
-   GLOBAL
-========================= */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800;900&family=Rajdhani:wght@400;500;600;700;800;900&display=swap');
+
+/* =========================================
+   GLOBAL - RED / BLACK BGMI THEME
+========================================= */
+
 * {
   box-sizing: border-box;
   overscroll-behavior: none;
@@ -13,23 +15,28 @@ body {
   height: 100%;
   margin: 0;
   padding: 0;
-  background: #020617;
-  font-family: 'Rajdhani', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #080808;
+  color: #f5f5f5;
+  font-family: 'Rajdhani', system-ui, sans-serif;
 }
 
-/* =========================
-   ROOT VARIABLES
-========================= */
 :root {
-  --primary: #8b5cf6;
-  --secondary: #06b6d4;
-  --glass-border: rgba(255, 255, 255, 0.12);
-  --card-bg: rgba(15, 23, 42, 0.98);
+  --primary: #ff304f;
+  --primary-dark: #a90020;
+  --secondary: #ff526b;
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --card-bg: #0b0b0b;
+  --text-main: #f5f5f5;
+  --text-muted: #a49a9d;
+  --success: #10b981;
+  --warning: #ffbd57;
+  --danger: #ff526b;
 }
 
-/* =========================
+/* =========================================
    PAGE WRAPPER
-========================= */
+========================================= */
+
 .tdm-page {
   min-height: 100vh;
   width: 100%;
@@ -37,40 +44,39 @@ body {
   justify-content: center;
   align-items: flex-start;
   padding: 10px;
+  background: #080808;
 }
 
-/* =========================
+/* =========================================
    MAIN CARD
-========================= */
+========================================= */
+
 .tdm-container {
   width: 100%;
   max-width: 340px;
-  backdrop-filter: blur(25px);
-  border-radius: 20px;
-  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 45, 70, 0.22);
+
   box-shadow:
-    0 0 0 1px rgba(15, 23, 42, 0.9),
-    0 20px 40px rgba(0, 0, 0, 0.9);
+    0 15px 35px rgba(0, 0, 0, 0.65),
+    inset 0 1px rgba(255, 255, 255, 0.025);
+
   display: flex;
   flex-direction: column;
   margin-top: 20px;
-  background:
-    radial-gradient(circle at 0% 0%, rgba(56, 189, 248, 0.18), transparent 55%),
-    radial-gradient(circle at 100% 100%, rgba(45, 212, 191, 0.18), transparent 52%),
-    var(--card-bg);
+
+  background: #0b0b0b;
+  overflow: hidden;
 }
 
-/* =========================
+/* =========================================
    HEADER
-========================= */
+========================================= */
+
 .tdm-header {
   padding: 20px 18px 14px;
   text-align: center;
-  background: linear-gradient(
-    135deg,
-    rgba(139, 92, 246, 0.18),
-    rgba(6, 182, 212, 0.12)
-  );
+  background: #111010;
   flex-shrink: 0;
   position: relative;
 }
@@ -82,38 +88,41 @@ body {
   left: 0;
   right: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, var(--glass-border), transparent);
+  background: rgba(255, 48, 79, 0.3);
 }
 
 .tdm-title {
   font-size: 1.35rem;
-  font-weight: 800;
-  background: linear-gradient(135deg, #8b5cf6, #06b6d4);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  margin: 0 0 2px;
-  font-family: 'Orbitron', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 900;
+  color: #fff;
+  margin: 0 0 5px;
+  font-family: 'Orbitron', sans-serif;
+  letter-spacing: 0.5px;
+}
+
+.tdm-title::first-letter {
+  color: #ff304f;
 }
 
 .tdm-subtitle {
   font-size: 0.7rem;
-  background: linear-gradient(135deg, #a78bfa, #22d3ee);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: #ff526b;
   margin: 0;
-  font-weight: 600;
-  font-family: 'Orbitron', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  font-family: 'Orbitron', sans-serif;
 }
 
-/* =========================
+/* =========================================
    INFO CARDS
-========================= */
+========================================= */
+
 .tournament-info {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  height: 105px;
+  min-height: 105px;
   flex-shrink: 0;
-  background: rgba(15, 23, 42, 0.96);
+  background: #080808;
 }
 
 .info-card {
@@ -123,8 +132,10 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: rgba(15, 23, 42, 0.98);
-  border: 1px solid rgba(148, 163, 184, 0.35);
+
+  background: #101010;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+
   position: relative;
   overflow: hidden;
 }
@@ -136,102 +147,117 @@ body {
   left: 0;
   right: 0;
   height: 2px;
-  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  background: #b51d35;
 }
 
 .info-label {
   font-size: 0.65rem;
-  color: #a1a1aa;
-  font-weight: 700;
+  color: #a49a9d;
+  font-weight: 800;
   text-transform: uppercase;
-  margin-bottom: 2px;
+  margin-bottom: 4px;
+  letter-spacing: 0.5px;
 }
 
 .info-value {
   font-size: 0.98rem;
-  font-weight: 800;
-  background: linear-gradient(135deg, #8b5cf6, #06b6d4);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  line-height: 1;
+  font-weight: 900;
+  color: #fff;
+  line-height: 1.1;
+  overflow-wrap: anywhere;
 }
 
 .info-value.success {
   color: #10b981;
+  -webkit-text-fill-color: #10b981;
 }
 
 .info-value.warning {
-  color: #fbbf24;
+  color: #ffbd57;
+  -webkit-text-fill-color: #ffbd57;
 }
 
 .insufficient {
   font-size: 0.65rem;
-  color: #f97316;
+  color: #ff526b;
+  font-weight: 700;
 }
 
-/* Slots line */
+/* =========================================
+   SLOTS
+========================================= */
+
 .info-value.slots {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 4px;
 }
 
 .full-slots {
-  color: #f97373;
+  color: #ff526b;
+  -webkit-text-fill-color: #ff526b;
 }
 
 .full-badge {
   font-size: 0.62rem;
   padding: 2px 6px;
   border-radius: 999px;
-  background: rgba(239, 68, 68, 0.15);
-  color: #fecaca;
+  background: rgba(255, 48, 79, 0.13);
+  border: 1px solid rgba(255, 48, 79, 0.25);
+  color: #ff8797;
 }
 
-/* =========================
+/* =========================================
    REGISTER SECTION
-========================= */
+========================================= */
+
 .register-section {
   flex: 1;
-  padding: 22px 18px 22px;
-  background: rgba(15, 23, 42, 0.98);
-  border-top: 1px solid var(--glass-border);
+  padding: 22px 18px;
+  background: #0b0b0b;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
-/* Status cards */
+/* =========================================
+   STATUS CARDS
+========================================= */
+
 .status-card {
   padding: 12px 10px;
-  border-radius: 12px;
+  border-radius: 10px;
   font-size: 0.8rem;
+  font-weight: 700;
 }
 
 .status-card.loading {
-  background: rgba(15, 23, 42, 0.95);
-  border: 1px solid rgba(148, 163, 184, 0.4);
-  color: #e5e7eb;
+  background: #111;
+  border: 1px solid #292929;
+  color: #e5e5e5;
 }
 
 .status-card.full {
-  background: rgba(30, 64, 175, 0.15);
-  border: 1px solid rgba(59, 130, 246, 0.7);
-  color: #bfdbfe;
+  background: rgba(255, 184, 77, 0.08);
+  border: 1px solid rgba(255, 184, 77, 0.3);
+  color: #ffbd57;
 }
 
 .status-card.joined {
-  background: rgba(22, 163, 74, 0.18);
-  border: 1px solid rgba(34, 197, 94, 0.7);
-  color: #bbf7d0;
+  background: rgba(16, 185, 129, 0.09);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  color: #6ee7b7;
 }
 
 .status-card.error {
-  background: linear-gradient(135deg, #ff6b6b, #ee5a52);
-  color: white;
-  border: 2px solid #ff4757;
-  border-radius: 12px;
-  padding: 16px;
+  background: #210d11;
+  color: #ff8797;
+  border: 1px solid rgba(255, 48, 79, 0.45);
+  border-radius: 10px;
+  padding: 14px;
   margin-bottom: 8px;
   text-align: center;
 }
@@ -239,11 +265,13 @@ body {
 .status-card.error h3 {
   margin: 0;
   font-size: 0.9rem;
+  font-weight: 900;
 }
 
-/* =========================
+/* =========================================
    FORM
-========================= */
+========================================= */
+
 .register-form {
   display: flex;
   flex-direction: column;
@@ -255,90 +283,180 @@ body {
 }
 
 .form-label {
-  font-size: 0.68rem;
-  color: #94a3b8;
-  font-weight: 700;
-  margin-bottom: 4px;
+  display: block;
+  font-size: 0.72rem;
+  color: #c1b8ba;
+  font-weight: 800;
+  margin-bottom: 5px;
 }
 
 .form-input {
   width: 100%;
   height: 42px;
   padding: 0 14px;
-  border: 1.8px solid rgba(139, 92, 246, 0.3);
-  border-radius: 12px;
-  background: rgba(15, 23, 42, 0.96);
-  color: #f8fafc;
-  font-size: 0.88rem;
+
+  border: 1px solid #343030;
+  border-radius: 9px;
+
+  background: #111;
+  color: #f5f5f5;
+
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-input::placeholder {
+  color: #777;
 }
 
 .form-input:focus {
-  outline: none;
-  border-color: var(--primary);
+  border-color: #b51d35;
+  box-shadow: 0 0 0 2px rgba(255, 48, 79, 0.1);
 }
 
 .form-input[readonly] {
-  background: rgba(139, 92, 246, 0.12);
-  color: #a78bfa;
-  font-weight: 700;
+  background: #151012;
+  border-color: rgba(255, 48, 79, 0.25);
+  color: #ff8797;
+  font-weight: 800;
+  cursor: default;
 }
 
-/* =========================
+/* =========================================
    SUBMIT BUTTON
-========================= */
+========================================= */
+
 .submit-btn {
   width: 100%;
-  height: 44px;
-  background: linear-gradient(135deg, #10b981, #059669);
-  border: none;
-  border-radius: 12px;
+  min-height: 44px;
+
+  background: linear-gradient(135deg, #e51d3d, #a90020);
+  border: 1px solid rgba(255, 100, 120, 0.3);
+  border-radius: 9px;
+
   color: #fff;
   font-size: 0.9rem;
-  font-weight: 800;
+  font-weight: 900;
   text-transform: uppercase;
-  box-shadow: 0 8px 20px rgba(16, 185, 129, 0.35);
+  letter-spacing: 0.5px;
+
+  box-shadow: 0 5px 16px rgba(190, 0, 35, 0.2);
+
   cursor: pointer;
   transition:
     transform 0.16s ease,
     box-shadow 0.16s ease,
     filter 0.16s ease;
-  font-family: 'Orbitron', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+
+  font-family: 'Orbitron', sans-serif;
 }
 
 .submit-btn:hover:not(.disabled) {
   transform: translateY(-1px);
-  filter: brightness(1.05);
-  box-shadow: 0 10px 26px rgba(16, 185, 129, 0.45);
+  filter: brightness(1.1);
+  box-shadow: 0 7px 20px rgba(255, 30, 65, 0.3);
+}
+
+.submit-btn:active:not(.disabled) {
+  transform: scale(0.98);
 }
 
 .submit-btn.disabled {
-  background: linear-gradient(90deg, #6b7280, #4b5563) !important;
+  background: #292929 !important;
+  border-color: #393939 !important;
+  color: #888 !important;
   cursor: not-allowed !important;
-  opacity: 0.6;
+  opacity: 0.65;
+  box-shadow: none;
 }
 
-/* =========================
+/* =========================================
    EXTRA STATES
-========================= */
+========================================= */
+
 .balance-ok {
   color: #10b981 !important;
+  -webkit-text-fill-color: #10b981 !important;
 }
 
 .balance-low {
-  color: #ef4444 !important;
+  color: #ff526b !important;
+  -webkit-text-fill-color: #ff526b !important;
 }
 
 .balance-warning {
-  color: #f59e0b;
+  color: #ffbd57;
   font-size: 11px;
   margin-left: 5px;
+  font-weight: 700;
 }
 
-/* =========================
+/* =========================================
    MOBILE
-========================= */
+========================================= */
+
 @media (max-width: 430px) {
+  .tdm-page {
+    padding: 8px;
+  }
+
   .tdm-container {
-    border-radius: 18px;
+    border-radius: 14px;
+    margin-top: 12px;
+  }
+
+  .tdm-header {
+    padding: 17px 14px 13px;
+  }
+
+  .register-section {
+    padding: 18px 14px;
+  }
+}
+
+/* =========================================
+   SMALL PHONES
+========================================= */
+
+@media (max-width: 360px) {
+  .tdm-page {
+    padding: 6px;
+  }
+
+  .tdm-container {
+    border-radius: 12px;
+  }
+
+  .tdm-title {
+    font-size: 1.2rem;
+  }
+
+  .info-card {
+    padding: 11px 7px;
+  }
+
+  .info-value {
+    font-size: 0.9rem;
+  }
+
+  .register-section {
+    padding: 16px 11px;
+  }
+}
+
+/* =========================================
+   ACCESSIBILITY
+========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .tdm-container *,
+  .tdm-container *::before,
+  .tdm-container *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
   }
 }

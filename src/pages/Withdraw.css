@@ -1,289 +1,657 @@
-/* Withdraw.css - PHONE ME SAB DIKHE + PERFECT MOBILE */
+
+/* =====================================================
+   WITHDRAW PAGE - BGMI RED / BLACK GAMING THEME
+   Live Matches Style | Compact | Responsive
+===================================================== */
+
 :root {
-  --bg-main: #020617;
-  --bg-card: #020617;
-  --bg-alt: #020617;
-  --text-main: #e5e7eb;
-  --text-muted: #9ca3af;
-  --accent-green: #22c55e;
-  --accent-gold: #fbbf24;
-  --accent-orange: #fb923c;
-  --accent-blue: #60a5fa;
+  --withdraw-bg: #080808;
+  --withdraw-card: #111010;
+  --withdraw-card-2: #191112;
+  --withdraw-text: #f5f5f5;
+  --withdraw-muted: #a49a9d;
+  --withdraw-red: #ff304f;
+  --withdraw-red-dark: #a90020;
+  --withdraw-green: #10b981;
+  --withdraw-gold: #ffbd57;
 }
+
+/* ================= GLOBAL ================= */
 
 * {
   box-sizing: border-box;
 }
 
-html, body {
-  height: 100vh;
-  background: radial-gradient(circle at top, #111827 0%, #020617 45%, #000 100%);
-  overflow: hidden;
+/* Avoid changing the global theme of other pages */
+html,
+body {
   margin: 0;
   padding: 0;
 }
 
+/* ================= PAGE BACKGROUND ================= */
+
 .withdraw-container {
   position: absolute;
+
   top: 72px;
   left: 0;
   right: 0;
   bottom: 110px;
-  background: radial-gradient(circle at top, #111827 0%, #020617 45%, #000 100%);
-  color: var(--text-main);
+
+  width: 100%;
+
+  background: #080808 !important;
+  background-color: #080808 !important;
+  background-image: none !important;
+
+  color: var(--withdraw-text);
+
   overflow-y: auto;
+  overflow-x: hidden;
+
   -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+
   scrollbar-width: none;
   -ms-overflow-style: none;
-  font-family: system-ui, -apple-system, sans-serif;
-  padding: 12px 8px 20px;
+
+  font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+
+  padding: 12px 9px 20px;
   margin: 0;
-  overscroll-behavior: contain;
+
+  isolation: isolate;
 }
 
-.withdraw-container::-webkit-scrollbar { display: none; }
+.withdraw-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* ================= MAIN CARD ================= */
 
 .withdraw-card {
-  background: rgba(15, 23, 42, 0.95);
-  border-radius: 16px;
-  padding: 20px 16px;
-  border: 1px solid rgba(31, 41, 55, 0.8);
-  max-width: 100%;
+  position: relative;
+
+  width: 100%;
+  max-width: 460px;
+
   margin: 0 auto;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+
+  padding: 18px 15px;
+
+  background: linear-gradient(
+    150deg,
+    #1b1114,
+    #100d0e
+  ) !important;
+
+  border: 1px solid rgba(255, 45, 70, 0.24);
+
+  border-radius: 14px;
+
+  box-shadow:
+    0 10px 25px rgba(0, 0, 0, 0.45),
+    inset 0 1px rgba(255, 255, 255, 0.025);
+
+  overflow: hidden;
 }
+
+/* Top red line */
+
+.withdraw-card::before {
+  content: "";
+
+  position: absolute;
+  top: 0;
+  left: 8%;
+  right: 8%;
+
+  height: 2px;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    #ff304f,
+    #a90020,
+    transparent
+  );
+}
+
+/* ================= HEADING ================= */
 
 .withdraw-card h1 {
-  font-size: 24px;
-  font-weight: 800;
-  margin: 0 0 20px 0;
-  background: linear-gradient(135deg, var(--accent-orange), var(--accent-gold));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  margin: 0 0 16px;
+
   text-align: center;
+
+  font-size: 22px;
+  line-height: 1.25;
+  font-weight: 950;
+
+  letter-spacing: 0.5px;
+
+  color: #ffffff !important;
+
+  background: none !important;
+
+  -webkit-text-fill-color: #ffffff !important;
+  -webkit-background-clip: initial !important;
+  background-clip: initial !important;
 }
 
-/* BANK STATUS */
+.withdraw-card h1::after {
+  content: "";
+
+  display: block;
+
+  width: 42px;
+  height: 2px;
+
+  margin: 8px auto 0;
+
+  border-radius: 10px;
+
+  background: linear-gradient(
+    90deg,
+    #ff304f,
+    #a90020
+  );
+}
+
+/* ================= BANK STATUS ================= */
+
 .bank-status {
-  padding: 12px 16px;
-  margin-bottom: 16px;
-  border-radius: 12px;
   display: flex;
+
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
-  font-weight: 600;
-  font-size: 13px;
-}
 
-.bank-status {
-  background: rgba(40, 167, 69, 0.15);
-  border: 1px solid rgba(40, 167, 69, 0.3);
-  color: var(--accent-green);
+  gap: 9px;
+
+  padding: 10px 12px;
+
+  margin-bottom: 13px;
+
+  border-radius: 9px;
+
+  background: rgba(16, 185, 129, 0.09) !important;
+
+  border: 1px solid rgba(16, 185, 129, 0.25);
+
+  color: #10b981 !important;
+
+  font-size: 12px;
+  font-weight: 800;
 }
 
 .bank-link-btn {
-  background: linear-gradient(135deg, var(--accent-green), #16a34a);
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 20px;
-  font-size: 11px;
-  font-weight: 600;
+  flex: 0 0 auto;
+
+  background: linear-gradient(
+    135deg,
+    #a90020,
+    #e51d3d
+  ) !important;
+
+  color: #ffffff !important;
+
+  border: 1px solid rgba(255, 100, 120, 0.25);
+
+  padding: 7px 12px;
+
+  border-radius: 7px;
+
+  font-size: 10px;
+  font-weight: 900;
+
   cursor: pointer;
-  transition: all 0.2s ease;
+
+  transition: 0.2s ease;
 }
 
 .bank-link-btn:active {
-  transform: scale(0.95);
+  transform: scale(0.96);
 }
 
-/* BALANCE DISPLAY */
+/* ================= BALANCE DISPLAY ================= */
+
 .balance-display {
   text-align: center;
-  padding: 16px;
-  background: rgba(34, 197, 94, 0.1);
-  border: 1px solid rgba(34, 197, 94, 0.3);
-  border-radius: 12px;
-  margin-bottom: 20px;
-  font-weight: 700;
-  font-size: 16px;
-  color: var(--accent-green);
+
+  padding: 13px 12px;
+
+  background: rgba(255, 48, 79, 0.07) !important;
+
+  border: 1px solid rgba(255, 48, 79, 0.2);
+
+  border-radius: 10px;
+
+  margin-bottom: 16px;
+
+  font-weight: 800;
+  font-size: 14px;
+
+  color: #b4aaac !important;
 }
 
 .balance-display span {
-  color: var(--accent-gold) !important;
-  font-size: 24px !important;
+  display: inline-block;
+
+  margin-left: 4px;
+
+  color: #ff657a !important;
+
+  font-size: 22px !important;
+  font-weight: 950;
 }
 
-/* FORM */
-form {
+/* ================= FORM ================= */
+
+/* Scoped to withdraw card to avoid affecting other pages */
+
+.withdraw-card form {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  margin-bottom: 20px;
+
+  gap: 12px;
+
+  margin-bottom: 15px;
 }
 
+/* ================= AMOUNT INPUT ================= */
+
 .amount-input {
+  display: block;
+
   width: 100%;
-  padding: 18px 16px;
-  font-size: 20px;
-  border-radius: 12px;
-  border: 2px solid rgba(148, 163, 184, 0.3);
-  background: rgba(15, 23, 42, 0.9);
-  color: var(--text-main);
-  font-weight: 600;
-  transition: all 0.2s ease;
+  min-width: 0;
+
+  padding: 14px 13px;
+
+  font-family: inherit;
+
+  font-size: 18px;
+  font-weight: 800;
+
+  border-radius: 9px;
+
+  border: 1px solid rgba(255, 48, 79, 0.25);
+
+  background: #0c0c0c !important;
+
+  color: #ffffff !important;
+
+  outline: none;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .amount-input:focus {
   outline: none;
-  border-color: var(--accent-gold);
-  box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.1);
+
+  border-color: #ff304f;
+
+  box-shadow: 0 0 0 3px rgba(255, 48, 79, 0.09);
 }
 
 .amount-input::placeholder {
-  color: var(--text-muted);
+  color: #777777 !important;
+  font-weight: 600;
 }
 
 .amount-input:disabled {
-  background: rgba(31, 41, 55, 0.5);
+  background: #171717 !important;
+
+  color: #777777 !important;
+
   cursor: not-allowed;
+  opacity: 0.7;
 }
 
-/* ERROR */
+/* ================= ERROR ================= */
+
 .error-message {
-  padding: 12px 16px;
-  background: rgba(239, 68, 68, 0.15);
-  border: 1px solid rgba(239, 68, 68, 0.4);
-  border-radius: 10px;
-  color: #ef4444;
-  font-size: 13px;
-  font-weight: 500;
+  padding: 10px 12px;
+
+  background: rgba(255, 48, 79, 0.09) !important;
+
+  border: 1px solid rgba(255, 48, 79, 0.35);
+
+  border-radius: 8px;
+
+  color: #ff657a !important;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  line-height: 1.45;
 }
 
-/* SUBMIT BUTTON */
+/* ================= SUBMIT BUTTON ================= */
+
 .withdraw-submit-btn {
-  width: 100%;
-  padding: 18px 20px;
-  font-size: 18px;
-  font-weight: 700;
-  border-radius: 15px;
-  border: none;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
   position: relative;
+
+  width: 100%;
+  min-height: 44px;
+
+  padding: 12px 15px;
+
+  border-radius: 9px;
+
+  border: 1px solid rgba(255, 100, 120, 0.3);
+
+  font-family: inherit;
+
+  font-size: 14px;
+  font-weight: 950;
+
+  letter-spacing: 0.7px;
+
+  text-transform: uppercase;
+
+  cursor: pointer;
+
   overflow: hidden;
+
+  transition: 0.2s ease;
 }
 
 .withdraw-submit-btn:disabled {
-  background: rgba(31, 41, 55, 0.5);
-  color: var(--text-muted);
+  background: #202020 !important;
+
+  border-color: #303030;
+
+  color: #777777 !important;
+
   cursor: not-allowed;
 }
 
 .withdraw-submit-btn:not(:disabled) {
-  background: linear-gradient(135deg, var(--accent-green), var(--accent-gold));
-  color: #020617;
+  background: linear-gradient(
+    135deg,
+    #e51d3d,
+    #a90020
+  ) !important;
+
+  color: #ffffff !important;
+
+  box-shadow: 0 5px 16px rgba(190, 0, 35, 0.2);
+}
+
+.withdraw-submit-btn:not(:disabled):hover {
+  background: linear-gradient(
+    135deg,
+    #ff304f,
+    #c9002b
+  ) !important;
+
+  box-shadow: 0 6px 20px rgba(255, 30, 65, 0.2);
 }
 
 .withdraw-submit-btn:not(:disabled):active {
   transform: scale(0.97);
 }
 
-/* HISTORY BUTTON */
+/* ================= HISTORY BUTTON ================= */
+
 .history-btn {
   width: 100%;
-  padding: 14px 20px;
-  background: linear-gradient(135deg, var(--accent-blue), #0284c7);
-  color: white;
-  border: none;
-  border-radius: 12px;
-  font-size: 16px;
-  font-weight: 600;
+  min-height: 42px;
+
+  padding: 11px 15px;
+
+  margin-bottom: 13px;
+
+  background: #171112 !important;
+
+  color: #ff657a !important;
+
+  border: 1px solid rgba(255, 48, 79, 0.3);
+
+  border-radius: 9px;
+
+  font-family: inherit;
+
+  font-size: 12px;
+  font-weight: 900;
+
+  letter-spacing: 0.4px;
+
   cursor: pointer;
-  transition: all 0.2s ease;
-  margin-bottom: 16px;
+
+  transition: 0.2s ease;
+}
+
+.history-btn:hover:not(:disabled) {
+  background: #251316 !important;
+
+  border-color: rgba(255, 48, 79, 0.55);
 }
 
 .history-btn:disabled {
-  background: rgba(31, 41, 55, 0.5);
+  background: #1a1a1a !important;
+
+  color: #777777 !important;
+
+  border-color: #303030;
+
   cursor: not-allowed;
 }
 
-.history-btn:active {
+.history-btn:active:not(:disabled) {
   transform: scale(0.97);
 }
 
-/* INFO BOX */
-div[style*="e9ecef"] {
-  padding: 12px 16px;
-  background: rgba(31, 41, 55, 0.6) !important;
-  border: 1px solid rgba(51, 65, 85, 0.8);
-  border-radius: 10px;
-  font-size: 12px;
-  color: var(--text-main);
-  line-height: 1.4;
+/* ================= INFO BOX ================= */
+
+/* Preserve the existing inline-style based info box */
+
+.withdraw-card div[style*="e9ecef"] {
+  padding: 11px 12px;
+
+  background: #171112 !important;
+
+  border: 1px solid rgba(255, 48, 79, 0.2);
+
+  border-radius: 9px;
+
+  font-size: 11px;
+
+  color: #d1c9cb !important;
+
+  line-height: 1.5;
 }
 
-div[style*="e9ecef"] strong {
-  color: var(--accent-gold);
+.withdraw-card div[style*="e9ecef"] strong {
+  color: #ffbd57 !important;
 }
 
-/* LOADING */
+/* ================= LOADING ================= */
+
 .withdraw-container[style*="padding: '50px'"] {
   padding: 50px 20px !important;
+
   display: flex;
+
   align-items: center;
   justify-content: center;
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--accent-gold);
+
+  font-size: 14px;
+  font-weight: 800;
+
+  color: #ff657a !important;
 }
 
-/* LAPTOP */
+/* ================= LAPTOP ================= */
+
 @media (min-width: 481px) {
   .withdraw-container {
-    max-width: 400px;
-    margin: 20px auto;
-    top: 0;
-    bottom: 0;
-    padding: 24px 16px;
-    border-radius: 20px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    top: 72px;
+    bottom: 20px;
+
+    max-width: 460px;
+
+    left: 50%;
+    right: auto;
+
+    width: 100%;
+
+    transform: translateX(-50%);
+
+    margin: 0;
+
+    padding: 20px 14px;
+
+    border-radius: 14px;
+
+    background: #080808 !important;
+
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
   }
-  
+
   .withdraw-card {
-    padding: 28px 24px;
+    padding: 22px 18px;
   }
 }
 
-/* MOBILE EXTRA COMPACT */
-@media (max-width: 400px) {
+/* ================= MOBILE ================= */
+
+@media (max-width: 480px) {
   .withdraw-container {
-    padding: 8px 6px 20px;
+    top: 72px;
+    bottom: 110px;
+
+    padding: 10px 8px 18px;
+
+    background: #080808 !important;
   }
-  
+
   .withdraw-card {
-    padding: 16px 12px;
+    padding: 15px 12px;
+
     border-radius: 12px;
   }
-  
+
   .withdraw-card h1 {
     font-size: 20px;
+
+    margin-bottom: 13px;
   }
-  
+
+  .bank-status {
+    padding: 9px 10px;
+
+    font-size: 11px;
+  }
+
+  .bank-link-btn {
+    padding: 7px 10px;
+
+    font-size: 9px;
+  }
+
+  .balance-display {
+    padding: 11px;
+
+    margin-bottom: 13px;
+
+    font-size: 13px;
+  }
+
+  .balance-display span {
+    font-size: 20px !important;
+  }
+
   .amount-input {
-    padding: 16px 12px;
+    padding: 13px 11px;
+
+    font-size: 17px;
+  }
+
+  .withdraw-submit-btn {
+    min-height: 42px;
+
+    padding: 11px;
+
+    font-size: 13px;
+  }
+
+  .history-btn {
+    min-height: 40px;
+
+    padding: 10px;
+
+    font-size: 11px;
+  }
+}
+
+/* ================= SMALL PHONES ================= */
+
+@media (max-width: 360px) {
+  .withdraw-container {
+    padding: 8px 6px 16px;
+  }
+
+  .withdraw-card {
+    padding: 13px 10px;
+
+    border-radius: 10px;
+  }
+
+  .withdraw-card h1 {
     font-size: 18px;
   }
-  
+
+  .bank-status {
+    gap: 6px;
+
+    padding: 8px;
+
+    font-size: 10px;
+  }
+
+  .bank-link-btn {
+    padding: 6px 8px;
+
+    font-size: 9px;
+  }
+
+  .balance-display {
+    padding: 10px;
+
+    font-size: 12px;
+  }
+
+  .balance-display span {
+    font-size: 19px !important;
+  }
+
+  .amount-input {
+    padding: 12px 10px;
+
+    font-size: 16px;
+  }
+
   .withdraw-submit-btn,
   .history-btn {
-    padding: 16px 16px;
-    font-size: 16px;
+    padding: 10px;
+
+    font-size: 11px;
+  }
+}
+
+/* ================= ACCESSIBILITY ================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .withdraw-container *,
+  .withdraw-container *::before,
+  .withdraw-container *::after {
+    animation-duration: 0.01ms !important;
+
+    transition-duration: 0.01ms !important;
   }
 }

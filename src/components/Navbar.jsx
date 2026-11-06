@@ -1,11 +1,16 @@
-// src/components/Navbar.jsx
+
 import { NavLink, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+
+import NotificationBell from "./NotificationBell";
+
 import "./Navbar.css";
 
 const Navbar = ({ variant = "bottom-tabs" }) => {
   const navigate = useNavigate();
+
   const [open, setOpen] = useState(false);
+  const menuRef = useRef(null);
 
   const goTo = (path) => {
     setOpen(false);
@@ -18,76 +23,195 @@ const Navbar = ({ variant = "bottom-tabs" }) => {
     navigate("/login", { replace: true });
   };
 
-  /* =========================
-     TOP MENU (☰ DROPDOWN)
-  ========================== */
+  // ==========================================
+  // CLOSE DROPDOWN ON OUTSIDE CLICK / ESCAPE
+  // ==========================================
+
+  useEffect(() => {
+    const handleOutsideClick = (event) => {
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(event.target)
+      ) {
+        setOpen(false);
+      }
+    };
+
+    const handleEscape = (event) => {
+      if (event.key === "Escape") {
+        setOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleOutsideClick);
+    document.addEventListener("keydown", handleEscape);
+
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+      document.removeEventListener("keydown", handleEscape);
+    };
+  }, []);
+
+  // ==========================================
+  // TOP MENU + NOTIFICATION BELL
+  // ==========================================
+
   if (variant === "top-menu") {
     return (
       <div className="nav-top-menu">
-        <div className="menu-wrapper">
-          <button
-            className="menu-btn"
-            onClick={() => setOpen(o => !o)}
-          >
-            ☰
-          </button>
 
-          {open && (
-            <div className="menu-dropdown">
-              {/* 💰 WALLET (DIRECT PAGE) */}
-              <button onClick={() => goTo("/wallet")}>
-                💰 Wallet
-              </button>
+        {/* NOTIFICATION + HAMBURGER IN ONE ROW */}
+        <div className="top-menu-actions">
 
-              {/* 🧾 DEPOSIT HISTORY (SEPARATE PAGE) */}
-              <button onClick={() => goTo("/deposit-history")}>
-                🧾 Deposit History
-              </button>
+          {/* NOTIFICATION BELL */}
+          <div className="top-menu-notification">
+            <NotificationBell />
+          </div>
 
-              {/* ➕ DEPOSIT */}
-              <button onClick={() => goTo("/deposit")}>
-                ➕ Deposit
-              </button>
+          {/* HAMBURGER MENU */}
+          <div className="menu-wrapper" ref={menuRef}>
 
-              {/* ➖ WITHDRAW */}
-              <button onClick={() => goTo("/withdraw")}>
-                ➖ Withdraw
-              </button>
+            <button
+              type="button"
+              className={`menu-btn ${open ? "menu-btn-open" : ""}`}
+              aria-label="Toggle navigation menu"
+              aria-expanded={open}
+              aria-haspopup="true"
+              onClick={() => setOpen((previous) => !previous)}
+            >
+              <span className="menu-btn-icon">
+                {open ? "✕" : "☰"}
+              </span>
+            </button>
 
-              {/* 🚪 LOGOUT */}
-              <button
-                className="menu-logout"
-                onClick={handleLogout}
-              >
-                🚪 Logout
-              </button>
-            </div>
-          )}
+            {open && (
+              <div className="menu-dropdown">
+
+                <div className="menu-dropdown-heading">
+                  PLAYER MENU
+                </div>
+
+                {/* MATCH CENTER */}
+                <button
+                  type="button"
+                  onClick={() => goTo("/live-matches")}
+                >
+                  <span className="menu-item-icon">⚔</span>
+                  <span>Live Matches & History</span>
+                </button>
+
+                <div className="menu-divider" />
+
+                {/* WALLET */}
+                <button
+                  type="button"
+                  onClick={() => goTo("/wallet")}
+                >
+                  <span className="menu-item-icon">◈</span>
+                  <span>Wallet</span>
+                </button>
+
+                {/* DEPOSIT HISTORY */}
+                <button
+                  type="button"
+                  onClick={() => goTo("/deposit-history")}
+                >
+                  <span className="menu-item-icon">▤</span>
+                  <span>Deposit History</span>
+                </button>
+
+                <div className="menu-divider" />
+
+                {/* DEPOSIT */}
+                <button
+                  type="button"
+                  onClick={() => goTo("/deposit")}
+                >
+                  <span className="menu-item-icon">＋</span>
+                  <span>Deposit</span>
+                </button>
+
+                {/* WITHDRAW */}
+                <button
+                  type="button"
+                  onClick={() => goTo("/withdraw")}
+                >
+                  <span className="menu-item-icon">－</span>
+                  <span>Withdraw</span>
+                </button>
+
+                {/* WITHDRAW HISTORY */}
+                <button
+                  type="button"
+                  onClick={() => goTo("/withdraw-history")}
+                >
+                  <span className="menu-item-icon">▤</span>
+                  <span>Withdraw History</span>
+                </button>
+
+                {/* BANK DETAILS */}
+                <button
+                  type="button"
+                  onClick={() => goTo("/bank-details")}
+                >
+                  <span className="menu-item-icon">▣</span>
+                  <span>Bank Details</span>
+                </button>
+
+                <div className="menu-divider" />
+
+                {/* LOGOUT */}
+                <button
+                  type="button"
+                  className="menu-logout"
+                  onClick={handleLogout}
+                >
+                  <span className="menu-item-icon">↪</span>
+                  <span>Logout</span>
+                </button>
+
+              </div>
+            )}
+
+          </div>
         </div>
       </div>
     );
   }
 
-  /* =========================
-     BOTTOM TABS
-  ========================== */
+  // ==========================================
+  // BOTTOM NAVIGATION TABS
+  // ==========================================
+
+  const tabs = [
+    { path: "/", label: "Home", icon: "⌂", end: true },
+    { path: "/my-matches", label: "Join", icon: "⚔" },
+    { path: "/profile", label: "Profile", icon: "♙" },
+    { path: "/help", label: "Help", icon: "?" },
+  ];
+
   return (
-    <nav className="nav-bottom">
-      <NavLink to="/" end className="nav-tab">
-        <span className="nav-tab-label">Home</span>
-      </NavLink>
+    <nav className="nav-bottom" aria-label="Main navigation">
 
-      <NavLink to="/my-matches" className="nav-tab">
-        <span className="nav-tab-label">Join</span>
-      </NavLink>
+      {tabs.map((tab) => (
+        <NavLink
+          key={tab.path}
+          to={tab.path}
+          end={tab.end || false}
+          className={({ isActive }) =>
+            `nav-tab ${isActive ? "nav-tab-active" : ""}`
+          }
+        >
+          <span className="nav-tab-icon" aria-hidden="true">
+            {tab.icon}
+          </span>
 
-      <NavLink to="/profile" className="nav-tab">
-        <span className="nav-tab-label">Profile</span>
-      </NavLink>
+          <span className="nav-tab-label">
+            {tab.label}
+          </span>
+        </NavLink>
+      ))}
 
-      <NavLink to="/help" className="nav-tab">
-        <span className="nav-tab-label">Help</span>
-      </NavLink>
     </nav>
   );
 };

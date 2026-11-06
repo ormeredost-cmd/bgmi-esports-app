@@ -353,7 +353,7 @@ const BankDetails = () => {
               ) : success ? (
                 "✅ INSTANT APPROVED!"
               ) : (
-                "🚀 Save & APPROVE INSTANTLY"
+                "Save & APPROVE"
               )}
             </button>
           </form>

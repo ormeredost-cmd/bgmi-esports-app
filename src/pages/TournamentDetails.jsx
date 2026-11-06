@@ -1,388 +1,1294 @@
-// src/pages/TournamentDetails.jsx
-import { useParams, useNavigate } from "react-router-dom";
-import { useState, useEffect, useCallback, useRef } from "react";
-import { supabase } from "../supabaseClient";
-import { tournamentsSample } from "../data/tournamentsSample";
+
+import {
+  useParams,
+  useNavigate,
+} from "react-router-dom";
+
+import {
+  useState,
+  useEffect,
+  useCallback,
+  useRef,
+} from "react";
+
 import "./TournamentDetails.css";
+
+/* ============================================================
+   API CONFIG
+   ============================================================ */
+
+// Tournament Management Server - Port 5005
+const TOURNAMENT_API =
+  process.env.REACT_APP_TOURNAMENT_API_URL ||
+  (window.location.hostname === "localhost"
+    ? "http://localhost:5005"
+    : "");
+
+// Join Server - Port 5002
+const JOIN_API =
+  window.location.hostname === "localhost"
+    ? "http://localhost:5002"
+    : "https://deposit-and-join-tournament-server.onrender.com";
+
+// User / Wallet Server - Port 5001
+const USER_API =
+  window.location.hostname === "localhost"
+    ? "http://localhost:5001"
+    : "https://user-register-server.onrender.com";
+
+/* ============================================================
+   HELPERS
+   ============================================================ */
+
+const getJson = async (response) => {
+  let data = {};
+
+  try {
+    data = await response.json();
+  } catch {
+    data = {};
+  }
+
+  if (!response.ok) {
+    throw new Error(
+      data?.error ||
+      data?.message ||
+      `HTTP ${response.status}`
+    );
+  }
+
+  return data;
+};
+
+// Backend fields ko frontend ke expected fields mein convert karo.
+const normalizeTournament = (item) => {
+  if (!item) return null;
+
+  return {
+    ...item,
+
+    id:
+      item.id ||
+      item.tournament_id,
+
+    name:
+      item.name ||
+      item.tournament_name ||
+      "Untitled Tournament",
+
+    mode:
+      item.mode ||
+      item.game_mode ||
+      "Solo",
+
+    type:
+      item.type ||
+      item.match_type ||
+      "Classic",
+
+    rulesShort:
+      item.rulesShort ||
+      item.description ||
+      item.rules ||
+      item.match_type ||
+      "",
+
+    entryFee: Number(
+      item.entryFee ??
+      item.entry_fee ??
+      0
+    ),
+
+    prizePool: Number(
+      item.prizePool ??
+      item.prize_pool ??
+      0
+    ),
+
+    perKill: Number(
+      item.perKill ??
+      item.per_kill ??
+      0
+    ),
+
+    maxSlots: Number(
+      item.maxSlots ??
+      item.totalSlots ??
+      item.slots ??
+      50
+    ),
+
+    joinedPlayers: Number(
+      item.joinedPlayers ??
+      item.registered ??
+      0
+    ),
+
+    image:
+      item.image ||
+      item.image_url ||
+      "",
+
+    status:
+      item.status ||
+      item.tournament_status ||
+      "Upcoming",
+  };
+};
+
+/* ============================================================
+   COMPONENT
+   ============================================================ */
 
 const TournamentDetails = () => {
   const { id } = useParams();
+
   const navigate = useNavigate();
-  const [isJoined, setIsJoined] = useState(false);
-  const [isFull, setIsFull] = useState(false);
-  const [isInitialLoading, setIsInitialLoading] = useState(true);
-  const [liveSlots, setLiveSlots] = useState(0);
-  const [maxSlots, setMaxSlots] = useState(2);
-  const [isLoading, setIsLoading] = useState(false);
-  const [balance, setBalance] = useState(0);
-  const [user, setUser] = useState(null);
-  const [errorMsg, setErrorMsg] = useState("");
 
-  const hasLoadedRef = useRef(false);
+  /* ============================================================
+     STATES
+     ============================================================ */
 
-  const API_URL =
-    window.location.hostname === "localhost"
-      ? "http://localhost:5002"
-      : "https://deposit-and-join-tournament-server.onrender.com";
+  const [tournament, setTournament] =
+    useState(null);
 
-  const loadBalance = async () => {
+  const [isTournamentLoading, setIsTournamentLoading] =
+    useState(true);
+
+  const [isJoined, setIsJoined] =
+    useState(false);
+
+  const [isFull, setIsFull] =
+    useState(false);
+
+  const [isInitialLoading, setIsInitialLoading] =
+    useState(true);
+
+  const [liveSlots, setLiveSlots] =
+    useState(0);
+
+  const [maxSlots, setMaxSlots] =
+    useState(50);
+
+  const [isLoading, setIsLoading] =
+    useState(false);
+
+  const [balance, setBalance] =
+    useState(0);
+
+  const [user, setUser] =
+    useState(null);
+
+  const [errorMsg, setErrorMsg] =
+    useState("");
+
+  const hasLoadedRef =
+    useRef(false);
+
+  const isMountedRef =
+    useRef(true);
+
+  /* ============================================================
+     GET LOGGED-IN USER
+     ============================================================ */
+
+  const getStoredUser = useCallback(() => {
     try {
-      const storedUser = JSON.parse(localStorage.getItem("bgmi_user") || "{}");
-      if (!storedUser.profile_id) return;
+      const stored =
+        localStorage.getItem("bgmi_user");
 
-      const { data, error } = await supabase
-        .from("registeruser")
-        .select("balance, username")
-        .eq("profile_id", storedUser.profile_id)
-        .maybeSingle();
-
-      if (error) throw error;
-
-      if (data) {
-        setBalance(Number(data.balance || 0));
-        setUser({ ...storedUser, username: data.username });
-        console.log("💰 Balance loaded:", data.balance);
+      if (!stored) {
+        return null;
       }
-    } catch (err) {
-      console.error("❌ Balance load error:", err);
-      setBalance(0);
-    }
-  };
 
-  const getBgmiIdForTournament = (tournamentId) => {
+      return JSON.parse(stored);
+    } catch (error) {
+      console.error(
+        "Failed to read user data:",
+        error
+      );
+
+      return null;
+    }
+  }, []);
+
+  /* ============================================================
+     GET PROFILE ID
+     ============================================================ */
+
+  const getProfileId = useCallback(() => {
+    const storedUser = getStoredUser();
+
+    return (
+      storedUser?.profile_id ||
+      storedUser?.user?.profile_id ||
+      ""
+    );
+  }, [getStoredUser]);
+
+  /* ============================================================
+     LOAD REAL TOURNAMENT FROM BACKEND
+     ============================================================ */
+
+  const loadTournament = useCallback(async () => {
+    if (!TOURNAMENT_API) {
+      throw new Error(
+        "Tournament API URL is not configured. Please check REACT_APP_TOURNAMENT_API_URL."
+      );
+    }
+
+    const encodedId = encodeURIComponent(id);
+
+    // Upcoming, Live aur Completed tournaments ke public endpoints.
+    const endpoints = [
+      `${TOURNAMENT_API}/api/tournaments`,
+      `${TOURNAMENT_API}/api/live-tournaments`,
+      `${TOURNAMENT_API}/api/tournament-history`,
+    ];
+
+    const responses = await Promise.allSettled(
+      endpoints.map(async (url) => {
+        const response = await fetch(url, {
+          method: "GET",
+          cache: "no-store",
+        });
+
+        return getJson(response);
+      })
+    );
+
+    let foundTournament = null;
+    let successfulRequests = 0;
+    let lastError = null;
+
+    for (const result of responses) {
+      if (result.status !== "fulfilled") {
+        lastError = result.reason;
+        continue;
+      }
+
+      successfulRequests++;
+
+      const data = result.value;
+
+      const list = [
+        ...(Array.isArray(data?.tournaments)
+          ? data.tournaments
+          : []),
+
+        ...(Array.isArray(data?.history)
+          ? data.history
+          : []),
+
+        ...(Array.isArray(data?.matches)
+          ? data.matches
+          : []),
+      ];
+
+      foundTournament = list.find(
+        (item) =>
+          String(
+            item?.id ||
+            item?.tournament_id
+          ) === String(id)
+      );
+
+      if (foundTournament) {
+        break;
+      }
+    }
+
+    if (!foundTournament) {
+      if (successfulRequests === 0 && lastError) {
+        throw lastError;
+      }
+
+      throw new Error(
+        "Tournament nahi mila. Check karo tournament published hai ya nahi."
+      );
+    }
+
+    const normalized =
+      normalizeTournament(foundTournament);
+
+    if (
+      !normalized ||
+      !normalized.id
+    ) {
+      throw new Error(
+        "Invalid tournament data received from server."
+      );
+    }
+
+    if (isMountedRef.current) {
+      setTournament(normalized);
+
+      setMaxSlots(
+        normalized.maxSlots > 0
+          ? normalized.maxSlots
+          : 50
+      );
+
+      setLiveSlots(
+        normalized.joinedPlayers || 0
+      );
+    }
+
+    console.log(
+      "Tournament loaded from backend:",
+      normalized
+    );
+
+    return normalized;
+  }, [id]);
+
+  /* ============================================================
+     LOAD BALANCE FROM BACKEND
+     ============================================================ */
+
+  const loadBalance = useCallback(async () => {
     try {
-      const tournamentJoins = JSON.parse(
-        localStorage.getItem("tournamentJoins") || "[]"
-      );
-      const tournamentJoin = tournamentJoins.find(
-        (join) => join.tournamentId === tournamentId
-      );
-      return (
-        tournamentJoin?.bgmiId ||
-        localStorage.getItem("tempBgmiId") ||
-        localStorage.getItem("lastBgmiId") ||
-        ""
-      );
-    } catch {
-      return (
-        localStorage.getItem("tempBgmiId") ||
-        localStorage.getItem("lastBgmiId") ||
-        ""
-      );
-    }
-  };
+      const storedUser = getStoredUser();
 
-  const checkStatusInitial = useCallback(async () => {
-    const bgmiId = getBgmiIdForTournament(id);
-    if (!bgmiId) {
-      setIsInitialLoading(false);
+      const profileId =
+        storedUser?.profile_id ||
+        storedUser?.user?.profile_id ||
+        "";
+
+      if (!profileId) {
+        if (isMountedRef.current) {
+          setBalance(0);
+        }
+
+        return;
+      }
+
+      const response = await fetch(
+        `${USER_API}/api/my-balance?profileId=${encodeURIComponent(
+          profileId
+        )}`,
+        {
+          method: "GET",
+          cache: "no-store",
+        }
+      );
+
+      const data = await getJson(response);
+
+      const currentBalance =
+        Number(data?.balance || 0);
+
+      if (isMountedRef.current) {
+        setBalance(
+          Number.isFinite(currentBalance)
+            ? currentBalance
+            : 0
+        );
+
+        setUser({
+          ...storedUser,
+
+          username:
+            data?.username ||
+            storedUser?.username ||
+            storedUser?.user?.username ||
+            "",
+        });
+      }
+
+      console.log(
+        "Backend balance loaded:",
+        currentBalance
+      );
+    } catch (error) {
+      console.error(
+        "Balance load error:",
+        error
+      );
+
+      if (isMountedRef.current) {
+        setBalance(0);
+      }
+    }
+  }, [getStoredUser]);
+
+  /* ============================================================
+     CHECK JOIN STATUS + SLOTS
+     ============================================================ */
+
+  const checkStatus = useCallback(
+    async (showLoader = false) => {
+      const profileId = getProfileId();
+
+      if (!profileId || !tournament) {
+        return;
+      }
+
+      if (showLoader && isMountedRef.current) {
+        setIsInitialLoading(true);
+      }
+
+      try {
+        /* ==============================================
+           CHECK JOIN STATUS
+        ============================================== */
+
+        const joinRes = await fetch(
+          `${JOIN_API}/api/check-join/${encodeURIComponent(
+            id
+          )}?profileId=${encodeURIComponent(profileId)}`,
+          {
+            method: "GET",
+            cache: "no-store",
+          }
+        );
+
+        const joinData = await getJson(joinRes);
+
+        if (isMountedRef.current) {
+          setIsJoined(
+            Boolean(joinData?.joined)
+          );
+        }
+
+        /* ==============================================
+           CHECK SLOTS
+        ============================================== */
+
+        const slotsRes = await fetch(
+          `${JOIN_API}/api/tournament-slots-count/${encodeURIComponent(
+            id
+          )}`,
+          {
+            method: "GET",
+            cache: "no-store",
+          }
+        );
+
+        const slotsData = await getJson(slotsRes);
+
+        const count = Number(
+          slotsData?.registered ?? 0
+        );
+
+        const max = Number(
+          slotsData?.max ??
+          tournament?.maxSlots ??
+          50
+        );
+
+        const safeCount =
+          Number.isFinite(count) && count >= 0
+            ? count
+            : 0;
+
+        const safeMax =
+          Number.isFinite(max) && max > 0
+            ? max
+            : 50;
+
+        if (isMountedRef.current) {
+          setLiveSlots(safeCount);
+          setMaxSlots(safeMax);
+          setIsFull(safeCount >= safeMax);
+        }
+      } catch (error) {
+        console.error(
+          "Tournament status check failed:",
+          error
+        );
+
+        // Status endpoint failure par user ko galat
+        // joined/full state mat dikhao.
+      } finally {
+        if (showLoader && isMountedRef.current) {
+          setIsInitialLoading(false);
+        }
+      }
+    },
+    [id, getProfileId, tournament]
+  );
+
+  /* ============================================================
+     INITIAL TOURNAMENT LOAD
+     ============================================================ */
+
+  useEffect(() => {
+    isMountedRef.current = true;
+
+    hasLoadedRef.current = false;
+
+    setTournament(null);
+    setIsTournamentLoading(true);
+    setIsInitialLoading(true);
+
+    setIsJoined(false);
+    setIsFull(false);
+    setLiveSlots(0);
+    setMaxSlots(50);
+    setErrorMsg("");
+
+    const fetchTournament = async () => {
+      try {
+        await loadTournament();
+      } catch (error) {
+        console.error(
+          "Tournament load failed:",
+          error
+        );
+
+        if (isMountedRef.current) {
+          setTournament(null);
+          setErrorMsg(
+            error?.message ||
+            "Tournament load nahi ho paya."
+          );
+        }
+      } finally {
+        if (isMountedRef.current) {
+          setIsTournamentLoading(false);
+        }
+      }
+    };
+
+    fetchTournament();
+
+    return () => {
+      isMountedRef.current = false;
+    };
+  }, [id, loadTournament]);
+
+  /* ============================================================
+     USER + STATUS INITIAL LOAD
+     ============================================================ */
+
+  useEffect(() => {
+    if (!tournament || isTournamentLoading) {
       return;
     }
 
-    try {
-      const joinUrl = `${API_URL}/api/check-join/${id}?bgmiId=${bgmiId}`;
-      const joinRes = await fetch(joinUrl);
-      const joinData = await joinRes.json();
-      console.log(`📊 Initial ${id}:`, joinData.joined);
-      setIsJoined(joinData.joined);
+    let active = true;
 
-      const slotsRes = await fetch(`${API_URL}/api/tournament-slots-count/${id}`);
-      const slotsData = await slotsRes.json();
+    const initialLoad = async () => {
+      const profileId = getProfileId();
 
-      const count = slotsData.registered || 0;
-      const max = slotsData.max || 2;
-      setLiveSlots(count);
-      setMaxSlots(max);
-      setIsFull(count >= max);
-    } catch (error) {
-      console.error("Initial status check failed:", error);
-      setIsJoined(false);
-    } finally {
-      setIsInitialLoading(false);
-      hasLoadedRef.current = true;
-    }
-  }, [id, API_URL]);
-
-  const checkStatusBackground = useCallback(
-    async () => {
-      if (hasLoadedRef.current && (isJoined || isFull)) return;
-
-      const bgmiId = getBgmiIdForTournament(id);
-      if (!bgmiId) return;
-
-      try {
-        const joinRes = await fetch(
-          `${API_URL}/api/check-join/${id}?bgmiId=${bgmiId}`
-        );
-        const joinData = await joinRes.json();
-        if (joinData.joined) {
-          setIsJoined(true);
-          hasLoadedRef.current = true;
-        }
-
-        const slotsRes = await fetch(
-          `${API_URL}/api/tournament-slots-count/${id}`
-        );
-        const slotsData = await slotsRes.json();
-        const count = slotsData.registered || 0;
-        const max = slotsData.max || 2;
-        setLiveSlots(count);
-        setMaxSlots(max);
-        setIsFull(count >= max);
-      } catch (error) {
-        console.error("Background check failed:", error);
+      if (!profileId) {
+        setIsInitialLoading(false);
+        navigate("/login");
+        return;
       }
-    },
-    [id, API_URL, isJoined, isFull]
-  );
+
+      await Promise.all([
+        loadBalance(),
+        checkStatus(true),
+      ]);
+
+      if (active) {
+        hasLoadedRef.current = true;
+        setIsInitialLoading(false);
+      }
+    };
+
+    initialLoad();
+
+    return () => {
+      active = false;
+    };
+  }, [
+    tournament,
+    isTournamentLoading,
+    getProfileId,
+    loadBalance,
+    checkStatus,
+    navigate,
+  ]);
+
+  /* ============================================================
+     BACKGROUND STATUS REFRESH
+     NO GLOBAL LOADER
+     ============================================================ */
 
   useEffect(() => {
-    if (!id) return;
+    if (
+      !tournament ||
+      isTournamentLoading ||
+      !hasLoadedRef.current
+    ) {
+      return;
+    }
 
-    loadBalance();
-    checkStatusInitial();
+    const interval = setInterval(() => {
+      checkStatus(false);
+    }, 10000);
 
-    const interval = setInterval(checkStatusBackground, 10000);
-    return () => clearInterval(interval);
-  }, [id, checkStatusInitial, checkStatusBackground]);
+    return () => {
+      clearInterval(interval);
+    };
+  }, [
+    tournament,
+    isTournamentLoading,
+    checkStatus,
+  ]);
 
-  const t = tournamentsSample.find((x) => x.id === id);
+  /* ============================================================
+     TOURNAMENT LOADING UI
+     ============================================================ */
 
-  if (!t) {
+  if (isTournamentLoading) {
     return (
       <div className="tdm-page">
         <div className="tdm-container">
-          <h1>Tournament Not Found</h1>
+          <div className="status-card loading">
+            <h3>⏳ Loading Tournament...</h3>
+            <p>Please wait, fetching tournament details.</p>
+          </div>
         </div>
       </div>
     );
   }
 
+  /* ============================================================
+     TOURNAMENT NOT FOUND
+     ============================================================ */
+
+  if (!tournament) {
+    return (
+      <div className="tdm-page">
+        <div className="tdm-container">
+          <div className="status-card error">
+            <h1>Tournament Not Found</h1>
+
+            <p>
+              {errorMsg ||
+                "Tournament available nahi hai ya publish nahi hua hai."}
+            </p>
+
+            <button
+              type="button"
+              className="submit-btn"
+              onClick={() => navigate("/tournaments")}
+            >
+              Back to Tournaments
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  /* ============================================================
+     TOURNAMENT VALUES
+     ============================================================ */
+
+  const tournamentEntryFee =
+    Number(tournament.entryFee || 0);
+
+  const tournamentPrize =
+    Number(tournament.prizePool || 0);
+
+  const tournamentMaxSlots =
+    Number(
+      tournament.maxSlots ||
+      maxSlots ||
+      50
+    );
+
+  /* ============================================================
+     HANDLE TOURNAMENT JOIN
+     ============================================================ */
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const playerName = e.target.bgmiIdName.value.trim();
-    const bgmiId = e.target.bgmiIdNumber.value.trim();
-
-    if (!playerName || !bgmiId) {
-      setErrorMsg("❌ BGMI Name & ID daalo!");
+    if (isLoading) {
       return;
     }
 
-    if (!user?.profile_id) {
+    /* ==============================================
+       PLAYER INPUT
+    ============================================== */
+
+    const playerName = String(
+      e.target.bgmiIdName?.value || ""
+    ).trim();
+
+    const bgmiId = String(
+      e.target.bgmiIdNumber?.value || ""
+    ).trim();
+
+    if (!playerName || !bgmiId) {
+      setErrorMsg(
+        "❌ BGMI Name & ID daalo!"
+      );
+      return;
+    }
+
+    /* ==============================================
+       PLAYER NAME VALIDATION
+    ============================================== */
+
+    if (playerName.length > 20) {
+      setErrorMsg(
+        "❌ BGMI Name maximum 20 characters ka hona chahiye!"
+      );
+      return;
+    }
+
+    /* ==============================================
+       BGMI ID VALIDATION
+    ============================================== */
+
+    if (!/^\d+$/.test(bgmiId)) {
+      setErrorMsg(
+        "❌ BGMI ID sirf numbers me honi chahiye!"
+      );
+      return;
+    }
+
+    if (
+      bgmiId.length < 5 ||
+      bgmiId.length > 12
+    ) {
+      setErrorMsg(
+        "❌ Invalid BGMI ID!"
+      );
+      return;
+    }
+
+    /* ==============================================
+       USER CHECK
+    ============================================== */
+
+    const profileId = getProfileId();
+
+    if (!profileId) {
       setErrorMsg("❌ Login karo pehle!");
       navigate("/login");
       return;
     }
 
-    const entryFee = Number(t.entryFee);
-    if (entryFee > 0 && balance < entryFee) {
+    /* ==============================================
+       ENTRY FEE
+    ============================================== */
+
+    const entryFee = tournamentEntryFee;
+
+    /* ==============================================
+       BALANCE CHECK
+    ============================================== */
+
+    if (
+      entryFee > 0 &&
+      balance < entryFee
+    ) {
       setErrorMsg(
         `❌ Balance kam hai!\n💰 Chahiye: ₹${entryFee}\n💳 Hai: ₹${balance}`
       );
       return;
     }
 
-    setIsLoading(true);
+    /* ==============================================
+       FULL CHECK
+    ============================================== */
+
+    if (liveSlots >= maxSlots) {
+      setIsFull(true);
+      setErrorMsg("🔴 Tournament Full hai!");
+      return;
+    }
+
+    if (isJoined) {
+      setErrorMsg(
+        "❌ Already joined this tournament!"
+      );
+      return;
+    }
+
     setErrorMsg("");
+    setIsLoading(true);
 
     try {
-      const now = new Date();
+      /* ==============================================
+         JOIN PAYLOAD
+      ============================================== */
+
       const joinedMatch = {
-        tournamentId: t.id,
-        tournamentName: t.name,
+        tournamentId: tournament.id,
+
+        tournamentName: tournament.name,
+
         playerName,
+
         bgmiId,
+
         profileName:
-          user.username || localStorage.getItem("profileName") || "",
-        profileId: user.profile_id,
-        mode: t.mode,
-        rulesShort: t.rulesShort,
-        date: now.toLocaleDateString("en-IN"),
-        time: now.toLocaleTimeString("en-IN", {
-          hour: "2-digit",
-          minute: "2-digit",
-        }),
-        map: t.map || "Erangel",
+          user?.username ||
+          user?.user?.username ||
+          "",
+
+        profileId,
+
+        mode:
+          tournament.mode ||
+          "Classic",
+
+        rulesShort:
+          tournament.rulesShort ||
+          "",
+
+        map:
+          tournament.map ||
+          "Erangel",
+
+        date:
+          tournament.date ||
+          "",
+
+        time:
+          tournament.time ||
+          "",
+
         entryFee,
-        prizePool: Number(t.prizePool),
-        slots: maxSlots,
+
+        prizePool: tournamentPrize,
+
+        slots: tournamentMaxSlots,
       };
 
-      const response = await fetch(`${API_URL}/api/join-tournament`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(joinedMatch),
-      });
+      console.log(
+        "Sending JOIN request:",
+        joinedMatch
+      );
 
-      const result = await response.json();
+      /* ==============================================
+         BACKEND JOIN
+      ============================================== */
 
-      if (response.ok && result.success) {
-        console.log("✅ Server JOIN confirmed, now wallet deduct...");
+      const response = await fetch(
+        `${JOIN_API}/api/join-tournament`,
+        {
+          method: "POST",
 
-        const tournamentJoins = JSON.parse(
-          localStorage.getItem("tournamentJoins") || "[]"
+          headers: {
+            "Content-Type": "application/json",
+          },
+
+          body: JSON.stringify(joinedMatch),
+        }
+      );
+
+      const result = await getJson(response);
+
+      console.log(
+        "JOIN RESPONSE:",
+        result
+      );
+
+      /* ==============================================
+         SUCCESS
+      ============================================== */
+
+      if (
+        response.ok &&
+        result?.success === true
+      ) {
+        console.log(
+          "Tournament join successful"
         );
-        const newJoin = {
-          tournamentId: t.id,
-          bgmiId,
-          playerName,
-          timestamp: Date.now(),
-        };
-        const updatedJoins = tournamentJoins
-          .filter((join) => join.tournamentId !== t.id)
-          .concat(newJoin);
-        localStorage.setItem("tournamentJoins", JSON.stringify(updatedJoins));
-        localStorage.setItem("tempBgmiId", bgmiId);
-        localStorage.setItem("lastBgmiId", bgmiId);
 
-        if (entryFee > 0) {
-          const { error } = await supabase
-            .from("registeruser")
-            .update({ balance: Math.max(0, balance - entryFee) })
-            .eq("profile_id", user.profile_id);
+        /* ==========================================
+           UPDATE LOCAL CACHE
+        ========================================== */
 
-          if (error) {
-            console.error(
-              "💀 Wallet deduct failed AFTER server success:",
-              error
-            );
-            try {
-              await fetch(
-                `${API_URL}/api/rollback-join/${t.id}?bgmiId=${bgmiId}`,
-                {
-                  method: "POST",
-                }
-              );
-            } catch (rollbackError) {
-              console.error("💀 Rollback also failed:", rollbackError);
-            }
-            setErrorMsg("Wallet update failed - rolled back server join");
-            return;
-          }
+        try {
+          const oldJoins = JSON.parse(
+            localStorage.getItem(
+              "tournamentJoins"
+            ) || "[]"
+          );
+
+          const newJoin = {
+            tournamentId: tournament.id,
+
+            tournamentName: tournament.name,
+
+            bgmiId,
+
+            playerName,
+
+            profileId,
+
+            mode:
+              tournament.mode ||
+              "Classic",
+
+            map:
+              tournament.map ||
+              "Erangel",
+
+            date:
+              tournament.date ||
+              "",
+
+            time:
+              tournament.time ||
+              "",
+
+            entryFee,
+
+            prizePool: tournamentPrize,
+
+            timestamp: Date.now(),
+          };
+
+          const updatedJoins = oldJoins
+            .filter(
+              (join) =>
+                !(
+                  String(
+                    join?.tournamentId || ""
+                  ) === String(tournament.id) &&
+                  String(
+                    join?.profileId || ""
+                  ) === String(profileId)
+                )
+            )
+            .concat(newJoin);
+
+          localStorage.setItem(
+            "tournamentJoins",
+            JSON.stringify(updatedJoins)
+          );
+        } catch (storageError) {
+          console.warn(
+            "Local join cache update skipped:",
+            storageError
+          );
         }
 
+        /* ==========================================
+           REFRESH BALANCE
+        ========================================== */
+
         await loadBalance();
-        navigate("/my-matches", { replace: true });
-      } else {
-        console.error("❌ Server rejected join:", result.error);
-        setErrorMsg(result.error || "Tournament full or server error");
+
+        /* ==========================================
+           GO TO MY MATCHES
+        ========================================== */
+
+        navigate("/my-matches", {
+          replace: true,
+        });
+
+        return;
       }
+
+      /* ==============================================
+         INSUFFICIENT BALANCE
+      ============================================== */
+
+      if (result?.insufficientBalance === true) {
+        setErrorMsg(
+          result?.message ||
+          "❌ Wallet balance insufficient."
+        );
+
+        if (
+          Number.isFinite(
+            Number(result?.balance)
+          )
+        ) {
+          setBalance(Number(result.balance));
+        }
+
+        return;
+      }
+
+      /* ==============================================
+         ALREADY JOINED
+      ============================================== */
+
+      if (result?.alreadyJoined === true) {
+        setIsJoined(true);
+
+        setErrorMsg(
+          result?.message ||
+          "❌ Already joined this tournament!"
+        );
+
+        return;
+      }
+
+      /* ==============================================
+         TOURNAMENT FULL
+      ============================================== */
+
+      if (
+        String(result?.message || "")
+          .toLowerCase()
+          .includes("full")
+      ) {
+        setIsFull(true);
+
+        setErrorMsg(
+          result?.message ||
+          "🔴 Tournament Full!"
+        );
+
+        return;
+      }
+
+      /* ==============================================
+         SERVER REJECTED JOIN
+      ============================================== */
+
+      console.error(
+        "Server rejected join:",
+        result
+      );
+
+      setErrorMsg(
+        result?.message ||
+        result?.error ||
+        "Tournament join failed"
+      );
     } catch (error) {
-      console.error("❌ Complete join failed:", error);
-      setErrorMsg(error.message || "Join failed");
+      console.error(
+        "Complete join failed:",
+        error
+      );
+
+      setErrorMsg(
+        error?.message ||
+        "Join failed"
+      );
     } finally {
       setIsLoading(false);
     }
   };
 
+  /* ============================================================
+     UI
+     ============================================================ */
+
   return (
     <div className="tdm-page">
       <div className="tdm-container">
+
+        {/* HEADER */}
+
         <div className="tdm-header">
-          <h1 className="tdm-title">{t.name}</h1>
+          <h1 className="tdm-title">
+            {tournament.name}
+          </h1>
+
           <p className="tdm-subtitle">
-            Mode: {t.mode} • {t.rulesShort}
+            Mode:{" "}
+            {tournament.mode}
+            {" • "}
+            {tournament.rulesShort}
           </p>
         </div>
 
+        {/* TOURNAMENT INFO */}
+
         <div className="tournament-info">
+
+          {/* ENTRY FEE */}
+
           <div className="info-card">
-            <div className="info-label">💰 Entry Fee</div>
-            <div className="info-value">₹{t.entryFee}</div>
+            <div className="info-label">
+              💰 Entry Fee
+            </div>
+
+            <div className="info-value">
+              ₹{tournamentEntryFee}
+            </div>
           </div>
+
+          {/* WALLET */}
+
           <div className="info-card">
-            <div className="info-label">💳 Wallet</div>
+            <div className="info-label">
+              💳 Wallet
+            </div>
+
             <div
               className={`info-value ${
-                balance >= Number(t.entryFee) ? "success" : "warning"
+                balance >= tournamentEntryFee
+                  ? "success"
+                  : "warning"
               }`}
             >
-              ₹{balance.toLocaleString()}
-              {balance < Number(t.entryFee) && (
-                <span className="insufficient"> ❌ Add Funds</span>
+              ₹
+              {balance.toLocaleString("en-IN")}
+
+              {balance < tournamentEntryFee && (
+                <span className="insufficient">
+                  {" "}❌ Add Funds
+                </span>
               )}
             </div>
           </div>
+
+          {/* PRIZE */}
+
           <div className="info-card">
-            <div className="info-label">🏆 Prize</div>
-            <div className="info-value prize">₹{t.prizePool}</div>
+            <div className="info-label">
+              🏆 Prize
+            </div>
+
+            <div className="info-value prize">
+              ₹{tournamentPrize}
+            </div>
           </div>
+
+          {/* SLOTS */}
+
           <div className="info-card">
-            <div className="info-label">📊 Slots</div>
+            <div className="info-label">
+              📊 Slots
+            </div>
+
             <div
               className={`info-value slots ${
                 isFull ? "full-slots" : ""
               }`}
             >
-              {isInitialLoading ? "⏳" : `${liveSlots}/${maxSlots}`}
+              {isInitialLoading
+                ? "⏳"
+                : `${liveSlots}/${maxSlots}`}
+
               {isFull && !isInitialLoading && (
-                <span className="full-badge">FULL</span>
+                <span className="full-badge">
+                  FULL
+                </span>
               )}
             </div>
           </div>
         </div>
 
+        {/* REGISTER SECTION */}
+
         <div className="register-section">
+
+          {/* INITIAL LOADING */}
+
           {isInitialLoading ? (
             <div className="status-card loading">
-              <h3>⏳ Checking Status...</h3>
-              <p>Loading tournament data...</p>
+              <h3>
+                ⏳ Checking Status...
+              </h3>
+
+              <p>
+                Loading tournament data...
+              </p>
             </div>
           ) : isFull ? (
+
+            /* FULL */
+
             <div className="status-card full">
-              <h3>🔴 Tournament FULL</h3>
+              <h3>
+                🔴 Tournament FULL
+              </h3>
             </div>
           ) : isJoined ? (
+
+            /* ALREADY JOINED */
+
             <div className="status-card joined">
-              <h3>✅ Already Joined!</h3>
+              <h3>
+                ✅ Already Joined!
+              </h3>
             </div>
           ) : (
+
+            /* JOIN FORM */
+
             <>
               {errorMsg && (
                 <div className="status-card error">
-                  <h3>{errorMsg}</h3>
+                  <h3>
+                    {errorMsg}
+                  </h3>
                 </div>
               )}
-              <form className="register-form" onSubmit={handleSubmit}>
+
+              <form
+                className="register-form"
+                onSubmit={handleSubmit}
+              >
+
+                {/* PLAYER NAME */}
+
                 <div className="form-group">
-                  <label className="form-label">🎮 FREE FIRE ID NAME</label>
+                  <label className="form-label">
+                    🎮 BGMI ID NAME
+                  </label>
+
                   <input
                     name="bgmiIdName"
                     type="text"
                     className="form-input"
                     required
-                    placeholder="Free Fire ID"
+                    placeholder="BGMI Player Name"
                     maxLength={20}
+                    autoComplete="off"
                     disabled={isLoading}
                   />
                 </div>
+
+                {/* PLAYER ID */}
+
                 <div className="form-group">
-                  <label className="form-label">📱 FREE FIRE ID NUMBER.</label>
+                  <label className="form-label">
+                    📱 BGMI ID NUMBER
+                  </label>
+
                   <input
                     name="bgmiIdNumber"
                     type="text"
                     className="form-input"
                     required
-                    placeholder="51234567890"
+                    placeholder="Enter BGMI ID"
                     maxLength={12}
+                    inputMode="numeric"
+                    autoComplete="off"
+                    onChange={(e) => {
+                      e.target.value =
+                        e.target.value
+                          .replace(/\D/g, "")
+                          .slice(0, 12);
+                    }}
                     disabled={isLoading}
                   />
                 </div>
+
+                {/* JOIN BUTTON */}
+
                 <button
                   type="submit"
                   className={`submit-btn ${
-                    isLoading || balance < Number(t.entryFee)
+                    isLoading ||
+                    balance < tournamentEntryFee
                       ? "disabled"
                       : ""
                   }`}
-                  disabled={isLoading || balance < Number(t.entryFee)}
+                  disabled={
+                    isLoading ||
+                    balance < tournamentEntryFee
+                  }
                 >
-                  {isLoading ? "⏳ Processing..." : `✅ JOIN (₹${t.entryFee})`}
+                  {isLoading
+                    ? "⏳ Processing..."
+                    : `✅ JOIN (₹${tournamentEntryFee})`}
                 </button>
+
               </form>
             </>
           )}
+
         </div>
       </div>
     </div>

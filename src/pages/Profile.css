@@ -1,138 +1,660 @@
-/* Profile.css - MAIN CSS KE SAATH COMPATIBLE */
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800&family=Rajdhani:wght@400;500;600;700&display=swap');
+
+/* =========================================
+   BGMI ESPORTS - PROFILE PAGE
+   Pure Black Background | Red & Black Theme
+   Responsive | Isolated Profile Styling
+========================================= */
+
 .esports-profile {
-  background: radial-gradient(circle at top, #111827 0, #020617 45%, #000 100%);
-  color: var(--text-main);
-  min-height: 100vh;
-  padding: 72px 16px 120px; /* 🔥 Topbar + Bottom nav space */
-  overflow: hidden; /* Main CSS ke saath sync */
+  --profile-bg: #080808;
+  --profile-card: #101010;
+  --profile-card-2: #141414;
+  --profile-green: #10b981;
+  --profile-cyan: #ff526b;
+  --profile-orange: #ff9f1c;
+  --profile-text: #ffffff;
+  --profile-muted: #999999;
+
+  position: relative;
+
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  min-height: 0;
+
+  padding: 62px 16px 12px;
+
+  box-sizing: border-box;
+
+  color: var(--profile-text);
+
+  /* PURE BLACK PAGE BACKGROUND */
+  background: #080808 !important;
+  background-color: #080808 !important;
+  background-image: none !important;
+
+  overflow: hidden;
+
+  font-family: 'Rajdhani', system-ui, sans-serif;
+
+  isolation: isolate;
 }
 
-/* 🔥 PROFILE CONTAINER - CENTERED + PERFECT */
-.profile-container {
-  max-width: 420px;
+/* Box sizing */
+
+.esports-profile,
+.esports-profile * {
+  box-sizing: border-box;
+}
+
+/* Remove decorative background effects */
+
+.esports-profile::before,
+.esports-profile::after {
+  content: none !important;
+  display: none !important;
+}
+
+/* =========================================
+   PROFILE CONTAINER
+========================================= */
+
+.esports-profile .profile-container {
+  position: relative;
+  z-index: 2;
+
+  width: 100%;
+  max-width: 460px;
+
+  height: 100%;
+  min-height: 0;
+
   margin: 0 auto;
-  height: calc(100vh - 192px); /* Top 72px + Bottom 120px */
+  padding: 0 4px 24px;
+
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+
   overflow-y: auto;
+  overflow-x: hidden;
+
+  background: transparent !important;
+
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
 
-.profile-container::-webkit-scrollbar {
+.esports-profile .profile-container::-webkit-scrollbar {
   display: none;
 }
 
-.profile-header {
+/* =========================================
+   HEADER
+========================================= */
+
+.esports-profile .profile-header {
+  flex: 0 0 auto;
+
+  padding: 18px 0 20px;
+
   text-align: center;
-  padding: 20px 0;
 }
 
-.player-card {
-  background: rgba(15, 23, 42, 0.95);
-  backdrop-filter: blur(20px);
-  border-radius: 24px;
-  padding: 30px 24px;
-  border: 1px solid rgba(31, 41, 55, 0.95);
-  box-shadow: 0 12px 40px rgba(15, 23, 42, 0.9);
-  margin-bottom: 32px;
+/* =========================================
+   PLAYER CARD
+========================================= */
+
+.esports-profile .player-card {
+  position: relative;
+
+  flex: 0 0 auto;
+
+  width: 100%;
+
+  background: linear-gradient(
+    145deg,
+    #151515,
+    #0b0b0b
+  ) !important;
+
+  border: 1px solid rgba(255, 48, 79, 0.22);
+  border-radius: 18px;
+
+  padding: 30px 22px 26px;
+
+  box-sizing: border-box;
+
+  overflow: hidden;
+
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.55),
+    inset 0 1px rgba(255, 255, 255, 0.025);
+
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
-.avatar-circle {
+/* Top red gaming line */
+
+.esports-profile .player-card::before {
+  content: "";
+
+  position: absolute;
+  top: 0;
+  left: 8%;
+  right: 8%;
+
+  height: 2px;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    #ff304f,
+    #a9273c,
+    transparent
+  );
+}
+
+/* Corner HUD decoration */
+
+.esports-profile .player-card::after {
+  content: "";
+
+  position: absolute;
+  right: 14px;
+  top: 14px;
+
+  width: 32px;
+  height: 32px;
+
+  border-top: 2px solid rgba(255, 48, 79, 0.45);
+  border-right: 2px solid rgba(255, 48, 79, 0.45);
+
+  pointer-events: none;
+}
+
+/* =========================================
+   AVATAR
+========================================= */
+
+.esports-profile .avatar-circle {
+  position: relative;
+
   width: 100px;
   height: 100px;
-  margin: 0 auto 20px;
+
+  margin: 4px auto 20px;
+  padding: 3px;
+
+  box-sizing: border-box;
+
   border-radius: 50%;
-  border: 4px solid var(--accent-blue);
-  overflow: hidden;
-  box-shadow: 0 8px 25px rgba(96, 165, 250, 0.3);
+
+  background: linear-gradient(
+    135deg,
+    #ff304f,
+    #8f172c
+  );
+
+  box-shadow:
+    0 0 0 4px rgba(255, 48, 79, 0.06),
+    0 0 18px rgba(255, 48, 79, 0.14),
+    0 8px 22px rgba(0, 0, 0, 0.45);
+
+  overflow: visible;
 }
 
-.avatar-circle img {
+/* Inner ring */
+
+.esports-profile .avatar-circle::before {
+  content: "";
+
+  position: absolute;
+  inset: -6px;
+
+  border-radius: 50%;
+
+  border: 1px solid rgba(255, 48, 79, 0.2);
+
+  pointer-events: none;
+}
+
+/* Online indicator */
+
+.esports-profile .avatar-circle::after {
+  content: "";
+
+  position: absolute;
+  right: 3px;
+  bottom: 7px;
+
+  width: 13px;
+  height: 13px;
+
+  border-radius: 50%;
+
+  background: #10b981;
+
+  border: 3px solid #080808;
+
+  box-shadow: 0 0 9px rgba(16, 185, 129, 0.4);
+}
+
+.esports-profile .avatar-circle img {
+  display: block;
+
   width: 100%;
   height: 100%;
+
+  border-radius: 50%;
+
   object-fit: cover;
+
+  border: 3px solid #080808;
+
+  box-sizing: border-box;
 }
 
-.gamer-name {
-  font-size: 24px;
-  font-weight: 800;
-  background: linear-gradient(135deg, var(--accent-green), var(--accent-gold));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+/* =========================================
+   PLAYER DETAILS
+========================================= */
+
+.esports-profile .player-details {
+  text-align: center;
+}
+
+.esports-profile .gamer-name {
   margin: 0 0 12px;
-  letter-spacing: -0.02em;
+
+  font-family: 'Orbitron', system-ui, sans-serif;
+
+  font-size: 25px;
+  line-height: 1.3;
+  font-weight: 800;
+
+  letter-spacing: 0.4px;
+
+  color: #ffffff !important;
+
+  overflow-wrap: anywhere;
+
+  text-shadow: 0 0 12px rgba(255, 48, 79, 0.12);
 }
 
-.id-row {
-  font-size: 14px;
-  color: var(--text-muted);
+/* Underline */
+
+.esports-profile .gamer-name::after {
+  content: "";
+
+  display: block;
+
+  width: 42px;
+  height: 2px;
+
+  margin: 10px auto 0;
+
+  background: linear-gradient(
+    90deg,
+    #ff304f,
+    #a9273c
+  );
+
+  border-radius: 10px;
+}
+
+/* =========================================
+   PLAYER ID
+========================================= */
+
+.esports-profile .id-row {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  flex-wrap: wrap;
+
+  gap: 8px;
+
+  max-width: 100%;
+
+  padding: 8px 13px;
+
+  box-sizing: border-box;
+
+  background: rgba(255, 48, 79, 0.055) !important;
+
+  border: 1px solid rgba(255, 48, 79, 0.2);
+
+  border-radius: 7px;
+
+  color: #a5a5a5 !important;
+
+  font-size: 12px;
+  font-weight: 700;
+
   text-transform: uppercase;
-  letter-spacing: 1.5px;
-  font-weight: 600;
+
+  letter-spacing: 1px;
+
+  overflow-wrap: anywhere;
 }
 
-.id-row strong {
-  color: var(--accent-blue);
-  font-size: 16px;
+.esports-profile .id-row strong {
+  color: #ff657a !important;
+
+  font-size: 14px;
+
+  letter-spacing: 1px;
+
+  overflow-wrap: anywhere;
+  word-break: break-word;
+
+  text-shadow: 0 0 8px rgba(255, 48, 79, 0.15);
 }
 
-/* 🔥 PERFECT BANK BUTTON */
-.profile-action {
+/* =========================================
+   ACTION AREA
+========================================= */
+
+.esports-profile .profile-action {
   display: flex;
   justify-content: center;
-  padding: 0 12px;
+
+  width: 100%;
+
+  padding: 5px 12px 24px;
+
+  box-sizing: border-box;
 }
 
-.bank-btn {
-  background: linear-gradient(135deg, var(--accent-orange), var(--accent-gold));
-  color: #020617;
-  border: none;
-  padding: 14px 32px;
-  border-radius: 50px;
+/* =========================================
+   BANK BUTTON
+========================================= */
+
+.esports-profile .bank-btn {
+  position: relative;
+
+  width: 100%;
+  min-width: 0;
+  min-height: 46px;
+
+  padding: 13px 18px;
+
+  box-sizing: border-box;
+
+  border: 1px solid rgba(255, 48, 79, 0.4);
+
+  border-radius: 9px;
+
+  background: linear-gradient(
+    135deg,
+    rgba(255, 48, 79, 0.15),
+    rgba(143, 23, 44, 0.12)
+  ) !important;
+
+  color: #ffffff !important;
+
+  font-family: 'Rajdhani', system-ui, sans-serif;
+
+  font-size: 14px;
+  font-weight: 800;
+
+  letter-spacing: 0.7px;
+
+  text-transform: uppercase;
+
+  cursor: pointer;
+
+  overflow: hidden;
+
+  box-shadow:
+    0 6px 18px rgba(0, 0, 0, 0.35),
+    inset 0 0 15px rgba(255, 48, 79, 0.025);
+
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    background 0.25s ease;
+}
+
+/* Button shine */
+
+.esports-profile .bank-btn::before {
+  content: "";
+
+  position: absolute;
+  top: 0;
+  left: -120%;
+
+  width: 80%;
+  height: 100%;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.08),
+    transparent
+  );
+
+  transform: skewX(-20deg);
+
+  transition: left 0.6s ease;
+
+  pointer-events: none;
+}
+
+.esports-profile .bank-btn:hover::before {
+  left: 140%;
+}
+
+.esports-profile .bank-btn:hover {
+  transform: translateY(-2px);
+
+  border-color: rgba(255, 48, 79, 0.7);
+
+  background: linear-gradient(
+    135deg,
+    rgba(255, 48, 79, 0.22),
+    rgba(143, 23, 44, 0.16)
+  ) !important;
+
+  box-shadow:
+    0 10px 24px rgba(0, 0, 0, 0.4),
+    0 0 14px rgba(255, 48, 79, 0.08);
+}
+
+.esports-profile .bank-btn:active {
+  transform: translateY(0);
+}
+
+.esports-profile .bank-btn:focus-visible {
+  outline: 2px solid #ff526b;
+  outline-offset: 3px;
+}
+
+/* =========================================
+   LOADING
+========================================= */
+
+.esports-profile .loading-text {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  min-height: 220px;
+
+  padding: 20px;
+
+  box-sizing: border-box;
+
+  color: #ff657a !important;
+
   font-size: 15px;
   font-weight: 700;
-  cursor: pointer;
-  box-shadow: 0 8px 25px rgba(251, 146, 60, 0.4);
-  transition: all 0.3s ease;
-  text-transform: uppercase;
+
   letter-spacing: 0.5px;
-  min-width: 280px;
-  position: relative;
-  overflow: hidden;
+
+  text-align: center;
 }
 
-.bank-btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 15px 35px rgba(251, 146, 60, 0.6);
+/* =========================================
+   NO PROFILE
+========================================= */
+
+.esports-profile .no-profile {
+  margin-top: 40px;
+
+  padding: 24px;
+
+  box-sizing: border-box;
+
+  text-align: center;
+
+  background: #111111 !important;
+
+  border: 1px solid rgba(255, 48, 79, 0.25);
+
+  border-radius: 12px;
+
+  color: #ff7b91 !important;
+
+  overflow-wrap: anywhere;
 }
 
-.bank-btn:active {
-  transform: translateY(-1px);
+.esports-profile .no-profile a {
+  color: #ff657a !important;
+
+  text-decoration: none;
+
+  font-weight: 700;
 }
 
-/* MOBILE */
+.esports-profile .no-profile a:hover {
+  text-decoration: underline;
+}
+
+/* =========================================
+   TABLET AND MOBILE
+========================================= */
+
 @media (max-width: 768px) {
+
   .esports-profile {
-    padding: 72px 12px 110px;
+    height: 100vh;
+    height: 100dvh;
+
+    min-height: 0;
+
+    padding: 62px 10px 8px;
+
+    background: #080808 !important;
   }
-  
-  .profile-container {
-    height: calc(100vh - 182px);
+
+  .esports-profile .profile-container {
     max-width: 100%;
+
+    height: 100%;
+
+    padding: 0 2px 20px;
   }
-  
-  .avatar-circle {
+
+  .esports-profile .profile-header {
+    padding: 14px 0 16px;
+  }
+
+  .esports-profile .player-card {
+    padding: 27px 17px 24px;
+
+    border-radius: 16px;
+  }
+
+  .esports-profile .avatar-circle {
+    width: 88px;
+    height: 88px;
+
+    margin-bottom: 18px;
+  }
+
+  .esports-profile .gamer-name {
+    font-size: 22px;
+  }
+
+  .esports-profile .id-row {
+    font-size: 11px;
+  }
+
+  .esports-profile .id-row strong {
+    font-size: 13px;
+  }
+
+  .esports-profile .profile-action {
+    padding: 4px 4px 20px;
+  }
+
+  .esports-profile .bank-btn {
+    width: 100%;
+    min-width: 0;
+
+    padding: 13px 15px;
+
+    font-size: 13px;
+  }
+}
+
+/* =========================================
+   SMALL PHONES
+========================================= */
+
+@media (max-width: 380px) {
+
+  .esports-profile {
+    padding-left: 7px;
+    padding-right: 7px;
+  }
+
+  .esports-profile .player-card {
+    padding: 24px 13px 21px;
+  }
+
+  .esports-profile .gamer-name {
+    font-size: 19px;
+  }
+
+  .esports-profile .avatar-circle {
     width: 80px;
     height: 80px;
   }
-  
-  .gamer-name {
-    font-size: 22px;
+
+  .esports-profile .id-row {
+    gap: 6px;
+
+    padding: 7px 9px;
+
+    font-size: 10px;
+
+    letter-spacing: 0.7px;
   }
-  
-  .bank-btn {
-    padding: 12px 28px;
-    font-size: 14px;
-    min-width: 260px;
+
+  .esports-profile .id-row strong {
+    font-size: 12px;
+  }
+}
+
+/* =========================================
+   REDUCE MOTION
+========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .esports-profile .bank-btn,
+  .esports-profile .bank-btn::before {
+    transition: none;
   }
 }

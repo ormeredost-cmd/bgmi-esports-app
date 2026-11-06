@@ -1,42 +1,77 @@
+
 // src/pages/MyMatches.jsx
-import { useState, useEffect, useCallback, useRef } from "react";
+
+import { useState, useEffect, useCallback } from "react";
 import "./MyMatches.css";
-import BackButton from "../components/BackButton";
+import { useLoading } from "../context/LoadingContext";
 
 const MyMatches = () => {
   const [allMatches, setAllMatches] = useState([]);
-  const [isInitialLoading, setIsInitialLoading] = useState(true);
-  const hasLoadedRef = useRef(false);
+
+  const { setLoading } = useLoading();
 
   const API_URL =
     window.location.hostname === "localhost"
       ? "http://localhost:5002"
       : "https://deposit-and-join-tournament-server.onrender.com";
 
-  // ------------------------------------------------
-  // Helpers
-  // ------------------------------------------------
-  const getAllBgmiIds = () => {
+  // ==========================================
+  // GET LOGGED-IN USER PROFILE ID
+  // ==========================================
+
+  const getProfileId = useCallback(() => {
     try {
-      const tournamentJoins = JSON.parse(
-        localStorage.getItem("tournamentJoins") || "[]"
+      const user = JSON.parse(
+        localStorage.getItem("bgmi_user") || "null"
       );
-      const uniqueIds = [...new Set(tournamentJoins.map((join) => join.bgmiId))];
 
-      const fallback =
-        localStorage.getItem("tempBgmiId") ||
-        localStorage.getItem("lastBgmiId");
-
-      if (fallback && !uniqueIds.includes(fallback)) uniqueIds.push(fallback);
-
-      return uniqueIds.filter(Boolean);
-    } catch {
-      return [
-        localStorage.getItem("tempBgmiId") ||
-          localStorage.getItem("lastBgmiId"),
-      ].filter(Boolean);
+      return user?.profile_id || "";
+    } catch (error) {
+      console.error("Failed to read user:", error);
+      return "";
     }
-  };
+  }, []);
+
+  // ==========================================
+  // REMOVE DUPLICATE MATCHES
+  // ==========================================
+
+  const removeDuplicateMatches = useCallback((matches) => {
+    const uniqueMap = new Map();
+
+    matches.forEach((match) => {
+      const tournamentId =
+        match.tournament_id ??
+        match.tournamentId ??
+        "";
+
+      const bgmiId =
+        match.bgmi_id ??
+        match.bgmiId ??
+        "";
+
+      const profileId =
+        match.profile_id ??
+        match.profileId ??
+        "";
+
+      const matchId = match.id ?? "";
+
+      const uniqueKey = matchId
+        ? `id-${matchId}`
+        : `${profileId}-${tournamentId}-${bgmiId}`;
+
+      if (!uniqueMap.has(uniqueKey)) {
+        uniqueMap.set(uniqueKey, match);
+      }
+    });
+
+    return Array.from(uniqueMap.values());
+  }, []);
+
+  // ==========================================
+  // FORMAT TEAM TYPE
+  // ==========================================
 
   const formatTeamType = (teamType) => {
     const types = {
@@ -44,122 +79,175 @@ const MyMatches = () => {
       duo: "Duo",
       squad: "Squad",
     };
+
     return types[teamType?.toLowerCase()] || teamType || "-";
   };
 
-  // ------------------------------------------------
-  // Fetch initial matches
-  // ------------------------------------------------
-  const fetchMatchesInitial = useCallback(async () => {
-    setIsInitialLoading(true);
+  // ==========================================
+  // SORT MATCHES
+  // ==========================================
 
-    const bgmiIds = getAllBgmiIds();
-    if (bgmiIds.length === 0) {
+  const sortMatches = (matches) => {
+    return matches.sort(
+      (a, b) =>
+        new Date(b.joined_at || b.joinedAt || 0) -
+        new Date(a.joined_at || a.joinedAt || 0)
+    );
+  };
+
+  // ==========================================
+  // INITIAL FETCH
+  // ==========================================
+
+  const fetchMatchesInitial = useCallback(async () => {
+    setLoading(true);
+
+    const profileId = getProfileId();
+
+    if (!profileId) {
+      console.error("No profileId found");
+
       setAllMatches([]);
-      setIsInitialLoading(false);
+      setLoading(false);
+
       return;
     }
 
     try {
-      const allMatchesPromises = bgmiIds.map(async (id) => {
-        const res = await fetch(`${API_URL}/api/my-matches?bgmiId=${id}`);
-        const data = await res.json();
-        return data.matches || [];
-      });
-
-      const allMatchesArrays = await Promise.all(allMatchesPromises);
-      const allMatchesFlat = allMatchesArrays.flat();
-
-      const sortedMatches = allMatchesFlat.sort(
-        (a, b) => new Date(b.joined_at) - new Date(a.joined_at)
+      const res = await fetch(
+        `${API_URL}/api/my-matches?profileId=${encodeURIComponent(
+          profileId
+        )}`
       );
 
-      setAllMatches(sortedMatches);
-    } catch (err) {
-      console.error("Initial fetch error:", err);
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(
+          data?.message ||
+          data?.error ||
+          `HTTP ${res.status}`
+        );
+      }
+
+      const matches = Array.isArray(data.matches)
+        ? data.matches
+        : [];
+
+      const uniqueMatches = removeDuplicateMatches(matches);
+
+      setAllMatches(sortMatches(uniqueMatches));
+
+    } catch (error) {
+      console.error("Initial fetch error:", error);
       setAllMatches([]);
+
     } finally {
-      setIsInitialLoading(false);
-      hasLoadedRef.current = true;
+      setLoading(false);
     }
-  }, [API_URL]);
+  }, [
+    API_URL,
+    getProfileId,
+    removeDuplicateMatches,
+    setLoading,
+  ]);
 
-  // ------------------------------------------------
-  // Silent refresh (background)
-  // ------------------------------------------------
+  // ==========================================
+  // SILENT REFRESH
+  // ==========================================
+
   const fetchMatchesSilently = useCallback(async () => {
-    if (hasLoadedRef.current && allMatches.length > 0) return;
+    const profileId = getProfileId();
 
-    const bgmiIds = getAllBgmiIds();
-    if (bgmiIds.length === 0) return;
+    if (!profileId) return;
 
     try {
-      const allMatchesPromises = bgmiIds.map(async (id) => {
-        const res = await fetch(`${API_URL}/api/my-matches?bgmiId=${id}`);
-        const data = await res.json();
-        return data.matches || [];
-      });
-
-      const allMatchesArrays = await Promise.all(allMatchesPromises);
-      const allMatchesFlat = allMatchesArrays.flat();
-
-      const sortedMatches = allMatchesFlat.sort(
-        (a, b) => new Date(b.joined_at) - new Date(a.joined_at)
+      const res = await fetch(
+        `${API_URL}/api/my-matches?profileId=${encodeURIComponent(
+          profileId
+        )}`
       );
 
-      setAllMatches((prevMatches) => {
-        if (JSON.stringify(prevMatches) === JSON.stringify(sortedMatches)) {
-          return prevMatches;
-        }
-        return sortedMatches;
-      });
-    } catch (err) {
-      console.error("Silent fetch error:", err);
-    }
-  }, [API_URL, allMatches.length]);
+      const data = await res.json();
 
-  // ------------------------------------------------
-  // Effects
-  // ------------------------------------------------
+      if (!res.ok) {
+        throw new Error(
+          data?.message ||
+          data?.error ||
+          `HTTP ${res.status}`
+        );
+      }
+
+      const matches = Array.isArray(data.matches)
+        ? data.matches
+        : [];
+
+      const uniqueMatches = removeDuplicateMatches(matches);
+
+      setAllMatches(sortMatches(uniqueMatches));
+
+    } catch (error) {
+      console.error("Silent fetch error:", error);
+    }
+  }, [
+    API_URL,
+    getProfileId,
+    removeDuplicateMatches,
+  ]);
+
+  // ==========================================
+  // INITIAL LOAD
+  // ==========================================
+
   useEffect(() => {
     fetchMatchesInitial();
   }, [fetchMatchesInitial]);
 
+  // ==========================================
+  // AUTO REFRESH EVERY 12 SECONDS
+  // ==========================================
+
   useEffect(() => {
-    const interval = setInterval(fetchMatchesSilently, 12000);
+    const interval = setInterval(() => {
+      fetchMatchesSilently();
+    }, 12000);
+
     return () => clearInterval(interval);
   }, [fetchMatchesSilently]);
 
-  // ------------------------------------------------
-  // Render
-  // ------------------------------------------------
-  if (isInitialLoading) {
-    return (
-      <div className="mymatches-page">
-        <BackButton fallbackPath="/" />
-        <div className="simple-loading">
-          <div>⏳ Loading matches...</div>
-        </div>
-      </div>
-    );
-  }
+  // ==========================================
+  // RENDER
+  // ==========================================
 
   return (
-    <div className="mymatches-page">
-      <BackButton fallbackPath="/" />
+    <div className="ak-my-matches-page">
 
-      <div className="mymatches-container">
-        <div className="page-header">
+      <div className="ak-my-matches-container">
+
+        {/* HEADER */}
+
+        <div className="ak-my-matches-header">
+
           <h1>My Matches</h1>
+
           <p>
-            Total: <strong>{allMatches.length}</strong> matches found
+            Total:{" "}
+            <strong>{allMatches.length}</strong>{" "}
+            matches found
           </p>
+
         </div>
 
+        {/* MATCH LIST */}
+
         {allMatches.length > 0 ? (
-          <div className="matches-grid">
+
+          <div className="ak-my-matches-list">
+
             {allMatches.map((match, index) => {
-              // Normalize fields (snake_case + camelCase)
+
+              // NORMALIZE FIELDS
+
               const fee =
                 match.entry_fee ??
                 match.entryFee ??
@@ -183,6 +271,7 @@ const MyMatches = () => {
                 null;
 
               const mode = match.mode ?? null;
+
               const map = match.map ?? null;
 
               const rulesShort =
@@ -209,6 +298,7 @@ const MyMatches = () => {
                 "Tournament";
 
               const matchDate = match.date ?? "-";
+
               const matchTime = match.time ?? "-";
 
               const bgmiId =
@@ -216,135 +306,255 @@ const MyMatches = () => {
                 match.bgmiId ??
                 "-";
 
-              const roomId = match.room_id ?? match.roomId ?? "";
+              const roomId =
+                match.room_id ??
+                match.roomId ??
+                "";
+
               const roomPassword =
                 match.room_password ??
                 match.roomPassword ??
                 "";
 
+              const cardKey =
+                match.id ??
+                `${tournamentId}-${bgmiId}-${index}`;
+
               return (
+
                 <div
-                  key={match.id ?? `${bgmiId}-${index}`}
-                  className="match-card"
+                  key={cardKey}
+                  className="ak-my-matches-card"
                 >
-                  <div className="match-header">
+
+                  {/* CARD HEADER */}
+
+                  <div className="ak-my-matches-card-header">
+
                     <h3>{tournamentName}</h3>
-                    <span className="status registered">Registered</span>
+
+                    <span className="ak-my-matches-status">
+                      Registered
+                    </span>
+
                   </div>
 
-                  <div className="match-details">
+                  {/* MATCH DETAILS */}
+
+                  <div className="ak-my-matches-details">
+
                     {tournamentId && (
-                      <div className="detail-row">
+
+                      <div className="ak-my-matches-row">
+
                         <span>Tournament ID:</span>
-                        <span className="highlight">{tournamentId}</span>
+
+                        <span className="ak-my-matches-highlight">
+                          {tournamentId}
+                        </span>
+
                       </div>
+
                     )}
 
-                    <div className="detail-row">
+                    <div className="ak-my-matches-row">
+
                       <span>Game Name:</span>
-                      <span className="highlight">{gameName}</span>
+
+                      <span className="ak-my-matches-highlight">
+                        {gameName}
+                      </span>
+
                     </div>
 
-                    <div className="detail-row">
+                    <div className="ak-my-matches-row">
+
                       <span>Game ID:</span>
-                      <span className="highlight">{bgmiId}</span>
+
+                      <span className="ak-my-matches-highlight">
+                        {bgmiId}
+                      </span>
+
                     </div>
 
                     {teamType && (
-                      <div className="detail-row">
+
+                      <div className="ak-my-matches-row">
+
                         <span>Team Type:</span>
-                        <span>{formatTeamType(teamType)}</span>
+
+                        <span>
+                          {formatTeamType(teamType)}
+                        </span>
+
                       </div>
+
                     )}
 
                     {mode && (
-                      <div className="detail-row">
+
+                      <div className="ak-my-matches-row">
+
                         <span>Mode:</span>
+
                         <span>{mode}</span>
+
                       </div>
+
                     )}
 
                     {map && (
-                      <div className="detail-row">
+
+                      <div className="ak-my-matches-row">
+
                         <span>Map:</span>
+
                         <span>{map}</span>
+
                       </div>
+
                     )}
 
                     {gun && (
-                      <div className="detail-row">
+
+                      <div className="ak-my-matches-row">
+
                         <span>Gun:</span>
+
                         <span>{gun}</span>
+
                       </div>
+
                     )}
 
                     {rulesShort && (
-                      <div className="detail-row">
+
+                      <div className="ak-my-matches-row">
+
                         <span>Rules:</span>
+
                         <span>{rulesShort}</span>
+
                       </div>
+
                     )}
 
-                    <div className="detail-row">
+                    <div className="ak-my-matches-row">
+
                       <span>Entry:</span>
+
                       <span>
-                        {fee !== null && fee !== "" ? `₹${fee}` : "-"}
+                        {fee !== null && fee !== ""
+                          ? `₹${fee}`
+                          : "-"}
                       </span>
+
                     </div>
 
                     {perKill !== null && perKill !== "" && (
-                      <div className="detail-row">
+
+                      <div className="ak-my-matches-row">
+
                         <span>Per Kill:</span>
-                        <span className="highlight">₹{perKill}</span>
+
+                        <span className="ak-my-matches-highlight">
+                          ₹{perKill}
+                        </span>
+
                       </div>
+
                     )}
 
                     {prize !== null && prize !== "" && (
-                      <div className="detail-row">
+
+                      <div className="ak-my-matches-row">
+
                         <span>Prize:</span>
-                        <span className="prize-pool">₹{prize}</span>
+
+                        <span className="ak-my-matches-prize">
+                          ₹{prize}
+                        </span>
+
                       </div>
+
                     )}
 
-                    <div className="detail-row">
+                    <div className="ak-my-matches-row">
+
                       <span>Date:</span>
+
                       <span>{matchDate}</span>
+
                     </div>
 
-                    <div className="detail-row">
+                    <div className="ak-my-matches-row">
+
                       <span>Time:</span>
+
                       <span>{matchTime}</span>
+
                     </div>
+
+                    {/* ROOM DETAILS */}
 
                     {roomId ? (
-                      <div className="room-box">
-                        <div className="detail-row">
-                          {/* Yahi pe label change kar sakta hai */}
+
+                      <div className="ak-my-matches-room">
+
+                        <div className="ak-my-matches-row">
+
                           <span>Custom ID:</span>
+
                           <strong>{roomId}</strong>
+
                         </div>
-                        <div className="detail-row">
+
+                        <div className="ak-my-matches-row">
+
                           <span>Custom Password:</span>
-                          <strong>{roomPassword || "-"}</strong>
+
+                          <strong>
+                            {roomPassword || "-"}
+                          </strong>
+
                         </div>
+
                       </div>
+
                     ) : (
-                      <div className="room-pending">
+
+                      <div className="ak-my-matches-pending">
                         ⏳ Room details coming soon
                       </div>
+
                     )}
+
                   </div>
+
                 </div>
+
               );
+
             })}
+
           </div>
+
         ) : (
-          <div className="no-matches">
+
+          <div className="ak-my-matches-empty">
+
             <h2>No Matches Found</h2>
-            <p>No matches found for your BGMI IDs</p>
+
+            <p>
+              No matches found for your account
+            </p>
+
           </div>
+
         )}
+
       </div>
+
     </div>
   );
 };

@@ -1,181 +1,525 @@
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800&family=Rajdhani:wght@400;500;600;700&display=swap');
+/* =====================================================
+   AK MY MATCHES - ISOLATED RED / BLACK THEME
+   Balanced Cards (Not too wide/flat) | Clean Spacing
+===================================================== */
 
-/* 🔥 MY MATCHES PAGE - FIXED BOTTOM CUT! */
-.mymatches-page {
-  min-height: 100vh;
-  background: radial-gradient(circle at top, #111827 0, #020617 45%, #000 100%);
-  padding: 72px 12px 140px;
-  color: var(--text-main);
-  overflow: hidden;
-  font-family: 'Rajdhani', system-ui, sans-serif;
-}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
-.mymatches-container {
-  max-width: 420px;
-  margin: 0 auto;
-  height: calc(100vh - 212px);
-  overflow-y: auto;
-  overflow-x: hidden;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  padding-bottom: 20px;
-}
+/* ================= PAGE ================= */
 
-/* 🔥 HIDDEN SCROLLBAR */
-.mymatches-container::-webkit-scrollbar {
-  display: none;
-}
-
-.page-header {
-  text-align: center;
-  margin-bottom: 24px;
-  padding: 0 8px;
-}
-
-.page-header h1 {
-  font-size: 28px;
-  margin: 0 0 8px 0;
-  font-family: 'Orbitron', system-ui, sans-serif;
-  background: linear-gradient(135deg, #22c55e 0%, #22d3ee 55%, #facc15 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  text-shadow: 0 0 16px rgba(34, 211, 238, 0.08);
-}
-
-.page-header p {
-  margin: 0;
-  color: var(--text-muted);
-  font-size: 14px;
-  font-family: 'Rajdhani', system-ui, sans-serif;
-  font-weight: 500;
-  letter-spacing: 0.03em;
-}
-
-/* 🔥 MATCHES GRID - MORE BOTTOM SPACE */
-.matches-grid {
-  display: flex !important;
-  flex-direction: column;
-  gap: 14px;
-  padding-bottom: 40px;
-  min-height: calc(100% - 20px);
-}
-
-.match-card {
-  background:
-    radial-gradient(circle at top left, rgba(34, 211, 238, 0.08), transparent 35%),
-    rgba(15, 23, 42, 0.95);
-  border-radius: 16px;
-  padding: 18px;
-  border: 1px solid rgba(34, 211, 238, 0.14);
-  box-shadow: 0 8px 32px rgba(15, 23, 42, 0.8);
-  transition: all 0.2s ease;
-  cursor: pointer;
-  margin-bottom: 8px;
-  position: relative;
-}
-
-.match-card::before {
-  content: "";
-  position: absolute;
-  top: 0;
+.ak-my-matches-page {
+  position: fixed;
+  top: 52px;
+  bottom: 0;
   left: 0;
+  right: 0;
+
   width: 100%;
-  height: 2px;
-  background: linear-gradient(90deg, #22c55e, #22d3ee, #facc15);
-  border-radius: 16px 16px 0 0;
-}
+  height: calc(100vh - 52px);
+  height: calc(100dvh - 52px);
 
-.match-card:hover {
-  transform: translateY(-2px);
-  box-shadow:
-    0 12px 40px rgba(34, 197, 94, 0.12),
-    0 0 18px rgba(34, 211, 238, 0.06);
-}
+  margin: 0;
+  padding: 8px 10px 75px;
 
-.match-header h3,
-.match-card h3 {
-  font-family: 'Orbitron', system-ui, sans-serif;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: #f8fafc;
-  font-weight: 700;
-}
-
-.status {
-  font-family: 'Orbitron', system-ui, sans-serif;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
-.detail-row span:first-child {
-  font-family: 'Rajdhani', system-ui, sans-serif;
-  font-weight: 600;
-  color: #94a3b8;
-}
-
-.detail-row span:last-child,
-.detail-row strong {
-  font-family: 'Rajdhani', system-ui, sans-serif;
-  font-weight: 700;
-  color: #f8fafc;
-}
-
-.room-box,
-.room-pending,
-.no-matches,
-.simple-loading {
-  font-family: 'Rajdhani', system-ui, sans-serif;
-}
-
-.room-pending {
-  font-weight: 700;
-  letter-spacing: 0.04em;
-}
-
-.no-matches h2 {
-  font-family: 'Orbitron', system-ui, sans-serif;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.simple-loading {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 60vh;
-  font-size: 1.2rem;
-  color: #666;
-  padding-bottom: 40px;
-  font-weight: 600;
+  flex-direction: column;
+
+  background: #080808 !important;
+  color: #f5f5f5;
+
+  font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+
+  z-index: 10;
+  overflow: hidden;
+  isolation: isolate;
 }
 
-/* 🔥 MOBILE PERFECT FIX */
-@media (max-width: 768px) {
-  .mymatches-page {
-    padding: 72px 8px 150px;
+.ak-my-matches-page,
+.ak-my-matches-page * {
+  box-sizing: border-box;
+}
+
+.ak-my-matches-container {
+  width: 100%;
+  max-width: 480px; /* Thoda aur compact width taaki phaila hua na lage */
+
+  height: 100%;
+  min-height: 0;
+
+  margin: 0 auto;
+
+  display: flex;
+  flex-direction: column;
+
+  background: transparent !important;
+
+  overflow: hidden;
+}
+
+/* ================= HEADER ================= */
+
+.ak-my-matches-header {
+  width: 100%;
+  flex: 0 0 auto;
+
+  margin-bottom: 8px;
+  padding: 9px 12px;
+
+  border-radius: 10px;
+
+  background: #0d0d0d !important;
+  border: 1px solid rgba(255, 48, 79, 0.22);
+
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45);
+}
+
+.ak-my-matches-header h1 {
+  margin: 0 0 2px;
+
+  font-size: 16px;
+  line-height: 1.2;
+  font-weight: 900;
+
+  color: #fff !important;
+  letter-spacing: 0.4px;
+}
+
+.ak-my-matches-header p {
+  margin: 0;
+
+  font-size: 10px;
+  font-weight: 600;
+
+  color: #a49a9d !important;
+}
+
+.ak-my-matches-header strong {
+  color: #ff526b !important;
+  font-weight: 900;
+}
+
+/* ================= MATCH LIST ================= */
+
+.ak-my-matches-list {
+  width: 100%;
+  flex: 1 1 0;
+
+  min-height: 0;
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+
+  gap: 8px; /* Cards ke beech me clean gap */
+
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+
+  padding: 2px 2px 10px;
+
+  background: transparent !important;
+
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
+  touch-action: pan-y;
+
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+.ak-my-matches-list::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+.ak-my-matches-list::-webkit-scrollbar-track,
+.ak-my-matches-list::-webkit-scrollbar-thumb {
+  display: none !important;
+  background: transparent !important;
+}
+
+/* ================= MATCH CARD (BALANCED & PROPORTIONAL) ================= */
+
+.ak-my-matches-card {
+  position: relative;
+
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+
+  flex: 0 0 auto;
+
+  padding: 10px 12px 11px; /* Height thodi behtar aur balanced ki hai */
+
+  border-radius: 10px;
+
+  background: #0c0c0c !important;
+  border: 1px solid #292929;
+
+  box-shadow:
+    0 3px 10px rgba(0, 0, 0, 0.45),
+    inset 0 1px rgba(255, 255, 255, 0.02);
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.ak-my-matches-card::before {
+  content: '';
+
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  left: 0;
+
+  width: 3px;
+
+  border-radius: 4px;
+  background: #a9273c;
+}
+
+.ak-my-matches-card:hover {
+  border-color: rgba(255, 48, 79, 0.4);
+
+  box-shadow:
+    0 5px 14px rgba(0, 0, 0, 0.55),
+    0 0 8px rgba(255, 48, 79, 0.05);
+}
+
+/* ================= CARD HEADER ================= */
+
+.ak-my-matches-card-header {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 8px;
+
+  margin-bottom: 7px;
+  padding-bottom: 6px;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.ak-my-matches-card-header h3 {
+  min-width: 0;
+  max-width: 75%;
+
+  margin: 0;
+
+  font-size: 13px;
+  line-height: 1.25;
+  font-weight: 900;
+
+  color: #fff !important;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ================= STATUS ================= */
+
+.ak-my-matches-status {
+  flex: 0 0 auto;
+
+  padding: 3px 7px;
+
+  border-radius: 5px;
+
+  background: rgba(255, 48, 79, 0.1) !important;
+  border: 1px solid rgba(255, 48, 79, 0.28);
+
+  color: #ff657a !important;
+
+  font-size: 8px;
+  font-weight: 900;
+
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* ================= DETAILS ================= */
+
+.ak-my-matches-details {
+  display: flex;
+  flex-direction: column;
+
+  gap: 3px; /* Rows ke beech me proper breathing space */
+
+  width: 100%;
+  min-width: 0;
+
+  background: transparent !important;
+}
+
+.ak-my-matches-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 8px;
+
+  width: 100%;
+  min-width: 0;
+
+  padding: 1px 0;
+
+  font-size: 10.5px;
+  line-height: 1.25;
+
+  color: #b4aaac !important;
+}
+
+.ak-my-matches-row > span:first-child {
+  flex: 0 0 auto;
+
+  font-size: 9.5px;
+  font-weight: 600;
+
+  color: #a49a9d !important;
+}
+
+.ak-my-matches-row > span:last-child {
+  min-width: 0;
+
+  text-align: right;
+
+  color: #eee8e9 !important;
+  font-size: 10.5px;
+  font-weight: 800;
+
+  overflow-wrap: anywhere;
+}
+
+/* ================= HIGHLIGHT ================= */
+
+.ak-my-matches-row .ak-my-matches-highlight {
+  color: #ff657a !important;
+  font-size: 10.5px;
+  font-weight: 900;
+}
+
+/* ================= PRIZE ================= */
+
+.ak-my-matches-row .ak-my-matches-prize {
+  color: #10b981 !important;
+  font-size: 10.5px;
+  font-weight: 900;
+}
+
+/* ================= ROOM DETAILS ================= */
+
+.ak-my-matches-room {
+  width: 100%;
+
+  margin-top: 7px;
+  padding: 7px 9px;
+
+  background: #080808 !important;
+
+  border: 1px dashed rgba(255, 48, 79, 0.35);
+  border-radius: 8px;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 4px;
+}
+
+.ak-my-matches-room .ak-my-matches-row {
+  gap: 8px;
+  padding: 1px 0;
+}
+
+.ak-my-matches-room .ak-my-matches-row > span:first-child {
+  flex: 0 1 auto;
+  min-width: 0;
+
+  color: #b4aaac !important;
+
+  font-size: 9.5px;
+  font-weight: 800;
+}
+
+.ak-my-matches-room .ak-my-matches-row strong {
+  flex: 1 1 auto;
+  min-width: 0;
+
+  padding-right: 2px;
+
+  text-align: right;
+
+  color: #ff657a !important;
+
+  font-size: 12px;
+  line-height: 1.2;
+  font-weight: 950;
+
+  letter-spacing: 0.3px;
+
+  overflow-wrap: anywhere;
+  word-break: break-all;
+}
+
+/* ================= ROOM PENDING ================= */
+
+.ak-my-matches-pending {
+  margin-top: 6px;
+  padding: 6px;
+
+  text-align: center;
+
+  background: #101010 !important;
+
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+
+  color: #a49a9d !important;
+
+  font-size: 9.5px;
+  font-weight: 700;
+
+  letter-spacing: 0.2px;
+}
+
+/* ================= EMPTY STATE ================= */
+
+.ak-my-matches-empty {
+  flex: 1 1 auto;
+  min-height: 0;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+
+  padding: 15px;
+
+  background: transparent !important;
+
+  color: #a49a9d !important;
+}
+
+.ak-my-matches-empty h2 {
+  margin: 0 0 5px;
+
+  font-size: 16px;
+  font-weight: 900;
+
+  color: #fff !important;
+}
+
+.ak-my-matches-empty p {
+  margin: 0;
+
+  font-size: 10px;
+  font-weight: 600;
+
+  color: #a49a9d !important;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 480px) {
+
+  .ak-my-matches-page {
+    padding: 7px 8px 72px;
   }
 
-  .mymatches-container {
-    height: calc(100vh - 222px);
-    max-width: 100%;
-    padding-bottom: 30px;
+  .ak-my-matches-header {
+    padding: 8px 10px;
+    margin-bottom: 6px;
   }
 
-  .matches-grid {
-    padding-bottom: 50px;
+  .ak-my-matches-header h1 {
+    font-size: 15px;
   }
 
-  .page-header h1 {
-    font-size: 24px;
-    letter-spacing: 0.06em;
+  .ak-my-matches-list {
+    gap: 7px;
+    padding: 2px 1px 8px;
   }
 
-  .page-header p {
-    font-size: 13px;
+  .ak-my-matches-card {
+    padding: 9px 10px 10px;
+  }
+
+  .ak-my-matches-card-header h3 {
+    font-size: 12px;
+  }
+
+  .ak-my-matches-row {
+    font-size: 10px;
+  }
+
+  .ak-my-matches-row .ak-my-matches-highlight,
+  .ak-my-matches-row .ak-my-matches-prize {
+    font-size: 10px;
+  }
+
+  .ak-my-matches-room {
+    padding: 6px 8px;
+  }
+
+  .ak-my-matches-room .ak-my-matches-row strong {
+    font-size: 11.5px;
+  }
+}
+
+/* ================= SMALL PHONES ================= */
+
+@media (max-width: 360px) {
+
+  .ak-my-matches-page {
+    padding: 6px 6px 70px;
+  }
+
+  .ak-my-matches-header h1 {
+    font-size: 14px;
+  }
+
+  .ak-my-matches-card {
+    padding: 8px 9px 9px;
+  }
+
+  .ak-my-matches-card-header h3 {
+    font-size: 11px;
+  }
+
+  .ak-my-matches-row {
+    gap: 6px;
+  }
+
+  .ak-my-matches-row > span:first-child {
+    font-size: 9px;
+  }
+
+  .ak-my-matches-row > span:last-child {
+    font-size: 9.5px;
+  }
+
+  .ak-my-matches-room .ak-my-matches-row strong {
+    font-size: 11px;
+  }
+}
+
+/* ================= ACCESSIBILITY ================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .ak-my-matches-page *,
+  .ak-my-matches-page *::before,
+  .ak-my-matches-page *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
   }
 }

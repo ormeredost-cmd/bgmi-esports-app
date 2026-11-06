@@ -1,4 +1,4 @@
-// src/components/TournamentCard.jsx
+
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
 import "./TournamentCard.css";
@@ -8,248 +8,451 @@ const TournamentCard = ({ t }) => {
   const [isFull, setIsFull] = useState(false);
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [registeredSlots, setRegisteredSlots] = useState(0);
-  const [maxSlots, setMaxSlots] = useState(50);
+  const [maxSlots, setMaxSlots] = useState(
+    Number(t?.totalSlots ?? t?.slots ?? 50)
+  );
 
-  const intervalRef = useRef(null);
-  const mountedRef = useRef(true);
-  const hasLoadedRef = useRef(false);
+  const mountedRef = useRef(false);
+  const checkTimeoutRef = useRef(null);
+  const checkingRef = useRef(false);
 
   const API_URL =
     window.location.hostname === "localhost"
       ? "http://localhost:5002"
       : "https://deposit-and-join-tournament-server.onrender.com";
 
-  const getBgmiIdForTournament = useCallback(() => {
+  // ==========================================
+  // TOURNAMENT DETAILS
+  // ==========================================
+
+  const tournamentId = String(
+    t?.id || t?.tournament_id || ""
+  );
+
+  const tournamentDate = t?.date || "";
+
+  const tournamentTime = t?.time || "";
+
+  const tournamentName =
+    t?.name || t?.tournament_name || "BGMI Tournament";
+
+  const tournamentMode =
+    t?.mode || t?.game_mode || "Classic";
+
+  const tournamentType =
+    t?.type || t?.match_type || "";
+
+  const entryFee =
+    t?.entryFee ?? t?.entry_fee ?? 0;
+
+  const perKill =
+    t?.perKill ?? t?.per_kill;
+
+  const winnerPrize =
+    t?.winnerPrize ??
+    t?.prizePool ??
+    t?.prize_pool;
+
+  const teamType =
+    t?.teamType || t?.team_type || "";
+
+  // ==========================================
+  // GET LOGGED-IN USER PROFILE ID
+  // ==========================================
+
+  const getProfileId = useCallback(() => {
     try {
-      const tournamentJoins = JSON.parse(
-        localStorage.getItem("tournamentJoins") || "[]"
-      );
-      const tournamentJoin = tournamentJoins.find(
-        (join) => join.tournamentId === t.id
+      const storedUser = JSON.parse(
+        localStorage.getItem("bgmi_user") || "null"
       );
 
       return (
-        tournamentJoin?.bgmiId ||
-        localStorage.getItem("tempBgmiId") ||
-        localStorage.getItem("lastBgmiId") ||
+        storedUser?.profile_id ||
+        storedUser?.user?.profile_id ||
         ""
       );
-    } catch {
-      return (
-        localStorage.getItem("tempBgmiId") ||
-        localStorage.getItem("lastBgmiId") ||
-        ""
-      );
-    }
-  }, [t.id]);
-
-  const getMapEmoji = (mapName) => {
-    const maps = {
-      Erangel: "🏝️",
-      Miramar: "🏜️",
-      Sanhok: "🌴",
-      Vikendi: "❄️",
-      Karakin: "🏔️",
-      Livik: "🏕️",
-      Rondo: "🎋",
-      Bermuda: "🏝️",
-      Purgatory: "🌋",
-      Kalahari: "🏜️",
-      Alpine: "🏔️",
-      NeXTerra: "🌌",
-    };
-    return maps[mapName] || "🗺️";
-  };
-
-  const formatTeamType = (teamType) => {
-    const types = {
-      solo: "Solo",
-      duo: "Duo",
-      squad: "Squad",
-    };
-    return types[teamType?.toLowerCase()] || teamType;
-  };
-
-  const checkStatusInitial = useCallback(async () => {
-    setIsInitialLoading(true);
-
-    try {
-      const slotsRes = await fetch(
-        `${API_URL}/api/tournament-slots-count/${t.id}`
-      );
-      const slotsData = await slotsRes.json();
-
-      if (!mountedRef.current) return;
-
-      const registered = slotsData.registered || 0;
-      const fixedMaxSlots = 50;
-
-      setRegisteredSlots(registered);
-      setMaxSlots(fixedMaxSlots);
-      setIsFull(registered >= fixedMaxSlots);
-
-      const bgmiId = getBgmiIdForTournament();
-
-      if (bgmiId) {
-        const joinRes = await fetch(
-          `${API_URL}/api/check-join/${t.id}?bgmiId=${bgmiId}`
-        );
-        const joinData = await joinRes.json();
-
-        if (!mountedRef.current) return;
-
-        setIsJoined(!!joinData.joined);
-      }
     } catch (error) {
-      console.error("Initial check failed:", error);
-      if (mountedRef.current) {
-        setIsJoined(false);
-      }
-    } finally {
-      if (mountedRef.current) {
-        setIsInitialLoading(false);
-        hasLoadedRef.current = true;
-      }
+      console.error("Profile ID read failed:", error);
+      return "";
     }
-  }, [t.id, API_URL, getBgmiIdForTournament]);
+  }, []);
 
-  const checkStatusSilent = useCallback(async () => {
-    if (hasLoadedRef.current && (isJoined || isFull)) return;
+  // ==========================================
+  // MAP BACKGROUND
+  // ==========================================
 
-    try {
-      const bgmiId = getBgmiIdForTournament();
+  const getTournamentBackground = (id, map) => {
+    const backgrounds = {
+      GYJHYTU: "/assets/tournaments/livik.webp",
+      CVGFDC5: "/assets/tournaments/livik.webp",
+      KFHU41R: "/assets/tournaments/erangel.webp",
+      LOIUJ77: "/assets/tournaments/Miramar.webp",
+      ASDFG65: "/assets/tournaments/erangel.webp",
+    };
 
-      if (bgmiId) {
-        const joinRes = await fetch(
-          `${API_URL}/api/check-join/${t.id}?bgmiId=${bgmiId}`
+    if (backgrounds[id]) {
+      return backgrounds[id];
+    }
+
+    const normalizedMap = String(map || "").toLowerCase();
+
+    if (normalizedMap.includes("livik")) {
+      return "/assets/tournaments/livik.webp";
+    }
+
+    if (normalizedMap.includes("erangel")) {
+      return "/assets/tournaments/erangel.webp";
+    }
+
+    if (normalizedMap.includes("miramar")) {
+      return "/assets/tournaments/Miramar.webp";
+    }
+
+    return "";
+  };
+
+  // ==========================================
+  // CHECK TOURNAMENT STATUS
+  // ==========================================
+
+  const checkStatus = useCallback(
+    async (isInitial = false) => {
+      if (checkingRef.current || !tournamentId) {
+        return;
+      }
+
+      checkingRef.current = true;
+
+      if (isInitial && mountedRef.current) {
+        setIsInitialLoading(true);
+      }
+
+      try {
+        // Date and time are required by backend.
+        const params = new URLSearchParams();
+
+        params.set("date", tournamentDate);
+        params.set("time", tournamentTime);
+
+        // ======================================
+        // GET REGISTERED SLOTS
+        // ======================================
+
+        const slotsRes = await fetch(
+          `${API_URL}/api/tournament-slots-count/${encodeURIComponent(
+            tournamentId
+          )}?${params.toString()}`
         );
-        const joinData = await joinRes.json();
+
+        const slotsData = await slotsRes.json().catch(() => ({}));
+
+        if (!slotsRes.ok) {
+          throw new Error(
+            slotsData.message ||
+              slotsData.error ||
+              "Slots API failed"
+          );
+        }
 
         if (!mountedRef.current) return;
 
-        if (joinData.joined) {
-          setIsJoined(true);
-          hasLoadedRef.current = true;
+        const registered = Number(
+          slotsData.registered ?? 0
+        );
+
+        const actualMaxSlots = Number(
+          slotsData.max ??
+            t?.totalSlots ??
+            t?.slots ??
+            50
+        );
+
+        const safeMaxSlots =
+          Number.isFinite(actualMaxSlots) && actualMaxSlots > 0
+            ? actualMaxSlots
+            : 50;
+
+        setRegisteredSlots(registered);
+        setMaxSlots(safeMaxSlots);
+        setIsFull(registered >= safeMaxSlots);
+
+        // ======================================
+        // CHECK WHETHER USER ALREADY JOINED
+        // ======================================
+
+        const profileId = getProfileId();
+
+        if (profileId) {
+          const joinParams = new URLSearchParams();
+
+          joinParams.set("profileId", profileId);
+          joinParams.set("date", tournamentDate);
+          joinParams.set("time", tournamentTime);
+
+          const joinRes = await fetch(
+            `${API_URL}/api/check-join/${encodeURIComponent(
+              tournamentId
+            )}?${joinParams.toString()}`
+          );
+
+          const joinData = await joinRes.json().catch(() => ({}));
+
+          if (!joinRes.ok) {
+            throw new Error(
+              joinData.message ||
+                joinData.error ||
+                "Join status API failed"
+            );
+          }
+
+          if (!mountedRef.current) return;
+
+          setIsJoined(Boolean(joinData.joined));
+        } else {
+          setIsJoined(false);
+        }
+      } catch (error) {
+        console.error(
+          `Tournament status check failed (${tournamentId}):`,
+          error
+        );
+      } finally {
+        checkingRef.current = false;
+
+        if (mountedRef.current) {
+          setIsInitialLoading(false);
         }
       }
+    },
+    [
+      API_URL,
+      tournamentId,
+      tournamentDate,
+      tournamentTime,
+      getProfileId,
+      t?.totalSlots,
+      t?.slots,
+    ]
+  );
 
-      const slotsRes = await fetch(
-        `${API_URL}/api/tournament-slots-count/${t.id}`
-      );
-      const slotsData = await slotsRes.json();
-
-      if (!mountedRef.current) return;
-
-      const registered = slotsData.registered || 0;
-      const fixedMaxSlots = 50;
-
-      setRegisteredSlots(registered);
-      setMaxSlots(fixedMaxSlots);
-      setIsFull(registered >= fixedMaxSlots);
-    } catch (error) {
-      console.error("Silent check failed:", error);
-    }
-  }, [t.id, API_URL, getBgmiIdForTournament, isJoined, isFull]);
-
-  const filledPercent =
-    maxSlots > 0
-      ? Math.min(100, Math.round((registeredSlots / maxSlots) * 100))
-      : 0;
+  // ==========================================
+  // INITIAL LOAD + AUTO REFRESH
+  // ==========================================
 
   useEffect(() => {
     mountedRef.current = true;
-    checkStatusInitial();
-  }, [checkStatusInitial]);
 
-  useEffect(() => {
-    intervalRef.current = setInterval(checkStatusSilent, 8000);
-    return () => clearInterval(intervalRef.current);
-  }, [checkStatusSilent]);
+    checkStatus(true);
 
-  useEffect(() => {
+    const scheduleNextCheck = () => {
+      if (!mountedRef.current) return;
+
+      checkTimeoutRef.current = setTimeout(async () => {
+        if (!mountedRef.current) return;
+
+        await checkStatus(false);
+
+        scheduleNextCheck();
+      }, 10000);
+    };
+
+    scheduleNextCheck();
+
     return () => {
       mountedRef.current = false;
-      clearInterval(intervalRef.current);
+
+      if (checkTimeoutRef.current) {
+        clearTimeout(checkTimeoutRef.current);
+      }
     };
-  }, []);
+  }, [checkStatus]);
+
+  // ==========================================
+  // SLOTS PROGRESS
+  // ==========================================
+
+  const filledPercent =
+    maxSlots > 0
+      ? Math.min(
+          100,
+          Math.round((registeredSlots / maxSlots) * 100)
+        )
+      : 0;
+
+  // ==========================================
+  // MAP BACKGROUND
+  // ==========================================
+
+  const mapBackground = getTournamentBackground(
+    tournamentId,
+    t?.map
+  );
+
+  // ==========================================
+  // UI
+  // ==========================================
 
   return (
     <div
       className={`tour-card ${
-        t.type?.toLowerCase() === "tdm" ? "tdm-card" : ""
+        String(tournamentType).toLowerCase() === "tdm"
+          ? "tdm-card"
+          : ""
       }`}
+      style={{
+        "--map-bg": mapBackground
+          ? `url("${mapBackground}")`
+          : "none",
+      }}
     >
-      <div className="tour-header">
-        <span className="tour-game">{t.game || "FREE FIRE"}</span>
-        <span className={`tour-tag ${t.type?.toLowerCase()}`}>
-          {t.type}
-        </span>
-      </div>
+      {/* TOURNAMENT TITLE */}
 
-      <h3 className="tour-title">{t.name}</h3>
+      <h3 className="tour-title">
+        {tournamentName}
+      </h3>
 
-      {t.tournamentId && (
+      {/* TOURNAMENT ID */}
+
+      {(t?.tournamentId || t?.tournament_id) && (
         <p className="tour-meta tour-meta-id">
-          <span className="meta-label">Tournament ID</span>
-          <span className="meta-value">{t.tournamentId}</span>
-        </p>
-      )}
+          <span className="meta-label">
+            Tournament ID
+          </span>
 
-      {t.teamType && (
-        <p className="tour-meta">
-          <span className="meta-label">Team Type</span>
-          <span className="meta-value">{formatTeamType(t.teamType)}</span>
-        </p>
-      )}
-
-      {t.map && (
-        <p className="tour-meta map-line">
-          <span className="meta-label">Map</span>
-          <span className="meta-value map-highlight">
-            {getMapEmoji(t.map)} {t.map}
+          <span className="meta-value">
+            {t.tournamentId || t.tournament_id}
           </span>
         </p>
       )}
 
+      {/* TEAM TYPE */}
+
+      {teamType && (
+        <p className="tour-meta">
+          <span className="meta-label">
+            Team Type
+          </span>
+
+          <span className="meta-value">
+            {teamType}
+          </span>
+        </p>
+      )}
+
+      {/* MAP */}
+
+      {t?.map && (
+        <p className="tour-meta map-line">
+          <span className="meta-label">
+            Map
+          </span>
+
+          <span className="meta-value map-highlight">
+            {t.map}
+          </span>
+        </p>
+      )}
+
+      {/* MODE */}
+
       <p className="tour-meta">
-        <span className="meta-label">Mode</span>
-        <span className="meta-value">{t.mode}</span>
+        <span className="meta-label">
+          Mode
+        </span>
+
+        <span className="meta-value">
+          {tournamentMode}
+        </span>
       </p>
+
+      {/* DATE */}
+
+      {tournamentDate && (
+        <p className="tour-meta">
+          <span className="meta-label">
+            Date
+          </span>
+
+          <span className="meta-value">
+            {tournamentDate}
+          </span>
+        </p>
+      )}
+
+      {/* TIME */}
 
       <p className="tour-meta time-line">
-        <span className="meta-label">Time</span>
-        <span className="meta-value time-highlight">{t.time}</span>
+        <span className="meta-label">
+          Time
+        </span>
+
+        <span className="meta-value time-highlight">
+          {tournamentTime || "Not specified"}
+        </span>
       </p>
+
+      {/* ENTRY */}
 
       <p className="tour-meta">
-        <span className="meta-label">Entry</span>
-        <span className="meta-value highlight-money">₹{t.entryFee}</span>
+        <span className="meta-label">
+          Entry
+        </span>
+
+        <span className="meta-value highlight-money">
+          ₹{entryFee}
+        </span>
       </p>
 
-      {t.perKill !== undefined && (
-        <p className="tour-meta">
-          <span className="meta-label">Per Kill</span>
-          <span className="meta-value highlight-money">₹{t.perKill}</span>
-        </p>
-      )}
+      {/* PER KILL */}
 
-      {(t.winnerPrize !== undefined || t.prizePool !== undefined) && (
+      {perKill !== undefined && perKill !== null && (
         <p className="tour-meta">
-          <span className="meta-label">Winner Prize</span>
-          <span className="meta-value highlight-prize">
-            ₹{t.winnerPrize ?? t.prizePool}
+          <span className="meta-label">
+            Per Kill
+          </span>
+
+          <span className="meta-value highlight-money">
+            ₹{perKill}
           </span>
         </p>
       )}
+
+      {/* WINNER PRIZE */}
+
+      {winnerPrize !== undefined && winnerPrize !== null && (
+        <p className="tour-meta">
+          <span className="meta-label">
+            Winner Prize
+          </span>
+
+          <span className="meta-value highlight-prize">
+            ₹{winnerPrize}
+          </span>
+        </p>
+      )}
+
+      {/* FOOTER */}
 
       <div className="tour-footer">
         <div className="tour-slots-wrap">
-          <span className={`tour-slots ${isFull ? "slots-full" : ""}`}>
-            <span className="meta-label">Slots</span>
+          <span
+            className={`tour-slots ${
+              isFull ? "slots-full" : ""
+            }`}
+          >
+            <span className="meta-label">
+              Slots
+            </span>
+
             <span className="meta-value live-slots">
-              {isInitialLoading ? "⏳" : `${registeredSlots}/${maxSlots}`}
+              {isInitialLoading
+                ? "⏳"
+                : `${registeredSlots}/${maxSlots}`}
+
               {isFull && !isInitialLoading && (
-                <span className="full-badge">🔴 FULL</span>
+                <span className="full-badge">
+                  🔴 FULL
+                </span>
               )}
             </span>
           </span>
@@ -264,29 +467,50 @@ const TournamentCard = ({ t }) => {
               aria-label="Tournament slots progress"
             >
               <div
-                className={`slots-progress-fill ${isFull ? "full" : ""}`}
+                className={`slots-progress-fill ${
+                  isFull ? "full" : ""
+                }`}
                 style={{
-                  width: isInitialLoading ? "0%" : `${filledPercent}%`,
+                  width: isInitialLoading
+                    ? "0%"
+                    : `${filledPercent}%`,
                 }}
               />
             </div>
           </div>
         </div>
 
+        {/* BUTTON STATE */}
+
         {isInitialLoading ? (
-          <button className="btn-tour btn-loading" disabled>
+          <button
+            type="button"
+            className="btn-tour btn-loading"
+            disabled
+          >
             Checking...
           </button>
         ) : isFull ? (
-          <button className="btn-tour btn-full" disabled>
+          <button
+            type="button"
+            className="btn-tour btn-full"
+            disabled
+          >
             Tournament Full
           </button>
         ) : isJoined ? (
-          <button className="btn-tour btn-joined" disabled>
+          <button
+            type="button"
+            className="btn-tour btn-joined"
+            disabled
+          >
             ✅ JOINED
           </button>
         ) : (
-          <Link to={`/tournaments/${t.id}`} className="btn-tour btn-active">
+          <Link
+            to={`/tournaments/${tournamentId}`}
+            className="btn-tour btn-active"
+          >
             Join Now
           </Link>
         )}

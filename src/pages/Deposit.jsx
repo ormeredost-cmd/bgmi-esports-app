@@ -2,59 +2,95 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Deposit.css";
 
-const AMOUNTS = [50, 100, 200, 300, 400, 500, 1000, 5000];
+const AMOUNTS = [
+  50,
+  100,
+  200,
+  300,
+  400,
+  500,
+  1000,
+  5000,
+];
 
 export default function Deposit() {
   const [selected, setSelected] = useState(null);
   const navigate = useNavigate();
 
   const handleProceed = () => {
-    // ✅ Step 1: Check login
+    /* ============================= CHECK LOGIN ============================= */
+
     const stored = localStorage.getItem("bgmi_user");
+
     if (!stored) {
       alert("Please login first");
       navigate("/login");
       return;
     }
 
-    // ✅ Step 2: Check amount
+    /* ============================= CHECK AMOUNT ============================= */
+
     if (!selected) {
       alert("Please select amount");
       return;
     }
 
-    // ✅ Step 3: Validate user data
+    /* ============================= VALIDATE SESSION ============================= */
+
     try {
       const parsed = JSON.parse(stored);
-      const email = parsed.user?.email || parsed.email;
 
-      if (!email) {
-        alert("Invalid session, please login again");
+      const email =
+        parsed?.email ||
+        parsed?.user?.email;
+
+      const profileId =
+        parsed?.profile_id ||
+        parsed?.user?.profile_id;
+
+      if (!email || !profileId) {
+        alert(
+          "Invalid session, please login again"
+        );
+
         localStorage.removeItem("bgmi_user");
+
         navigate("/login");
         return;
       }
 
-      console.log("👤 Deposit user:", email);
+      console.log(
+        "👤 Deposit session:",
+        profileId
+      );
 
     } catch (err) {
-      console.error("❌ localStorage error:", err);
+      console.error(
+        "❌ localStorage error:",
+        err
+      );
+
       localStorage.removeItem("bgmi_user");
+
       navigate("/login");
       return;
     }
 
-    // ✅ Step 4: Navigate (ONLY amount)
+    /* ============================= GO TO QR PAGE ============================= */
+
     navigate("/deposit/qr", {
       state: {
-        amount: selected
-      }
+        amount: selected,
+      },
     });
   };
 
   return (
     <div className="deposit-page">
-      <h2 className="deposit-title">Deposit</h2>
+      <h2 className="deposit-title">
+        Deposit
+      </h2>
+
       <p className="deposit-subtitle">
         Select amount to add in wallet
       </p>
@@ -64,8 +100,14 @@ export default function Deposit() {
           <button
             key={amt}
             type="button"
-            className={`amount-btn ${selected === amt ? "active" : ""}`}
-            onClick={() => setSelected(amt)}
+            className={`amount-btn ${
+              selected === amt
+                ? "active"
+                : ""
+            }`}
+            onClick={() =>
+              setSelected(amt)
+            }
           >
             ₹{amt}
           </button>

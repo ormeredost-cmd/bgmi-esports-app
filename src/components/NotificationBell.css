@@ -1,0 +1,736 @@
+
+/* ==========================================
+   BGMI ESPORTS — NOTIFICATION SYSTEM
+   PREMIUM DARK ESPORTS UI
+========================================== */
+
+.notification-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  flex-shrink: 0;
+  z-index: 1200;
+}
+
+/* ==========================================
+   NOTIFICATION BELL BUTTON
+========================================== */
+
+.notification-bell-button {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  min-width: 42px;
+  min-height: 42px;
+  padding: 9px 11px;
+
+  color: #ffffff;
+  background: rgba(230, 57, 70, 0.09);
+
+  border: 1px solid rgba(255, 65, 75, 0.55);
+  border-radius: 10px;
+
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.notification-bell-button:hover {
+  background: rgba(230, 57, 70, 0.19);
+  border-color: #ff555c;
+  box-shadow: 0 0 15px rgba(255, 48, 56, 0.18);
+}
+
+.notification-bell-button:active {
+  transform: scale(0.96);
+}
+
+.notification-bell-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #ff6269;
+  font-size: 19px;
+  line-height: 1;
+}
+
+.notification-bell-label {
+  white-space: nowrap;
+  text-align: left;
+}
+
+.notification-unread-badge {
+  position: absolute;
+  top: -7px;
+  right: -7px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 20px;
+  height: 20px;
+  padding: 0 5px;
+
+  color: #ffffff;
+  background: #ff303b;
+
+  border: 2px solid #0b0b12;
+  border-radius: 20px;
+
+  font-size: 10px;
+  font-weight: 900;
+
+  box-shadow: 0 0 10px rgba(255, 48, 56, 0.45);
+  z-index: 2;
+}
+
+/* ==========================================
+   NOTIFICATION DROPDOWN
+========================================== */
+
+.notification-dropdown {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+
+  width: 390px;
+  max-width: calc(100vw - 24px);
+
+  color: #ffffff;
+
+  background: linear-gradient(
+    145deg,
+    #1a1215,
+    #0b0b12 75%
+  );
+
+  border: 1px solid rgba(255, 65, 75, 0.55);
+  border-radius: 15px;
+
+  box-shadow:
+    0 18px 45px rgba(0, 0, 0, 0.7),
+    0 0 20px rgba(230, 57, 70, 0.12);
+
+  z-index: 1500;
+  overflow: hidden;
+
+  animation: notification-appear 0.2s ease;
+}
+
+@keyframes notification-appear {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==========================================
+   NOTIFICATION HEADER
+========================================== */
+
+.notification-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+
+  padding: 16px;
+
+  background: rgba(230, 57, 70, 0.09);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+}
+
+.notification-header h3 {
+  margin: 0 0 5px;
+
+  color: #ff6269;
+  font-size: 17px;
+  font-weight: 900;
+}
+
+.notification-header span {
+  color: #a5a5b2;
+  font-size: 11px;
+}
+
+.notification-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.07);
+
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 8px;
+
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.notification-close:hover {
+  background: rgba(255, 48, 56, 0.2);
+  border-color: #ff555c;
+}
+
+/* ==========================================
+   NOTIFICATION LIST
+========================================== */
+
+.notification-list {
+  max-height: min(460px, 65vh);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.notification-list::-webkit-scrollbar {
+  width: 5px;
+}
+
+.notification-list::-webkit-scrollbar-track {
+  background: #101018;
+}
+
+.notification-list::-webkit-scrollbar-thumb {
+  background: #b52d38;
+  border-radius: 10px;
+}
+
+/* ==========================================
+   NOTIFICATION CARD
+========================================== */
+
+.notification-card {
+  padding: 16px;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.075);
+
+  background: transparent;
+
+  transition: background 0.2s ease;
+}
+
+.notification-card:hover {
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.notification-card.notification-unread {
+  background: rgba(230, 57, 70, 0.085);
+}
+
+.notification-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+
+  margin-bottom: 10px;
+}
+
+.notification-status-dot {
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+
+  background: #777;
+  border-radius: 50%;
+}
+
+.notification-unread .notification-status-dot {
+  background: #ff555c;
+  box-shadow: 0 0 9px rgba(255, 65, 75, 0.8);
+}
+
+.notification-date {
+  color: #92929f;
+  font-size: 11px;
+  text-align: right;
+}
+
+.notification-card h4 {
+  margin: 0 0 8px;
+
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1.5;
+
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.notification-message {
+  margin: 0;
+
+  color: #d0d0d9;
+  font-size: 13px;
+  line-height: 1.75;
+
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+/* ==========================================
+   ROOM ID & PASSWORD DETAILS
+========================================== */
+
+.notification-room-details {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+
+  margin-top: 13px;
+  padding: 12px;
+
+  background: rgba(0, 0, 0, 0.45);
+
+  border: 1px solid rgba(46, 204, 113, 0.35);
+  border-radius: 10px;
+}
+
+.notification-room-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+
+  padding: 7px 0;
+}
+
+.notification-room-row + .notification-room-row {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.notification-room-row span {
+  flex-shrink: 0;
+
+  color: #a5a5b2;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.notification-room-row strong {
+  max-width: 70%;
+
+  color: #4cd98a;
+  font-family: "Consolas", monospace;
+  font-size: 13px;
+  font-weight: 800;
+  text-align: right;
+
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  user-select: text;
+}
+
+/* ==========================================
+   EMPTY / LOADING
+========================================== */
+
+.notification-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 180px;
+  padding: 25px;
+
+  color: #92929f;
+  text-align: center;
+}
+
+.notification-empty-icon {
+  margin-bottom: 12px;
+  font-size: 34px;
+}
+
+.notification-empty strong {
+  color: #eeeeF5;
+  font-size: 15px;
+}
+
+.notification-empty p {
+  margin: 7px 0 0;
+
+  color: #92929f;
+  font-size: 12px;
+}
+
+/* ==========================================
+   FOOTER
+========================================== */
+
+.notification-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+
+  padding: 12px 15px;
+
+  background: rgba(255, 255, 255, 0.025);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+
+  color: #888894;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+/* ==========================================
+   GLOBAL LIVE TOAST
+   IMPORTANT:
+   Toast class will be used in JSX update
+========================================== */
+
+.notification-live-toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+
+  width: 430px;
+  max-width: calc(100vw - 32px);
+  max-height: calc(100vh - 40px);
+
+  overflow-y: auto;
+  overscroll-behavior: contain;
+
+  padding: 20px;
+
+  color: #ffffff;
+  background: linear-gradient(
+    145deg,
+    #211418,
+    #0b0b12 80%
+  );
+
+  border: 1px solid rgba(255, 77, 77, 0.8);
+  border-left: 5px solid #ff454f;
+  border-radius: 14px;
+
+  box-shadow:
+    0 15px 45px rgba(0, 0, 0, 0.65),
+    0 0 25px rgba(255, 77, 77, 0.2);
+
+  z-index: 99999;
+
+  cursor: grab;
+  animation: live-toast-appear 0.3s ease-out;
+}
+
+.notification-live-toast:active {
+  cursor: grabbing;
+}
+
+.notification-live-toast::-webkit-scrollbar {
+  width: 4px;
+}
+
+.notification-live-toast::-webkit-scrollbar-thumb {
+  background: #a52b35;
+  border-radius: 10px;
+}
+
+@keyframes live-toast-appear {
+  from {
+    opacity: 0;
+    transform: translateX(25px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Toast heading */
+
+.notification-toast-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+
+  margin-bottom: 13px;
+}
+
+.notification-toast-title {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+
+  color: #ff6269;
+  font-size: 16px;
+  font-weight: 900;
+  line-height: 1.5;
+
+  overflow-wrap: anywhere;
+}
+
+.notification-toast-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 7px;
+
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.notification-toast-close:hover {
+  background: rgba(255, 48, 56, 0.25);
+}
+
+/* Toast message */
+
+.notification-toast-message {
+  margin: 0 0 15px;
+
+  color: #eeeeF5;
+  font-size: 14px;
+  line-height: 1.8;
+
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+/* Toast room information */
+
+.notification-toast-room {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+  padding: 13px;
+
+  background: rgba(0, 0, 0, 0.45);
+
+  border: 1px solid rgba(46, 204, 113, 0.38);
+  border-radius: 10px;
+}
+
+.notification-toast-room-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+
+  padding: 7px 0;
+}
+
+.notification-toast-room-row + .notification-toast-room-row {
+  border-top: 1px solid rgba(255, 255, 255, 0.09);
+}
+
+.notification-toast-room-row span {
+  flex-shrink: 0;
+
+  color: #a5a5b2;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.notification-toast-room-row strong {
+  max-width: 70%;
+
+  color: #4cd98a;
+  font-family: "Consolas", monospace;
+  font-size: 14px;
+  font-weight: 800;
+  text-align: right;
+
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  user-select: text;
+}
+
+.notification-toast-hint {
+  margin-top: 13px;
+
+  color: #92929f;
+  font-size: 11px;
+  text-align: right;
+}
+
+/* ==========================================
+   TABLET RESPONSIVE
+========================================== */
+
+@media (max-width: 768px) {
+  .notification-dropdown {
+    width: 360px;
+  }
+
+  .notification-live-toast {
+    width: 400px;
+  }
+}
+
+/* ==========================================
+   MOBILE RESPONSIVE
+========================================== */
+
+@media (max-width: 520px) {
+  .notification-bell-button {
+    min-width: 40px;
+    min-height: 40px;
+    padding: 8px;
+  }
+
+  .notification-bell-label {
+    display: none;
+  }
+
+  .notification-bell-icon {
+    font-size: 20px;
+  }
+
+  .notification-dropdown {
+    position: fixed;
+    top: 65px;
+    right: 10px;
+    left: 10px;
+
+    width: auto;
+    max-width: none;
+    max-height: calc(100vh - 100px);
+  }
+
+  .notification-list {
+    max-height: calc(100vh - 220px);
+  }
+
+  .notification-header {
+    padding: 14px;
+  }
+
+  .notification-header h3 {
+    font-size: 16px;
+  }
+
+  .notification-card {
+    padding: 14px;
+  }
+
+  .notification-card h4 {
+    font-size: 14px;
+  }
+
+  .notification-message {
+    font-size: 13px;
+  }
+
+  .notification-live-toast {
+    top: 12px;
+    right: 12px;
+    left: 12px;
+
+    width: auto;
+    max-width: none;
+    max-height: calc(100vh - 24px);
+
+    padding: 16px;
+    border-radius: 12px;
+  }
+
+  .notification-toast-title {
+    font-size: 15px;
+  }
+
+  .notification-toast-message {
+    font-size: 13px;
+    line-height: 1.7;
+  }
+
+  .notification-toast-room-row strong {
+    font-size: 13px;
+  }
+}
+
+/* ==========================================
+   VERY SMALL MOBILE
+========================================== */
+
+@media (max-width: 350px) {
+  .notification-live-toast {
+    padding: 13px;
+  }
+
+  .notification-toast-title {
+    font-size: 14px;
+  }
+
+  .notification-toast-message {
+    font-size: 12px;
+  }
+
+  .notification-toast-room {
+    padding: 10px;
+  }
+
+  .notification-toast-room-row {
+    gap: 7px;
+  }
+
+  .notification-toast-room-row span {
+    font-size: 11px;
+  }
+
+  .notification-toast-room-row strong {
+    font-size: 12px;
+  }
+
+  .notification-dropdown {
+    left: 7px;
+    right: 7px;
+  }
+}
+
+/* ==========================================
+   REDUCED MOTION
+========================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .notification-container *,
+  .notification-live-toast {
+    animation: none !important;
+    transition: none !important;
+  }
+}
